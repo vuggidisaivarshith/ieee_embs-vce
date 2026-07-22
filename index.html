@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expert Talk: Digital Health & Telemedicine | IEEE EMBS Vardhaman</title>
+    
+    <!-- SEO & Open Graph Meta Tags -->
+    <meta name="description" content="IEEE EMBS Vardhaman College of Engineering presents an expert talk on Digital Health, Telemedicine, and Remote Patient Monitoring Systems by Dr. Ajit Kumar on 13 August 2026.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Expert Talk: Digital Health & Telemedicine | IEEE EMBS Vardhaman">
+    <meta property="og:description" content="Join us for an insightful session on Digital Health, Telemedicine & Remote Patient Monitoring by Dr. Ajit Kumar, XIM University. 13 Aug 2026, 6 PM IST. Free E-certificate.">
+    <meta property="og:image" content="assets/embs-logo.png">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logos">
+                <img src="assets/college-logo.jpeg" alt="Vardhaman College Logo" class="nav-logo college-logo">
+                <img src="assets/embs-logo.png" alt="IEEE EMBS Logo" class="nav-logo" id="embs-logo">
+                <img src="assets/vardhaman-logo.png" alt="Vardhaman Student Branch Logo" class="nav-logo" id="v-logo">
+            </div>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#speaker">Speaker</a></li>
+                <li><a href="#schedule">Schedule</a></li>
+                <li><a href="#register" class="btn-primary">Register Now</a></li>
+            </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <span class="badge">IEEE EMBS Chapter Expert Talk</span>
+            <h1 class="hero-title">Digital Health, Telemedicine, and Remote Patient Monitoring Systems</h1>
+            <p class="hero-subtitle">Explore the future of connected medical services and AI in healthcare.</p>
+            
+            <div class="event-meta">
+                <div class="meta-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>13 August 2026 (Thursday)</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-clock"></i>
+                    <span>6:00 PM – 7:00 PM IST</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-video"></i>
+                    <span>Online (Cisco Webex)</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-hourglass-half"></i>
+                    <span>Free | E-Certificate</span>
+                </div>
+            </div>
+
+            <!-- Countdown Timer -->
+            <div class="countdown-wrapper">
+                <p class="countdown-label">Event starts in</p>
+                <div class="countdown" id="countdown">
+                    <div class="countdown-item">
+                        <span id="days">00</span>
+                        <small>Days</small>
+                    </div>
+                    <div class="countdown-sep">:</div>
+                    <div class="countdown-item">
+                        <span id="hours">00</span>
+                        <small>Hours</small>
+                    </div>
+                    <div class="countdown-sep">:</div>
+                    <div class="countdown-item">
+                        <span id="minutes">00</span>
+                        <small>Minutes</small>
+                    </div>
+                    <div class="countdown-sep">:</div>
+                    <div class="countdown-item">
+                        <span id="seconds">00</span>
+                        <small>Seconds</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-cta">
+                <a href="#register" class="btn-primary btn-large">Secure Your Spot</a>
+                <p class="cert-note"><i class="fas fa-certificate"></i> E-certificates will be provided to eligible participants who attend the full session.</p>
+            </div>
+        </div>
+        <div class="hero-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+    </header>
+
+    <!-- Stats Counter Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <i class="fas fa-users"></i>
+                    <span class="stat-number" data-target="500">0</span>
+                    <small>Members</small>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-sitemap"></i>
+                    <span class="stat-number" data-target="12">0</span>
+                    <small>Chapters</small>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-calendar-check"></i>
+                    <span class="stat-number" data-target="30">0</span>
+                    <small>Events</small>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-award"></i>
+                    <span class="stat-number" data-target="15">0</span>
+                    <small>Awards</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <!-- About Section -->
+        <section id="about" class="section about-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>About the Session</h2>
+                    <div class="divider"></div>
+                </div>
+                <div class="about-content box-card">
+                    <p>The IEEE Engineering in Medicine and Biology Society (IEEE EMBS) Student Branch Chapter, Vardhaman College of Engineering, Hyderabad, is organizing an expert talk on <strong>"Digital Health, Telemedicine, and Remote Patient Monitoring Systems."</strong></p>
+                    <p>This session aims to provide participants with insights into the latest advancements in digital healthcare technologies, telemedicine platforms, remote patient monitoring systems, wearable health devices, artificial intelligence in healthcare, and the future of connected medical services.</p>
+                    <div class="who-attend">
+                        <h4><i class="fas fa-user-check"></i> Who Should Attend?</h4>
+                        <div class="attend-tags">
+                            <span class="tag"><i class="fas fa-graduation-cap"></i> UG & PG Students (All Branches)</span>
+                            <span class="tag"><i class="fas fa-chalkboard-teacher"></i> Faculty Members</span>
+                            <span class="tag"><i class="fas fa-id-badge"></i> IEEE & Non-IEEE Members</span>
+                            <span class="tag"><i class="fas fa-flask"></i> Researchers</span>
+                        </div>
+                    </div>
+                    <div class="reg-deadline">
+                        <i class="fas fa-clock"></i>
+                        <p><strong>Registration Deadline:</strong> 12 August 2026, 11:59 PM IST</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Topics Section -->
+        <section id="topics" class="section topics-section bg-light">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Topics to be Covered</h2>
+                    <div class="divider"></div>
+                </div>
+                <div class="topics-grid">
+                    <div class="topic-card">
+                        <div class="topic-icon"><i class="fas fa-heartbeat"></i></div>
+                        <h3>Digital Health</h3>
+                        <p>Introduction to the modern digital health landscape.</p>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-icon"><i class="fas fa-user-md"></i></div>
+                        <h3>Telemedicine</h3>
+                        <p>Evolution and applications of telemedicine in current practice.</p>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-icon"><i class="fas fa-laptop-medical"></i></div>
+                        <h3>Remote Monitoring</h3>
+                        <p>Technologies enabling Remote Patient Monitoring systems.</p>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-icon"><i class="fas fa-clock"></i></div>
+                        <h3>IoT & Wearables</h3>
+                        <p>IoT and wearable devices in everyday healthcare.</p>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-icon"><i class="fas fa-brain"></i></div>
+                        <h3>AI & Analytics</h3>
+                        <p>AI and Data Analytics driving clinical decisions.</p>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h3>Future Trends</h3>
+                        <p>Challenges, security, privacy, and future healthcare trends.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Speaker Section -->
+        <section id="speaker" class="section speaker-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Meet the Speaker</h2>
+                    <div class="divider"></div>
+                </div>
+                <div class="speaker-card box-card">
+                    <div class="speaker-image">
+                        <img src="assets/speaker.jpeg" alt="Dr. Ajit Kumar" class="speaker-photo" onerror="this.parentElement.innerHTML='<div class=\'avatar-placeholder\'><i class=\'fas fa-user-tie\'></i></div>'">
+                    </div>
+                    <div class="speaker-details">
+                        <h3 class="speaker-name">Dr. Ajit Kumar, Ph.D.</h3>
+                        <p class="speaker-designation">Associate Professor, Information Systems</p>
+                        <p class="speaker-org">Xavier Institute of Management (XIM University)<br>Bhubaneswar, Odisha</p>
+                        <p class="speaker-bio">Dr. Ajit Kumar holds a Ph.D. from Taiwan and specializes in Information Systems, Digital Health, and AI-driven healthcare technologies. With extensive research in telemedicine platforms, data analytics, and smart healthcare ecosystems, he brings a rich blend of academic expertise and industry insights. He has published in leading journals and delivered talks at international forums on the future of connected healthcare.</p>
+                        <div class="speaker-socials">
+                            <a href="https://www.linkedin.com/in/drajitkumar-ai-dt/" target="_blank" class="social-link"><i class="fab fa-linkedin"></i> LinkedIn Profile</a>
+                            <a href="https://ximb.edu.in/faculty-research/faculty-profile/prof-ajit-kumar/" target="_blank" class="social-link"><i class="fas fa-globe"></i> Faculty Profile</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Schedule / Agenda Section -->
+        <section id="schedule" class="section schedule-section bg-light">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Event Agenda</h2>
+                    <p>13 August 2026 &nbsp;|&nbsp; 6:00 PM – 7:00 PM IST</p>
+                    <div class="divider"></div>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"><i class="fas fa-flag"></i></div>
+                        <div class="timeline-content box-card">
+                            <span class="timeline-time">6:00 PM</span>
+                            <h4>Welcome & Introduction</h4>
+                            <p>Opening remarks and introduction of the speaker by IEEE EMBS Chapter representatives.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"><i class="fas fa-microphone-alt"></i></div>
+                        <div class="timeline-content box-card">
+                            <span class="timeline-time">6:05 PM</span>
+                            <h4>Expert Talk by Dr. Ajit Kumar</h4>
+                            <p>A deep dive into Digital Health, Telemedicine, Remote Patient Monitoring, AI in healthcare, and the future of connected medical services.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"><i class="fas fa-comments"></i></div>
+                        <div class="timeline-content box-card">
+                            <span class="timeline-time">6:45 PM</span>
+                            <h4>Q&A Session</h4>
+                            <p>Open floor for participants to interact with the speaker and ask questions.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"><i class="fas fa-check-circle"></i></div>
+                        <div class="timeline-content box-card">
+                            <span class="timeline-time">6:55 PM</span>
+                            <h4>Closing Remarks & Vote of Thanks</h4>
+                            <p>Formal conclusion of the session with a vote of thanks from IEEE EMBS Chapter.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Registration Form Section -->
+        <section id="register" class="section registration-section">
+            <div class="container form-container">
+                <div class="section-header">
+                    <h2>Register Now</h2>
+                    <p>Secure your spot for this insightful academic session. <strong>Deadline: 12 August 2026.</strong></p>
+                    <div class="divider"></div>
+                </div>
+                
+                <form id="registrationForm" class="box-card form-card">
+                    <div class="form-grid">
+                        <!-- Email -->
+                        <div class="form-group full-width">
+                            <label for="email">Email <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" required placeholder="Your email address">
+                        </div>
+                        
+                        <!-- Full Name -->
+                        <div class="form-group full-width">
+                            <label for="fullName">Full Name <span class="required">*</span></label>
+                            <span class="help-text">As it should appear on the certificate</span>
+                            <input type="text" id="fullName" name="fullName" required placeholder="Enter your full name">
+                        </div>
+
+                        <!-- Roll Number -->
+                        <div class="form-group">
+                            <label for="rollNumber">Roll Number / Employee ID <span class="required">*</span></label>
+                            <input type="text" id="rollNumber" name="rollNumber" required placeholder="e.g. 21881A05XX">
+                        </div>
+
+                        <!-- Mobile Number -->
+                        <div class="form-group">
+                            <label for="mobile">Mobile Number <span class="required">*</span></label>
+                            <input type="tel" id="mobile" name="mobile" required placeholder="Your mobile number">
+                        </div>
+
+                        <!-- Department -->
+                        <div class="form-group">
+                            <label for="department">Department/Branch <span class="required">*</span></label>
+                            <select id="department" name="department" required>
+                                <option value="" disabled selected>Select Department</option>
+                                <option value="CSE">CSE</option>
+                                <option value="IT">IT</option>
+                                <option value="CSM">CSM</option>
+                                <option value="CSD">CSD</option>
+                                <option value="ECE">ECE</option>
+                                <option value="EEE">EEE</option>
+                                <option value="MECH">MECH</option>
+                            </select>
+                        </div>
+
+                        <!-- Section -->
+                        <div class="form-group">
+                            <label for="section">Section <span class="required">*</span></label>
+                            <select id="section" name="section" required>
+                                <option value="" disabled selected>Select Section</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                                <option value="E">E</option>
+                                <option value="F">F</option>
+                                <option value="G">G</option>
+                                <option value="H">H</option>
+                            </select>
+                        </div>
+
+                        <!-- Year of Study -->
+                        <div class="form-group">
+                            <label for="year">Year of Study <span class="required">*</span></label>
+                            <select id="year" name="year" required>
+                                <option value="" disabled selected>Select Year</option>
+                                <option value="2nd">2nd</option>
+                                <option value="3rd">3rd</option>
+                                <option value="4th">4th</option>
+                            </select>
+                        </div>
+
+                        <!-- IEEE Membership -->
+                        <div class="form-group">
+                            <label for="membership">IEEE Membership Status <span class="required">*</span></label>
+                            <select id="membership" name="membership" required>
+                                <option value="" disabled selected>Select Status</option>
+                                <option value="IEEE Member">IEEE Member</option>
+                                <option value="Non-IEEE Member">Non-IEEE Member</option>
+                            </select>
+                        </div>
+
+                        <!-- Questions for Speaker -->
+                        <div class="form-group full-width">
+                            <label for="questions">Questions for the Speaker</label>
+                            <textarea id="questions" name="questions" rows="3" placeholder="Any specific questions you would like addressed?"></textarea>
+                        </div>
+
+                        <!-- Consents -->
+                        <div class="form-group full-width consent-group">
+                            <label>Consent <span class="required">*</span></label>
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="consent1" name="consent1" required>
+                                <label for="consent1">I confirm that the information provided is accurate.</label>
+                            </div>
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="consent2" name="consent2" required>
+                                <label for="consent2">I agree that my attendance will be used for certificate generation and event communication.</label>
+                            </div>
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="consent3" name="consent3" required>
+                                <label for="consent3">I consent to receive event-related communications.</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="privacy-note">
+                        <i class="fas fa-lock"></i>
+                        <p>Your data is secure. We will not share your information outside of event communication.</p>
+                    </div>
+
+                    <!-- Certificate Eligibility Note -->
+                    <div class="cert-eligibility">
+                        <i class="fas fa-certificate"></i>
+                        <p><strong>Certificate Eligibility:</strong> Full attendance for the complete 1-hour session is required. Certificates will be issued only to participants who attend from start to finish and have submitted this registration form.</p>
+                    </div>
+
+                    <div class="form-submit">
+                        <button type="submit" class="btn-primary btn-large btn-block">Submit Registration</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-top-grid">
+                <!-- Organizer -->
+                <div class="organizer-info">
+                    <h4>Organized by</h4>
+                    <p><strong>IEEE Engineering in Medicine and Biology Society (IEEE EMBS) Student Branch Chapter</strong></p>
+                    <p>Department of Information Technology</p>
+                    <p>Vardhaman College of Engineering</p>
+                    <p>Kacharam, Shamshabad, Ranga Reddy District,<br>Hyderabad, Telangana – 501218, India</p>
+                </div>
+                <!-- Contacts -->
+                <div class="footer-contacts">
+                    <h4>Contact Us</h4>
+                    <div class="contact-item">
+                        <i class="fas fa-user"></i>
+                        <div>
+                            <strong>Vuggidi Sai Varshith</strong><br>
+                            Secretary, IEEE EMBS<br>
+                            <a href="tel:9059573313">+91 9059573313</a> &nbsp;|&nbsp;
+                            <a href="mailto:vuggidisaivarshith@gmail.com">vuggidisaivarshith@gmail.com</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <div>
+                            <strong>Pollishetty Swetha</strong><br>
+                            Faculty Co-ordinator, IT Dept.<br>
+                            <a href="tel:7993136780">+91 7993136780</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Quick Links -->
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="https://www.ieee.org/membership/join/" target="_blank"><i class="fas fa-external-link-alt"></i> Join IEEE</a></li>
+                        <li><a href="#register"><i class="fas fa-pen"></i> Register for Event</a></li>
+                        <li><a href="https://chat.whatsapp.com/JiJpTTCV3uQLwUf4SFXYwI" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Group</a></li>
+                        <li><a href="https://vardhaman.org/" target="_blank"><i class="fas fa-university"></i> Vardhaman College</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 IEEE EMBS Vardhaman College of Engineering. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content box-card">
+            <span class="close-modal">&times;</span>
+            <div class="modal-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>Registration Confirmed!</h2>
+            <p>Thank you for registering for the IEEE EMBS Expert Talk on <strong>"Digital Health, Telemedicine, and Remote Patient Monitoring Systems."</strong></p>
+            <p>The Cisco Webex meeting link and joining instructions will be sent to your registered email before the event.</p>
+
+            <!-- WhatsApp Join prompt in modal -->
+            <div class="modal-whatsapp">
+                <i class="fab fa-whatsapp"></i>
+                <div>
+                    <strong>Stay Updated!</strong>
+                    <p>Join our WhatsApp group for the Webex link and real-time updates.</p>
+                    <a href="https://chat.whatsapp.com/JiJpTTCV3uQLwUf4SFXYwI" target="_blank" class="btn-whatsapp" style="margin-top: 10px; display: inline-flex;">
+                        <i class="fab fa-whatsapp"></i> Join WhatsApp Group
+                    </a>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <p><strong>IEEE EMBS Student Branch Chapter</strong><br>Vardhaman College of Engineering, Hyderabad</p>
+            </div>
+            <button class="btn-primary btn-close-modal">Close</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
