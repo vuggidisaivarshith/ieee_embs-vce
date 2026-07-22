@@ -255,21 +255,91 @@
 </head>
 <body>
 
+    <style>
+        /* Contact-page navbar fix */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0;
+            height: 68px; display: flex; align-items: center;
+            padding: 0 5%; background: white;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            z-index: 1000;
+        }
+        .navbar-inner {
+            display: flex; align-items: center;
+            justify-content: space-between;
+            width: 100%; max-width: 1200px; margin: 0 auto;
+        }
+        .nav-logos { display: flex; align-items: center; gap: 8px; }
+        .nav-logos img { height: 40px; width: auto; object-fit: contain; }
+        .nav-links-row {
+            display: flex; align-items: center; gap: 20px;
+        }
+        .nav-links-row a {
+            color: #333; text-decoration: none; font-weight: 500; font-size: 0.95rem;
+        }
+        .nav-links-row a.active { color: var(--primary, #00629B); font-weight: 600; }
+        .nav-links-row a.nav-register {
+            background: linear-gradient(135deg, #00629B, #7B2C89);
+            color: white; padding: 8px 18px; border-radius: 50px;
+            font-weight: 600; white-space: nowrap;
+        }
+        .hamburger-btn {
+            display: none; background: none; border: none;
+            font-size: 1.4rem; color: #333; cursor: pointer;
+        }
+        .mobile-drawer {
+            display: none; position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(10,15,22,0.97); z-index: 999;
+            flex-direction: column; align-items: center;
+            justify-content: center; gap: 28px;
+        }
+        .mobile-drawer.open { display: flex; }
+        .mobile-drawer a {
+            color: white; text-decoration: none;
+            font-size: 1.4rem; font-weight: 600;
+        }
+        .mobile-drawer .drawer-close {
+            position: absolute; top: 20px; right: 24px;
+            background: none; border: none; color: white;
+            font-size: 2rem; cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            .nav-links-row { display: none; }
+            .hamburger-btn { display: block; }
+        }
+    </style>
+
     <nav class="navbar">
-        <div class="logo-container">
-            <img src="assets/college-logo.jpeg" alt="College Logo" class="nav-logo">
-            <img src="assets/embs-logo.png" alt="EMBS Logo" class="nav-logo">
+        <div class="navbar-inner">
+            <div class="nav-logos">
+                <img src="assets/college-logo.jpeg" alt="Vardhaman College">
+                <img src="assets/embs-logo.png" alt="IEEE EMBS">
+                <img src="assets/vardhaman-logo.png" alt="Vardhaman SB">
+            </div>
+            <div class="nav-links-row">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="events.html">Events</a>
+                <a href="team.html">Team</a>
+                <a href="contact.html" class="active">Contact</a>
+                <a href="events/digital-health-talk/" class="nav-register">Register Now</a>
+            </div>
+            <button class="hamburger-btn" onclick="document.getElementById('contactMobileNav').classList.toggle('open')">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="events.html">Events</a></li>
-            <li><a href="team.html">Team</a></li>
-            <li><a href="contact.html" class="active">Contact</a></li>
-        </ul>
-        <a href="events/digital-health-talk/" class="btn btn-primary">Register Now</a>
-        <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
     </nav>
+    <div class="mobile-drawer" id="contactMobileNav">
+        <button class="drawer-close" onclick="document.getElementById('contactMobileNav').classList.remove('open')">&times;</button>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="events.html">Events</a>
+        <a href="team.html">Team</a>
+        <a href="contact.html">Contact</a>
+        <a href="events/digital-health-talk/" style="background:linear-gradient(135deg,#00629B,#00B5E2);padding:12px 32px;border-radius:50px;">Register Now</a>
+    </div>
+
 
     <header class="hero">
         <h1>Get In Touch</h1>

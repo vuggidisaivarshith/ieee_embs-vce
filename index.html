@@ -496,62 +496,141 @@
         }
 
         /* Responsive Design */
+        /* Hamburger / Mobile Nav */
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 1001;
+        }
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(10,15,22,0.97);
+            z-index: 999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+        }
+        .mobile-nav.open { display: flex; }
+        .mobile-nav a {
+            color: white; text-decoration: none;
+            font-size: 1.5rem; font-weight: 600;
+        }
+        .mobile-nav .close-btn {
+            position: absolute; top: 20px; right: 24px;
+            background: none; border: none; color: white;
+            font-size: 2rem; cursor: pointer;
+        }
+
+        /* Countdown widget */
+        .countdown-bar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+        .cd-label { font-size: 0.85rem; color: var(--accent); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+        .cd-units { display: flex; gap: 8px; }
+        .cd-unit {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 8px;
+            padding: 6px 10px;
+            text-align: center;
+            min-width: 52px;
+        }
+        .cd-num { font-size: 1.4rem; font-weight: 700; color: white; line-height: 1; display: block; }
+        .cd-text { font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+
         @media (max-width: 1024px) {
             .hero-container, .about-snapshot {
                 grid-template-columns: 1fr;
                 gap: 40px;
             }
             .hero {
-                padding-top: 150px;
+                padding-top: 110px;
+                padding-bottom: 60px;
+                min-height: auto;
             }
             .hero-content {
                 text-align: center;
                 align-items: center;
             }
-            .badge {
-                align-self: center;
-            }
+            .badge { align-self: center; }
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 30px;
             }
-            .events-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .events-grid { grid-template-columns: repeat(2, 1fr); }
+            .about-image { aspect-ratio: 16/7; }
         }
 
         @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
+            .hero {
+                padding: 90px 5% 48px;
+                min-height: auto;
             }
-            .events-grid {
-                grid-template-columns: 1fr;
-            }
-            .join-buttons {
-                flex-direction: column;
-            }
+            .hero-title { font-size: clamp(1.8rem, 7vw, 2.8rem); }
+            .hero-subtitle { font-size: 1rem; }
+            .hero-ctas { flex-direction: column; width: 100%; }
+            .hero-ctas .btn { width: 100%; text-align: center; }
+            .featured-card { padding: 24px; }
+            .event-title { font-size: 1.4rem; }
+            .events-grid { grid-template-columns: 1fr; }
+            .join-buttons { flex-direction: column; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .stat-number { font-size: 2.5rem; }
+            .hamburger { display: block; }
+            nav .nav-links { display: none !important; }
+            .section { padding: 60px 5%; }
+        }
+
+        @media (max-width: 480px) {
+            .hero { padding: 80px 4% 40px; }
+            .hero-title { font-size: 1.7rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .stat-number { font-size: 2rem; }
+            .featured-card { padding: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR: Assume js/shared.js injects this or use static structure -->
-    <!-- Creating static structure since CSS expects elements -->
-    <nav class="navbar" style="position: fixed; top: 0; left: 0; right: 0; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(10, 15, 22, 0.9); backdrop-filter: blur(10px); z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1);">
-        <div class="nav-logos" style="display: flex; gap: 15px; align-items: center;">
-            <img src="assets/college-logo.jpeg" alt="VCE Logo" style="height: 40px; border-radius: 4px;">
-            <img src="assets/embs-logo.png" alt="EMBS Logo" style="height: 40px;">
-            <img src="assets/vardhaman-logo.png" alt="Vardhaman Logo" style="height: 40px;">
+    <!-- NAVBAR -->
+    <nav style="position:fixed;top:0;left:0;right:0;padding:0 5%;height:70px;display:flex;justify-content:space-between;align-items:center;background:rgba(10,15,22,0.95);backdrop-filter:blur(12px);z-index:1000;border-bottom:1px solid rgba(255,255,255,0.08);">
+        <div style="display:flex;gap:10px;align-items:center;flex-shrink:0;">
+            <img src="assets/college-logo.jpeg" alt="VCE" style="height:42px;width:auto;border-radius:4px;object-fit:contain;">
+            <img src="assets/embs-logo.png" alt="EMBS" style="height:38px;width:auto;object-fit:contain;">
+            <img src="assets/vardhaman-logo.png" alt="VCE SB" style="height:38px;width:auto;object-fit:contain;">
         </div>
-        <div class="nav-links" style="display: flex; gap: 24px; align-items: center;">
-            <a href="index.html" style="color: white; text-decoration: none; font-weight: 500;">Home</a>
-            <a href="about.html" style="color: white; text-decoration: none; font-weight: 500;">About</a>
-            <a href="events.html" style="color: white; text-decoration: none; font-weight: 500;">Events</a>
-            <a href="team.html" style="color: white; text-decoration: none; font-weight: 500;">Team</a>
-            <a href="contact.html" style="color: white; text-decoration: none; font-weight: 500;">Contact</a>
-            <a href="events/digital-health-talk/" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.9rem;">Register Now</a>
+        <div class="nav-links" style="display:flex;gap:20px;align-items:center;">
+            <a href="index.html" style="color:white;text-decoration:none;font-weight:500;font-size:0.95rem;">Home</a>
+            <a href="about.html" style="color:white;text-decoration:none;font-weight:500;font-size:0.95rem;">About</a>
+            <a href="events.html" style="color:white;text-decoration:none;font-weight:500;font-size:0.95rem;">Events</a>
+            <a href="team.html" style="color:white;text-decoration:none;font-weight:500;font-size:0.95rem;">Team</a>
+            <a href="contact.html" style="color:white;text-decoration:none;font-weight:500;font-size:0.95rem;">Contact</a>
+            <a href="events/digital-health-talk/" style="background:linear-gradient(135deg,#00629B,#00B5E2);color:white;padding:8px 18px;border-radius:50px;font-weight:600;font-size:0.9rem;text-decoration:none;white-space:nowrap;">Register Now</a>
         </div>
+        <button class="hamburger" onclick="document.getElementById('mobileNav').classList.toggle('open')" aria-label="Menu"><i class="fas fa-bars"></i></button>
     </nav>
+    <!-- Mobile Nav Overlay -->
+    <div class="mobile-nav" id="mobileNav">
+        <button class="close-btn" onclick="document.getElementById('mobileNav').classList.remove('open')">&times;</button>
+        <a href="index.html" onclick="document.getElementById('mobileNav').classList.remove('open')">Home</a>
+        <a href="about.html" onclick="document.getElementById('mobileNav').classList.remove('open')">About</a>
+        <a href="events.html" onclick="document.getElementById('mobileNav').classList.remove('open')">Events</a>
+        <a href="team.html" onclick="document.getElementById('mobileNav').classList.remove('open')">Team</a>
+        <a href="contact.html" onclick="document.getElementById('mobileNav').classList.remove('open')">Contact</a>
+        <a href="events/digital-health-talk/" style="background:linear-gradient(135deg,#00629B,#00B5E2);padding:12px 32px;border-radius:50px;">Register Now</a>
+    </div>
 
     <!-- HERO SECTION -->
     <section class="hero">
@@ -564,9 +643,20 @@
                 <h1 class="hero-title">Engineering the Future of Medicine</h1>
                 <h2 class="hero-subtitle">IEEE Engineering in Medicine and Biology Society — Vardhaman College of Engineering, Hyderabad</h2>
                 <p class="hero-mission">Connecting engineering students with the frontiers of biomedical innovation.</p>
-                
+
+                <!-- COUNTDOWN TIMER -->
+                <div class="countdown-bar">
+                    <span class="cd-label"><i class="fas fa-clock"></i> Event in</span>
+                    <div class="cd-units">
+                        <div class="cd-unit"><span class="cd-num" id="cd-days">--</span><span class="cd-text">Days</span></div>
+                        <div class="cd-unit"><span class="cd-num" id="cd-hours">--</span><span class="cd-text">Hrs</span></div>
+                        <div class="cd-unit"><span class="cd-num" id="cd-mins">--</span><span class="cd-text">Min</span></div>
+                        <div class="cd-unit"><span class="cd-num" id="cd-secs">--</span><span class="cd-text">Sec</span></div>
+                    </div>
+                </div>
+
                 <div class="hero-ctas">
-                    <a href="events/digital-health-talk/" class="btn btn-primary">Upcoming Event <i class="fas fa-arrow-right" style="margin-left: 8px;"></i></a>
+                    <a href="events/digital-health-talk/" class="btn btn-primary">Upcoming Event <i class="fas fa-arrow-right" style="margin-left:8px;"></i></a>
                     <a href="about.html" class="btn btn-outline">About Us</a>
                 </div>
             </div>
@@ -641,8 +731,8 @@
 
                 <a href="about.html" class="btn btn-primary">Learn More About Us <i class="fas fa-arrow-right" style="margin-left: 8px;"></i></a>
             </div>
-            <div class="about-image">
-                <i class="fas fa-network-wired"></i>
+            <div class="about-image" style="background:#f0f4f8;display:flex;align-items:center;justify-content:center;border-radius:24px;overflow:hidden;padding:24px;box-shadow:0 12px 32px rgba(0,0,0,0.08);">
+                <img src="assets/embs-logo.png" alt="IEEE EMBS Logo" style="width:100%;max-width:340px;height:auto;object-fit:contain;">
             </div>
         </div>
     </section>
@@ -735,47 +825,48 @@
         </div>
     </footer>
 
-    <!-- Shared JS -->
     <script src="js/shared.js"></script>
-    
-    <!-- Counter Animation Script -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const counters = document.querySelectorAll('.counter');
-            
-            const animateCounters = (entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const counter = entry.target;
-                        const target = +counter.getAttribute('data-target');
-                        const duration = 2000; // 2 seconds
-                        const increment = target / (duration / 16); // 60fps
-                        
-                        let current = 0;
-                        const updateCounter = () => {
-                            current += increment;
-                            if (current < target) {
-                                counter.innerText = Math.ceil(current);
-                                requestAnimationFrame(updateCounter);
-                            } else {
-                                counter.innerText = target;
-                            }
-                        };
-                        
-                        updateCounter();
-                        observer.unobserve(counter);
-                    }
-                });
-            };
-
-            const observer = new IntersectionObserver(animateCounters, {
-                threshold: 0.5
+        // ── Counter Animation ──
+        const counters = document.querySelectorAll('.counter');
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (!e.isIntersecting) return;
+                const el = e.target, target = +el.dataset.target;
+                const inc = target / 120;
+                let cur = 0;
+                const tick = () => {
+                    cur = Math.min(cur + inc, target);
+                    el.textContent = Math.ceil(cur);
+                    if (cur < target) requestAnimationFrame(tick);
+                };
+                tick();
+                obs.unobserve(el);
             });
+        }, { threshold: 0.5 });
+        counters.forEach(c => obs.observe(c));
 
-            counters.forEach(counter => {
-                observer.observe(counter);
-            });
-        });
+        // ── Countdown Timer ──
+        (function countdown() {
+            const target = new Date('2026-08-13T18:00:00+05:30').getTime();
+            function update() {
+                const diff = target - Date.now();
+                if (diff <= 0) {
+                    ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => document.getElementById(id).textContent = '00');
+                    return;
+                }
+                const d = Math.floor(diff / 86400000);
+                const h = Math.floor((diff % 86400000) / 3600000);
+                const m = Math.floor((diff % 3600000) / 60000);
+                const s = Math.floor((diff % 60000) / 1000);
+                document.getElementById('cd-days').textContent  = String(d).padStart(2,'0');
+                document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+                document.getElementById('cd-mins').textContent  = String(m).padStart(2,'0');
+                document.getElementById('cd-secs').textContent  = String(s).padStart(2,'0');
+            }
+            update();
+            setInterval(update, 1000);
+        })();
     </script>
 </body>
 </html>
