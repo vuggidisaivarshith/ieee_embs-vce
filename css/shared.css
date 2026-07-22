@@ -280,3 +280,70 @@ p { line-height: 1.75; }
 @media (max-width: 480px) {
     :root { --nav-height: 70px; }
 }
+
+/* =========================================
+   GLOBAL LOGO SIZE FIX (all pages)
+   ========================================= */
+.nav-logo,
+.logo,
+nav img,
+.nav-logos img,
+.logos img,
+.logo-container img {
+    height: 44px !important;
+    width: auto !important;
+    object-fit: contain;
+    max-width: 120px;
+}
+/* College logo is allowed slightly taller */
+.nav-logo-college,
+.college-logo {
+    height: 52px !important;
+}
+/* Navbar logo group */
+.nav-logos, .logos, .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+/* Ensure navbar container fills width */
+.nav-container, nav > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+/* nav-links universal fix */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: nowrap;
+}
+.nav-links a, .nav-links li a {
+    white-space: nowrap;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text);
+    transition: color var(--transition);
+}
+.nav-links a:hover, .nav-links li a:hover { color: var(--primary); }
+/* Register button style fix for pages using different class names */
+.nav-btn, .btn-register {
+    background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+    color: white !important;
+    padding: 9px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+.nav-btn:hover, .btn-register:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(123,44,137,0.35);
+}
+

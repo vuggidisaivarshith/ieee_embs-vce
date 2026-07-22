@@ -3,292 +3,442 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team | IEEE EMBS Vardhaman</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Our Team | IEEE EMBS Vardhaman</title>
+    <meta name="description" content="Meet the student office bearers and faculty coordinator of IEEE EMBS Student Branch Chapter, Vardhaman College of Engineering.">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/shared.css">
     <style>
-        .hero {
-            padding: 120px 5% 60px;
+        /* ---- Page Hero ---- */
+        .page-hero {
+            background: linear-gradient(135deg, #0F172A, #1E1B4B);
+            color: white;
+            padding: 140px 0 80px;
             text-align: center;
-            background: linear-gradient(135deg, rgba(0, 98, 155, 0.1) 0%, rgba(123, 44, 137, 0.1) 100%);
+            position: relative;
+            overflow: hidden;
         }
-        .hero h1 {
-            font-size: 3.5rem;
-            color: var(--primary);
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 70% 30%, rgba(0,181,226,0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 30% 70%, rgba(123,44,137,0.2) 0%, transparent 50%);
+        }
+        .page-hero .container { position: relative; z-index: 1; }
+        .page-hero .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
             margin-bottom: 20px;
         }
-        .hero p {
-            font-size: 1.2rem;
-            color: #555;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+        .page-hero h1 { color: white; font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 16px; }
+        .page-hero p { color: #CBD5E1; font-size: 1.1rem; max-width: 560px; margin: 0 auto; }
 
-        .section {
-            padding: 80px 5%;
-            max-width: 1200px;
-            margin: 0 auto;
+        /* ---- Info Banner ---- */
+        .info-banner {
+            background: rgba(0,98,155,0.06);
+            border: 1px solid rgba(0,98,155,0.15);
+            border-radius: 12px;
+            padding: 14px 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 700px;
+            margin: 0 auto 56px;
+            font-size: 0.95rem;
+            color: var(--primary);
         }
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            color: var(--secondary);
-            margin-bottom: 50px;
-            position: relative;
+        .info-banner i { font-size: 1.1rem; flex-shrink: 0; }
+
+        /* ---- Section Header ---- */
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 40px;
         }
-        .section-title::after {
+        .section-label h2 { font-size: 1.8rem; margin: 0; }
+        .section-label::after {
             content: '';
-            display: block;
-            width: 60px;
-            height: 4px;
-            background: var(--accent);
-            margin: 15px auto 0;
-            border-radius: 2px;
+            flex: 1;
+            height: 1px;
+            background: var(--border);
         }
 
+        /* ---- Team Grid ---- */
         .team-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 64px;
         }
 
+        /* ---- Team Card ---- */
         .team-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 15px;
-            padding: 40px 30px;
+            background: white;
+            border-radius: 20px;
+            padding: 32px 24px;
             text-align: center;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+            border: 1px solid var(--border);
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
         }
-        .team-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 98, 155, 0.15);
-            border-color: rgba(0, 181, 226, 0.3);
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
         }
+        .team-card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(0,98,155,0.13); }
+        .team-card:hover::before { transform: scaleX(1); }
 
+        /* Avatar */
         .avatar {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
-            font-weight: 600;
-            color: white;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .team-card h3 {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
-        .team-card .role {
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: var(--secondary);
-            margin-bottom: 15px;
-        }
-        .team-card .contact-info {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        .social-btn {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #f0f0f0;
-            color: var(--primary);
-            line-height: 40px;
-            transition: all 0.3s ease;
-        }
-        .social-btn:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .faculty-card {
-            max-width: 600px;
-            margin: 0 auto;
-            background: linear-gradient(135deg, rgba(123, 44, 137, 0.05) 0%, rgba(0, 98, 155, 0.05) 100%);
-            border: 2px solid rgba(123, 44, 137, 0.1);
-        }
-        .faculty-card .avatar {
-            background: linear-gradient(135deg, var(--secondary) 0%, #a855b8 100%);
-        }
-
-        .cta-section {
-            text-align: center;
-            padding: 60px 20px;
-            background: var(--primary);
-            color: white;
-            border-radius: 20px;
-            margin: 40px 5% 80px;
-        }
-        .cta-section h2 {
             font-size: 2rem;
-            margin-bottom: 20px;
-        }
-        .cta-btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background: white;
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            border-radius: 30px;
-            transition: all 0.3s ease;
-        }
-        .cta-btn:hover {
-            background: var(--accent);
+            font-weight: 700;
             color: white;
-            transform: scale(1.05);
+            letter-spacing: 1px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+            flex-shrink: 0;
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        /* Gradient avatars per role */
+        .av-1  { background: linear-gradient(135deg, #00629B, #0099CC); }
+        .av-2  { background: linear-gradient(135deg, #7B2C89, #A855B8); }
+        .av-3  { background: linear-gradient(135deg, #059669, #10B981); }
+        .av-4  { background: linear-gradient(135deg, #D97706, #F59E0B); }
+        .av-5  { background: linear-gradient(135deg, #4F46E5, #818CF8); }
+        .av-6  { background: linear-gradient(135deg, #DC2626, #F87171); }
+        .av-fac{ background: linear-gradient(135deg, #7B2C89, #00629B); }
+
+        .member-name { font-size: 1.2rem; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+        .member-role {
+            font-size: 0.88rem; font-weight: 600; color: var(--primary);
+            text-transform: uppercase; letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        /* Info rows */
+        .member-info { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+        .info-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.88rem;
+            color: var(--muted);
+        }
+        .info-row i { color: var(--accent); width: 14px; flex-shrink: 0; }
+        .info-row a { color: var(--primary); }
+
+        /* Social row */
+        .member-socials { display: flex; justify-content: center; gap: 10px; }
+        .social-ico {
+            width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--light); color: var(--muted); font-size: 0.9rem;
+            border: 1px solid var(--border); transition: all 0.2s;
+        }
+        .social-ico:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* ---- Faculty Section ---- */
+        .faculty-section {
+            background: linear-gradient(135deg, rgba(0,98,155,0.04), rgba(123,44,137,0.04));
+            border-radius: 24px;
+            padding: 48px;
+            border: 1px solid rgba(0,98,155,0.1);
+            margin-bottom: 64px;
+        }
+        .faculty-card {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .faculty-avatar {
+            width: 120px; height: 120px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem; font-weight: 700; color: white;
+            flex-shrink: 0;
+            box-shadow: 0 8px 24px rgba(123,44,137,0.25);
+        }
+        .faculty-details { text-align: left; flex: 1; }
+        .faculty-details .member-name { font-size: 1.5rem; margin-bottom: 6px; }
+        .faculty-details .member-role { margin-bottom: 16px; }
+        .faculty-details .member-info { align-items: flex-start; }
+        .faculty-details .info-row { justify-content: flex-start; }
+
+        /* ---- CTA Section ---- */
+        .cta-box {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            padding: 48px 32px;
+            text-align: center;
+            color: white;
+            margin-bottom: 0;
+        }
+        .cta-box h3 { color: white; font-size: 1.6rem; margin-bottom: 12px; }
+        .cta-box p { color: rgba(255,255,255,0.8); margin-bottom: 24px; }
+        .btn-cta-white {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: white; color: var(--primary); padding: 12px 28px;
+            border-radius: 50px; font-weight: 700; font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        .btn-cta-white:hover { background: var(--accent); color: white; transform: translateY(-2px); }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 640px) {
+            .faculty-card { flex-direction: column; text-align: center; }
+            .faculty-details { text-align: center; }
+            .faculty-details .member-info { align-items: center; }
+            .faculty-details .info-row { justify-content: center; }
+            .faculty-section { padding: 32px 20px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Navbar -->
     <nav class="navbar">
-        <div class="logo-container">
-            <img src="assets/college-logo.jpeg" alt="College Logo" class="nav-logo">
-            <img src="assets/embs-logo.png" alt="EMBS Logo" class="nav-logo">
+        <div class="container nav-container">
+            <div class="nav-logos">
+                <img src="assets/college-logo.jpeg" alt="Vardhaman College" class="college-logo nav-logo">
+                <img src="assets/embs-logo.png" alt="IEEE EMBS" class="nav-logo">
+                <img src="assets/vardhaman-logo.png" alt="Vardhaman SB" class="nav-logo">
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="team.html" class="active">Team</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="events/digital-health-talk/" class="btn btn-primary btn-sm">Register Now</a></li>
+            </ul>
+            <div class="hamburger"><i class="fas fa-bars"></i></div>
         </div>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="events.html">Events</a></li>
-            <li><a href="team.html" class="active">Team</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
-        <a href="events/digital-health-talk/" class="btn btn-primary">Register Now</a>
-        <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
     </nav>
 
-    <header class="hero">
-        <h1>Meet the Team</h1>
-        <p>The dedicated students and faculty driving IEEE EMBS Vardhaman forward.</p>
+    <!-- Page Hero -->
+    <header class="page-hero">
+        <div class="container">
+            <div class="badge">2025–26 Executive Committee</div>
+            <h1>Meet the Team</h1>
+            <p>The dedicated students and faculty driving IEEE EMBS Vardhaman forward every day.</p>
+        </div>
     </header>
 
-    <section class="section">
-        <h2 class="section-title">Student Office Bearers</h2>
-        <div class="team-grid">
-            <div class="team-card">
-                <div class="avatar">VSV</div>
-                <h3>Vuggidi Sai Varshith</h3>
-                <div class="role">Secretary</div>
-                <div class="contact-info">
-                    <i class="fas fa-envelope"></i> vuggidisaivarshith@gmail.com
-                </div>
-                <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
-            </div>
-            
-            <div class="team-card">
-                <div class="avatar">CH</div>
-                <h3>[Chairperson Name]</h3>
-                <div class="role">Chairperson</div>
-                <div class="contact-info">
-                    <i class="fas fa-envelope"></i> chair@example.com
-                </div>
-                <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+    <!-- Main Content -->
+    <main class="section">
+        <div class="container">
+
+            <!-- Info Note -->
+            <div class="info-banner">
+                <i class="fas fa-info-circle"></i>
+                <span>To update team member details — name, department, LinkedIn, or photo — contact the webmaster or edit <code>team.html</code> directly.</span>
             </div>
 
-            <div class="team-card">
-                <div class="avatar">VC</div>
-                <h3>[Vice Chair Name]</h3>
-                <div class="role">Vice Chairperson</div>
-                <div class="contact-info">
-                    <i class="fas fa-envelope"></i> vchair@example.com
-                </div>
-                <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+            <!-- Student Office Bearers -->
+            <div class="section-label">
+                <h2>Student Office Bearers</h2>
             </div>
 
-            <div class="team-card">
-                <div class="avatar">TR</div>
-                <h3>[Treasurer Name]</h3>
-                <div class="role">Treasurer</div>
-                <div class="contact-info">
-                    <i class="fas fa-envelope"></i> treasurer@example.com
+            <div class="team-grid">
+
+                <!-- Vuggidi Sai Varshith — Secretary (confirmed) -->
+                <div class="team-card">
+                    <div class="avatar av-1">VSV</div>
+                    <div class="member-name">Vuggidi Sai Varshith</div>
+                    <div class="member-role">Secretary</div>
+                    <div class="member-info">
+                        <div class="info-row"><i class="fas fa-graduation-cap"></i> <span>[Year] · IT Dept</span></div>
+                        <div class="info-row"><i class="fas fa-envelope"></i> <a href="mailto:vuggidisaivarshith@gmail.com">vuggidisaivarshith@gmail.com</a></div>
+                        <div class="info-row"><i class="fas fa-phone"></i> <a href="tel:9059573313">+91 9059573313</a></div>
+                    </div>
+                    <div class="member-socials">
+                        <a href="#" class="social-ico" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="mailto:vuggidisaivarshith@gmail.com" class="social-ico" title="Email"><i class="fas fa-envelope"></i></a>
+                    </div>
                 </div>
-                <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+
+                <!-- Chairperson -->
+                <div class="team-card">
+                    <div class="avatar av-2">CH</div>
+                    <div class="member-name">[Chairperson Name]</div>
+                    <div class="member-role">Chairperson</div>
+                    <div class="member-info">
+                        <div class="info-row"><i class="fas fa-graduation-cap"></i> <span>[Year] · [Dept]</span></div>
+                        <div class="info-row"><i class="fas fa-envelope"></i> <span>[Email]</span></div>
+                        <div class="info-row"><i class="fas fa-phone"></i> <span>[Phone]</span></div>
+                    </div>
+                    <div class="member-socials">
+                        <a href="#" class="social-ico" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-ico" title="Email"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+
+                <!-- Vice Chairperson -->
+                <div class="team-card">
+                    <div class="avatar av-3">VC</div>
+                    <div class="member-name">[Vice Chair Name]</div>
+                    <div class="member-role">Vice Chairperson</div>
+                    <div class="member-info">
+                        <div class="info-row"><i class="fas fa-graduation-cap"></i> <span>[Year] · [Dept]</span></div>
+                        <div class="info-row"><i class="fas fa-envelope"></i> <span>[Email]</span></div>
+                        <div class="info-row"><i class="fas fa-phone"></i> <span>[Phone]</span></div>
+                    </div>
+                    <div class="member-socials">
+                        <a href="#" class="social-ico" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-ico" title="Email"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+
+                <!-- Treasurer -->
+                <div class="team-card">
+                    <div class="avatar av-4">TR</div>
+                    <div class="member-name">[Treasurer Name]</div>
+                    <div class="member-role">Treasurer</div>
+                    <div class="member-info">
+                        <div class="info-row"><i class="fas fa-graduation-cap"></i> <span>[Year] · [Dept]</span></div>
+                        <div class="info-row"><i class="fas fa-envelope"></i> <span>[Email]</span></div>
+                        <div class="info-row"><i class="fas fa-phone"></i> <span>[Phone]</span></div>
+                    </div>
+                    <div class="member-socials">
+                        <a href="#" class="social-ico" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-ico" title="Email"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+
+                <!-- Joint Secretary -->
+                <div class="team-card">
+                    <div class="avatar av-5">JS</div>
+                    <div class="member-name">[Joint Secretary Name]</div>
+                    <div class="member-role">Joint Secretary</div>
+                    <div class="member-info">
+                        <div class="info-row"><i class="fas fa-graduation-cap"></i> <span>[Year] · [Dept]</span></div>
+                        <div class="info-row"><i class="fas fa-envelope"></i> <span>[Email]</span></div>
+                        <div class="info-row"><i class="fas fa-phone"></i> <span>[Phone]</span></div>
+                    </div>
+                    <div class="member-socials">
+                        <a href="#" class="social-ico" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-ico" title="Email"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+
+                <!-- Webmaster -->
+                <div class="team-card">
+                    <div class="avatar av-6">WM</div>
+                    <div class="member-name">[Webmaster Name]</div>
+                    <div class="member-role">Webmaster</div>
+                    <div class="member-info">
+                        <div class="info-row"><i class="fas fa-graduation-cap"></i> <span>[Year] · [Dept]</span></div>
+                        <div class="info-row"><i class="fas fa-envelope"></i> <span>[Email]</span></div>
+                        <div class="info-row"><i class="fas fa-phone"></i> <span>[Phone]</span></div>
+                    </div>
+                    <div class="member-socials">
+                        <a href="#" class="social-ico" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-ico" title="Email"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+
+            </div><!-- /team-grid -->
+
+            <!-- Faculty Section -->
+            <div class="section-label">
+                <h2>Faculty Co-ordinator</h2>
             </div>
 
-            <div class="team-card">
-                <div class="avatar">JS</div>
-                <h3>[Joint Sec Name]</h3>
-                <div class="role">Joint Secretary</div>
-                <div class="contact-info">
-                    <i class="fas fa-envelope"></i> jsec@example.com
+            <div class="faculty-section">
+                <div class="faculty-card">
+                    <div class="faculty-avatar av-fac">PS</div>
+                    <div class="faculty-details">
+                        <div class="member-name">Pollishetty Swetha</div>
+                        <div class="member-role">Faculty Co-ordinator, IEEE EMBS</div>
+                        <div class="member-info">
+                            <div class="info-row"><i class="fas fa-building"></i> <span>Department of Information Technology, VCE</span></div>
+                            <div class="info-row"><i class="fas fa-phone"></i> <a href="tel:7993136780">+91 7993136780</a></div>
+                            <div class="info-row"><i class="fas fa-map-marker-alt"></i> <span>Vardhaman College of Engineering, Hyderabad</span></div>
+                        </div>
+                    </div>
                 </div>
-                <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
             </div>
 
-            <div class="team-card">
-                <div class="avatar">WM</div>
-                <h3>[Webmaster Name]</h3>
-                <div class="role">Webmaster</div>
-                <div class="contact-info">
-                    <i class="fas fa-envelope"></i> webmaster@example.com
-                </div>
-                <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+            <!-- CTA -->
+            <div class="cta-box">
+                <h3>Interested in joining the executive committee?</h3>
+                <p>We're always looking for passionate students to take leadership roles and help grow the chapter.</p>
+                <a href="contact.html" class="btn-cta-white"><i class="fas fa-paper-plane"></i> Contact Us</a>
             </div>
+
         </div>
-    </section>
+    </main>
 
-    <section class="section">
-        <h2 class="section-title">Faculty Co-ordinator</h2>
-        <div class="team-card faculty-card">
-            <div class="avatar">PS</div>
-            <h3>Pollishetty Swetha</h3>
-            <div class="role">Faculty Co-ordinator, IT Dept, VCE</div>
-            <div class="contact-info">
-                <i class="fas fa-phone"></i> +91 7993136780
-            </div>
-            <p class="text-sm text-gray-500 mt-2">[Faculty Advisor — Add Name if applicable]</p>
-        </div>
-    </section>
-
-    <div class="cta-section">
-        <h2>Interested in joining the executive committee?</h2>
-        <a href="contact.html" class="cta-btn">Contact us &rarr;</a>
-    </div>
-
+    <!-- Footer -->
     <footer class="footer">
-        <div class="footer-content">
-            <div class="brand-info">
-                <img src="assets/embs-logo.png" alt="EMBS Logo" style="height: 50px; margin-bottom: 15px;">
-                <p>IEEE EMBS Student Branch Chapter<br>Vardhaman College of Engineering</p>
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <div class="nav-logos" style="margin-bottom:16px;">
+                    <img src="assets/embs-logo.png" alt="IEEE EMBS" class="nav-logo" style="filter:brightness(0) invert(1);opacity:0.9;">
+                </div>
+                <p><strong>IEEE EMBS Student Branch Chapter</strong><br>Vardhaman College of Engineering</p>
+                <p>Kacharam, Shamshabad, Ranga Reddy,<br>Hyderabad, Telangana – 501218</p>
             </div>
-            <div class="contact-info">
-                <h4>Contact Us</h4>
-                <p>Varshith: <a href="tel:9059573313">9059573313</a><br>vuggidisaivarshith@gmail.com</p>
-                <p>Swetha: <a href="tel:7993136780">7993136780</a></p>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <div class="footer-contact-item">
+                    <i class="fas fa-user"></i>
+                    <div>Vuggidi Sai Varshith (Secretary)<br>
+                        <a href="tel:9059573313">+91 9059573313</a><br>
+                        <a href="mailto:vuggidisaivarshith@gmail.com">vuggidisaivarshith@gmail.com</a>
+                    </div>
+                </div>
+                <div class="footer-contact-item">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <div>Pollishetty Swetha (Faculty)<br>
+                        <a href="tel:7993136780">+91 7993136780</a>
+                    </div>
+                </div>
             </div>
-            <div class="quick-links">
+            <div class="footer-col">
                 <h4>Quick Links</h4>
                 <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="events.html">Events</a></li>
-                    <li><a href="team.html">Team</a></li>
-                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+                    <li><a href="events.html"><i class="fas fa-calendar"></i> Events</a></li>
+                    <li><a href="team.html"><i class="fas fa-users"></i> Team</a></li>
+                    <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+                    <li><a href="join.html"><i class="fas fa-id-badge"></i> Join Us</a></li>
                 </ul>
             </div>
-            <div class="address">
-                <h4>Address</h4>
-                <p>Kacharam, Shamshabad<br>Ranga Reddy, Hyderabad<br>Telangana 501218</p>
-            </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 IEEE EMBS Vardhaman. All rights reserved.</p>
+        <div class="container footer-bottom">
+            <p>&copy; 2026 IEEE EMBS Vardhaman College of Engineering. All rights reserved.</p>
         </div>
     </footer>
 

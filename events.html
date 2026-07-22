@@ -339,27 +339,36 @@
         const eventsGrid = document.getElementById('eventsGrid');
         const filterBtns = document.querySelectorAll('.filter-btn');
 
+        const topicColors = {
+            'Digital Health & Telemedicine': { from: '#00629B', to: '#0099CC', icon: 'fa-heartbeat' },
+            'Signal Processing & AI':        { from: '#7B2C89', to: '#A855B8', icon: 'fa-brain' },
+            'Wearable Technology':           { from: '#059669', to: '#10B981', icon: 'fa-watch' },
+            'Biomedical Engineering':        { from: '#D97706', to: '#F59E0B', icon: 'fa-microscope' },
+            'AI in Healthcare':              { from: '#4F46E5', to: '#818CF8', icon: 'fa-robot' },
+        };
+
+        function getBanner(topic) {
+            const colors = topicColors[topic] || { from: '#00629B', to: '#7B2C89', icon: 'fa-calendar-alt' };
+            return `<div style="width:100%;height:100%;background:linear-gradient(135deg,${colors.from},${colors.to});display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:rgba(255,255,255,0.9);">
+                        <i class="fas ${colors.icon}" style="font-size:2.8rem;opacity:0.85;"></i>
+                        <span style="font-size:0.85rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;opacity:0.8;">${topic}</span>
+                    </div>`;
+        }
+
         function renderEvents(filter = 'all') {
             eventsGrid.innerHTML = '';
-            
-            const filteredEvents = events.filter(event => {
-                if (filter === 'all') return true;
-                return event.status === filter;
-            });
+            const filteredEvents = events.filter(e => filter === 'all' || e.status === filter);
 
             filteredEvents.forEach((event, index) => {
                 const btnClass = event.status === 'upcoming' ? 'btn-upcoming' : 'btn-past';
-                const btnText = event.status === 'upcoming' ? 'Register Now' : 'View Recap';
+                const btnText = event.status === 'upcoming' ? 'Register Now →' : 'View Recap';
                 const statusClass = event.status === 'upcoming' ? 'status-upcoming' : 'status-past';
-                const statusText = event.status === 'upcoming' ? 'Upcoming' : 'Past';
+                const statusText = event.status === 'upcoming' ? 'UPCOMING' : 'PAST';
 
                 const html = `
-                    <div class="event-card" style="animation-delay: ${index * 0.1}s">
+                    <div class="event-card" style="animation-delay:${index * 0.1}s">
                         <div class="event-img-wrapper">
-                            <!-- Placeholder image styling since images may not exist -->
-                            <div style="width: 100%; height: 100%; background: linear-gradient(45deg, #e0e0e0, #f5f5f5); display: flex; align-items: center; justify-content: center; color: #999;">
-                                <i class="fas fa-image fa-3x"></i>
-                            </div>
+                            ${getBanner(event.topic)}
                             <span class="event-status ${statusClass}">${statusText}</span>
                         </div>
                         <div class="event-content">
@@ -372,7 +381,7 @@
                                 </div>
                                 <div class="event-detail-item">
                                     <i class="far fa-calendar-alt"></i>
-                                    <div>${event.date} at ${event.time}</div>
+                                    <div>${event.date} &bull; ${event.time}</div>
                                 </div>
                                 <div class="event-detail-item">
                                     <i class="fas fa-map-marker-alt"></i>
@@ -388,6 +397,7 @@
                 eventsGrid.insertAdjacentHTML('beforeend', html);
             });
         }
+
 
         // Initial render
         renderEvents();
