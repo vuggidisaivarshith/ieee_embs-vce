@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - IEEE EMBS Vardhaman</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/shared.css">
+    <style>
+        /* About Page Specific Styles */
+        .about-hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 120px 5% 80px;
+            text-align: center;
+        }
+        .about-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        .about-hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .section-what-is {
+            padding: 80px 5%;
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .what-is-text {
+            flex: 1;
+        }
+        .what-is-text h2 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+        }
+        .what-is-text p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        .what-is-stats {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .stat-pill {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-left: 5px solid var(--accent);
+            transition: transform 0.3s;
+        }
+        .stat-pill:hover {
+            transform: translateX(-10px);
+        }
+        .stat-pill i {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+        .stat-pill div strong {
+            display: block;
+            font-size: 1.3rem;
+            color: #333;
+        }
+        .stat-pill div span {
+            color: #777;
+        }
+
+        .section-about-chapter {
+            background: #f8f9fa;
+            padding: 80px 5%;
+        }
+        .chapter-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .chapter-header {
+            margin-bottom: 50px;
+        }
+        .chapter-header h2 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        .chapter-meta {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+        .chapter-mission {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--secondary);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        
+        .focus-areas {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        .focus-card {
+            background: white;
+            padding: 40px 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        .focus-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+        .focus-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(0, 98, 155, 0.1);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 20px;
+            transition: all 0.3s ease;
+        }
+        .focus-card:hover .focus-icon {
+            background: var(--primary);
+            color: white;
+        }
+        .focus-card h3 {
+            color: #333;
+            font-size: 1.2rem;
+        }
+
+        .section-advisor {
+            padding: 80px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .advisor-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: stretch;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .advisor-img {
+            flex: 1;
+            background: #eee;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+        }
+        .advisor-img i {
+            font-size: 4rem;
+        }
+        .advisor-content {
+            flex: 2;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .advisor-content h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        .advisor-role {
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        .advisor-dept {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+        }
+        .advisor-contact {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .advisor-contact p {
+            margin-bottom: 10px;
+            color: #555;
+        }
+        .advisor-contact i {
+            color: var(--primary);
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        .section-founding {
+            background: var(--primary);
+            color: white;
+            padding: 80px 5%;
+            text-align: center;
+        }
+        .founding-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .founding-container h2 {
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+        }
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            text-align: left;
+            background: rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        .timeline-item {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        .timeline-icon {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-top: 3px;
+        }
+        .timeline-content h4 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        .timeline-content p {
+            opacity: 0.9;
+        }
+
+        .join-cta {
+            padding: 80px 5%;
+            text-align: center;
+            background: #f8f9fa;
+        }
+        .join-cta h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        .btn-solid {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+        .btn-solid:hover {
+            background: var(--secondary);
+        }
+
+        @media (max-width: 900px) {
+            .section-what-is {
+                flex-direction: column;
+            }
+            .advisor-card {
+                flex-direction: column;
+            }
+            .advisor-img {
+                min-height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logos">
+                <img src="assets/college-logo.jpeg" alt="VCE Logo" class="logo">
+                <img src="assets/embs-logo.png" alt="EMBS Logo" class="logo">
+                <img src="assets/vardhaman-logo.png" alt="Vardhaman Logo" class="logo">
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html" class="active">About</a>
+                <a href="events.html">Events</a>
+                <a href="team.html">Team</a>
+                <a href="contact.html">Contact</a>
+                <a href="events/digital-health-talk/" class="nav-btn">Register Now</a>
+            </div>
+            <div class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <header class="about-hero">
+        <h1>About IEEE EMBS Vardhaman</h1>
+        <p>Our mission, our people, our story.</p>
+    </header>
+
+    <!-- What is IEEE EMBS Section -->
+    <section class="section-what-is">
+        <div class="what-is-text">
+            <h2>What is IEEE EMBS?</h2>
+            <p>The IEEE Engineering in Medicine and Biology Society (EMBS) is the world's largest international society of biomedical engineers. The organization's 12,000+ members reside in some 100+ countries around the world.</p>
+            <p>EMBS provides its members with access to the people, practices, information, ideas and opinions that are shaping one of the fastest growing fields in science.</p>
+        </div>
+        <div class="what-is-stats">
+            <div class="stat-pill">
+                <i class="fas fa-calendar-check"></i>
+                <div>
+                    <strong>Founded in 1952</strong>
+                    <span>Decades of excellence</span>
+                </div>
+            </div>
+            <div class="stat-pill">
+                <i class="fas fa-users"></i>
+                <div>
+                    <strong>12,000+ Members</strong>
+                    <span>Global network of professionals</span>
+                </div>
+            </div>
+            <div class="stat-pill">
+                <i class="fas fa-globe-americas"></i>
+                <div>
+                    <strong>100+ Countries</strong>
+                    <span>Worldwide impact and reach</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About This Chapter Section -->
+    <section class="section-about-chapter">
+        <div class="chapter-container">
+            <div class="chapter-header">
+                <h2>Our Student Branch Chapter</h2>
+                <div class="chapter-meta">
+                    <strong>Parent Org:</strong> IEEE India Council &nbsp;|&nbsp; 
+                    <strong>Department:</strong> IT Dept, Vardhaman College of Engineering
+                </div>
+                <p class="chapter-mission">"To inspire and empower students at Vardhaman College of Engineering to innovate at the intersection of engineering, medicine, and biology."</p>
+            </div>
+            
+            <h3>Our Focus Areas</h3>
+            <div class="focus-areas">
+                <div class="focus-card">
+                    <div class="focus-icon"><i class="fas fa-laptop-medical"></i></div>
+                    <h3>Digital Health</h3>
+                </div>
+                <div class="focus-card">
+                    <div class="focus-icon"><i class="fas fa-heartbeat"></i></div>
+                    <h3>Biomedical Signal Processing</h3>
+                </div>
+                <div class="focus-card">
+                    <div class="focus-icon"><i class="fas fa-stopwatch"></i></div>
+                    <h3>Wearable Tech</h3>
+                </div>
+                <div class="focus-card">
+                    <div class="focus-icon"><i class="fas fa-brain"></i></div>
+                    <h3>AI in Healthcare</h3>
+                </div>
+                <div class="focus-card">
+                    <div class="focus-icon"><i class="fas fa-user-md"></i></div>
+                    <h3>Telemedicine</h3>
+                </div>
+                <div class="focus-card">
+                    <div class="focus-icon"><i class="fas fa-x-ray"></i></div>
+                    <h3>Medical Imaging</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Faculty Advisor Highlight -->
+    <section class="section-advisor">
+        <div class="advisor-card">
+            <div class="advisor-img">
+                <i class="fas fa-user-tie"></i>
+            </div>
+            <div class="advisor-content">
+                <h2>Pollishetty Swetha</h2>
+                <div class="advisor-role">Faculty Co-ordinator & Advisor</div>
+                <div class="advisor-dept">Department of Information Technology, VCE</div>
+                <p>Guiding the student community in bridging the gap between engineering and medical technology, and fostering an environment of continuous learning and innovation.</p>
+                <div class="advisor-contact">
+                    <p><i class="fas fa-phone"></i> +91 7993136780</p>
+                    <p><i class="fas fa-envelope"></i> [Advisor Email - Add here]</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Founding Story Section -->
+    <section class="section-founding">
+        <div class="founding-container">
+            <h2>Our Story</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-icon"><i class="fas fa-flag"></i></div>
+                    <div class="timeline-content">
+                        <h4>Established</h4>
+                        <p>Founded in [Add Year] to bring EMBS resources to the VCE campus.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon"><i class="fas fa-users-cog"></i></div>
+                    <div class="timeline-content">
+                        <h4>Founding Team</h4>
+                        <p>Started by a passionate group of [Add Count] founding student members from the IT department.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon"><i class="fas fa-rocket"></i></div>
+                    <div class="timeline-content">
+                        <h4>First Major Event</h4>
+                        <p>Successfully hosted [Add details of first event], marking the beginning of our active journey.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join CTA Section -->
+    <section class="join-cta">
+        <h2>Become a Member</h2>
+        <p>Join the IEEE EMBS Vardhaman Chapter and get access to exclusive workshops, seminars, and networking opportunities in biomedical engineering.</p>
+        <a href="contact.html" class="btn-solid">Join Us Today</a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h3>IEEE EMBS Vardhaman</h3>
+                <p>Advancing technology for the benefit of humanity in medicine and biology.</p>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact Us</h4>
+                <p><i class="fas fa-user"></i> Varshith: +91 9059573313</p>
+                <p><i class="fas fa-envelope"></i> vuggidisaivarshith@gmail.com</p>
+                <p><i class="fas fa-user"></i> Swetha: +91 7993136780</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="events.html">Events</a>
+                <a href="team.html">Team</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-address">
+                <h4>Address</h4>
+                <p>Kacharam, Shamshabad, Ranga Reddy,<br>Hyderabad, Telangana 501218</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 IEEE EMBS Student Branch Chapter, Vardhaman College of Engineering. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/shared.js"></script>
+</body>
+</html>

@@ -1,81 +1,91 @@
-# IEEE EMBS VCE — Expert Talk Registration Website
+# IEEE EMBS VCE — Chapter Website
 
-> Official event registration website for the IEEE Engineering in Medicine and Biology Society (IEEE EMBS) Student Branch Chapter, Vardhaman College of Engineering, Hyderabad.
-
----
-
-## 🎯 Event Details
-
-| Detail | Info |
-|--------|------|
-| **Event** | Expert Talk on Digital Health, Telemedicine & Remote Patient Monitoring Systems |
-| **Speaker** | Dr. Ajit Kumar, Ph.D. — Associate Professor, XIM University |
-| **Date** | 13 August 2026 (Thursday) |
-| **Time** | 6:00 PM – 7:00 PM IST |
-| **Mode** | Online (Cisco Webex) |
-| **Certificate** | E-Certificate for eligible participants (full attendance required) |
+> Official website for the IEEE Engineering in Medicine and Biology Society (IEEE EMBS) Student Branch Chapter, Vardhaman College of Engineering, Hyderabad.
 
 ---
 
-## 🌟 Website Features
-
-- ⏱️ **Live Countdown Timer** — counts down to the event start time
-- 📊 **Animated Stats Counter** — Members, Chapters, Events, Awards
-- 📋 **Event Agenda / Timeline** — 4-step schedule breakdown
-- 🧑‍💼 **Speaker Profile** — Bio, photo, LinkedIn & faculty profile links
-- 📝 **Registration Form** — Integrated with Google Sheets via Apps Script
-- 🔒 **Data Privacy Notice** — Transparent data usage policy
-- 💬 **WhatsApp Group** — Link shared after successful registration
-- 📱 **Fully Responsive** — Mobile, tablet, and desktop friendly
-- 🔗 **Open Graph Meta Tags** — Rich previews when shared on WhatsApp/Instagram
-
----
-
-## 🗂️ Project Structure
+## 🌐 Site Structure
 
 ```
 embs_website/
-├── index.html          # Main HTML file with all sections
-├── style.css           # All styles and responsive design
-├── script.js           # Countdown, stats counter, form submission
-└── assets/
-    ├── college-logo.jpeg       # Vardhaman College of Engineering logo
-    ├── embs-logo.png           # IEEE EMBS logo
-    ├── vardhaman-logo.png      # Vardhaman Student Branch logo
-    └── speaker.jpeg            # Dr. Ajit Kumar headshot
+├── index.html                          ← Chapter Homepage (hub)
+├── about.html                          ← About IEEE EMBS & the chapter
+├── events.html                         ← All events listing (upcoming + past)
+├── team.html                           ← Office bearers & faculty coordinator
+├── contact.html                        ← Contact form, map, socials
+├── join.html                           ← Join IEEE EMBS page
+├── events/
+│   └── digital-health-talk/
+│       └── index.html                  ← Event: Digital Health (13 Aug 2026)
+├── assets/
+│   ├── college-logo.jpeg
+│   ├── embs-logo.png
+│   ├── vardhaman-logo.png
+│   └── speaker.jpeg
+├── css/
+│   └── shared.css                      ← Global styles (navbar, footer, vars)
+├── js/
+│   └── shared.js                       ← Shared JS (navbar, animations)
+├── style.css                           ← Event page specific styles
+├── script.js                           ← Event page specific JS
+├── sitemap.xml                         ← For Google indexing
+├── robots.txt                          ← SEO crawler config
+└── README.md
 ```
+
+---
+
+## 📄 Pages
+
+| Page | Description |
+|------|-------------|
+| `index.html` | Chapter homepage with hero, featured event, stats, events preview |
+| `about.html` | About IEEE EMBS globally + this chapter specifically |
+| `events.html` | All events listing — filter by upcoming/past |
+| `team.html` | Office bearers + faculty coordinator cards |
+| `contact.html` | Contact form + info cards + Google Maps |
+| `join.html` | Join IEEE EMBS — benefits, membership types, interest form |
+| `events/digital-health-talk/` | Expert Talk on Digital Health — 13 Aug 2026 (registration page) |
+
+---
+
+## ✨ Features
+
+- ⏱️ **Live Countdown Timer** on event page
+- 📊 **Animated Stats Counter** on homepage
+- 🗓️ **Event Agenda Timeline** on event page
+- 📝 **Registration Form** → Google Sheets via Apps Script
+- 🎓 **Join Interest Form** → Google Sheets via Apps Script
+- 📱 **Fully Responsive** — mobile, tablet, desktop
+- 🔗 **Open Graph Meta Tags** — rich WhatsApp/LinkedIn previews
+- 🔍 **sitemap.xml + robots.txt** — Google indexable
 
 ---
 
 ## 🚀 Getting Started
 
-### Run Locally
-Simply open `index.html` in your browser — no build step required.
-
 ```bash
-# Clone the repository
 git clone https://github.com/vuggidisaivarshith/ieee_embs-vce.git
-
-# Open in browser
 cd ieee_embs-vce
 start index.html   # Windows
-open index.html    # macOS
 ```
+
+---
+
+## ➕ Adding a New Event
+
+1. Create a new folder: `events/your-event-slug/`
+2. Copy `events/digital-health-talk/index.html` as a template
+3. Update the content (title, speaker, date, form URL)
+4. Add the event to the `events` array in `events.html`
+5. Add the event card to the homepage preview in `index.html`
+6. Add URL to `sitemap.xml`
 
 ---
 
 ## 📡 Google Sheets Integration
 
-Form submissions are sent to a Google Sheet via **Google Apps Script**.
-
-- The Apps Script Web App URL is configured in `script.js`
-- On successful submission, data is written to the connected Google Sheet
-- The WhatsApp group join link is displayed to the user **after** successful registration
-
-To update the script URL, edit this line in `script.js`:
-```js
-const scriptURL = 'YOUR_APPS_SCRIPT_WEB_APP_URL';
-```
+Form submissions go to a Google Apps Script Web App. The URL is configured in `script.js` and `join.html`.
 
 ---
 
@@ -88,20 +98,10 @@ const scriptURL = 'YOUR_APPS_SCRIPT_WEB_APP_URL';
 
 ---
 
-## 🏫 About the Organization
+## 🏫 Organization
 
-**IEEE Engineering in Medicine and Biology Society (IEEE EMBS)**  
-Student Branch Chapter  
-Department of Information Technology  
-Vardhaman College of Engineering  
-Kacharam, Shamshabad, Ranga Reddy District  
-Hyderabad, Telangana – 501218, India
+**IEEE EMBS Student Branch Chapter**
+Department of Information Technology, Vardhaman College of Engineering
+Kacharam, Shamshabad, Hyderabad, Telangana – 501218
 
-🌐 [vardhaman.org](https://vardhaman.org) &nbsp;|&nbsp; 🔗 [Join IEEE](https://www.ieee.org/membership/join/)
-
----
-
-## 📄 License
-
-This project is created for internal IEEE EMBS Chapter use at Vardhaman College of Engineering.  
-&copy; 2026 IEEE EMBS Vardhaman College of Engineering. All rights reserved.
+&copy; 2026 IEEE EMBS Vardhaman College of Engineering

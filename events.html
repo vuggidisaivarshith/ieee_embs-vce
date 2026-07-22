@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events - IEEE EMBS Vardhaman</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/shared.css">
+    <style>
+        /* Events Page Specific Styles */
+        .events-hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 120px 5% 80px;
+            text-align: center;
+        }
+        .breadcrumb {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+        .breadcrumb a {
+            color: white;
+            text-decoration: none;
+        }
+        .events-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        .events-hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        .events-section {
+            padding: 80px 5%;
+            background: #f8f9fa;
+        }
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            background: white;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .event-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.6s ease-out backwards;
+        }
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .event-img-wrapper {
+            position: relative;
+            height: 200px;
+            background: #eee;
+        }
+        .event-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .event-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+            text-transform: uppercase;
+        }
+        .status-upcoming { background: #28a745; }
+        .status-past { background: #6c757d; }
+        .event-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .event-topic {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .event-title {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        .event-details {
+            margin-bottom: 20px;
+        }
+        .event-detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: #555;
+        }
+        .event-detail-item i {
+            color: var(--primary);
+            margin-top: 4px;
+            width: 16px;
+        }
+        .event-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .btn-event {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+        .btn-upcoming {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-upcoming:hover {
+            background: var(--secondary);
+        }
+        .btn-past {
+            background: #f1f1f1;
+            color: #333;
+        }
+        .btn-past:hover {
+            background: #e2e2e2;
+        }
+        .organize-cta {
+            background: linear-gradient(135deg, rgba(0,181,226,0.1) 0%, rgba(123,44,137,0.1) 100%);
+            padding: 80px 5%;
+            text-align: center;
+        }
+        .organize-cta-inner {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .organize-cta h2 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+        }
+        .organize-cta p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 30px;
+        }
+        .btn-outline {
+            display: inline-block;
+            padding: 12px 30px;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logos">
+                <img src="assets/college-logo.jpeg" alt="VCE Logo" class="logo">
+                <img src="assets/embs-logo.png" alt="EMBS Logo" class="logo">
+                <img src="assets/vardhaman-logo.png" alt="Vardhaman Logo" class="logo">
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="events.html" class="active">Events</a>
+                <a href="team.html">Team</a>
+                <a href="contact.html">Contact</a>
+                <a href="events/digital-health-talk/" class="nav-btn">Register Now</a>
+            </div>
+            <div class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <header class="events-hero">
+        <div class="breadcrumb">
+            <a href="index.html">Home</a> &gt; Events
+        </div>
+        <h1>Events & Activities</h1>
+        <p>Explore our talks, workshops, and seminars in biomedical engineering and digital health.</p>
+    </header>
+
+    <!-- Events Section -->
+    <section class="events-section">
+        <div class="filter-tabs" id="filterTabs">
+            <button class="filter-btn active" data-filter="all">All Events</button>
+            <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+            <button class="filter-btn" data-filter="past">Past Events</button>
+        </div>
+
+        <div class="events-grid" id="eventsGrid">
+            <!-- Events will be populated by JS -->
+        </div>
+    </section>
+
+    <!-- Organize CTA -->
+    <section class="organize-cta">
+        <div class="organize-cta-inner">
+            <h2>Want to organize an event?</h2>
+            <p>Are you passionate about a specific area in biomedical engineering? Partner with us to host a workshop, seminar, or tech talk for the student community.</p>
+            <a href="contact.html" class="btn-outline">Propose an Event</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h3>IEEE EMBS Vardhaman</h3>
+                <p>Advancing technology for the benefit of humanity in medicine and biology.</p>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact Us</h4>
+                <p><i class="fas fa-user"></i> Varshith: +91 9059573313</p>
+                <p><i class="fas fa-envelope"></i> vuggidisaivarshith@gmail.com</p>
+                <p><i class="fas fa-user"></i> Swetha: +91 7993136780</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="events.html">Events</a>
+                <a href="team.html">Team</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-address">
+                <h4>Address</h4>
+                <p>Kacharam, Shamshabad, Ranga Reddy,<br>Hyderabad, Telangana 501218</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 IEEE EMBS Student Branch Chapter, Vardhaman College of Engineering. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/shared.js"></script>
+    <script>
+        const events = [
+            {
+                id: 1,
+                title: 'Expert Talk: Digital Health, Telemedicine & Remote Patient Monitoring',
+                speaker: 'Dr. Ajit Kumar',
+                speakerOrg: 'XIM University',
+                date: '13 August 2026',
+                time: '6:00 PM IST',
+                mode: 'Online (Cisco Webex)',
+                topic: 'Digital Health & Telemedicine',
+                status: 'upcoming',
+                slug: 'events/digital-health-talk/',
+                image: 'assets/digital-health-thumb.jpg'
+            },
+            {
+                id: 2,
+                title: 'Workshop: Biomedical Signal Processing and AI',
+                speaker: '[Placeholder Speaker]',
+                speakerOrg: '[Placeholder Org]',
+                date: '20 May 2026',
+                time: '10:00 AM IST',
+                mode: 'On-Campus',
+                topic: 'Signal Processing & AI',
+                status: 'past',
+                slug: '#',
+                image: 'assets/signal-processing-thumb.jpg'
+            },
+            {
+                id: 3,
+                title: 'Seminar: Wearable Tech in Modern Healthcare',
+                speaker: '[Placeholder Speaker]',
+                speakerOrg: '[Placeholder Org]',
+                date: '15 March 2026',
+                time: '2:00 PM IST',
+                mode: 'Hybrid',
+                topic: 'Wearable Technology',
+                status: 'past',
+                slug: '#',
+                image: 'assets/wearable-tech-thumb.jpg'
+            }
+        ];
+
+        const eventsGrid = document.getElementById('eventsGrid');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+
+        function renderEvents(filter = 'all') {
+            eventsGrid.innerHTML = '';
+            
+            const filteredEvents = events.filter(event => {
+                if (filter === 'all') return true;
+                return event.status === filter;
+            });
+
+            filteredEvents.forEach((event, index) => {
+                const btnClass = event.status === 'upcoming' ? 'btn-upcoming' : 'btn-past';
+                const btnText = event.status === 'upcoming' ? 'Register Now' : 'View Recap';
+                const statusClass = event.status === 'upcoming' ? 'status-upcoming' : 'status-past';
+                const statusText = event.status === 'upcoming' ? 'Upcoming' : 'Past';
+
+                const html = `
+                    <div class="event-card" style="animation-delay: ${index * 0.1}s">
+                        <div class="event-img-wrapper">
+                            <!-- Placeholder image styling since images may not exist -->
+                            <div style="width: 100%; height: 100%; background: linear-gradient(45deg, #e0e0e0, #f5f5f5); display: flex; align-items: center; justify-content: center; color: #999;">
+                                <i class="fas fa-image fa-3x"></i>
+                            </div>
+                            <span class="event-status ${statusClass}">${statusText}</span>
+                        </div>
+                        <div class="event-content">
+                            <span class="event-topic">${event.topic}</span>
+                            <h3 class="event-title">${event.title}</h3>
+                            <div class="event-details">
+                                <div class="event-detail-item">
+                                    <i class="fas fa-user-tie"></i>
+                                    <div><strong>${event.speaker}</strong><br><small>${event.speakerOrg}</small></div>
+                                </div>
+                                <div class="event-detail-item">
+                                    <i class="far fa-calendar-alt"></i>
+                                    <div>${event.date} at ${event.time}</div>
+                                </div>
+                                <div class="event-detail-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <div>${event.mode}</div>
+                                </div>
+                            </div>
+                            <div class="event-footer">
+                                <a href="${event.slug}" class="btn-event ${btnClass}">${btnText}</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                eventsGrid.insertAdjacentHTML('beforeend', html);
+            });
+        }
+
+        // Initial render
+        renderEvents();
+
+        // Filter logic
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderEvents(btn.dataset.filter);
+            });
+        });
+    </script>
+</body>
+</html>

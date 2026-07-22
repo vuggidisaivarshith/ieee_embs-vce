@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join IEEE EMBS | Vardhaman College of Engineering</title>
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00629B;
+            --secondary: #7B2C89;
+            --accent: #00B5E2;
+            --dark: #121212;
+            --light: #f8f9fa;
+        }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--light); color: var(--dark); margin: 0; }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(0, 98, 155, 0.9), rgba(123, 44, 137, 0.9)), url('assets/hero-bg.jpg') center/cover;
+            color: white;
+            text-align: center;
+            padding: 160px 20px 100px;
+            position: relative;
+        }
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            backdrop-filter: blur(5px);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 20px; font-weight: 700; }
+        .hero p { font-size: 1.2rem; max-width: 800px; margin: 0 auto 40px; opacity: 0.9; line-height: 1.6; }
+        .hero-btns { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .btn { padding: 12px 30px; border-radius: 30px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-family: 'Outfit', sans-serif;}
+        .btn-primary { background: var(--accent); color: white; box-shadow: 0 4px 15px rgba(0, 181, 226, 0.4); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0, 181, 226, 0.6); background: #00C5F2;}
+        .btn-outline { border: 2px solid white; color: white; background: transparent; }
+        .btn-outline:hover { background: white; color: var(--primary); transform: translateY(-3px); }
+
+        /* Why Join Section */
+        .why-join { padding: 100px 20px; background: var(--light); }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 2.8rem; color: var(--primary); margin-bottom: 15px; font-weight: 700; }
+        .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .benefit-card { background: white; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: all 0.3s ease; text-align: left; border-bottom: 4px solid transparent; }
+        .benefit-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(123, 44, 137, 0.15); border-bottom-color: var(--secondary); }
+        .benefit-card i { font-size: 2.5rem; color: var(--secondary); margin-bottom: 25px; background: rgba(123, 44, 137, 0.1); padding: 15px; border-radius: 15px; display: inline-block; }
+        .benefit-card h3 { font-size: 1.4rem; margin-bottom: 15px; color: var(--primary); }
+        .benefit-card p { color: #666; line-height: 1.6; margin: 0; }
+
+        /* Membership Types */
+        .membership-types { padding: 100px 20px; background: white; }
+        .membership-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; max-width: 900px; margin: 0 auto; }
+        .membership-card { background: var(--light); padding: 50px 40px; border-radius: 24px; text-align: center; transition: all 0.3s ease; position: relative; overflow: hidden; border: 1px solid #eaeaea; }
+        .membership-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: linear-gradient(90deg, var(--primary), var(--secondary)); }
+        .membership-card:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.1); transform: translateY(-5px); }
+        .membership-card i { font-size: 3rem; color: var(--primary); margin-bottom: 20px; }
+        .membership-card h3 { font-size: 1.8rem; color: var(--primary); margin-bottom: 20px; font-weight: 700; }
+        .membership-card p { color: #555; line-height: 1.6; margin-bottom: 30px; min-height: 80px; }
+
+        /* Interest Form */
+        .interest-section { padding: 100px 20px; background: linear-gradient(to bottom, var(--light), #ffffff); }
+        .form-container { max-width: 700px; margin: 0 auto; background: white; padding: 50px; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05); }
+        .form-group { margin-bottom: 25px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 10px; font-weight: 600; color: var(--primary); font-size: 0.95rem;}
+        .form-control { width: 100%; padding: 14px 18px; border: 2px solid #eaeaea; border-radius: 12px; font-family: 'Outfit', sans-serif; font-size: 1rem; box-sizing: border-box; transition: all 0.3s; background: #fdfdfd; }
+        .form-control:focus { outline: none; border-color: var(--accent); background: white; box-shadow: 0 0 0 4px rgba(0, 181, 226, 0.1); }
+        textarea.form-control { resize: vertical; min-height: 120px; }
+        .radio-group { display: flex; gap: 30px; margin-top: 10px; }
+        .radio-group label { font-weight: 500; color: #444; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .radio-group input[type="radio"] { accent-color: var(--accent); transform: scale(1.2); }
+        
+        #submitBtn { width: 100%; font-size: 1.1rem; padding: 16px; margin-top: 10px; border-radius: 12px; }
+        .loading { display: none; }
+        .loading i { animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        #formMessage { margin-top: 25px; padding: 18px; border-radius: 12px; display: none; text-align: center; font-weight: 500; }
+        .success-msg { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        .error-msg { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+
+        /* FAQ Section */
+        .faq-section { padding: 100px 20px; background: white; }
+        .faq-container { max-width: 800px; margin: 0 auto; }
+        .faq-item { border-bottom: 1px solid #eaeaea; margin-bottom: 5px; }
+        .faq-item:last-child { border-bottom: none; }
+        .faq-question { width: 100%; text-align: left; background: none; border: none; padding: 25px 0; font-size: 1.25rem; font-weight: 600; color: var(--primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: 'Outfit', sans-serif; transition: color 0.3s; }
+        .faq-question:hover { color: var(--secondary); }
+        .faq-question i { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); color: var(--accent); }
+        .faq-item.active .faq-question { color: var(--secondary); }
+        .faq-item.active .faq-question i { transform: rotate(180deg); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); color: #555; line-height: 1.7; opacity: 0; }
+        .faq-item.active .faq-answer { max-height: 300px; padding-bottom: 25px; opacity: 1; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero { padding: 120px 20px 60px; }
+            .hero-btns { flex-direction: column; }
+            .hero-btns .btn { width: 100%; box-sizing: border-box; }
+            .section-header h2 { font-size: 2.2rem; }
+            .form-container { padding: 30px 20px; }
+            .membership-card { padding: 40px 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar placeholder structure (should match shared.js expectations or exact layout used) -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logos">
+                <img src="assets/college-logo.jpeg" alt="Vardhaman Logo" class="logo">
+                <img src="assets/embs-logo.png" alt="EMBS Logo" class="logo">
+                <img src="assets/ieee-logo.png" alt="IEEE Logo" class="logo" onerror="this.style.display='none'">
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="events.html">Events</a>
+                <a href="team.html">Team</a>
+                <a href="contact.html">Contact</a>
+                <a href="events/digital-health-talk/" class="btn-register">Register Now</a>
+            </div>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="badge">Become a Member</div>
+        <h1>Join IEEE EMBS Vardhaman</h1>
+        <p>Be part of a community shaping the future of biomedical engineering and digital health. Unlock exclusive opportunities, network with professionals, and enhance your skills.</p>
+        <div class="hero-btns">
+            <a href="#interest-form" class="btn btn-primary">Express Interest Below &darr;</a>
+            <a href="https://www.ieee.org/membership/join/" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Join IEEE Officially <i class="fas fa-external-link-alt"></i></a>
+        </div>
+    </section>
+
+    <!-- Why Join Section -->
+    <section class="why-join">
+        <div class="section-header">
+            <h2>Why Join IEEE EMBS?</h2>
+        </div>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <i class="fas fa-certificate"></i>
+                <h3>E-Certificates</h3>
+                <p>Earn globally recognized certificates for every event and workshop you attend to build your portfolio.</p>
+            </div>
+            <div class="benefit-card">
+                <i class="fas fa-users"></i>
+                <h3>Networking</h3>
+                <p>Connect with professionals, researchers, industry experts, and peers who share your passion.</p>
+            </div>
+            <div class="benefit-card">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <h3>Workshops & Talks</h3>
+                <p>Get exclusive access to expert sessions, technical talks, and hands-on skill-building workshops.</p>
+            </div>
+            <div class="benefit-card">
+                <i class="fas fa-file-alt"></i>
+                <h3>Resume Value</h3>
+                <p>Enhance your resume with IEEE membership—highly recognized and valued by recruiters globally.</p>
+            </div>
+            <div class="benefit-card">
+                <i class="fas fa-microscope"></i>
+                <h3>Research Exposure</h3>
+                <p>Engage with cutting-edge biomedical research, latest innovations, and technical publications.</p>
+            </div>
+            <div class="benefit-card">
+                <i class="fas fa-globe"></i>
+                <h3>Global Community</h3>
+                <p>Be an integral part of the world's largest technical professional organization for the advancement of technology.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Membership Types Section -->
+    <section class="membership-types">
+        <div class="membership-grid">
+            <div class="membership-card">
+                <i class="fas fa-id-card"></i>
+                <h3>IEEE Student Member</h3>
+                <p>Get full access to the IEEE digital library, exclusive global conferences, technical communities, scholarships, and international competitions.</p>
+                <a href="https://www.ieee.org/membership/join/" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="color: var(--primary); border-color: var(--primary);">Join at IEEE.org &rarr;</a>
+            </div>
+            <div class="membership-card">
+                <i class="fas fa-users-cog"></i>
+                <h3>EMBS Chapter Member</h3>
+                <p>Participate in local campus events, workshops, receive certificates, engage in chapter activities, and join our college community.</p>
+                <a href="#interest-form" class="btn btn-primary">Express Interest Below &darr;</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interest Form Section -->
+    <section class="interest-section" id="interest-form">
+        <div class="section-header">
+            <h2>Express Your Interest</h2>
+            <p style="color: #666; font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Fill in your details and our team will reach out to you with the next steps for joining.</p>
+        </div>
+        <div class="form-container">
+            <form id="joinForm">
+                <div class="form-group">
+                    <label for="fullName">Full Name *</label>
+                    <input type="text" id="fullName" name="FullName" class="form-control" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="Email" class="form-control" required placeholder="john@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="rollNumber">Roll Number *</label>
+                    <input type="text" id="rollNumber" name="RollNumber" class="form-control" required placeholder="e.g. 21881A0501">
+                </div>
+                <div class="form-group">
+                    <label for="department">Department *</label>
+                    <select id="department" name="Department" class="form-control" required>
+                        <option value="" disabled selected>Select your department</option>
+                        <option value="CSE">CSE</option>
+                        <option value="IT">IT</option>
+                        <option value="CSM">CSM</option>
+                        <option value="CSD">CSD</option>
+                        <option value="ECE">ECE</option>
+                        <option value="EEE">EEE</option>
+                        <option value="MECH">MECH</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="year">Year of Study *</label>
+                    <select id="year" name="Year" class="form-control" required>
+                        <option value="" disabled selected>Select your year</option>
+                        <option value="2nd">2nd Year</option>
+                        <option value="3rd">3rd Year</option>
+                        <option value="4th">4th Year</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Are you already an IEEE Member? *</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="IEEEMember" value="Yes" required> Yes</label>
+                        <label><input type="radio" name="IEEEMember" value="No"> No</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="reason">Why do you want to join? (Optional)</label>
+                    <textarea id="reason" name="Reason" class="form-control" placeholder="Tell us what excites you about IEEE EMBS..."></textarea>
+                </div>
+                
+                <button type="submit" id="submitBtn" class="btn btn-primary">
+                    <span class="btn-text">Submit Interest</span>
+                    <span class="loading"><i class="fas fa-spinner"></i></span>
+                </button>
+                
+                <div id="formMessage"></div>
+            </form>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="section-header">
+            <h2>Frequently Asked Questions</h2>
+        </div>
+        <div class="faq-container">
+            <div class="faq-item">
+                <button class="faq-question">Do I need to be an IEEE member to attend events? <i class="fas fa-chevron-down"></i></button>
+                <div class="faq-answer">
+                    <p>No! Our events are open to all students. However, having an official IEEE membership provides you with additional exclusive benefits, discounts, and global resources.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">Is there a membership fee? <i class="fas fa-chevron-down"></i></button>
+                <div class="faq-answer">
+                    <p>IEEE student membership has an annual fee required by IEEE globally. However, participating in our local chapter activities and open events is free for all Vardhaman students.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">How will I get my e-certificate? <i class="fas fa-chevron-down"></i></button>
+                <div class="faq-answer">
+                    <p>E-certificates are issued directly to your registered email address after each event, provided you have successfully registered and attended the complete session.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">When is the next event? <i class="fas fa-chevron-down"></i></button>
+                <div class="faq-answer">
+                    <p>Our upcoming highlight is the Expert Talk on Digital Health by Dr. Ajit Kumar, scheduled for 13 August 2026. Make sure to register to secure your spot!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>IEEE EMBS VCE</h3>
+                <p>Engineering in Medicine and Biology Society Student Branch Chapter at Vardhaman College of Engineering.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="events.html">Events</a></li>
+                    <li><a href="team.html">Our Team</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Contact Info</h3>
+                <p><i class="fas fa-user"></i> Vuggidi Sai Varshith (Secretary)<br><a href="tel:+919059573313">+91 90595 73313</a><br><a href="mailto:vuggidisaivarshith@gmail.com">vuggidisaivarshith@gmail.com</a></p>
+                <p style="margin-top: 10px;"><i class="fas fa-user-tie"></i> Pollishetty Swetha (Faculty Co-ordinator)<br><a href="tel:+917993136780">+91 79931 36780</a></p>
+            </div>
+            <div class="footer-col">
+                <h3>Address</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Vardhaman College of Engineering<br>Kacharam, Shamshabad<br>Ranga Reddy, Hyderabad<br>Telangana 501218</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 IEEE EMBS Vardhaman College of Engineering. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/shared.js"></script>
+    <script>
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                const isActive = faqItem.classList.contains('active');
+                
+                // Close all other FAQs
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                // Toggle current FAQ
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                }
+            });
+        });
+
+        // Form Submission
+        const form = document.getElementById('joinForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = submitBtn.querySelector('.btn-text');
+        const loading = submitBtn.querySelector('.loading');
+        const formMessage = document.getElementById('formMessage');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // UI Loading state
+            btnText.style.display = 'none';
+            loading.style.display = 'inline-block';
+            submitBtn.disabled = true;
+            formMessage.style.display = 'none';
+            formMessage.className = '';
+
+            // Form data
+            const formData = new FormData(form);
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbx1Tr8k7Td31e7YP4A8bRpo5-ed4zjwh_EoCKBzleBDelvvFffgNpY3Czb7d4dxsuEU/exec';
+
+            try {
+                const response = await fetch(scriptURL, { method: 'POST', body: formData });
+                if (response.ok) {
+                    formMessage.textContent = 'Thank you! Your interest has been registered successfully. We will reach out to you soon.';
+                    formMessage.className = 'success-msg';
+                    form.reset();
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            } catch (error) {
+                console.error('Error!', error.message);
+                formMessage.textContent = 'Oops! Something went wrong. Please try again later.';
+                formMessage.className = 'error-msg';
+            } finally {
+                // Restore UI
+                btnText.style.display = 'inline-block';
+                loading.style.display = 'none';
+                submitBtn.disabled = false;
+                formMessage.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
