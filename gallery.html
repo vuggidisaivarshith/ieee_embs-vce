@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Gallery | IEEE EMBS Vardhaman</title>
+    <meta name="description" content="Explore event photos, workshop recaps, and memories from the IEEE EMBS Student Branch Chapter at Vardhaman College of Engineering.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/shared.css">
+
+    <!-- Firebase SDK Compat -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+
+    <style>
+        :root {
+            --primary: #0F766E;
+            --primary-dark: #134E4A;
+            --secondary: #1B2A4A;
+            --accent: #F59E0B;
+            --dark: #0F172A;
+            --light: #F8FAFC;
+            --white: #FFFFFF;
+            --border: #E2E8F0;
+        }
+
+        .gallery-hero {
+            background: linear-gradient(145deg, #0F766E 0%, #134E4A 100%);
+            color: white;
+            padding: 120px 5% 60px;
+            text-align: center;
+        }
+        .gallery-hero h1 {
+            font-family: 'Sora', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 12px;
+        }
+        .gallery-hero p {
+            color: rgba(255,255,255,0.8);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .gallery-section {
+            padding: 60px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            background: white;
+            border: 1.5px solid var(--border);
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .tab-btn:hover, .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(15,118,110,0.25);
+        }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+        .gallery-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        .gallery-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+        }
+        .gallery-img-wrap {
+            height: 240px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            background: #E2E8F0;
+        }
+        .gallery-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .gallery-card:hover img {
+            transform: scale(1.08);
+        }
+        .gallery-badge {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(8px);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .gallery-info {
+            padding: 18px 20px;
+        }
+        .gallery-info h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1E293B;
+            margin-bottom: 4px;
+        }
+        .gallery-info p {
+            font-size: 0.85rem;
+            color: #64748B;
+        }
+
+        /* Lightbox Modal */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.9);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .lightbox.open { display: flex; }
+        .lightbox-content {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        .lightbox-img {
+            width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            background: #0F172A;
+        }
+        .lightbox-caption {
+            padding: 20px;
+            background: white;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <style>
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0;
+            height: 68px; display: flex; align-items: center;
+            padding: 0 5%; background: white;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            z-index: 1000;
+        }
+        .navbar-inner {
+            display: flex; align-items: center;
+            justify-content: space-between;
+            width: 100%; max-width: 1200px; margin: 0 auto;
+        }
+        .nav-logos { display: flex; align-items: center; gap: 8px; }
+        .nav-logos img { height: 40px; width: auto; object-fit: contain; }
+        .nav-links-row { display: flex; align-items: center; gap: 20px; }
+        .nav-links-row a { color: #333; text-decoration: none; font-weight: 500; font-size: 0.95rem; }
+        .nav-links-row a.active { color: var(--primary); font-weight: 600; }
+        .nav-links-row a.nav-register {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; padding: 8px 18px; border-radius: 50px;
+            font-weight: 600; white-space: nowrap;
+        }
+        .hamburger-btn { display: none; background: none; border: none; font-size: 1.4rem; color: #333; cursor: pointer; }
+        .mobile-drawer {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(10,15,22,0.97); z-index: 999;
+            flex-direction: column; align-items: center; justify-content: center; gap: 24px;
+        }
+        .mobile-drawer.open { display: flex; }
+        .mobile-drawer a { color: white; text-decoration: none; font-size: 1.3rem; font-weight: 600; }
+        .mobile-drawer .drawer-close { position: absolute; top: 20px; right: 24px; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; }
+        @media (max-width: 768px) {
+            .nav-links-row { display: none; }
+            .hamburger-btn { display: block; }
+        }
+    </style>
+
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <div class="nav-logos">
+                <img src="assets/college-logo.jpeg" alt="Vardhaman College">
+                <img src="assets/embs-logo.png" alt="IEEE EMBS">
+                <img src="assets/vardhaman-logo.png" alt="Vardhaman SB">
+            </div>
+            <div class="nav-links-row">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="events.html">Events</a>
+                <a href="gallery.html" class="active">Gallery</a>
+                <a href="team.html">Team</a>
+                <a href="contact.html">Contact</a>
+                <a href="events/digital-health-talk/" class="nav-register">Register Now</a>
+            </div>
+            <button class="hamburger-btn" onclick="document.getElementById('galleryMobNav').classList.toggle('open')">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+    <div class="mobile-drawer" id="galleryMobNav">
+        <button class="drawer-close" onclick="document.getElementById('galleryMobNav').classList.remove('open')">&times;</button>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="events.html">Events</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="team.html">Team</a>
+        <a href="contact.html">Contact</a>
+        <a href="events/digital-health-talk/" style="background:linear-gradient(135deg,#0F766E,#134E4A);padding:12px 32px;border-radius:50px;">Register Now</a>
+    </div>
+
+    <!-- HERO -->
+    <header class="gallery-hero">
+        <h1>Photo Gallery</h1>
+        <p>Capturing innovation, workshops, guest lectures, and student achievements at IEEE EMBS Vardhaman.</p>
+    </header>
+
+    <!-- GALLERY SECTION -->
+    <main class="gallery-section">
+        <div class="filter-tabs">
+            <button class="tab-btn active" onclick="filterGallery('all')">All Photos</button>
+            <button class="tab-btn" onclick="filterGallery('Talks')">Expert Talks</button>
+            <button class="tab-btn" onclick="filterGallery('Workshops')">Workshops</button>
+            <button class="tab-btn" onclick="filterGallery('Events')">Chapter Events</button>
+        </div>
+
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Rendered by script -->
+        </div>
+    </main>
+
+    <!-- LIGHTBOX MODAL -->
+    <div class="lightbox" id="lightboxModal" onclick="closeLightbox(event)">
+        <div class="lightbox-content">
+            <button class="lightbox-close" onclick="document.getElementById('lightboxModal').classList.remove('open')">&times;</button>
+            <img src="" id="lightboxImage" class="lightbox-img" alt="Enlarged view">
+            <div class="lightbox-caption">
+                <h3 id="lightboxTitle" style="color:var(--dark); font-size:1.1rem;">Title</h3>
+                <p id="lightboxCategory" style="color:var(--primary); font-weight:600; font-size:0.85rem;">Category</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer style="background:#0F172A; color:#94A3B8; padding:50px 5% 20px; font-family:Outfit,sans-serif;">
+        <div style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:40px; margin-bottom:40px;">
+            <div>
+                <img src="assets/embs-logo.png" alt="Logo" style="height:45px; margin-bottom:16px;">
+                <p>IEEE EMBS Student Branch Chapter<br>Vardhaman College of Engineering, Hyderabad</p>
+            </div>
+            <div>
+                <h4 style="color:white; margin-bottom:16px;">Quick Links</h4>
+                <ul style="list-style:none; line-height:2;">
+                    <li><a href="index.html" style="color:#94A3B8;">Home</a></li>
+                    <li><a href="about.html" style="color:#94A3B8;">About</a></li>
+                    <li><a href="events.html" style="color:#94A3B8;">Events</a></li>
+                    <li><a href="gallery.html" style="color:#94A3B8;">Gallery</a></li>
+                    <li><a href="team.html" style="color:#94A3B8;">Team</a></li>
+                    <li><a href="contact.html" style="color:#94A3B8;">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="color:white; margin-bottom:16px;">Contact</h4>
+                <p>Varshith: <a href="tel:9059573313" style="color:#94A3B8;">9059573313</a><br>vuggidisaivarshith@gmail.com</p>
+            </div>
+        </div>
+        <div style="text-align:center; border-top:1px solid #1E293B; padding-top:20px; font-size:0.85rem;">
+            &copy; 2026 IEEE EMBS Vardhaman. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="js/shared.js"></script>
+    <script>
+        const defaultPhotos = [
+            {
+                id: 'p1',
+                title: 'Expert Talk on Digital Health & Telemedicine',
+                category: 'Talks',
+                url: 'assets/digital-health-thumb.jpg'
+            },
+            {
+                id: 'p2',
+                title: 'Biomedical Signal Processing Hands-on Workshop',
+                category: 'Workshops',
+                url: 'assets/signal-processing-thumb.jpg'
+            },
+            {
+                id: 'p3',
+                title: 'Wearable Tech & Medical Devices Exhibition',
+                category: 'Events',
+                url: 'assets/wearable-tech-thumb.jpg'
+            },
+            {
+                id: 'p4',
+                title: 'IEEE EMBS Executive Team Orientation',
+                category: 'Events',
+                url: 'assets/embs-logo.png'
+            }
+        ];
+
+        let allPhotos = [...defaultPhotos];
+        let currentFilter = 'all';
+
+        function renderGallery() {
+            const grid = document.getElementById('galleryGrid');
+            grid.innerHTML = '';
+            const filtered = allPhotos.filter(p => currentFilter === 'all' || p.category === currentFilter);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#64748B;">No photos found in this category.</div>`;
+                return;
+            }
+
+            filtered.forEach(photo => {
+                const card = `
+                    <div class="gallery-card" onclick="openLightbox('${photo.url}', '${photo.title.replace(/'/g, "\\'")}', '${photo.category || 'Event'}')">
+                        <div class="gallery-img-wrap">
+                            <img src="${photo.url}" alt="${photo.title}" onerror="this.src='assets/embs-logo.png'">
+                            <span class="gallery-badge">${photo.category || 'Event'}</span>
+                        </div>
+                        <div class="gallery-info">
+                            <h3>${photo.title}</h3>
+                            <p><i class="fas fa-camera" style="margin-right:6px;"></i> IEEE EMBS Chapter</p>
+                        </div>
+                    </div>
+                `;
+                grid.insertAdjacentHTML('beforeend', card);
+            });
+        }
+
+        function filterGallery(cat) {
+            currentFilter = cat;
+            document.querySelectorAll('.filter-tabs .tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.includes(cat) || (cat === 'all' && btn.textContent.includes('All')));
+            });
+            renderGallery();
+        }
+
+        function openLightbox(url, title, category) {
+            document.getElementById('lightboxImage').src = url;
+            document.getElementById('lightboxTitle').textContent = title;
+            document.getElementById('lightboxCategory').textContent = category;
+            document.getElementById('lightboxModal').classList.add('open');
+        }
+
+        function closeLightbox(e) {
+            if (e.target.id === 'lightboxModal') {
+                document.getElementById('lightboxModal').classList.remove('open');
+            }
+        }
+
+        renderGallery();
+
+        // Fetch Live Gallery Photos from Firebase
+        try {
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+            db.collection('gallery').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+                if (!snapshot.empty) {
+                    const fetched = [];
+                    snapshot.forEach(doc => {
+                        fetched.push({ id: doc.id, ...doc.data() });
+                    });
+                    allPhotos = [...fetched, ...defaultPhotos];
+                    renderGallery();
+                }
+            });
+        } catch(e) {
+            console.log('Firebase init note:', e);
+        }
+    </script>
+</body>
+</html>
