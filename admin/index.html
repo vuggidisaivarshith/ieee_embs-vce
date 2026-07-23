@@ -343,8 +343,14 @@
                 <button class="tab-btn" onclick="switchTab('siteConfigTab', this)">
                     <i class="fas fa-sliders-h"></i> Site Settings
                 </button>
+                <button class="tab-btn" onclick="switchTab('achievementsTab', this)">
+                    <i class="fas fa-trophy"></i> Achievements
+                </button>
+                <button class="tab-btn" onclick="switchTab('resourcesTab', this)">
+                    <i class="fas fa-book-open"></i> Resources
+                </button>
                 <button class="tab-btn" onclick="switchTab('adminsTab', this)">
-                    <i class="fas fa-user-shield"></i> Access & Rules
+                    <i class="fas fa-user-shield"></i> Access &amp; Rules
                 </button>
             </div>
 
@@ -754,10 +760,129 @@
                     </div>
                 </div>
 
+                <!-- ACHIEVEMENTS TAB -->
+                <div id="achievementsTab" class="tab-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">Achievements Manager</h2>
+                        <button class="btn-add" onclick="resetAndShowAchievementForm()">
+                            <i class="fas fa-plus"></i> Add Achievement
+                        </button>
+                    </div>
+
+                    <div class="form-card" id="achievementFormCard" style="display:none;">
+                        <h3 style="margin-bottom:16px;" id="achievementFormHeading">Add Achievement</h3>
+                        <form id="achievementForm" onsubmit="saveAchievement(event)">
+                            <input type="hidden" id="achievementId">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Category Label *</label>
+                                    <input type="text" id="achCategory" required placeholder="e.g. IEEE Section Recognition">
+                                </div>
+                                <div class="form-group">
+                                    <label>Category Color (hex)</label>
+                                    <input type="color" id="achCategoryColor" value="#F59E0B">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Achievement Title *</label>
+                                    <input type="text" id="achTitle" required placeholder="e.g. Active Student Branch Chapter Status">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Description *</label>
+                                    <textarea id="achDescription" rows="3" required placeholder="Describe this achievement..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Display Order</label>
+                                    <input type="number" id="achOrder" value="1">
+                                </div>
+                                <div class="form-group">
+                                    <label>Active?</label>
+                                    <select id="achActive">
+                                        <option value="true">Yes — Show on Achievements Page</option>
+                                        <option value="false">No — Hidden</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div style="margin-top:16px; display:flex; gap:10px; justify-content:flex-end;">
+                                <button type="button" onclick="toggleForm('achievementFormCard')" style="background:#F1F5F9; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">Cancel</button>
+                                <button type="submit" class="btn-add" id="achSaveBtn"><i class="fas fa-save"></i> Save Achievement</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="items-grid" id="achievementsListContainer">
+                        <div class="empty-state"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+                    </div>
+                </div>
+
+                <!-- RESOURCES TAB -->
+                <div id="resourcesTab" class="tab-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">Resources Manager</h2>
+                        <button class="btn-add" onclick="resetAndShowResourceForm()">
+                            <i class="fas fa-plus"></i> Add Resource
+                        </button>
+                    </div>
+
+                    <div class="form-card" id="resourceFormCard" style="display:none;">
+                        <h3 style="margin-bottom:16px;" id="resourceFormHeading">Add Resource</h3>
+                        <form id="resourceForm" onsubmit="saveResource(event)">
+                            <input type="hidden" id="resourceId">
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label>Resource Title *</label>
+                                    <input type="text" id="resTitle" required placeholder="e.g. IEEE Xplore Digital Library">
+                                </div>
+                                <div class="form-group">
+                                    <label>Font Awesome Icon (without fa-)</label>
+                                    <input type="text" id="resIcon" placeholder="e.g. book-open">
+                                </div>
+                                <div class="form-group">
+                                    <label>Category *</label>
+                                    <select id="resCategory" required>
+                                        <option value="Research &amp; Papers">Research &amp; Papers</option>
+                                        <option value="Membership">Membership</option>
+                                        <option value="Funding &amp; Grants">Funding &amp; Grants</option>
+                                        <option value="Publications">Publications</option>
+                                        <option value="Careers &amp; Internships">Careers &amp; Internships</option>
+                                        <option value="Learning &amp; Courses">Learning &amp; Courses</option>
+                                    </select>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Description *</label>
+                                    <textarea id="resDescription" rows="3" required placeholder="Brief description of this resource..."></textarea>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Resource URL *</label>
+                                    <input type="url" id="resUrl" required placeholder="https://ieeexplore.ieee.org/">
+                                </div>
+                                <div class="form-group">
+                                    <label>Display Order</label>
+                                    <input type="number" id="resOrder" value="1">
+                                </div>
+                                <div class="form-group">
+                                    <label>Active?</label>
+                                    <select id="resActive">
+                                        <option value="true">Yes — Show on Resources Page</option>
+                                        <option value="false">No — Hidden</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div style="margin-top:16px; display:flex; gap:10px; justify-content:flex-end;">
+                                <button type="button" onclick="toggleForm('resourceFormCard')" style="background:#F1F5F9; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">Cancel</button>
+                                <button type="submit" class="btn-add" id="resSaveBtn"><i class="fas fa-save"></i> Save Resource</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="items-grid" id="resourcesListContainer">
+                        <div class="empty-state"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+                    </div>
+                </div>
+
                 <!-- ACCESS TAB -->
                 <div id="adminsTab" class="tab-panel">
                     <div class="panel-header">
-                        <h2 class="panel-title">Admin Access & Security Policy</h2>
+                        <h2 class="panel-title">Admin Access &amp; Security Policy</h2>
                     </div>
                     <div class="form-card">
                         <h4 style="margin-bottom:12px; color:var(--dark);">Authorized Admin Emails:</h4>
@@ -808,6 +933,8 @@
                 loadGallery();
                 loadTeamRoster();
                 loadSiteConfig();
+                loadAchievements();
+                loadResources();
                 renderAdminsList();
             } else {
                 document.getElementById('loginScreen').style.display = 'flex';
@@ -1395,6 +1522,153 @@
             listEl.innerHTML = AUTHORIZED_ADMIN_EMAILS.map(email => `
                 <li><i class="fas fa-check-circle" style="color:var(--success); margin-right:8px;"></i> ${email}</li>
             `).join('');
+        }
+
+        // ACHIEVEMENTS MANAGEMENT
+        let achievementsCache = [];
+        function loadAchievements() {
+            db.collection('achievements').onSnapshot(snap => {
+                const c = document.getElementById('achievementsListContainer');
+                achievementsCache = [];
+                if (snap.empty) {
+                    c.innerHTML = `<div class="empty-state">No achievements yet.<br><button class="btn-add" style="margin:16px auto 0;" onclick="seedInitialAchievements()"><i class="fas fa-seedling"></i> Seed Defaults</button></div>`;
+                    return;
+                }
+                snap.forEach(doc => achievementsCache.push({ id: doc.id, ...doc.data() }));
+                achievementsCache.sort((a, b) => (a.order||99)-(b.order||99));
+                c.innerHTML = achievementsCache.map(a => `
+                    <div class="item-card" style="border-left-color:${a.categoryColor||'#F59E0B'};">
+                        <div class="item-info">
+                            <span class="item-badge ${a.active!==false?'badge-active':'badge-inactive'}">${a.active!==false?'VISIBLE':'HIDDEN'}</span>
+                            <h4>${a.title}</h4>
+                            <p style="font-weight:700;color:${a.categoryColor||'#F59E0B'};font-size:0.8rem;">${a.category}</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-icon" onclick="editAchievement('${a.id}')"><i class="fas fa-edit"></i></button>
+                            <button class="btn-icon delete" onclick="db.collection('achievements').doc('${a.id}').delete()"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>`).join('');
+            });
+        }
+        function seedInitialAchievements() {
+            if (!confirm('Seed 4 default achievements?')) return;
+            const batch = db.batch();
+            DEFAULT_ACHIEVEMENTS.forEach(a => { batch.set(db.collection('achievements').doc(a.id), a); });
+            batch.commit().then(() => alert('Achievements seeded!'));
+        }
+        function resetAndShowAchievementForm() {
+            document.getElementById('achievementForm').reset();
+            document.getElementById('achievementId').value = '';
+            document.getElementById('achievementFormHeading').textContent = 'Add Achievement';
+            document.getElementById('achievementFormCard').style.display = 'block';
+            document.getElementById('achievementFormCard').scrollIntoView({ behavior: 'smooth' });
+        }
+        function editAchievement(id) {
+            const a = achievementsCache.find(x => x.id === id);
+            if (!a) return;
+            document.getElementById('achievementId').value = id;
+            document.getElementById('achCategory').value = a.category||'';
+            document.getElementById('achCategoryColor').value = a.categoryColor||'#F59E0B';
+            document.getElementById('achTitle').value = a.title||'';
+            document.getElementById('achDescription').value = a.description||'';
+            document.getElementById('achOrder').value = a.order||1;
+            document.getElementById('achActive').value = String(a.active!==false);
+            document.getElementById('achievementFormHeading').textContent = 'Edit: '+a.title;
+            document.getElementById('achievementFormCard').style.display = 'block';
+        }
+        function saveAchievement(e) {
+            e.preventDefault();
+            const btn = document.getElementById('achSaveBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            btn.disabled = true;
+            const id = document.getElementById('achievementId').value;
+            const data = {
+                category: document.getElementById('achCategory').value,
+                categoryColor: document.getElementById('achCategoryColor').value,
+                title: document.getElementById('achTitle').value,
+                description: document.getElementById('achDescription').value,
+                order: parseInt(document.getElementById('achOrder').value)||1,
+                active: document.getElementById('achActive').value==='true',
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            (id ? db.collection('achievements').doc(id).update(data) : db.collection('achievements').add(data))
+                .then(() => { btn.innerHTML='<i class="fas fa-save"></i> Save Achievement'; btn.disabled=false; toggleForm('achievementFormCard'); alert('Saved!'); })
+                .catch(err => { btn.innerHTML='<i class="fas fa-save"></i> Save Achievement'; btn.disabled=false; alert(err.message); });
+        }
+
+        // RESOURCES MANAGEMENT
+        let resourcesCache = [];
+        function loadResources() {
+            db.collection('resources').onSnapshot(snap => {
+                const c = document.getElementById('resourcesListContainer');
+                resourcesCache = [];
+                if (snap.empty) {
+                    c.innerHTML = `<div class="empty-state">No resources yet.<br><button class="btn-add" style="margin:16px auto 0;" onclick="seedInitialResources()"><i class="fas fa-seedling"></i> Seed 15 IEEE Resources</button></div>`;
+                    return;
+                }
+                snap.forEach(doc => resourcesCache.push({ id: doc.id, ...doc.data() }));
+                resourcesCache.sort((a, b) => (a.order||99)-(b.order||99));
+                c.innerHTML = resourcesCache.map(r => `
+                    <div class="item-card">
+                        <div class="item-info">
+                            <span class="item-badge ${r.active!==false?'badge-active':'badge-inactive'}">${r.active!==false?'VISIBLE':'HIDDEN'}</span>
+                            <h4><i class="fas fa-${(r.icon||'link').replace('fa-','')}"></i> ${r.title}</h4>
+                            <p style="font-size:0.8rem;color:var(--primary);font-weight:600;">${r.category}</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-icon" onclick="editResource('${r.id}')"><i class="fas fa-edit"></i></button>
+                            <button class="btn-icon delete" onclick="db.collection('resources').doc('${r.id}').delete()"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>`).join('');
+            });
+        }
+        function seedInitialResources() {
+            if (!confirm('Seed 15 default IEEE resources?')) return;
+            const batch = db.batch();
+            DEFAULT_RESOURCES.forEach(r => { batch.set(db.collection('resources').doc(r.id), r); });
+            batch.commit().then(() => alert('15 IEEE resources seeded!'));
+        }
+        function resetAndShowResourceForm() {
+            document.getElementById('resourceForm').reset();
+            document.getElementById('resourceId').value = '';
+            document.getElementById('resourceFormHeading').textContent = 'Add Resource';
+            document.getElementById('resourceFormCard').style.display = 'block';
+            document.getElementById('resourceFormCard').scrollIntoView({ behavior: 'smooth' });
+        }
+        function editResource(id) {
+            const r = resourcesCache.find(x => x.id === id);
+            if (!r) return;
+            document.getElementById('resourceId').value = id;
+            document.getElementById('resTitle').value = r.title||'';
+            document.getElementById('resIcon').value = (r.icon||'').replace('fa-','');
+            document.getElementById('resCategory').value = r.category||'Research & Papers';
+            document.getElementById('resDescription').value = r.description||'';
+            document.getElementById('resUrl').value = r.url||'';
+            document.getElementById('resOrder').value = r.order||1;
+            document.getElementById('resActive').value = String(r.active!==false);
+            document.getElementById('resourceFormHeading').textContent = 'Edit: '+r.title;
+            document.getElementById('resourceFormCard').style.display = 'block';
+        }
+        function saveResource(e) {
+            e.preventDefault();
+            const btn = document.getElementById('resSaveBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            btn.disabled = true;
+            const id = document.getElementById('resourceId').value;
+            const icon = document.getElementById('resIcon').value.trim();
+            const data = {
+                title: document.getElementById('resTitle').value,
+                icon: icon ? 'fa-'+icon.replace('fa-','') : 'fa-link',
+                category: document.getElementById('resCategory').value,
+                description: document.getElementById('resDescription').value,
+                url: document.getElementById('resUrl').value,
+                order: parseInt(document.getElementById('resOrder').value)||1,
+                active: document.getElementById('resActive').value==='true',
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            (id ? db.collection('resources').doc(id).update(data) : db.collection('resources').add(data))
+                .then(() => { btn.innerHTML='<i class="fas fa-save"></i> Save Resource'; btn.disabled=false; toggleForm('resourceFormCard'); alert('Saved!'); })
+                .catch(err => { btn.innerHTML='<i class="fas fa-save"></i> Save Resource'; btn.disabled=false; alert(err.message); });
         }
     </script>
 </body>

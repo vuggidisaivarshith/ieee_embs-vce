@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Official IEEE & EMBS Resources | IEEE EMBS Vardhaman</title>
+    <title>Official IEEE &amp; EMBS Resources | IEEE EMBS Vardhaman</title>
     <meta name="description" content="Access official IEEE Xplore, EMBS publications, student grants, paper templates, learning portals, and career opportunities.">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/shared.css">
+
+    <!-- Firebase SDK Compat -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
 
     <style>
         .resource-card {
@@ -38,15 +43,13 @@
             font-size: 1.4rem;
             margin-bottom: 20px;
         }
-        [data-theme="dark"] .resource-icon-wrap {
-            color: var(--accent);
-        }
+        [data-theme="dark"] .resource-icon-wrap { color: var(--accent); }
         .category-filter-btn {
             background: var(--card-bg);
             border: 1.5px solid var(--border);
             padding: 8px 20px;
             border-radius: 50px;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Outfit', sans-serif;
             font-size: 0.88rem;
             font-weight: 500;
             color: var(--text-muted);
@@ -90,7 +93,7 @@
             <div class="nav-utilities">
                 <button class="search-toggle-btn" id="searchToggleBtn" title="Search website"><i class="fas fa-search"></i></button>
                 <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
-                <a href="events/digital-health-talk/" class="btn btn-primary" data-google-form="https://forms.google.com">Register Now</a>
+                <a href="events/digital-health-talk/" class="btn btn-primary">Register Now</a>
             </div>
         </div>
     </nav>
@@ -99,7 +102,7 @@
     <header style="background:var(--hero-gradient); color:white; padding:120px 5% 70px; text-align:center; position:relative; overflow:hidden;">
         <div style="max-width:850px; margin:0 auto; position:relative; z-index:1;">
             <span class="status-pill status-open" style="background:rgba(255,255,255,0.15); color:white; border-color:rgba(255,255,255,0.3); margin-bottom:16px;">Official IEEE Directory</span>
-            <h1 style="font-size:clamp(2.2rem, 4.5vw, 3.4rem); color:white; margin-bottom:16px;">IEEE & EMBS Official Resources</h1>
+            <h1 style="font-size:clamp(2.2rem, 4.5vw, 3.4rem); color:white; margin-bottom:16px;">IEEE &amp; EMBS Official Resources</h1>
             <p style="color:rgba(255,255,255,0.85); font-size:1.1rem; margin-bottom:30px;">Direct access to official IEEE research digital libraries, publications, student grants, courses, and global career opportunities.</p>
             
             <!-- Filter & Keyword Search Bar -->
@@ -116,17 +119,20 @@
         <!-- CATEGORY FILTERS -->
         <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:44px;" id="categoryFilterBar">
             <button class="category-filter-btn active" onclick="setCategoryFilter('all', this)">All Resources</button>
-            <button class="category-filter-btn" onclick="setCategoryFilter('Research & Papers', this)">Research & Papers</button>
-            <button class="category-filter-btn" onclick="setCategoryFilter('Membership', this)">Membership & Portal</button>
-            <button class="category-filter-btn" onclick="setCategoryFilter('Funding & Grants', this)">Funding & Grants</button>
+            <button class="category-filter-btn" onclick="setCategoryFilter('Research &amp; Papers', this)">Research &amp; Papers</button>
+            <button class="category-filter-btn" onclick="setCategoryFilter('Membership', this)">Membership &amp; Portal</button>
+            <button class="category-filter-btn" onclick="setCategoryFilter('Funding &amp; Grants', this)">Funding &amp; Grants</button>
             <button class="category-filter-btn" onclick="setCategoryFilter('Publications', this)">Publications</button>
-            <button class="category-filter-btn" onclick="setCategoryFilter('Careers & Internships', this)">Careers & Internships</button>
-            <button class="category-filter-btn" onclick="setCategoryFilter('Learning & Courses', this)">Learning & Courses</button>
+            <button class="category-filter-btn" onclick="setCategoryFilter('Careers &amp; Internships', this)">Careers &amp; Internships</button>
+            <button class="category-filter-btn" onclick="setCategoryFilter('Learning &amp; Courses', this)">Learning &amp; Courses</button>
         </div>
 
-        <!-- 16 OFFICIAL RESOURCES GRID -->
+        <!-- RESOURCES GRID (Loaded from Firestore) -->
         <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:28px;" id="resourcesGrid">
-            <!-- Populated via script for full 16 official IEEE resources -->
+            <div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted);">
+                <i class="fas fa-spinner fa-spin" style="font-size:2rem; margin-bottom:12px; display:block;"></i>
+                Loading resources...
+            </div>
         </div>
 
     </main>
@@ -140,130 +146,17 @@
 
     <script src="js/shared.js"></script>
     <script>
-        const officialResources = [
-            {
-                title: "IEEE Xplore Digital Library",
-                icon: "fa-book-open",
-                category: "Research & Papers",
-                description: "Access millions of research papers, journals, conference proceedings, standards, and technical publications published by IEEE.",
-                url: "https://ieeexplore.ieee.org/"
-            },
-            {
-                title: "IEEE Membership Portal",
-                icon: "fa-id-card",
-                category: "Membership",
-                description: "Become an IEEE member to access exclusive technical resources, networking opportunities, discounts, publications, and professional development programs.",
-                url: "https://www.ieee.org/membership/"
-            },
-            {
-                title: "IEEE Scholarships, Awards & Funding",
-                icon: "fa-graduation-cap",
-                category: "Funding & Grants",
-                description: "Explore scholarships, grants, fellowships, travel grants, awards, and funding opportunities available for IEEE student members.",
-                url: "https://students.ieee.org/membership-benefits/ieee-benefits/funds-and-awards/"
-            },
-            {
-                title: "IEEE Conferences Search",
-                icon: "fa-calendar-alt",
-                category: "Research & Papers",
-                description: "Search upcoming IEEE international conferences, symposiums, workshops, and technical events across various engineering disciplines.",
-                url: "https://conferences.ieee.org/"
-            },
-            {
-                title: "IEEE Research Papers Repository",
-                icon: "fa-file-alt",
-                category: "Research & Papers",
-                description: "Browse IEEE research publications, conference papers, journals, and magazines through the IEEE Xplore Digital Library.",
-                url: "https://ieeexplore.ieee.org/"
-            },
-            {
-                title: "IEEE EMBS Publications",
-                icon: "fa-microscope",
-                category: "Publications",
-                description: "Explore journals, magazines, newsletters, books, and publications from the IEEE Engineering in Medicine and Biology Society.",
-                url: "https://www.embs.org/publications/"
-            },
-            {
-                title: "IEEE Career Center",
-                icon: "fa-briefcase",
-                category: "Careers & Internships",
-                description: "Search internships, jobs, research positions, and career opportunities for engineers worldwide.",
-                url: "https://jobs.ieee.org/"
-            },
-            {
-                title: "IEEE Students Portal",
-                icon: "fa-users",
-                category: "Membership",
-                description: "Discover student benefits, competitions, scholarships, volunteering opportunities, and leadership programs.",
-                url: "https://students.ieee.org/"
-            },
-            {
-                title: "IEEE Learning Network",
-                icon: "fa-laptop-code",
-                category: "Learning & Courses",
-                description: "Access online technical courses, webinars, certifications, and professional learning resources.",
-                url: "https://iln.ieee.org/"
-            },
-            {
-                title: "IEEE Standards Association",
-                icon: "fa-shield-alt",
-                category: "Research & Papers",
-                description: "Explore IEEE standards, industry best practices, standards development activities, and technical specifications.",
-                url: "https://standards.ieee.org/"
-            },
-            {
-                title: "IEEE Spectrum Technology News",
-                icon: "fa-newspaper",
-                category: "Publications",
-                description: "Read the latest technology news, engineering innovations, AI developments, healthcare technology, robotics, electronics, and industry insights.",
-                url: "https://spectrum.ieee.org/"
-            },
-            {
-                title: "IEEE Collabratec Network",
-                icon: "fa-network-wired",
-                category: "Membership",
-                description: "Network with researchers, students, professionals, authors, and IEEE members through IEEE's professional collaboration platform.",
-                url: "https://ieeecollabratec.ieee.org/"
-            },
-            {
-                title: "IEEE Student Competitions",
-                icon: "fa-trophy",
-                category: "Funding & Grants",
-                description: "Participate in IEEE technical competitions, coding challenges, design contests, and innovation programs.",
-                url: "https://students.ieee.org/competitions/"
-            },
-            {
-                title: "IEEE Funding Opportunities",
-                icon: "fa-hand-holding-usd",
-                category: "Funding & Grants",
-                description: "Find grants, travel funding, scholarships, fellowships, and financial support programs offered by IEEE.",
-                url: "https://students.ieee.org/membership-benefits/ieee-benefits/funds-and-awards/"
-            },
-            {
-                title: "IEEE Internship & Career Opportunities",
-                icon: "fa-user-graduate",
-                category: "Careers & Internships",
-                description: "Explore internships, graduate programs, research opportunities, and early-career resources through IEEE Student Programs and the IEEE Career Center.",
-                url: "https://jobs.ieee.org/"
-            },
-            {
-                title: "IEEE EMBS Society Official Site",
-                icon: "fa-heartbeat",
-                category: "Publications",
-                description: "Learn about IEEE Engineering in Medicine and Biology Society, its conferences, publications, technical committees, membership benefits, and global activities.",
-                url: "https://www.embs.org/"
-            }
-        ];
-
+        let officialResources = [...DEFAULT_RESOURCES];
         let activeCategory = 'all';
 
         function renderResourcesList() {
             const grid = document.getElementById('resourcesGrid');
-            const searchVal = document.getElementById('resourceSearchInput').value.toLowerCase().trim();
+            const searchVal = (document.getElementById('resourceSearchInput').value || '').toLowerCase().trim();
             
             grid.innerHTML = '';
 
             const filtered = officialResources.filter(res => {
+                if (res.active === false) return false;
                 const matchesCat = activeCategory === 'all' || res.category === activeCategory;
                 const matchesSearch = !searchVal || res.title.toLowerCase().includes(searchVal) || res.description.toLowerCase().includes(searchVal);
                 return matchesCat && matchesSearch;
@@ -274,13 +167,15 @@
                 return;
             }
 
+            filtered.sort((a, b) => (a.order || 99) - (b.order || 99));
+
             filtered.forEach(res => {
                 const cardHtml = `
                     <div class="resource-card animate-fade-up">
                         <div>
                             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                                 <div class="resource-icon-wrap">
-                                    <i class="fas ${res.icon}"></i>
+                                    <i class="fas ${res.icon || 'fa-link'}"></i>
                                 </div>
                                 <span class="status-pill status-live">${res.category}</span>
                             </div>
@@ -307,7 +202,26 @@
             renderResourcesList();
         }
 
+        // Initial render from defaults
         renderResourcesList();
+
+        // Live Firestore query — replaces defaults if data exists
+        if (typeof db !== 'undefined' && db) {
+            db.collection('resources').onSnapshot(snapshot => {
+                if (!snapshot.empty) {
+                    const fetched = [];
+                    snapshot.forEach(doc => fetched.push({ id: doc.id, ...doc.data() }));
+                    officialResources = fetched;
+                } else {
+                    officialResources = [...DEFAULT_RESOURCES];
+                }
+                renderResourcesList();
+            }, err => {
+                console.log('Resources Firestore note:', err);
+                officialResources = [...DEFAULT_RESOURCES];
+                renderResourcesList();
+            });
+        }
     </script>
 </body>
 </html>

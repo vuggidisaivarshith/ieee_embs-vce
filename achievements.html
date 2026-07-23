@@ -8,6 +8,11 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/shared.css">
+
+    <!-- Firebase SDK Compat -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
 </head>
 <body>
 
@@ -52,35 +57,13 @@
         </div>
     </header>
 
-    <!-- ACHIEVEMENTS GRID -->
+    <!-- ACHIEVEMENTS GRID (Loaded from Firestore) -->
     <main style="padding:70px 5%; max-width:1240px; margin:0 auto;">
-
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:28px;">
-            
-            <div class="glass-card animate-fade-up" style="padding:32px; border-left:4px solid var(--accent);">
-                <div style="font-size:0.8rem; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">IEEE Section Recognition</div>
-                <h3>Active Student Branch Chapter Status</h3>
-                <p style="color:var(--text-muted); font-size:0.92rem; margin-top:8px;">Recognized as an active, high-performing IEEE EMBS Student Branch Chapter under IEEE Hyderabad Section and IEEE India Council.</p>
+        <div id="achievementsGrid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:28px;">
+            <div style="grid-column:1/-1; text-align:center; padding:40px; color:#64748B;">
+                <i class="fas fa-spinner fa-spin" style="font-size:2rem; margin-bottom:12px; display:block;"></i>
+                Loading achievements...
             </div>
-
-            <div class="glass-card animate-fade-up" style="padding:32px; border-left:4px solid var(--primary);">
-                <div style="font-size:0.8rem; font-weight:700; color:var(--primary); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Student Research</div>
-                <h3>National Level Paper Presentations</h3>
-                <p style="color:var(--text-muted); font-size:0.92rem; margin-top:8px;">Chapter members presented research papers in Digital Health, Medical Image Processing, and IoT Health Monitoring at national symposia.</p>
-            </div>
-
-            <div class="glass-card animate-fade-up" style="padding:32px; border-left:4px solid var(--success);">
-                <div style="font-size:0.8rem; font-weight:700; color:var(--success); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Hackathon Excellence</div>
-                <h3>Biomedical Hackathon Winners</h3>
-                <p style="color:var(--text-muted); font-size:0.92rem; margin-top:8px;">Student teams secured top positions in healthcare innovation hackathons for prototype designs in remote patient tracking.</p>
-            </div>
-
-            <div class="glass-card animate-fade-up" style="padding:32px; border-left:4px solid var(--warning);">
-                <div style="font-size:0.8rem; font-weight:700; color:var(--warning); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Community Impact</div>
-                <h3>12+ Successful Events & Workshops</h3>
-                <p style="color:var(--text-muted); font-size:0.92rem; margin-top:8px;">Impacted 500+ engineering students across departments with specialized training in biomedical engineering and telemetry systems.</p>
-            </div>
-
         </div>
     </main>
 
@@ -92,5 +75,46 @@
     </footer>
 
     <script src="js/shared.js"></script>
+    <script>
+        const borderColors = ['#F59E0B', '#00629B', '#10B981', '#F97316', '#8B5CF6', '#EF4444'];
+
+        function renderAchievements(achievements) {
+            const grid = document.getElementById('achievementsGrid');
+            if (!achievements || achievements.length === 0) {
+                grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#64748B;">No achievements found.</div>`;
+                return;
+            }
+            grid.innerHTML = '';
+            achievements.sort((a, b) => (a.order || 99) - (b.order || 99));
+            achievements.forEach((ach, i) => {
+                const color = ach.categoryColor || borderColors[i % borderColors.length];
+                grid.insertAdjacentHTML('beforeend', `
+                    <div class="glass-card animate-fade-up" style="padding:32px; border-left:4px solid ${color};">
+                        <div style="font-size:0.8rem; font-weight:700; color:${color}; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">${ach.category || 'Achievement'}</div>
+                        <h3>${ach.title}</h3>
+                        <p style="color:var(--text-muted); font-size:0.92rem; margin-top:8px;">${ach.description}</p>
+                    </div>
+                `);
+            });
+        }
+
+        // Load from Firestore — live, real-time via onSnapshot
+        if (typeof db !== 'undefined' && db) {
+            db.collection('achievements').onSnapshot(snapshot => {
+                if (!snapshot.empty) {
+                    const items = [];
+                    snapshot.forEach(doc => items.push({ id: doc.id, ...doc.data() }));
+                    renderAchievements(items.filter(a => a.active !== false));
+                } else {
+                    renderAchievements(DEFAULT_ACHIEVEMENTS);
+                }
+            }, err => {
+                console.log('Achievements Firestore note:', err);
+                renderAchievements(DEFAULT_ACHIEVEMENTS);
+            });
+        } else {
+            renderAchievements(DEFAULT_ACHIEVEMENTS);
+        }
+    </script>
 </body>
 </html>

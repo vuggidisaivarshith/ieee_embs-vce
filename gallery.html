@@ -380,29 +380,30 @@
 
         renderGallery();
 
-        // Fetch Live Gallery Photos from Firebase
+        // Live Gallery from Firestore (onSnapshot = real-time, updates instantly when admin uploads)
         if (typeof db !== 'undefined' && db) {
-            db.collection('gallery').get().then(snapshot => {
+            db.collection('gallery').onSnapshot(snapshot => {
                 if (!snapshot.empty) {
                     const fetched = [];
                     snapshot.forEach(doc => {
                         fetched.push({ id: doc.id, ...doc.data() });
                     });
-                    // Sort by timestamp if present, otherwise keep order
                     fetched.sort((a, b) => {
                         const tA = a.timestamp ? (a.timestamp.seconds || 0) : 0;
                         const tB = b.timestamp ? (b.timestamp.seconds || 0) : 0;
                         return tB - tA;
                     });
-                    allPhotos = [...fetched, ...defaultPhotos];
+                    // Show Firestore photos first, then any local defaults not already present
+                    allPhotos = [...fetched, ...defaultPhotos.filter(d => !fetched.some(f => f.title === d.title))];
+                } else {
+                    allPhotos = [...defaultPhotos];
                 }
                 renderGallery();
-            }).catch(err => {
-                console.log('Gallery Firestore query note:', err);
+            }, err => {
+                console.log('Gallery Firestore note:', err);
+                allPhotos = [...defaultPhotos];
                 renderGallery();
             });
-        } else {
-            renderGallery();
         }
     </script>
 </body>

@@ -258,7 +258,7 @@
                             <div class="event-details">
                                 <div class="event-detail-item">
                                     <i class="fas fa-user-tie"></i>
-                                    <div><strong>${event.speaker || 'TBA'}</strong><br><small>${event.speakerOrg || ''}</small></div>
+                                    <div><strong>${event.speakerName || event.speaker || 'TBA'}</strong><br><small>${event.speakerOrg || ''}</small></div>
                                 </div>
                                 <div class="event-detail-item">
                                     <i class="far fa-calendar-alt"></i>
@@ -290,22 +290,26 @@
 
         renderEvents();
 
-        // Fetch Live Events from Firestore
-        try {
-            firebase.initializeApp(firebaseConfig);
-            const db = firebase.firestore();
-            db.collection('events').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+        // Fetch Live Events from Firestore (uses global db from firebase-config.js)
+        if (typeof db !== 'undefined' && db) {
+            db.collection('events').onSnapshot(snapshot => {
                 if (!snapshot.empty) {
                     const fetchedEvents = [];
                     snapshot.forEach(doc => {
-                        fetchedEvents.push({ id: doc.id, ...doc.data() });
+                        const data = doc.data();
+                        // Normalize nested speaker object to flat speaker/speakerOrg for card display
+                        if (data.speaker && typeof data.speaker === 'object') {
+                            data.speakerName = data.speaker.name || '';
+                            data.speakerOrg = data.speaker.organization || data.speakerOrg || '';
+                        } else {
+                            data.speakerName = data.speaker || '';
+                        }
+                        fetchedEvents.push({ id: doc.id, ...data });
                     });
                     allEvents = [...fetchedEvents, ...defaultEvents.filter(d => !fetchedEvents.some(f => f.title === d.title))];
                     renderEvents();
                 }
             }, err => console.log('Firestore events listener note:', err));
-        } catch(e) {
-            console.log('Firebase init note:', e);
         }
     </script>
 </body>
