@@ -84,43 +84,35 @@
 </head>
 <body>
 
-    <!-- NAVBAR -->
-    <style>
-        .navbar { position: fixed; top: 0; left: 0; right: 0; height: 68px; display: flex; align-items: center; padding: 0 5%; background: white; box-shadow: 0 2px 12px rgba(0,0,0,0.08); z-index: 1000; }
-        .navbar-inner { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 1200px; margin: 0 auto; }
-        .nav-logos { display: flex; align-items: center; gap: 8px; }
-        .nav-logos img { height: 40px; width: auto; object-fit: contain; }
-        .nav-links-row { display: flex; align-items: center; gap: 20px; }
-        .nav-links-row a { color: #333; text-decoration: none; font-weight: 500; font-size: 0.95rem; }
-        .nav-links-row a.active { color: var(--primary); font-weight: 600; }
-        .nav-links-row a.nav-register { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 8px 18px; border-radius: 50px; font-weight: 600; white-space: nowrap; }
-        .hamburger-btn { display: none; background: none; border: none; font-size: 1.4rem; color: #333; cursor: pointer; }
-        .mobile-drawer { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10,15,22,0.97); z-index: 999; flex-direction: column; align-items: center; justify-content: center; gap: 24px; }
-        .mobile-drawer.open { display: flex; }
-        .mobile-drawer a { color: white; text-decoration: none; font-size: 1.3rem; font-weight: 600; }
-        .mobile-drawer .drawer-close { position: absolute; top: 20px; right: 24px; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; }
-        @media (max-width: 768px) { .nav-links-row { display: none; } .hamburger-btn { display: block; } }
-    </style>
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <img src="assets/embs-logo.png" alt="IEEE EMBS Logo" class="preloader-logo">
+        <div class="preloader-bar"><div class="preloader-progress"></div></div>
+    </div>
 
+    <!-- NAVBAR -->
     <nav class="navbar">
-        <div class="navbar-inner">
-            <div class="nav-logos">
+        <div class="navbar-container">
+            <div class="nav-brand-logos">
                 <img src="assets/college-logo.jpeg" alt="Vardhaman College">
                 <img src="assets/embs-logo.png" alt="IEEE EMBS">
                 <img src="assets/vardhaman-logo.png" alt="Vardhaman SB">
             </div>
-            <div class="nav-links-row">
-                <a href="index.html">Home</a>
-                <a href="about.html">About</a>
-                <a href="events.html" class="active">Events</a>
-                <a href="gallery.html">Gallery</a>
-                <a href="team.html">Team</a>
-                <a href="contact.html">Contact</a>
-                <a href="events/digital-health-talk/" class="nav-register">Register Now</a>
+            <div class="nav-links-menu">
+                <a href="index.html" class="nav-link-item">Home</a>
+                <a href="about.html" class="nav-link-item">About</a>
+                <a href="events.html" class="nav-link-item active">Events</a>
+                <a href="gallery.html" class="nav-link-item">Gallery</a>
+                <a href="resources.html" class="nav-link-item">Resources</a>
+                <a href="achievements.html" class="nav-link-item">Achievements</a>
+                <a href="team.html" class="nav-link-item">Team</a>
+                <a href="contact.html" class="nav-link-item">Contact</a>
             </div>
-            <button class="hamburger-btn" onclick="document.getElementById('eventsMobNav').classList.toggle('open')">
-                <i class="fas fa-bars"></i>
-            </button>
+            <div class="nav-utilities">
+                <button class="search-toggle-btn" id="searchToggleBtn" title="Search website"><i class="fas fa-search"></i></button>
+                <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
+                <a href="events/digital-health-talk/" class="btn btn-primary">Register Now</a>
+            </div>
         </div>
     </nav>
     <div class="mobile-drawer" id="eventsMobNav">

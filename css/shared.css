@@ -164,7 +164,9 @@ a {
 .nav-links-menu {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 22px;
+    margin: 0 auto;
 }
 .nav-link-item {
     font-family: 'Poppins', sans-serif;
