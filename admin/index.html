@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | IEEE EMBS Vardhaman</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDK Compat -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="../js/firebase-config.js"></script>
+
+    <style>
+        :root {
+            --primary: #0F766E;
+            --primary-dark: #134E4A;
+            --secondary: #1B2A4A;
+            --accent: #F59E0B;
+            --dark: #0F172A;
+            --light: #F8FAFC;
+            --white: #FFFFFF;
+            --danger: #EF4444;
+            --success: #10B981;
+            --border: #E2E8F0;
+            --muted: #64748B;
+            --radius: 12px;
+            --shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.05);
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #F1F5F9;
+            color: #334155;
+            min-height: 100vh;
+        }
+
+        /* Login Screen */
+        #loginScreen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0F766E 0%, #134E4A 100%);
+            padding: 20px;
+        }
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 440px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+        .login-logos {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .login-logos img {
+            height: 48px;
+            object-fit: contain;
+        }
+        .login-card h1 {
+            font-family: 'Sora', sans-serif;
+            font-size: 1.6rem;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+        .login-card p {
+            color: var(--muted);
+            font-size: 0.95rem;
+            margin-bottom: 28px;
+        }
+        .btn-google {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            background: white;
+            border: 1.5px solid var(--border);
+            padding: 14px 20px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #334155;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .btn-google:hover {
+            border-color: var(--primary);
+            background: #F8FAFC;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .btn-google img { height: 20px; width: 20px; }
+        .auth-error {
+            background: #FEF2F2;
+            color: var(--danger);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            margin-top: 16px;
+            display: none;
+            border: 1px solid #FCA5A5;
+        }
+
+        /* Main Dashboard */
+        #dashboardScreen {
+            display: none;
+        }
+        .admin-nav {
+            background: var(--dark);
+            color: white;
+            padding: 0 5%;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Sora', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .nav-brand span {
+            background: linear-gradient(135deg, #2DD4BF, #0EA5E9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+        .user-details {
+            text-align: right;
+        }
+        .user-name { font-weight: 600; font-size: 0.9rem; }
+        .user-role { font-size: 0.75rem; color: #94A3B8; }
+        .btn-logout {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .btn-logout:hover { background: rgba(239,68,68,0.2); color: #FCA5A5; }
+
+        /* Container Layout */
+        .dash-container {
+            max-width: 1280px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 30px;
+        }
+
+        /* Sidebar Tabs */
+        .admin-sidebar {
+            background: white;
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: var(--shadow);
+            height: fit-content;
+        }
+        .tab-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            background: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #64748B;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+            margin-bottom: 6px;
+        }
+        .tab-btn:hover { background: #F1F5F9; color: var(--primary); }
+        .tab-btn.active {
+            background: rgba(15,118,110,0.1);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Content Panels */
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .panel-title { font-family: 'Sora', sans-serif; font-size: 1.5rem; color: var(--dark); }
+
+        .btn-add {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(15,118,110,0.25);
+            transition: 0.2s;
+        }
+        .btn-add:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(15,118,110,0.35); }
+
+        /* Form Card / Modal */
+        .form-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .full-width { grid-column: 1 / -1; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group label { font-size: 0.85rem; font-weight: 600; color: #475569; }
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            color: #1E293B;
+            transition: 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15,118,110,0.1);
+        }
+
+        /* Items List */
+        .items-grid {
+            display: grid;
+            gap: 16px;
+        }
+        .item-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid var(--primary);
+        }
+        .item-info h4 { font-size: 1.1rem; color: var(--dark); margin-bottom: 4px; }
+        .item-info p { font-size: 0.88rem; color: var(--muted); }
+        .item-meta { display: flex; gap: 12px; margin-top: 8px; font-size: 0.8rem; color: #64748B; }
+        .item-badge {
+            background: #E0F2FE;
+            color: #0369A1;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .badge-upcoming { background: #D1FAE5; color: #047857; }
+        .badge-past { background: #F1F5F9; color: #64748B; }
+        
+        .item-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: white;
+            color: #475569;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+        .btn-icon:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-icon.delete:hover { border-color: var(--danger); color: var(--danger); background: #FEF2F2; }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: var(--radius);
+            color: var(--muted);
+        }
+
+        @media (max-width: 768px) {
+            .dash-container { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. LOGIN SCREEN -->
+    <div id="loginScreen">
+        <div class="login-card">
+            <div class="login-logos">
+                <img src="../assets/embs-logo.png" alt="EMBS Logo">
+                <img src="../assets/vardhaman-logo.png" alt="VCE Logo">
+            </div>
+            <h1>IEEE EMBS Admin</h1>
+            <p>Role-based content management portal for authorized team members & faculty.</p>
+            
+            <button class="btn-google" onclick="handleGoogleLogin()">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                Sign In with Google
+            </button>
+
+            <div class="auth-error" id="authError"></div>
+        </div>
+    </div>
+
+    <!-- 2. DASHBOARD SCREEN -->
+    <div id="dashboardScreen">
+        <nav class="admin-nav">
+            <div class="nav-brand">
+                <img src="../assets/embs-logo.png" alt="Logo" style="height: 36px;">
+                <span>IEEE EMBS Admin</span>
+            </div>
+            <div class="user-profile">
+                <img src="" id="userAvatar" class="user-avatar" alt="User">
+                <div class="user-details">
+                    <div class="user-name" id="userName">User Name</div>
+                    <div class="user-role" id="userEmail">user@gmail.com</div>
+                </div>
+                <button class="btn-logout" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </nav>
+
+        <div class="dash-container">
+            <!-- Sidebar -->
+            <div class="admin-sidebar">
+                <button class="tab-btn active" onclick="switchTab('eventsTab')">
+                    <i class="fas fa-calendar-alt"></i> Events
+                </button>
+                <button class="tab-btn" onclick="switchTab('announcementsTab')">
+                    <i class="fas fa-bullhorn"></i> Announcements
+                </button>
+                <button class="tab-btn" onclick="switchTab('galleryTab')">
+                    <i class="fas fa-images"></i> Gallery
+                </button>
+                <button class="tab-btn" onclick="switchTab('adminsTab')">
+                    <i class="fas fa-user-shield"></i> Admin Access
+                </button>
+            </div>
+
+            <!-- Main Content Panels -->
+            <div class="admin-content">
+                
+                <!-- EVENTS TAB -->
+                <div id="eventsTab" class="tab-panel active">
+                    <div class="panel-header">
+                        <h2 class="panel-title">Manage Events</h2>
+                        <button class="btn-add" onclick="toggleForm('eventFormCard')">
+                            <i class="fas fa-plus"></i> Post New Event
+                        </button>
+                    </div>
+
+                    <!-- Add/Edit Event Form -->
+                    <div class="form-card" id="eventFormCard" style="display:none;">
+                        <h3 style="margin-bottom:16px; font-size:1.1rem;" id="eventFormHeading">Add New Event</h3>
+                        <form id="eventForm" onsubmit="saveEvent(event)">
+                            <input type="hidden" id="eventId">
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label>Event Title *</label>
+                                    <input type="text" id="eventTitle" required placeholder="e.g. Expert Talk on Digital Health">
+                                </div>
+                                <div class="form-group">
+                                    <label>Speaker Name & Designation *</label>
+                                    <input type="text" id="eventSpeaker" required placeholder="e.g. Dr. Ajit Kumar">
+                                </div>
+                                <div class="form-group">
+                                    <label>Speaker Organization / Dept</label>
+                                    <input type="text" id="eventSpeakerOrg" placeholder="e.g. XIM University">
+                                </div>
+                                <div class="form-group">
+                                    <label>Date *</label>
+                                    <input type="text" id="eventDate" required placeholder="e.g. 13 August 2026">
+                                </div>
+                                <div class="form-group">
+                                    <label>Time *</label>
+                                    <input type="text" id="eventTime" required placeholder="e.g. 6:00 PM IST">
+                                </div>
+                                <div class="form-group">
+                                    <label>Mode / Venue *</label>
+                                    <input type="text" id="eventMode" required placeholder="e.g. Online Mode / Main Auditorium">
+                                </div>
+                                <div class="form-group">
+                                    <label>Topic Tag *</label>
+                                    <input type="text" id="eventTopic" required placeholder="e.g. Digital Health & Telemedicine">
+                                </div>
+                                <div class="form-group">
+                                    <label>Status *</label>
+                                    <select id="eventStatus" required>
+                                        <option value="upcoming">Upcoming</option>
+                                        <option value="past">Past Event</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Registration Link / Slug</label>
+                                    <input type="text" id="eventSlug" placeholder="e.g. events/digital-health-talk/">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Brief Description</label>
+                                    <textarea id="eventDesc" rows="3" placeholder="Brief summary of the session..."></textarea>
+                                </div>
+                            </div>
+                            <div style="margin-top:20px; display:flex; gap:10px; justify-content:flex-end;">
+                                <button type="button" class="btn-logout" style="color:#64748B;" onclick="toggleForm('eventFormCard')">Cancel</button>
+                                <button type="submit" class="btn-add"><i class="fas fa-save"></i> Save Event</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Events List -->
+                    <div class="items-grid" id="eventsListContainer">
+                        <div class="empty-state"><i class="fas fa-spinner fa-spin"></i> Loading events...</div>
+                    </div>
+                </div>
+
+                <!-- ANNOUNCEMENTS TAB -->
+                <div id="announcementsTab" class="tab-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">Homepage Announcements</h2>
+                        <button class="btn-add" onclick="toggleForm('announcementFormCard')">
+                            <i class="fas fa-plus"></i> Add Announcement
+                        </button>
+                    </div>
+
+                    <div class="form-card" id="announcementFormCard" style="display:none;">
+                        <h3 style="margin-bottom:16px;">Add Announcement</h3>
+                        <form onsubmit="saveAnnouncement(event)">
+                            <div class="form-group full-width">
+                                <label>Announcement Text *</label>
+                                <input type="text" id="annText" required placeholder="e.g. E-Certificates for Digital Health Talk have been dispatched via email!">
+                            </div>
+                            <div style="margin-top:16px; display:flex; gap:10px; justify-content:flex-end;">
+                                <button type="button" class="btn-logout" style="color:#64748B;" onclick="toggleForm('announcementFormCard')">Cancel</button>
+                                <button type="submit" class="btn-add">Post Announcement</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="items-grid" id="announcementsListContainer">
+                        <div class="empty-state">No announcements active.</div>
+                    </div>
+                </div>
+
+                <!-- GALLERY TAB -->
+                <div id="galleryTab" class="tab-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">Photo Gallery</h2>
+                        <button class="btn-add" onclick="toggleForm('galleryFormCard')">
+                            <i class="fas fa-plus"></i> Add Photo Link
+                        </button>
+                    </div>
+
+                    <div class="form-card" id="galleryFormCard" style="display:none;">
+                        <h3 style="margin-bottom:16px;">Add Photo to Gallery</h3>
+                        <form onsubmit="saveGalleryPhoto(event)">
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label>Photo Title *</label>
+                                    <input type="text" id="photoTitle" required placeholder="e.g. Digital Health Talk 2026 Group Photo">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Image URL *</label>
+                                    <input type="url" id="photoUrl" required placeholder="https://example.com/photo.jpg">
+                                </div>
+                                <div class="form-group">
+                                    <label>Category</label>
+                                    <input type="text" id="photoCategory" placeholder="e.g. Expert Talk / Workshop">
+                                </div>
+                            </div>
+                            <div style="margin-top:16px; display:flex; gap:10px; justify-content:flex-end;">
+                                <button type="button" class="btn-logout" style="color:#64748B;" onclick="toggleForm('galleryFormCard')">Cancel</button>
+                                <button type="submit" class="btn-add">Save Photo</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="items-grid" id="galleryListContainer">
+                        <div class="empty-state">No photos uploaded yet.</div>
+                    </div>
+                </div>
+
+                <!-- ADMINS ACCESS TAB -->
+                <div id="adminsTab" class="tab-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">Authorized Admin Accounts</h2>
+                    </div>
+                    <div class="form-card">
+                        <p style="margin-bottom:16px; font-size:0.95rem; color:#475569;">
+                            The following Google accounts are authorized to access this dashboard and post content directly to the live site:
+                        </p>
+                        <ul id="adminsList" style="list-style:none; line-height:2.2; font-weight:600; color:var(--primary);">
+                            <!-- Populated via script -->
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript logic -->
+    <script>
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        let currentUser = null;
+
+        // Auth Listener
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                if (isAuthorizedAdmin(user.email)) {
+                    currentUser = user;
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('dashboardScreen').style.display = 'block';
+                    
+                    document.getElementById('userName').textContent = user.displayName || user.email;
+                    document.getElementById('userEmail').textContent = user.email;
+                    document.getElementById('userAvatar').src = user.photoURL || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.email);
+                    
+                    loadEvents();
+                    loadAnnouncements();
+                    loadGallery();
+                    renderAdminsList();
+                } else {
+                    auth.signOut();
+                    showAuthError(`Access Denied: ${user.email} is not in the authorized admin list.`);
+                }
+            } else {
+                currentUser = null;
+                document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('dashboardScreen').style.display = 'none';
+            }
+        });
+
+        // Google Login
+        function handleGoogleLogin() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).catch(err => {
+                showAuthError(err.message);
+            });
+        }
+
+        // Logout
+        function handleLogout() {
+            auth.signOut();
+        }
+
+        function showAuthError(msg) {
+            const errDiv = document.getElementById('authError');
+            errDiv.textContent = msg;
+            errDiv.style.display = 'block';
+        }
+
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+            
+            event.currentTarget.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function toggleForm(formId) {
+            const el = document.getElementById(formId);
+            el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // -------------------------------------------------------------
+        // EVENTS MANAGEMENT
+        // -------------------------------------------------------------
+        function loadEvents() {
+            db.collection('events').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+                const container = document.getElementById('eventsListContainer');
+                if (snapshot.empty) {
+                    container.innerHTML = `<div class="empty-state">No dynamic events found in database. Existing default events will display on website.</div>`;
+                    return;
+                }
+                
+                let html = '';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const isUpcoming = data.status === 'upcoming';
+                    html += `
+                        <div class="item-card">
+                            <div class="item-info">
+                                <span class="item-badge ${isUpcoming ? 'badge-upcoming' : 'badge-past'}">${data.status}</span>
+                                <h4>${data.title}</h4>
+                                <p><i class="fas fa-user-md"></i> ${data.speaker || 'N/A'} (${data.speakerOrg || ''})</p>
+                                <div class="item-meta">
+                                    <span><i class="far fa-calendar-alt"></i> ${data.date || ''}</span>
+                                    <span><i class="far fa-clock"></i> ${data.time || ''}</span>
+                                    <span><i class="fas fa-video"></i> ${data.mode || ''}</span>
+                                </div>
+                            </div>
+                            <div class="item-actions">
+                                <button class="btn-icon delete" onclick="deleteEvent('${doc.id}')" title="Delete Event">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            });
+        }
+
+        function saveEvent(e) {
+            e.preventDefault();
+            const newEvent = {
+                title: document.getElementById('eventTitle').value,
+                speaker: document.getElementById('eventSpeaker').value,
+                speakerOrg: document.getElementById('eventSpeakerOrg').value,
+                date: document.getElementById('eventDate').value,
+                time: document.getElementById('eventTime').value,
+                mode: document.getElementById('eventMode').value,
+                topic: document.getElementById('eventTopic').value,
+                status: document.getElementById('eventStatus').value,
+                slug: document.getElementById('eventSlug').value || 'events/digital-health-talk/',
+                description: document.getElementById('eventDesc').value,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            db.collection('events').add(newEvent).then(() => {
+                document.getElementById('eventForm').reset();
+                toggleForm('eventFormCard');
+                alert('Event published successfully!');
+            }).catch(err => alert('Error saving event: ' + err.message));
+        }
+
+        function deleteEvent(id) {
+            if (confirm('Are you sure you want to delete this event?')) {
+                db.collection('events').doc(id).delete();
+            }
+        }
+
+        // -------------------------------------------------------------
+        // ANNOUNCEMENTS MANAGEMENT
+        // -------------------------------------------------------------
+        function loadAnnouncements() {
+            db.collection('announcements').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+                const container = document.getElementById('announcementsListContainer');
+                if (snapshot.empty) {
+                    container.innerHTML = `<div class="empty-state">No announcements posted.</div>`;
+                    return;
+                }
+                let html = '';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    html += `
+                        <div class="item-card">
+                            <div class="item-info">
+                                <h4>${data.text}</h4>
+                                <div class="item-meta">Posted by ${data.author || 'Admin'}</div>
+                            </div>
+                            <div class="item-actions">
+                                <button class="btn-icon delete" onclick="deleteAnnouncement('${doc.id}')"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            });
+        }
+
+        function saveAnnouncement(e) {
+            e.preventDefault();
+            const text = document.getElementById('annText').value;
+            db.collection('announcements').add({
+                text: text,
+                author: currentUser.displayName || currentUser.email,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                document.getElementById('annText').value = '';
+                toggleForm('announcementFormCard');
+            });
+        }
+
+        function deleteAnnouncement(id) {
+            if (confirm('Delete announcement?')) {
+                db.collection('announcements').doc(id).delete();
+            }
+        }
+
+        // -------------------------------------------------------------
+        // GALLERY MANAGEMENT
+        // -------------------------------------------------------------
+        function loadGallery() {
+            db.collection('gallery').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+                const container = document.getElementById('galleryListContainer');
+                if (snapshot.empty) {
+                    container.innerHTML = `<div class="empty-state">No gallery photos added.</div>`;
+                    return;
+                }
+                let html = '';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    html += `
+                        <div class="item-card">
+                            <div style="display:flex; gap:16px; align-items:center;">
+                                <img src="${data.url}" style="width:60px; height:60px; object-fit:cover; border-radius:8px;">
+                                <div class="item-info">
+                                    <h4>${data.title}</h4>
+                                    <p>${data.category || 'General'}</p>
+                                </div>
+                            </div>
+                            <div class="item-actions">
+                                <button class="btn-icon delete" onclick="deleteGalleryPhoto('${doc.id}')"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            });
+        }
+
+        function saveGalleryPhoto(e) {
+            e.preventDefault();
+            db.collection('gallery').add({
+                title: document.getElementById('photoTitle').value,
+                url: document.getElementById('photoUrl').value,
+                category: document.getElementById('photoCategory').value,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                toggleForm('galleryFormCard');
+            });
+        }
+
+        function deleteGalleryPhoto(id) {
+            if (confirm('Delete photo?')) {
+                db.collection('gallery').doc(id).delete();
+            }
+        }
+
+        function renderAdminsList() {
+            const listEl = document.getElementById('adminsList');
+            listEl.innerHTML = AUTHORIZED_ADMIN_EMAILS.map(email => `
+                <li><i class="fas fa-check-circle" style="color:var(--success); margin-right:8px;"></i> ${email}</li>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

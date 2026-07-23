@@ -292,11 +292,15 @@
         </div>
     </footer>
 
+    <!-- Firebase SDK Compat -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
     <script src="js/shared.js"></script>
     <script>
-        const events = [
+        const defaultEvents = [
             {
-                id: 1,
+                id: 'default-1',
                 title: 'Expert Talk: Digital Health, Telemedicine & Remote Patient Monitoring',
                 speaker: 'Dr. Ajit Kumar',
                 speakerOrg: 'XIM University',
@@ -309,7 +313,7 @@
                 image: 'assets/digital-health-thumb.jpg'
             },
             {
-                id: 2,
+                id: 'default-2',
                 title: 'Workshop: Biomedical Signal Processing and AI',
                 speaker: '[Placeholder Speaker]',
                 speakerOrg: '[Placeholder Org]',
@@ -322,7 +326,7 @@
                 image: 'assets/signal-processing-thumb.jpg'
             },
             {
-                id: 3,
+                id: 'default-3',
                 title: 'Seminar: Wearable Tech in Modern Healthcare',
                 speaker: '[Placeholder Speaker]',
                 speakerOrg: '[Placeholder Org]',
@@ -336,6 +340,7 @@
             }
         ];
 
+        let allEvents = [...defaultEvents];
         const eventsGrid = document.getElementById('eventsGrid');
         const filterBtns = document.querySelectorAll('.filter-btn');
 
@@ -348,16 +353,16 @@
         };
 
         function getBanner(topic) {
-            const colors = topicColors[topic] || { from: '#00629B', to: '#7B2C89', icon: 'fa-calendar-alt' };
+            const colors = topicColors[topic] || { from: '#0F766E', to: '#134E4A', icon: 'fa-calendar-alt' };
             return `<div style="width:100%;height:100%;background:linear-gradient(135deg,${colors.from},${colors.to});display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:rgba(255,255,255,0.9);">
                         <i class="fas ${colors.icon}" style="font-size:2.8rem;opacity:0.85;"></i>
-                        <span style="font-size:0.85rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;opacity:0.8;">${topic}</span>
+                        <span style="font-size:0.85rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;opacity:0.8;">${topic || 'Event'}</span>
                     </div>`;
         }
 
         function renderEvents(filter = 'all') {
             eventsGrid.innerHTML = '';
-            const filteredEvents = events.filter(e => filter === 'all' || e.status === filter);
+            const filteredEvents = allEvents.filter(e => filter === 'all' || e.status === filter);
 
             filteredEvents.forEach((event, index) => {
                 const btnClass = event.status === 'upcoming' ? 'btn-upcoming' : 'btn-past';
@@ -372,24 +377,24 @@
                             <span class="event-status ${statusClass}">${statusText}</span>
                         </div>
                         <div class="event-content">
-                            <span class="event-topic">${event.topic}</span>
+                            <span class="event-topic">${event.topic || 'Biomedical'}</span>
                             <h3 class="event-title">${event.title}</h3>
                             <div class="event-details">
                                 <div class="event-detail-item">
                                     <i class="fas fa-user-tie"></i>
-                                    <div><strong>${event.speaker}</strong><br><small>${event.speakerOrg}</small></div>
+                                    <div><strong>${event.speaker || 'TBA'}</strong><br><small>${event.speakerOrg || ''}</small></div>
                                 </div>
                                 <div class="event-detail-item">
                                     <i class="far fa-calendar-alt"></i>
-                                    <div>${event.date} &bull; ${event.time}</div>
+                                    <div>${event.date || ''} &bull; ${event.time || ''}</div>
                                 </div>
                                 <div class="event-detail-item">
                                     <i class="fas fa-map-marker-alt"></i>
-                                    <div>${event.mode}</div>
+                                    <div>${event.mode || 'Online'}</div>
                                 </div>
                             </div>
                             <div class="event-footer">
-                                <a href="${event.slug}" class="btn-event ${btnClass}">${btnText}</a>
+                                <a href="${event.slug || '#'}" class="btn-event ${btnClass}">${btnText}</a>
                             </div>
                         </div>
                     </div>
@@ -398,18 +403,39 @@
             });
         }
 
-
-        // Initial render
-        renderEvents();
-
-        // Filter logic
+        // Initialize Filter Buttons
+        let currentFilter = 'all';
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 filterBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                renderEvents(btn.dataset.filter);
+                currentFilter = btn.dataset.filter;
+                renderEvents(currentFilter);
             });
         });
+
+        // Initial Render
+        renderEvents();
+
+        // Fetch Live Events from Firebase
+        try {
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+            db.collection('events').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+                if (!snapshot.empty) {
+                    const fetchedEvents = [];
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        fetchedEvents.push({ id: doc.id, ...data });
+                    });
+                    // Merge fetched events at the top
+                    allEvents = [...fetchedEvents, ...defaultEvents.filter(d => !fetchedEvents.some(f => f.title === d.title))];
+                    renderEvents(currentFilter);
+                }
+            }, err => console.log('Firestore events listener error:', err));
+        } catch(e) {
+            console.log('Firebase init note:', e);
+        }
     </script>
 </body>
 </html>

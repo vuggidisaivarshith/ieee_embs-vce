@@ -827,6 +827,10 @@
         </div>
     </footer>
 
+    <!-- Firebase SDK Compat -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
     <script src="js/shared.js"></script>
     <script>
         // ── Counter Animation ──
@@ -869,6 +873,28 @@
             update();
             setInterval(update, 1000);
         })();
+
+        // ── Live Announcements Listener ──
+        try {
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+            db.collection('announcements').orderBy('timestamp', 'desc').limit(1).onSnapshot(snapshot => {
+                if (!snapshot.empty) {
+                    const ann = snapshot.docs[0].data();
+                    let annBar = document.getElementById('announcementTickerBar');
+                    if (!annBar) {
+                        annBar = document.createElement('div');
+                        annBar.id = 'announcementTickerBar';
+                        annBar.style.cssText = 'background: linear-gradient(90deg, #F59E0B, #D97706); color: #78350F; font-weight: 600; text-align: center; padding: 8px 16px; font-size: 0.9rem; position: fixed; top: 0; left: 0; right: 0; z-index: 1001; box-shadow: 0 2px 8px rgba(0,0,0,0.15); font-family: Outfit, sans-serif; display: flex; align-items: center; justify-content: center; gap: 10px;';
+                        document.body.prepend(annBar);
+                        document.querySelector('.navbar').style.top = '36px';
+                    }
+                    annBar.innerHTML = `<i class="fas fa-bullhorn"></i> <span>${ann.text}</span> <button onclick="this.parentElement.remove(); document.querySelector('.navbar').style.top='0';" style="background:none; border:none; color:#78350F; cursor:pointer; margin-left:12px; font-size:1.1rem;">&times;</button>`;
+                }
+            });
+        } catch(e) {
+            console.log('Firebase init note:', e);
+        }
     </script>
 </body>
 </html>
