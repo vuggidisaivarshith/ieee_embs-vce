@@ -610,24 +610,65 @@
                     </div>
 
                     <div class="form-card" id="galleryFormCard" style="display:none;">
-                        <h3 style="margin-bottom:16px;">Add Photo to Gallery</h3>
+                        <h3 style="margin-bottom:4px;">Add Photo to Gallery</h3>
+                        <p style="font-size:0.82rem; color:#64748B; margin-bottom:16px;">Upload a file <strong>OR</strong> paste a direct image URL — both work.</p>
+
+                        <!-- Upload method tabs -->
+                        <div style="display:flex; gap:8px; margin-bottom:20px;">
+                            <button type="button" id="tabFileUpload" class="btn-add" onclick="switchUploadTab('file')" style="font-size:0.82rem; padding:8px 18px;"><i class="fas fa-upload"></i> File Upload</button>
+                            <button type="button" id="tabUrlInput" onclick="switchUploadTab('url')" style="font-size:0.82rem; padding:8px 18px; background:#F1F5F9; color:#475569; border:1.5px solid #E2E8F0; border-radius:8px; cursor:pointer;"><i class="fas fa-link"></i> Paste URL</button>
+                        </div>
+
                         <form onsubmit="saveGalleryPhoto(event)">
                             <div class="form-grid">
                                 <div class="form-group full-width">
                                     <label>Photo Title *</label>
                                     <input type="text" id="photoTitle" required placeholder="e.g. Digital Health Talk 2026 Group Photo">
                                 </div>
-                                <div class="form-group">
-                                    <label>Upload Image File (Firebase Storage)</label>
-                                    <input type="file" id="photoFile" accept="image/*">
+
+                                <!-- FILE UPLOAD PANEL -->
+                                <div class="form-group full-width" id="fileUploadPanel">
+                                    <label>Choose Image File <span style="font-weight:400; color:#94A3B8;">(Max 5 MB — JPG, PNG, WebP)</span></label>
+                                    <input type="file" id="photoFile" accept="image/jpeg,image/png,image/webp,image/gif" onchange="previewGalleryFile(this)">
+                                    <!-- Preview -->
+                                    <img id="galleryPreviewImg" src="" alt="Preview" style="display:none; margin-top:10px; max-height:140px; border-radius:8px; border:1px solid #E2E8F0;">
+                                    <!-- Progress bar -->
+                                    <div id="uploadProgressWrap" style="display:none; margin-top:12px;">
+                                        <div style="display:flex; justify-content:space-between; font-size:0.8rem; color:#64748B; margin-bottom:4px;">
+                                            <span>Uploading to Firebase Storage...</span>
+                                            <span id="uploadPercent">0%</span>
+                                        </div>
+                                        <div style="background:#E2E8F0; border-radius:50px; height:8px; overflow:hidden;">
+                                            <div id="uploadProgressBar" style="background:linear-gradient(90deg,#0F766E,#14B8A6); height:100%; width:0%; transition:width 0.3s ease; border-radius:50px;"></div>
+                                        </div>
+                                    </div>
+                                    <!-- CORS notice (shown on error) -->
+                                    <div id="storageErrorBox" style="display:none; margin-top:12px; background:#FEF9C3; border:1px solid #FDE047; border-radius:8px; padding:12px 14px; font-size:0.82rem; color:#713F12;">
+                                        <strong><i class="fas fa-triangle-exclamation" style="margin-right:6px;"></i>Storage upload failed.</strong> This usually means Firebase Storage CORS is not configured yet.
+                                        <br><br>
+                                        <strong>Quick fix:</strong> Switch to the <em>Paste URL</em> tab and use a direct image URL instead. Or follow the setup guide in firebase_setup_guide.md to configure CORS.
+                                        <br><br>
+                                        <button type="button" onclick="switchUploadTab('url')" style="background:#0F766E; color:white; border:none; padding:6px 14px; border-radius:6px; cursor:pointer; font-size:0.82rem;">Switch to Paste URL →</button>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>OR Image Web URL</label>
-                                    <input type="url" id="photoUrl" placeholder="https://example.com/photo.jpg">
+
+                                <!-- URL INPUT PANEL -->
+                                <div class="form-group full-width" id="urlInputPanel" style="display:none;">
+                                    <label>Image URL *</label>
+                                    <input type="url" id="photoUrl" placeholder="https://i.imgur.com/yourphoto.jpg  OR  Google Drive direct link">
+                                    <p style="font-size:0.78rem; color:#94A3B8; margin-top:6px;">
+                                        <i class="fas fa-info-circle"></i> Use any publicly accessible image URL.
+                                        Upload to <a href="https://imgur.com/upload" target="_blank" style="color:#0F766E;">Imgur.com</a> and copy the <em>Direct Link</em> for free hosting.
+                                    </p>
                                 </div>
+
                                 <div class="form-group full-width">
                                     <label>Category</label>
-                                    <input type="text" id="photoCategory" placeholder="e.g. Talks / Workshops / Events">
+                                    <select id="photoCategory">
+                                        <option value="Events">Events</option>
+                                        <option value="Talks">Expert Talks</option>
+                                        <option value="Workshops">Workshops</option>
+                                    </select>
                                 </div>
                             </div>
                             <div style="margin-top:16px; display:flex; gap:10px; justify-content:flex-end;">
@@ -1282,53 +1323,142 @@
             });
         }
 
+        // ---- Gallery upload tab switcher ----
+        let currentUploadTab = 'file';
+        function switchUploadTab(tab) {
+            currentUploadTab = tab;
+            const filePanel = document.getElementById('fileUploadPanel');
+            const urlPanel = document.getElementById('urlInputPanel');
+            const tabFile = document.getElementById('tabFileUpload');
+            const tabUrl = document.getElementById('tabUrlInput');
+            if (tab === 'file') {
+                filePanel.style.display = 'block';
+                urlPanel.style.display = 'none';
+                tabFile.style.background = 'linear-gradient(135deg,#0F766E,#134E4A)';
+                tabFile.style.color = 'white';
+                tabUrl.style.background = '#F1F5F9';
+                tabUrl.style.color = '#475569';
+            } else {
+                filePanel.style.display = 'none';
+                urlPanel.style.display = 'block';
+                tabUrl.style.background = 'linear-gradient(135deg,#0F766E,#134E4A)';
+                tabUrl.style.color = 'white';
+                tabFile.style.background = '#F1F5F9';
+                tabFile.style.color = '#475569';
+            }
+        }
+
+        function previewGalleryFile(input) {
+            const preview = document.getElementById('galleryPreviewImg');
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File too large! Maximum size is 5 MB. Please compress the image or use the Paste URL option.');
+                    input.value = '';
+                    preview.style.display = 'none';
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = e => { preview.src = e.target.result; preview.style.display = 'block'; };
+                reader.readAsDataURL(file);
+            }
+        }
+
         function saveGalleryPhoto(e) {
             e.preventDefault();
             const btn = document.getElementById('gallerySaveBtn');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
             btn.disabled = true;
 
-            const title = document.getElementById('photoTitle').value;
+            const title = document.getElementById('photoTitle').value.trim();
             const category = document.getElementById('photoCategory').value || 'Events';
-            const urlInput = document.getElementById('photoUrl').value;
+            const urlInput = (document.getElementById('photoUrl').value || '').trim();
             const fileInput = document.getElementById('photoFile');
+
+            document.getElementById('storageErrorBox').style.display = 'none';
 
             function commitGalleryDoc(finalUrl) {
                 db.collection('gallery').add({
-                    title: title,
+                    title,
                     url: finalUrl,
-                    category: category,
+                    category,
                     author: auth.currentUser.email,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 }).then(() => {
+                    // Reset form
                     document.getElementById('photoTitle').value = '';
                     document.getElementById('photoUrl').value = '';
-                    document.getElementById('photoCategory').value = '';
                     fileInput.value = '';
+                    document.getElementById('galleryPreviewImg').style.display = 'none';
+                    document.getElementById('uploadProgressWrap').style.display = 'none';
+                    document.getElementById('uploadProgressBar').style.width = '0%';
                     btn.innerHTML = '<i class="fas fa-upload"></i> Save Photo';
                     btn.disabled = false;
                     toggleForm('galleryFormCard');
+                    alert('Photo added to gallery!');
                 }).catch(err => {
                     btn.innerHTML = '<i class="fas fa-upload"></i> Save Photo';
                     btn.disabled = false;
-                    alert('Error: ' + err.message);
+                    alert('Firestore error: ' + err.message);
                 });
             }
 
-            if (fileInput.files && fileInput.files[0] && storage) {
+            // FILE UPLOAD PATH
+            if (currentUploadTab === 'file' && fileInput.files && fileInput.files[0] && storage) {
                 const file = fileInput.files[0];
-                const storageRef = storage.ref('gallery/' + Date.now() + '_' + file.name);
-                storageRef.put(file).then(snapshot => snapshot.ref.getDownloadURL()).then(commitGalleryDoc).catch(err => {
+
+                if (file.size > 5 * 1024 * 1024) {
                     btn.innerHTML = '<i class="fas fa-upload"></i> Save Photo';
                     btn.disabled = false;
-                    alert('Storage upload note: ' + err.message);
-                });
-            } else if (urlInput) {
+                    alert('File too large! Max 5 MB. Please compress or use Paste URL tab.');
+                    return;
+                }
+
+                // Show progress bar
+                const progressWrap = document.getElementById('uploadProgressWrap');
+                const progressBar = document.getElementById('uploadProgressBar');
+                const progressPct = document.getElementById('uploadPercent');
+                progressWrap.style.display = 'block';
+
+                const storageRef = storage.ref('gallery/' + Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_'));
+                const uploadTask = storageRef.put(file, { contentType: file.type });
+
+                uploadTask.on('state_changed',
+                    (snapshot) => {
+                        const pct = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                        progressBar.style.width = pct + '%';
+                        progressPct.textContent = pct + '%';
+                    },
+                    (error) => {
+                        // Upload FAILED — show CORS helper
+                        progressWrap.style.display = 'none';
+                        btn.innerHTML = '<i class="fas fa-upload"></i> Save Photo';
+                        btn.disabled = false;
+                        console.error('Storage error:', error.code, error.message);
+                        document.getElementById('storageErrorBox').style.display = 'block';
+                        document.getElementById('storageErrorBox').scrollIntoView({ behavior: 'smooth' });
+                    },
+                    () => {
+                        uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
+                            progressBar.style.width = '100%';
+                            progressPct.textContent = '100%';
+                            btn.innerHTML = '<i class="fas fa-check"></i> Saving...';
+                            commitGalleryDoc(downloadURL);
+                        });
+                    }
+                );
+
+            // URL PATH
+            } else if (currentUploadTab === 'url' && urlInput) {
                 commitGalleryDoc(urlInput);
+            } else if (currentUploadTab === 'file' && !fileInput.files[0]) {
+                btn.innerHTML = '<i class="fas fa-upload"></i> Save Photo';
+                btn.disabled = false;
+                alert('Please choose a file to upload, or switch to the Paste URL tab.');
             } else {
                 btn.innerHTML = '<i class="fas fa-upload"></i> Save Photo';
                 btn.disabled = false;
-                alert('Please provide an image file or URL.');
+                alert('Please provide an image file or a URL.');
             }
         }
 
