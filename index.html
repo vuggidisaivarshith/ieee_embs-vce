@@ -607,33 +607,52 @@
 <body>
 
     <!-- NAVBAR -->
-    <nav style="position:fixed;top:0;left:0;right:0;padding:0 5%;height:70px;display:flex;justify-content:space-between;align-items:center;background:rgba(10,15,22,0.95);backdrop-filter:blur(12px);z-index:1000;border-bottom:1px solid rgba(255,255,255,0.08);">
-        <div style="display:flex;gap:10px;align-items:center;flex-shrink:0;">
-            <img src="assets/college-logo.jpeg" alt="VCE" style="height:42px;width:auto;border-radius:4px;object-fit:contain;">
-            <img src="assets/embs-logo.png" alt="EMBS" style="height:38px;width:auto;object-fit:contain;">
-            <img src="assets/vardhaman-logo.png" alt="VCE SB" style="height:38px;width:auto;object-fit:contain;">
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <img src="assets/embs-logo.png" alt="IEEE EMBS Logo" class="preloader-logo">
+        <div class="preloader-bar"><div class="preloader-progress"></div></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="nav-brand-logos">
+                <img src="assets/college-logo.jpeg" alt="VCE">
+                <img src="assets/embs-logo.png" alt="IEEE EMBS">
+                <img src="assets/vardhaman-logo.png" alt="VCE SB">
+            </div>
+            <div class="nav-links-menu">
+                <a href="index.html" class="nav-link-item active">Home</a>
+                <a href="about.html" class="nav-link-item">About</a>
+                <a href="events.html" class="nav-link-item">Events</a>
+                <a href="gallery.html" class="nav-link-item">Gallery</a>
+                <a href="resources.html" class="nav-link-item">Resources</a>
+                <a href="achievements.html" class="nav-link-item">Achievements</a>
+                <a href="team.html" class="nav-link-item">Team</a>
+                <a href="contact.html" class="nav-link-item">Contact</a>
+            </div>
+            <div class="nav-utilities">
+                <button class="search-toggle-btn" id="searchToggleBtn" title="Search website"><i class="fas fa-search"></i></button>
+                <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
+                <a href="events/digital-health-talk/" class="btn btn-primary">Register Now</a>
+            </div>
+            <button class="hamburger" onclick="document.getElementById('mobileNav').classList.toggle('open')" aria-label="Menu"><i class="fas fa-bars"></i></button>
         </div>
-        <div class="nav-links" style="display:flex;gap:20px;align-items:center;">
-            <a href="index.html" style="color:white;text-decoration:none;font-weight:500;font-size:0.95rem;">Home</a>
-            <a href="about.html" style="color:white;text-decoration:none;font-weight:500;font-size:0.95rem;">About</a>
-            <a href="events.html" style="color:white;text-decoration:none;font-weight:500;font-size:0.95rem;">Events</a>
-            <a href="gallery.html" style="color:white;text-decoration:none;font-weight:500;font-size:0.95rem;">Gallery</a>
-            <a href="team.html" style="color:white;text-decoration:none;font-weight:500;font-size:0.95rem;">Team</a>
-            <a href="contact.html" style="color:white;text-decoration:none;font-weight:500;font-size:0.95rem;">Contact</a>
-            <a href="events/digital-health-talk/" style="background:linear-gradient(135deg,#00629B,#00B5E2);color:white;padding:8px 18px;border-radius:50px;font-weight:600;font-size:0.9rem;text-decoration:none;white-space:nowrap;">Register Now</a>
-        </div>
-        <button class="hamburger" onclick="document.getElementById('mobileNav').classList.toggle('open')" aria-label="Menu"><i class="fas fa-bars"></i></button>
     </nav>
+
     <!-- Mobile Nav Overlay -->
     <div class="mobile-nav" id="mobileNav">
         <button class="close-btn" onclick="document.getElementById('mobileNav').classList.remove('open')">&times;</button>
-        <a href="index.html" onclick="document.getElementById('mobileNav').classList.remove('open')">Home</a>
-        <a href="about.html" onclick="document.getElementById('mobileNav').classList.remove('open')">About</a>
-        <a href="events.html" onclick="document.getElementById('mobileNav').classList.remove('open')">Events</a>
-        <a href="gallery.html" onclick="document.getElementById('mobileNav').classList.remove('open')">Gallery</a>
-        <a href="team.html" onclick="document.getElementById('mobileNav').classList.remove('open')">Team</a>
-        <a href="contact.html" onclick="document.getElementById('mobileNav').classList.remove('open')">Contact</a>
-        <a href="events/digital-health-talk/" style="background:linear-gradient(135deg,#00629B,#00B5E2);padding:12px 32px;border-radius:50px;">Register Now</a>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="events.html">Events</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="resources.html">Resources</a>
+        <a href="achievements.html">Achievements</a>
+        <a href="team.html">Team</a>
+        <a href="contact.html">Contact</a>
+        <a href="verify.html">Verify Certificate</a>
+        <a href="events/digital-health-talk/" style="background:linear-gradient(135deg,#00629B,#00B5E2);padding:12px 32px;border-radius:50px;color:white;">Register Now</a>
     </div>
 
     <!-- HERO SECTION -->
@@ -838,6 +857,126 @@
             <a href="gallery.html" class="btn btn-outline" style="color: var(--primary); border-color: var(--primary);">Explore Full Gallery <i class="fas fa-images" style="margin-left: 8px;"></i></a>
         </div>
     </section>
+
+    <!-- TESTIMONIALS SECTION -->
+    <section class="section testimonials-section" style="padding: 80px 5%; background: var(--bg);">
+        <div class="container" style="max-width: 1100px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 48px;">
+                <span class="status-pill status-open" style="margin-bottom: 10px;">Community Voices</span>
+                <h2 style="font-size: 2rem;">What Students & Faculty Say</h2>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+                <div class="glass-card animate-fade-up" style="padding: 28px;">
+                    <i class="fas fa-quote-left" style="font-size: 1.8rem; color: var(--accent); opacity: 0.5; margin-bottom: 14px;"></i>
+                    <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.7; margin-bottom: 20px;">"The expert talks arranged by IEEE EMBS Vardhaman gave me practical clarity on telemedicine architectures that helped me build my final year project!"</p>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700;">IT</div>
+                        <div>
+                            <h4 style="font-size: 0.95rem; margin: 0;">4th Year IT Student</h4>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">Vardhaman College of Engineering</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card animate-fade-up" style="padding: 28px;">
+                    <i class="fas fa-quote-left" style="font-size: 1.8rem; color: var(--accent); opacity: 0.5; margin-bottom: 14px;"></i>
+                    <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.7; margin-bottom: 20px;">"IEEE EMBS provides an outstanding platform for students to blend engineering with life sciences and interact with global experts."</p>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--secondary), var(--primary)); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700;">PS</div>
+                        <div>
+                            <h4 style="font-size: 0.95rem; margin: 0;">Pollishetty Swetha</h4>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">Faculty Co-ordinator, IT Dept.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ ACCORDION SECTION -->
+    <section class="section faq-section" style="padding: 80px 5%; background: var(--card-bg);">
+        <div class="container" style="max-width: 840px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 44px;">
+                <span class="status-pill status-open" style="margin-bottom: 10px;">Got Questions?</span>
+                <h2 style="font-size: 2rem;">Frequently Asked Questions</h2>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 14px;" id="faqAccordion">
+                
+                <div class="glass-card" style="padding: 20px 24px; cursor: pointer;" onclick="toggleFaq(this)">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h4 style="font-size: 1.05rem; margin: 0;">Do I need to be an IEEE member to attend events?</h4>
+                        <i class="fas fa-chevron-down" style="color: var(--primary); transition: transform 0.3s;"></i>
+                    </div>
+                    <div class="faq-answer" style="display: none; margin-top: 14px; color: var(--text-muted); font-size: 0.92rem; line-height: 1.7;">
+                        No! Our expert talks and general seminars are open to all students, faculty, and researchers across all engineering departments. IEEE membership gives you additional perks like travel grants and conference discounts.
+                    </div>
+                </div>
+
+                <div class="glass-card" style="padding: 20px 24px; cursor: pointer;" onclick="toggleFaq(this)">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h4 style="font-size: 1.05rem; margin: 0;">How are E-Certificates issued to attendees?</h4>
+                        <i class="fas fa-chevron-down" style="color: var(--primary); transition: transform 0.3s;"></i>
+                    </div>
+                    <div class="faq-answer" style="display: none; margin-top: 14px; color: var(--text-muted); font-size: 0.92rem; line-height: 1.7;">
+                        E-certificates are generated and dispatched via email after attendance verification for participants who attend the full live session. You can also verify your certificate anytime on our Certificate Verification Portal.
+                    </div>
+                </div>
+
+                <div class="glass-card" style="padding: 20px 24px; cursor: pointer;" onclick="toggleFaq(this)">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h4 style="font-size: 1.05rem; margin: 0;">How do I join the IEEE EMBS Executive Committee?</h4>
+                        <i class="fas fa-chevron-down" style="color: var(--primary); transition: transform 0.3s;"></i>
+                    </div>
+                    <div class="faq-answer" style="display: none; margin-top: 14px; color: var(--text-muted); font-size: 0.92rem; line-height: 1.7;">
+                        We conduct annual recruitment drives for executive committee roles (design, web, event management, public relations). Submit your interest via our Join Us page or reach out to the Secretary directly.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- NEWSLETTER SIGNUP SECTION -->
+    <section class="section newsletter-section" style="padding: 70px 5%; background: var(--hero-gradient); color: white; text-align: center;">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <i class="fas fa-paper-plane" style="font-size: 2.5rem; color: var(--accent); margin-bottom: 16px;"></i>
+            <h2 style="font-size: 2rem; color: white; margin-bottom: 10px;">Stay Updated with Chapter Events</h2>
+            <p style="color: rgba(255,255,255,0.85); font-size: 1rem; margin-bottom: 28px;">Subscribe to receive instant event announcements, meeting links, and workshop alerts directly in your inbox.</p>
+            
+            <form onsubmit="handleNewsletterSubmit(event)" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                <input type="email" id="newsEmail" required placeholder="Enter your email address" style="padding: 12px 20px; border-radius: 50px; border: none; font-size: 0.95rem; width: 100%; max-width: 380px; outline: none; font-family: inherit;">
+                <button type="submit" class="btn btn-primary" id="newsBtn" style="background: white; color: var(--primary);">Subscribe <i class="fas fa-arrow-right"></i></button>
+            </form>
+            <div id="newsMsg" style="display: none; margin-top: 16px; color: #5EEAD4; font-weight: 600; font-size: 0.95rem;"></div>
+        </div>
+    </section>
+
+    <script>
+        function toggleFaq(card) {
+            const answer = card.querySelector('.faq-answer');
+            const icon = card.querySelector('.fa-chevron-down');
+            const isHidden = answer.style.display === 'none' || !answer.style.display;
+            answer.style.display = isHidden ? 'block' : 'none';
+            if (icon) icon.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        function handleNewsletterSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('newsBtn');
+            const msg = document.getElementById('newsMsg');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subscribing...';
+            btn.disabled = true;
+            setTimeout(() => {
+                btn.innerHTML = 'Subscribed!';
+                btn.style.background = '#22C55E';
+                btn.style.color = 'white';
+                msg.textContent = '🎉 Thank you for subscribing! You will receive future event updates in your inbox.';
+                msg.style.display = 'block';
+            }, 600);
+        }
+    </script>
 
     <!-- JOIN CTA -->
     <section class="section join-cta">

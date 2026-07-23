@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Resources | IEEE EMBS Vardhaman</title>
+    <meta name="description" content="Access IEEE Xplore, EMBS publications, student grants, paper templates, and career opportunities for biomedical engineering students.">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/shared.css">
+</head>
+<body>
+
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <img src="assets/embs-logo.png" alt="IEEE EMBS Logo" class="preloader-logo">
+        <div class="preloader-bar"><div class="preloader-progress"></div></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="nav-brand-logos">
+                <img src="assets/college-logo.jpeg" alt="Vardhaman College">
+                <img src="assets/embs-logo.png" alt="IEEE EMBS">
+                <img src="assets/vardhaman-logo.png" alt="VCE Student Branch">
+            </div>
+            <div class="nav-links-menu">
+                <a href="index.html" class="nav-link-item">Home</a>
+                <a href="about.html" class="nav-link-item">About</a>
+                <a href="events.html" class="nav-link-item">Events</a>
+                <a href="gallery.html" class="nav-link-item">Gallery</a>
+                <a href="resources.html" class="nav-link-item active">Resources</a>
+                <a href="achievements.html" class="nav-link-item">Achievements</a>
+                <a href="team.html" class="nav-link-item">Team</a>
+                <a href="contact.html" class="nav-link-item">Contact</a>
+            </div>
+            <div class="nav-utilities">
+                <button class="search-toggle-btn" id="searchToggleBtn" title="Search website"><i class="fas fa-search"></i></button>
+                <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
+                <a href="events/digital-health-talk/" class="btn btn-primary">Register Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header style="background:var(--hero-gradient); color:white; padding:120px 5% 70px; text-align:center;">
+        <div style="max-width:800px; margin:0 auto;">
+            <span class="status-pill status-open" style="background:rgba(255,255,255,0.15); color:white; border-color:rgba(255,255,255,0.3); margin-bottom:16px;">Academic & Career Hub</span>
+            <h1 style="font-size:clamp(2rem, 4vw, 3.2rem); color:white; margin-bottom:16px;">Student Resources & Publications</h1>
+            <p style="color:rgba(255,255,255,0.85); font-size:1.1rem;">Explore IEEE Xplore literature, research paper templates, EMBS scholarships, and career growth pathways.</p>
+        </div>
+    </header>
+
+    <!-- MAIN RESOURCES SECTION -->
+    <main style="padding:70px 5%; max-width:1240px; margin:0 auto;">
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:28px;">
+            
+            <!-- 1. IEEE Xplore -->
+            <div class="glass-card animate-fade-up" style="padding:32px;">
+                <div style="width:52px; height:52px; border-radius:14px; background:rgba(0,98,155,0.1); color:var(--primary); display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin-bottom:20px;">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h3>IEEE Xplore Digital Library</h3>
+                <p style="color:var(--text-muted); font-size:0.92rem; margin:10px 0 20px;">Access over 5 million peer-reviewed research papers, standards, and conference proceedings in biomedical technology.</p>
+                <a href="https://ieeexplore.ieee.org" target="_blank" class="btn btn-outline" style="width:100%;">Visit IEEE Xplore <i class="fas fa-external-link-alt"></i></a>
+            </div>
+
+            <!-- 2. Paper Templates -->
+            <div class="glass-card animate-fade-up" style="padding:32px;">
+                <div style="width:52px; height:52px; border-radius:14px; background:rgba(0,181,226,0.1); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin-bottom:20px;">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <h3>IEEE Manuscript Templates</h3>
+                <p style="color:var(--text-muted); font-size:0.92rem; margin:10px 0 20px;">Official IEEE LaTeX & Word manuscript templates for formatting research papers, conference proceedings, and thesis chapters.</p>
+                <a href="https://www.ieee.org/conferences/publishing/templates.html" target="_blank" class="btn btn-outline" style="width:100%;">Download Templates <i class="fas fa-download"></i></a>
+            </div>
+
+            <!-- 3. EMBS Scholarships & Grants -->
+            <div class="glass-card animate-fade-up" style="padding:32px;">
+                <div style="width:52px; height:52px; border-radius:14px; background:rgba(245,158,11,0.1); color:var(--warning); display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin-bottom:20px;">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>EMBS Scholarships & Grants</h3>
+                <p style="color:var(--text-muted); font-size:0.92rem; margin:10px 0 20px;">Travel grants, student paper contest prizes, and research fellowships provided annually by IEEE EMBS globally.</p>
+                <a href="https://www.embs.org/about-embs/awards-recognition/" target="_blank" class="btn btn-outline" style="width:100%;">Explore Grants <i class="fas fa-award"></i></a>
+            </div>
+
+            <!-- 4. Certificate Verification -->
+            <div class="glass-card animate-fade-up" style="padding:32px;">
+                <div style="width:52px; height:52px; border-radius:14px; background:rgba(34,197,94,0.1); color:var(--success); display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin-bottom:20px;">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <h3>Certificate Verification Portal</h3>
+                <p style="color:var(--text-muted); font-size:0.92rem; margin:10px 0 20px;">Verify official e-certificates issued for IEEE EMBS Vardhaman workshops, expert talks, and hackathons.</p>
+                <a href="verify.html" class="btn btn-primary" style="width:100%;">Verify Certificate <i class="fas fa-check-circle"></i></a>
+            </div>
+
+            <!-- 5. IEEE Membership Benefits -->
+            <div class="glass-card animate-fade-up" style="padding:32px;">
+                <div style="width:52px; height:52px; border-radius:14px; background:rgba(59,130,246,0.1); color:var(--info); display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin-bottom:20px;">
+                    <i class="fas fa-id-card"></i>
+                </div>
+                <h3>IEEE Student Membership</h3>
+                <p style="color:var(--text-muted); font-size:0.92rem; margin:10px 0 20px;">Join the world's largest technical professional organization. Enjoy 50%+ student discounts on IEEE & EMBS membership.</p>
+                <a href="https://www.ieee.org/membership/join/" target="_blank" class="btn btn-outline" style="width:100%;">Join IEEE Officially <i class="fas fa-user-plus"></i></a>
+            </div>
+
+            <!-- 6. Internships & Careers -->
+            <div class="glass-card animate-fade-up" style="padding:32px;">
+                <div style="width:52px; height:52px; border-radius:14px; background:rgba(239,68,68,0.1); color:var(--danger); display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin-bottom:20px;">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <h3>IEEE Collabratec & Job Site</h3>
+                <p style="color:var(--text-muted); font-size:0.92rem; margin:10px 0 20px;">Connect with global biomedical researchers, find research internships, and explore health-tech job opportunities.</p>
+                <a href="https://collabratec.ieee.org" target="_blank" class="btn btn-outline" style="width:100%;">Explore Careers <i class="fas fa-external-link-alt"></i></a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer style="background:var(--secondary); color:#94A3B8; padding:50px 5% 20px; font-family:Inter,sans-serif;">
+        <div style="max-width:1200px; margin:0 auto; text-align:center; font-size:0.85rem;">
+            &copy; 2026 IEEE EMBS Student Branch Chapter, Vardhaman College of Engineering. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="js/shared.js"></script>
+</body>
+</html>

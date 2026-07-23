@@ -225,24 +225,35 @@
 </head>
 <body>
 
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <img src="assets/embs-logo.png" alt="IEEE EMBS Logo" class="preloader-logo">
+        <div class="preloader-bar"><div class="preloader-progress"></div></div>
+    </div>
+
     <!-- Navbar -->
     <nav class="navbar">
-        <div class="container nav-container">
-            <div class="nav-logos">
-                <img src="assets/college-logo.jpeg" alt="Vardhaman College" class="college-logo nav-logo">
-                <img src="assets/embs-logo.png" alt="IEEE EMBS" class="nav-logo">
-                <img src="assets/vardhaman-logo.png" alt="Vardhaman SB" class="nav-logo">
+        <div class="navbar-container">
+            <div class="nav-brand-logos">
+                <img src="assets/college-logo.jpeg" alt="Vardhaman College">
+                <img src="assets/embs-logo.png" alt="IEEE EMBS">
+                <img src="assets/vardhaman-logo.png" alt="Vardhaman SB">
             </div>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="events.html">Events</a></li>
-                <li><a href="gallery.html">Gallery</a></li>
-                <li><a href="team.html" class="active">Team</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="events/digital-health-talk/" class="btn btn-primary btn-sm">Register Now</a></li>
-            </ul>
-            <div class="hamburger"><i class="fas fa-bars"></i></div>
+            <div class="nav-links-menu">
+                <a href="index.html" class="nav-link-item">Home</a>
+                <a href="about.html" class="nav-link-item">About</a>
+                <a href="events.html" class="nav-link-item">Events</a>
+                <a href="gallery.html" class="nav-link-item">Gallery</a>
+                <a href="resources.html" class="nav-link-item">Resources</a>
+                <a href="achievements.html" class="nav-link-item">Achievements</a>
+                <a href="team.html" class="nav-link-item active">Team</a>
+                <a href="contact.html" class="nav-link-item">Contact</a>
+            </div>
+            <div class="nav-utilities">
+                <button class="search-toggle-btn" id="searchToggleBtn" title="Search website"><i class="fas fa-search"></i></button>
+                <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
+                <a href="events/digital-health-talk/" class="btn btn-primary">Register Now</a>
+            </div>
         </div>
     </nav>
 
