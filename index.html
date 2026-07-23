@@ -973,13 +973,25 @@
             e.preventDefault();
             const btn = document.getElementById('newsBtn');
             const msg = document.getElementById('newsMsg');
+            const emailInput = document.getElementById('newsEmail');
+            const email = emailInput ? emailInput.value.trim() : '';
+
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subscribing...';
             btn.disabled = true;
+
+            // Save to Firestore subscribers collection
+            if (window.db && email) {
+                db.collection('subscribers').add({
+                    email: email,
+                    subscribedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }).catch(err => console.log('Firestore subscriber save note:', err));
+            }
+
             setTimeout(() => {
                 btn.innerHTML = 'Subscribed!';
-                btn.style.background = '#22C55E';
+                btn.style.background = '#16A34A';
                 btn.style.color = 'white';
-                msg.textContent = '🎉 Thank you for subscribing! You will receive future event updates in your inbox.';
+                msg.textContent = `🎉 Thank you for subscribing! (${email}) will receive future event updates & workshop alerts directly.`;
                 msg.style.display = 'block';
             }, 600);
         }

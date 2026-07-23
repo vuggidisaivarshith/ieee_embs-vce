@@ -7,25 +7,27 @@
 
 :root {
     /* Color Palette */
-    --primary: #00629B;       /* IEEE Blue */
-    --primary-dark: #003C71;  /* Deep IEEE Blue */
-    --secondary: #0F172A;     /* Dark Navy */
-    --accent: #00B5E2;        /* Cyan */
-    --success: #22C55E;       /* Registration Open */
-    --warning: #F59E0B;       /* Closing Soon */
-    --danger: #EF4444;        /* Closed */
-    --info: #3B82F6;          /* Live Event */
+    --primary: #00629B;           /* IEEE Blue */
+    --primary-dark: #003D6B;      /* Header/Footer background, hero gradient end */
+    --secondary: #0D9488;         /* Biomedical Teal (Topics, Speaker, Agenda) */
+    --maroon-accent: #8B1E3F;     /* Maroon (College branding & thin accent lines) */
+    --cta-amber: #F59E0B;         /* Amber (Reserved exclusively for CTA buttons) */
+    --cta-amber-hover: #D97706;   /* Amber Hover */
+    --accent: #0D9488;            /* Biomedical Teal */
+    --success: #16A34A;           /* Green confirmation messages */
+    --warning: #F59E0B;           /* Warning / Amber */
     
-    --bg: #F8FAFC;
+    --bg: #F8FAFC;                /* Base background */
+    --bg-alt: #F0FDFA;            /* Alternate section background */
     --card-bg: #FFFFFF;
-    --text-main: #0F172A;
-    --text-muted: #64748B;
-    --border: rgba(15, 23, 42, 0.08);
+    --text-main: #0F172A;         /* Heading text */
+    --text-muted: #475569;        /* Body text */
+    --border: #E2E8F0;            /* Borders/dividers */
     --border-hover: rgba(0, 98, 155, 0.3);
     
-    --hero-gradient: linear-gradient(135deg, #001B44 0%, #003C71 30%, #00629B 70%, #00B5E2 100%);
+    --hero-gradient: linear-gradient(135deg, #001B44 0%, #003D6B 40%, #00629B 75%, #0D9488 100%);
     --card-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
-    --card-shadow-hover: 0 20px 35px -10px rgba(0, 98, 155, 0.15), 0 10px 15px -5px rgba(0, 181, 226, 0.1);
+    --card-shadow-hover: 0 20px 35px -10px rgba(0, 98, 155, 0.15), 0 10px 15px -5px rgba(13, 148, 136, 0.1);
     
     --radius-sm: 8px;
     --radius-md: 12px;
@@ -241,13 +243,14 @@ a {
     overflow: hidden;
 }
 .btn-primary {
-    background: linear-gradient(135deg, var(--primary), var(--accent));
+    background: linear-gradient(135deg, #F59E0B, #D97706);
     color: white;
-    box-shadow: 0 4px 15px rgba(0, 98, 155, 0.3);
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.35);
 }
 .btn-primary:hover {
+    background: linear-gradient(135deg, #D97706, #B45309);
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 181, 226, 0.45);
+    box-shadow: 0 8px 25px rgba(217, 119, 6, 0.5);
 }
 .btn-secondary {
     background: var(--secondary);
