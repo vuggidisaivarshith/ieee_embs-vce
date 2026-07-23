@@ -105,7 +105,7 @@
                     <i class="fas fa-bullseye"></i>
                 </div>
                 <h3>Our Mission</h3>
-                <p style="color:var(--text-muted); font-size:0.95rem; margin-top:10px; line-height:1.75;">To advance engineering concepts and science for the benefit of human health by training students in biomedical technologies, telemetry, wearable health sensors, and AI-driven clinical tools.</p>
+                <p id="aboutMissionText" style="color:var(--text-muted); font-size:0.95rem; margin-top:10px; line-height:1.75;">To advance engineering concepts and science for the benefit of human health by training students in biomedical technologies, telemetry, wearable health sensors, and AI-driven clinical tools.</p>
             </div>
 
             <div class="glass-card animate-fade-up" style="padding:36px;">
@@ -141,14 +141,16 @@
                 <!-- Faculty Advisor -->
                 <div class="glass-card animate-fade-up" style="padding:36px; border-top:4px solid var(--primary);">
                     <div style="display:flex; gap:16px; align-items:center; margin-bottom:20px;">
-                        <div style="width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg, var(--primary), var(--accent)); color:white; display:flex; align-items:center; justify-content:center; font-size:1.4rem; font-weight:700;">PS</div>
+                        <div id="faPhotoContainer" style="width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg, var(--primary), var(--accent)); color:white; display:flex; align-items:center; justify-content:center; font-size:1.4rem; font-weight:700; overflow:hidden;">
+                            <img src="assets/faculty.jpeg" alt="Polisetty Swetha" style="width:100%; height:100%; object-fit:cover;">
+                        </div>
                         <div>
-                            <h3 style="font-size:1.15rem; margin:0;">Polisetty Swetha</h3>
-                            <p style="color:var(--primary); font-weight:600; font-size:0.85rem; margin:0;">Faculty Co-ordinator (IEEE EMBS)</p>
-                            <p style="color:var(--text-muted); font-size:0.8rem; margin:0;">Department of Information Technology, VCE</p>
+                            <h3 id="faName" style="font-size:1.15rem; margin:0;">Polisetty Swetha</h3>
+                            <p id="faRole" style="color:var(--primary); font-weight:600; font-size:0.85rem; margin:0;">Faculty Co-ordinator (IEEE EMBS)</p>
+                            <p id="faDept" style="color:var(--text-muted); font-size:0.8rem; margin:0;">Department of Information Technology, VCE</p>
                         </div>
                     </div>
-                    <p style="color:var(--text-main); font-size:0.95rem; line-height:1.75; font-style:italic;">"IEEE EMBS Vardhaman provides a transformative environment where students apply technical problem-solving to real healthcare challenges. We encourage every engineering student to explore biomedical technology and lead impactful research."</p>
+                    <p id="faQuote" style="color:var(--text-main); font-size:0.95rem; line-height:1.75; font-style:italic;">"IEEE EMBS Vardhaman provides a transformative environment where students apply technical problem-solving to real healthcare challenges. We encourage every engineering student to explore biomedical technology and lead impactful research."</p>
                 </div>
 
                 <!-- Chairperson -->
@@ -238,6 +240,46 @@
         </div>
     </footer>
 
-    <script src="js/shared.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+        <script src="js/firebase-config.js"></script>
+        <script src="js/shared.js"></script>
+        <script>
+            function loadAboutPageData() {
+                if (typeof db === 'undefined' || !db) return;
+                
+                db.collection('aboutPage').doc('main').get().then(doc => {
+                    if (!doc.exists) return;
+                    const data = doc.data();
+
+                    if (data.missionStatement) {
+                        document.getElementById('aboutMissionText').textContent = data.missionStatement;
+                    }
+
+                    if (data.facultyAdvisor) {
+                        const fa = data.facultyAdvisor;
+                        if (fa.name) document.getElementById('faName').textContent = fa.name;
+                        if (fa.role) document.getElementById('faRole').textContent = fa.role;
+                        if (fa.department) document.getElementById('faDept').textContent = fa.department;
+                        if (fa.quote) document.getElementById('faQuote').textContent = `"${fa.quote.replace(/^"|"$/g, '')}"`;
+                        if (fa.photoUrl) {
+                            const imgContainer = document.getElementById('faPhotoContainer');
+                            imgContainer.innerHTML = `<img src="${fa.photoUrl}" alt="${fa.name}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
+                        }
+                    }
+
+                    if (data.foundedYear) {
+                        document.getElementById('aboutFoundedYear').textContent = data.foundedYear;
+                    }
+                    if (data.foundingTeamCount) {
+                        document.getElementById('aboutFoundingTeamCount').textContent = data.foundingTeamCount;
+                    }
+                    if (data.firstEventDetails) {
+                        document.getElementById('aboutFirstEventDetails').textContent = data.firstEventDetails;
+                    }
+                }).catch(err => console.log('aboutPage query note:', err));
+            }
+            loadAboutPageData();
+        </script>
 </body>
 </html>

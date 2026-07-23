@@ -116,3 +116,28 @@ const DEFAULT_SITE_STATS = {
   yearsActive: 3,
   awardsCount: 5
 };
+
+// Initial About Page Dataset (Fallback for aboutPage/main)
+const DEFAULT_ABOUT_DATA = {
+  missionStatement: "IEEE EMBS Student Branch Chapter at Vardhaman College of Engineering connects engineering students with the frontiers of biomedical innovation, digital health, and healthcare technology.",
+  focusAreas: [
+    "Digital Health & Telemedicine",
+    "Biomedical Signal Processing",
+    "Wearable Health Technologies",
+    "AI & Machine Learning in Healthcare",
+    "Medical Imaging & Diagnostic Systems",
+    "Bio-sensors & Neural Engineering"
+  ],
+  foundedYear: "2023",
+  foundingTeamCount: "15+",
+  firstEventDetails: "Hands-on Workshop on Biomedical Signal Processing & AI (Feb 2024)",
+  facultyAdvisor: {
+    name: "Polisetty Swetha",
+    role: "Faculty Co-ordinator (IEEE EMBS)",
+    department: "Department of Information Technology, VCE",
+    phone: "+91 7993136780",
+    email: "swethabharath27@vardhaman.org",
+    photoUrl: "assets/faculty.jpeg",
+    quote: "IEEE EMBS Vardhaman provides a transformative environment where students apply technical problem-solving to real healthcare challenges. We encourage every engineering student to explore biomedical technology and lead impactful research."
+  }
+};

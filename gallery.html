@@ -381,21 +381,28 @@
         renderGallery();
 
         // Fetch Live Gallery Photos from Firebase
-        try {
-            firebase.initializeApp(firebaseConfig);
-            const db = firebase.firestore();
-            db.collection('gallery').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+        if (typeof db !== 'undefined' && db) {
+            db.collection('gallery').get().then(snapshot => {
                 if (!snapshot.empty) {
                     const fetched = [];
                     snapshot.forEach(doc => {
                         fetched.push({ id: doc.id, ...doc.data() });
                     });
+                    // Sort by timestamp if present, otherwise keep order
+                    fetched.sort((a, b) => {
+                        const tA = a.timestamp ? (a.timestamp.seconds || 0) : 0;
+                        const tB = b.timestamp ? (b.timestamp.seconds || 0) : 0;
+                        return tB - tA;
+                    });
                     allPhotos = [...fetched, ...defaultPhotos];
-                    renderGallery();
                 }
+                renderGallery();
+            }).catch(err => {
+                console.log('Gallery Firestore query note:', err);
+                renderGallery();
             });
-        } catch(e) {
-            console.log('Firebase init note:', e);
+        } else {
+            renderGallery();
         }
     </script>
 </body>

@@ -294,7 +294,7 @@
                 <img src="../assets/vardhaman-logo.png" alt="VCE Logo">
             </div>
             <h1>IEEE EMBS Admin Portal</h1>
-            <p>Admin-only portal for events, announcements, team roster, gallery, and site metrics.</p>
+            <p>Admin-only portal for events, speaker info, about page, announcements, team roster, gallery, and site metrics.</p>
             
             <button class="btn-google" onclick="handleGoogleLogin()">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
@@ -327,6 +327,9 @@
             <div class="admin-sidebar">
                 <button class="tab-btn active" onclick="switchTab('eventsTab', this)">
                     <i class="fas fa-calendar-alt"></i> Manage Events
+                </button>
+                <button class="tab-btn" onclick="switchTab('aboutTab', this)">
+                    <i class="fas fa-info-circle"></i> About Page
                 </button>
                 <button class="tab-btn" onclick="switchTab('announcementsTab', this)">
                     <i class="fas fa-bullhorn"></i> Announcements
@@ -373,7 +376,7 @@
                                     <input type="text" id="eventTitle" required placeholder="e.g. Expert Talk on Digital Health, Telemedicine & Remote Patient Monitoring">
                                 </div>
                                 <div class="form-group">
-                                    <label>Event Date (YYYY-MM-DD for Auto-Archiving) *</label>
+                                    <label>Event Date (YYYY-MM-DD for Countdown & Auto-Archive) *</label>
                                     <input type="date" id="eventDate" required>
                                 </div>
                                 <div class="form-group">
@@ -401,7 +404,7 @@
                                     <input type="number" id="eventMaxParticipants" placeholder="e.g. 200">
                                 </div>
 
-                                <div class="form-section-title">2. Speaker Information</div>
+                                <div class="form-section-title">2. Nested Speaker Information Object</div>
 
                                 <div class="form-group">
                                     <label>Speaker Name & Honorifics *</label>
@@ -418,6 +421,22 @@
                                 <div class="form-group full-width">
                                     <label>Speaker Bio Summary</label>
                                     <textarea id="eventSpeakerBio" rows="2" placeholder="Brief biography of the speaker..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Speaker Photo Upload (Firebase Storage /speakers/)</label>
+                                    <input type="file" id="eventSpeakerPhotoFile" accept="image/*">
+                                </div>
+                                <div class="form-group">
+                                    <label>OR Speaker Photo URL</label>
+                                    <input type="text" id="eventSpeakerPhotoUrl" placeholder="https://example.com/speaker.jpg">
+                                </div>
+                                <div class="form-group">
+                                    <label>Speaker LinkedIn Profile URL</label>
+                                    <input type="url" id="eventSpeakerLinkedin" placeholder="https://www.linkedin.com/in/speaker">
+                                </div>
+                                <div class="form-group">
+                                    <label>Faculty / Institutional Profile URL</label>
+                                    <input type="url" id="eventSpeakerFacultyProfile" placeholder="https://university.edu/faculty/speaker">
                                 </div>
 
                                 <div class="form-section-title">3. Media & Imagery</div>
@@ -461,14 +480,6 @@
                                     <label>Certificate Generation Link</label>
                                     <input type="url" id="eventCertificateLink" placeholder="https://drive.google.com/folder-xyz">
                                 </div>
-                                <div class="form-group">
-                                    <label>Gallery Drive Folder Link</label>
-                                    <input type="url" id="eventGalleryFolderLink" placeholder="https://photos.app.goo.gl/xyz">
-                                </div>
-                                <div class="form-group">
-                                    <label>Report PDF Link</label>
-                                    <input type="url" id="eventReportPdfLink" placeholder="https://example.com/report.pdf">
-                                </div>
                             </div>
 
                             <div style="margin-top:24px; display:flex; gap:12px; justify-content:flex-end;">
@@ -481,6 +492,77 @@
                     <!-- Events List -->
                     <div class="items-grid" id="eventsListContainer">
                         <div class="empty-state"><i class="fas fa-spinner fa-spin"></i> Loading events...</div>
+                    </div>
+                </div>
+
+                <!-- ABOUT PAGE TAB -->
+                <div id="aboutTab" class="tab-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">About Page Management (aboutPage/main)</h2>
+                    </div>
+
+                    <div class="form-card">
+                        <form onsubmit="saveAboutPage(event)">
+                            <div class="form-grid">
+                                <div class="form-section-title">1. Mission Statement & History</div>
+
+                                <div class="form-group full-width">
+                                    <label>Mission Statement *</label>
+                                    <textarea id="abtMission" rows="3" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Founded Year (e.g. 2023)</label>
+                                    <input type="text" id="abtFoundedYear" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Founding Team Count (e.g. 15+)</label>
+                                    <input type="text" id="abtFoundingTeam" required>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>First Event Details</label>
+                                    <input type="text" id="abtFirstEvent" required>
+                                </div>
+
+                                <div class="form-section-title">2. Faculty Advisor Information</div>
+
+                                <div class="form-group">
+                                    <label>Advisor Name *</label>
+                                    <input type="text" id="faInputName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Role / Position *</label>
+                                    <input type="text" id="faInputRole" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Department / Institution</label>
+                                    <input type="text" id="faInputDept" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="text" id="faInputPhone">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input type="email" id="faInputEmail">
+                                </div>
+                                <div class="form-group">
+                                    <label>Upload Photo (Firebase Storage /about/)</label>
+                                    <input type="file" id="faInputFile" accept="image/*">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>OR Photo Web URL</label>
+                                    <input type="text" id="faInputPhotoUrl">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Advisor Quote / Message</label>
+                                    <textarea id="faInputQuote" rows="3"></textarea>
+                                </div>
+                            </div>
+
+                            <div style="margin-top:24px; display:flex; justify-content:flex-end;">
+                                <button type="submit" class="btn-add" id="aboutSaveBtn"><i class="fas fa-save"></i> Save About Page Content</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
@@ -687,6 +769,7 @@
                             <strong>Firestore Security Policy:</strong>
                             <ul style="margin-top:8px; margin-left:20px; line-height:1.8;">
                                 <li><code>events</code>: Admin-only write. Public read.</li>
+                                <li><code>aboutPage</code>: Admin-only write. Public read.</li>
                                 <li><code>announcements</code>: Admin-only write. Public read.</li>
                                 <li><code>gallery</code>: Admin-only write & upload. Public read.</li>
                                 <li><code>team</code>: Admin-only write & photo upload. Public read.</li>
@@ -720,6 +803,7 @@
                 document.getElementById('userAvatar').src = user.photoURL || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.email);
                 
                 loadEvents();
+                loadAboutAdminData();
                 loadAnnouncements();
                 loadGallery();
                 loadTeamRoster();
@@ -763,7 +847,7 @@
         }
 
         // -------------------------------------------------------------
-        // EVENTS MANAGEMENT
+        // EVENTS MANAGEMENT (WITH NESTED SPEAKER OBJECT & STORAGE UPLOAD)
         // -------------------------------------------------------------
         function loadEvents() {
             db.collection('events').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
@@ -781,13 +865,14 @@
 
                     const todayStr = new Date().toISOString().split('T')[0];
                     const isUpcoming = data.status === 'upcoming' || (data.status === 'auto' && data.eventDate >= todayStr) || (!data.status && data.date);
+                    const spkName = (data.speaker && data.speaker.name) || data.speaker || 'N/A';
                     
                     html += `
                         <div class="item-card">
                             <div class="item-info">
                                 <span class="item-badge ${isUpcoming ? 'badge-upcoming' : 'badge-past'}">${isUpcoming ? 'UPCOMING' : 'PAST / ARCHIVED'}</span>
                                 <h4>${data.title}</h4>
-                                <p><i class="fas fa-user-md"></i> ${data.speaker || 'N/A'} ${data.speakerOrg ? '('+data.speakerOrg+')' : ''}</p>
+                                <p><i class="fas fa-user-md"></i> ${spkName} ${data.speakerOrg ? '('+data.speakerOrg+')' : ''}</p>
                                 <div class="item-meta">
                                     <span><i class="far fa-calendar-alt"></i> ${data.eventDate || data.date || ''}</span>
                                     <span><i class="far fa-clock"></i> ${data.time || ''}</span>
@@ -805,6 +890,42 @@
             });
         }
 
+        function editEvent(id) {
+            const ev = eventsCache.find(e => e.id === id);
+            if (!ev) return;
+            document.getElementById('eventId').value = id;
+            document.getElementById('eventTitle').value = ev.title || '';
+            document.getElementById('eventDate').value = ev.eventDate || ev.date || '';
+            document.getElementById('eventTime').value = ev.time || '';
+            document.getElementById('eventMode').value = ev.mode || '';
+            document.getElementById('eventTopic').value = ev.topic || '';
+            document.getElementById('eventStatus').value = ev.status || 'auto';
+            document.getElementById('eventMaxParticipants').value = ev.maxParticipants || '';
+            
+            const spk = ev.speaker || {};
+            document.getElementById('eventSpeaker').value = typeof spk === 'object' ? (spk.name || '') : (ev.speaker || '');
+            document.getElementById('eventSpeakerDesignation').value = typeof spk === 'object' ? (spk.designation || '') : (ev.speakerDesignation || '');
+            document.getElementById('eventSpeakerOrg').value = typeof spk === 'object' ? (spk.organization || '') : (ev.speakerOrg || '');
+            document.getElementById('eventSpeakerBio').value = typeof spk === 'object' ? (spk.bio || '') : (ev.speakerBio || '');
+            document.getElementById('eventSpeakerPhotoUrl').value = typeof spk === 'object' ? (spk.photoUrl || '') : '';
+            document.getElementById('eventSpeakerLinkedin').value = typeof spk === 'object' ? (spk.linkedin || '') : '';
+            document.getElementById('eventSpeakerFacultyProfile').value = typeof spk === 'object' ? (spk.facultyProfileUrl || '') : '';
+
+            document.getElementById('eventPoster').value = ev.poster || '';
+            document.getElementById('eventBanner').value = ev.banner || '';
+            document.getElementById('eventDesc').value = ev.description || '';
+            document.getElementById('eventGoogleFormLink').value = ev.googleFormLink || '';
+            document.getElementById('eventGoogleSheetLink').value = ev.googleSheetLink || '';
+            document.getElementById('eventDeadline').value = ev.registrationDeadline || '';
+            document.getElementById('eventMeetingLink').value = ev.meetingLink || '';
+            document.getElementById('eventFeedbackFormLink').value = ev.feedbackFormLink || '';
+            document.getElementById('eventCertificateLink').value = ev.certificateLink || '';
+
+            document.getElementById('eventFormHeading').textContent = 'Edit Event: ' + ev.title;
+            document.getElementById('eventFormCard').style.display = 'block';
+            document.getElementById('eventFormCard').scrollIntoView({ behavior: 'smooth' });
+        }
+
         function saveEvent(e) {
             e.preventDefault();
             const btn = document.getElementById('saveEventBtn');
@@ -812,52 +933,149 @@
             btn.disabled = true;
 
             const id = document.getElementById('eventId').value;
-            const eventData = {
-                title: document.getElementById('eventTitle').value,
-                eventDate: document.getElementById('eventDate').value,
-                date: document.getElementById('eventDate').value,
-                time: document.getElementById('eventTime').value,
-                mode: document.getElementById('eventMode').value,
-                topic: document.getElementById('eventTopic').value,
-                status: document.getElementById('eventStatus').value,
-                maxParticipants: document.getElementById('eventMaxParticipants').value,
-                speaker: document.getElementById('eventSpeaker').value,
-                speakerDesignation: document.getElementById('eventSpeakerDesignation').value,
-                speakerOrg: document.getElementById('eventSpeakerOrg').value,
-                speakerBio: document.getElementById('eventSpeakerBio').value,
-                poster: document.getElementById('eventPoster').value,
-                banner: document.getElementById('eventBanner').value,
-                description: document.getElementById('eventDesc').value,
-                googleFormLink: document.getElementById('eventGoogleFormLink').value,
-                googleSheetLink: document.getElementById('eventGoogleSheetLink').value,
-                registrationDeadline: document.getElementById('eventDeadline').value,
-                meetingLink: document.getElementById('eventMeetingLink').value,
-                feedbackFormLink: document.getElementById('eventFeedbackFormLink').value,
-                certificateLink: document.getElementById('eventCertificateLink').value,
-                galleryFolderLink: document.getElementById('eventGalleryFolderLink').value,
-                reportPdfLink: document.getElementById('eventReportPdfLink').value,
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            };
+            const speakerPhotoFile = document.getElementById('eventSpeakerPhotoFile');
+            const speakerPhotoUrlInput = document.getElementById('eventSpeakerPhotoUrl').value;
 
-            if (!id) eventData.timestamp = firebase.firestore.FieldValue.serverTimestamp();
+            function commitSaveEvent(finalSpeakerPhotoUrl) {
+                const dateStr = document.getElementById('eventDate').value;
+                const eventTimestamp = new Date(`${dateStr}T18:00:00+05:30`);
 
-            const p = id ? db.collection('events').doc(id).update(eventData) : db.collection('events').add(eventData);
+                const eventData = {
+                    title: document.getElementById('eventTitle').value,
+                    eventDate: dateStr,
+                    date: dateStr,
+                    eventTimestamp: firebase.firestore.Timestamp.fromDate(eventTimestamp),
+                    time: document.getElementById('eventTime').value,
+                    mode: document.getElementById('eventMode').value,
+                    topic: document.getElementById('eventTopic').value,
+                    status: document.getElementById('eventStatus').value,
+                    maxParticipants: document.getElementById('eventMaxParticipants').value,
+                    speaker: {
+                        name: document.getElementById('eventSpeaker').value,
+                        designation: document.getElementById('eventSpeakerDesignation').value,
+                        organization: document.getElementById('eventSpeakerOrg').value,
+                        bio: document.getElementById('eventSpeakerBio').value,
+                        photoUrl: finalSpeakerPhotoUrl,
+                        linkedin: document.getElementById('eventSpeakerLinkedin').value,
+                        facultyProfileUrl: document.getElementById('eventSpeakerFacultyProfile').value
+                    },
+                    poster: document.getElementById('eventPoster').value,
+                    banner: document.getElementById('eventBanner').value,
+                    description: document.getElementById('eventDesc').value,
+                    googleFormLink: document.getElementById('eventGoogleFormLink').value,
+                    googleSheetLink: document.getElementById('eventGoogleSheetLink').value,
+                    registrationDeadline: document.getElementById('eventDeadline').value,
+                    meetingLink: document.getElementById('eventMeetingLink').value,
+                    feedbackFormLink: document.getElementById('eventFeedbackFormLink').value,
+                    certificateLink: document.getElementById('eventCertificateLink').value,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
 
-            p.then(() => {
-                btn.innerHTML = '<i class="fas fa-save"></i> Save & Publish Event';
-                btn.disabled = false;
-                toggleForm('eventFormCard');
-                alert('Event saved successfully!');
-            }).catch(err => {
-                btn.innerHTML = '<i class="fas fa-save"></i> Save & Publish Event';
-                btn.disabled = false;
-                alert('Error: ' + err.message);
-            });
+                if (!id) eventData.timestamp = firebase.firestore.FieldValue.serverTimestamp();
+
+                const p = id ? db.collection('events').doc(id).update(eventData) : db.collection('events').add(eventData);
+
+                p.then(() => {
+                    btn.innerHTML = '<i class="fas fa-save"></i> Save & Publish Event';
+                    btn.disabled = false;
+                    toggleForm('eventFormCard');
+                    alert('Event saved successfully with nested speaker object & timestamp!');
+                }).catch(err => {
+                    btn.innerHTML = '<i class="fas fa-save"></i> Save & Publish Event';
+                    btn.disabled = false;
+                    alert('Error: ' + err.message);
+                });
+            }
+
+            if (speakerPhotoFile.files && speakerPhotoFile.files[0] && storage) {
+                const file = speakerPhotoFile.files[0];
+                const ref = storage.ref('speakers/' + Date.now() + '_' + file.name);
+                ref.put(file).then(snap => snap.ref.getDownloadURL()).then(commitSaveEvent).catch(err => {
+                    btn.innerHTML = '<i class="fas fa-save"></i> Save & Publish Event';
+                    btn.disabled = false;
+                    alert('Speaker photo upload note: ' + err.message);
+                });
+            } else {
+                commitSaveEvent(speakerPhotoUrlInput);
+            }
         }
 
         function deleteEvent(id) {
             if (confirm('Are you sure you want to delete this event?')) {
                 db.collection('events').doc(id).delete();
+            }
+        }
+
+        // -------------------------------------------------------------
+        // ABOUT PAGE MANAGEMENT (aboutPage/main)
+        // -------------------------------------------------------------
+        function loadAboutAdminData() {
+            db.collection('aboutPage').doc('main').get().then(doc => {
+                const data = doc.exists ? doc.data() : DEFAULT_ABOUT_DATA;
+                document.getElementById('abtMission').value = data.missionStatement || DEFAULT_ABOUT_DATA.missionStatement;
+                document.getElementById('abtFoundedYear').value = data.foundedYear || DEFAULT_ABOUT_DATA.foundedYear;
+                document.getElementById('abtFoundingTeam').value = data.foundingTeamCount || DEFAULT_ABOUT_DATA.foundingTeamCount;
+                document.getElementById('abtFirstEvent').value = data.firstEventDetails || DEFAULT_ABOUT_DATA.firstEventDetails;
+
+                const fa = data.facultyAdvisor || DEFAULT_ABOUT_DATA.facultyAdvisor;
+                document.getElementById('faInputName').value = fa.name || '';
+                document.getElementById('faInputRole').value = fa.role || '';
+                document.getElementById('faInputDept').value = fa.department || '';
+                document.getElementById('faInputPhone').value = fa.phone || '';
+                document.getElementById('faInputEmail').value = fa.email || '';
+                document.getElementById('faInputPhotoUrl').value = fa.photoUrl || '';
+                document.getElementById('faInputQuote').value = fa.quote || '';
+            });
+        }
+
+        function saveAboutPage(e) {
+            e.preventDefault();
+            const btn = document.getElementById('aboutSaveBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            btn.disabled = true;
+
+            const fileInput = document.getElementById('faInputFile');
+            const existingPhotoUrl = document.getElementById('faInputPhotoUrl').value;
+
+            function commitAboutData(finalPhotoUrl) {
+                const aboutData = {
+                    missionStatement: document.getElementById('abtMission').value,
+                    foundedYear: document.getElementById('abtFoundedYear').value,
+                    foundingTeamCount: document.getElementById('abtFoundingTeam').value,
+                    firstEventDetails: document.getElementById('abtFirstEvent').value,
+                    facultyAdvisor: {
+                        name: document.getElementById('faInputName').value,
+                        role: document.getElementById('faInputRole').value,
+                        department: document.getElementById('faInputDept').value,
+                        phone: document.getElementById('faInputPhone').value,
+                        email: document.getElementById('faInputEmail').value,
+                        photoUrl: finalPhotoUrl,
+                        quote: document.getElementById('faInputQuote').value
+                    },
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                db.collection('aboutPage').doc('main').set(aboutData, { merge: true }).then(() => {
+                    btn.innerHTML = '<i class="fas fa-save"></i> Save About Page Content';
+                    btn.disabled = false;
+                    alert('About page content updated live in Firestore!');
+                }).catch(err => {
+                    btn.innerHTML = '<i class="fas fa-save"></i> Save About Page Content';
+                    btn.disabled = false;
+                    alert('Error: ' + err.message);
+                });
+            }
+
+            if (fileInput.files && fileInput.files[0] && storage) {
+                const file = fileInput.files[0];
+                const ref = storage.ref('about/' + Date.now() + '_' + file.name);
+                ref.put(file).then(snap => snap.ref.getDownloadURL()).then(commitAboutData).catch(err => {
+                    btn.innerHTML = '<i class="fas fa-save"></i> Save About Page Content';
+                    btn.disabled = false;
+                    alert('Photo upload note: ' + err.message);
+                });
+            } else {
+                commitAboutData(existingPhotoUrl);
             }
         }
 
@@ -909,7 +1127,7 @@
 
         // GALLERY (Admin Uploads)
         function loadGallery() {
-            db.collection('gallery').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+            db.collection('gallery').onSnapshot(snapshot => {
                 const container = document.getElementById('galleryListContainer');
                 if (snapshot.empty) {
                     container.innerHTML = `<div class="empty-state">No gallery photos added.</div>`;
@@ -991,9 +1209,7 @@
             if (confirm('Delete photo?')) db.collection('gallery').doc(id).delete();
         }
 
-        // -------------------------------------------------------------
         // TEAM MANAGEMENT
-        // -------------------------------------------------------------
         function loadTeamRoster() {
             db.collection('team').onSnapshot(snapshot => {
                 const container = document.getElementById('teamListContainer');
@@ -1020,7 +1236,7 @@
                     html += `
                         <div class="item-card">
                             <div style="display:flex; gap:16px; align-items:center;">
-                                <img src="${m.photoUrl || 'assets/secretary.png'}" style="width:50px; height:50px; border-radius:50%; object-fit:cover;" onerror="this.src='../assets/secretary.png';">
+                                <img src="${m.photoUrl || '../assets/secretary.png'}" style="width:50px; height:50px; border-radius:50%; object-fit:cover;" onerror="this.src='../assets/secretary.png';">
                                 <div class="item-info">
                                     <span class="item-badge ${isActive ? 'badge-active' : 'badge-inactive'}">${isActive ? 'ACTIVE' : 'INACTIVE / HIDDEN'}</span>
                                     <h4>${m.name} <small style="color:var(--muted); font-weight:normal;">(#${m.order || 1})</small></h4>
@@ -1041,8 +1257,7 @@
         }
 
         function seedInitialTeam() {
-            if (!confirm('Seed default 5 team members (Varshith, Maruthi, Jahnavi, Tanmay, Swetha) into Firestore?')) return;
-            
+            if (!confirm('Seed default 5 team members into Firestore?')) return;
             const batch = db.batch();
             DEFAULT_TEAM_MEMBERS.forEach(m => {
                 const ref = db.collection('team').doc(m.id);
@@ -1137,9 +1352,7 @@
             db.collection('team').doc(id).update({ active: newActive });
         }
 
-        // -------------------------------------------------------------
         // SITE CONFIG
-        // -------------------------------------------------------------
         function loadSiteConfig() {
             db.collection('siteConfig').doc('homepage').get().then(doc => {
                 if (doc.exists) {
@@ -1169,7 +1382,7 @@
             db.collection('siteConfig').doc('homepage').set(configData, { merge: true }).then(() => {
                 btn.innerHTML = '<i class="fas fa-save"></i> Update Live Stats';
                 btn.disabled = false;
-                alert('Site statistics updated live on homepage & events page!');
+                alert('Site statistics updated live!');
             }).catch(err => {
                 btn.innerHTML = '<i class="fas fa-save"></i> Update Live Stats';
                 btn.disabled = false;

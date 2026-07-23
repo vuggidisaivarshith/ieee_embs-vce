@@ -1081,23 +1081,53 @@
         }, { threshold: 0.5 });
         counters.forEach(c => obs.observe(c));
 
-        // ── Countdown Timer ──
+        // ── Countdown Timer (Soonest Upcoming Firestore Event) ──
         (function countdown() {
-            const target = new Date('2026-08-13T18:00:00+05:30').getTime();
+            let target = new Date('2026-08-13T18:00:00+05:30').getTime();
+
+            if (typeof db !== 'undefined' && db) {
+                const todayStr = new Date().toISOString().split('T')[0];
+                db.collection('events').get().then(snapshot => {
+                    if (!snapshot.empty) {
+                        let upcomingEvents = [];
+                        snapshot.forEach(doc => {
+                            const d = doc.data();
+                            const dateStr = d.eventDate || d.date;
+                            if (dateStr && (dateStr >= todayStr || d.status === 'upcoming')) {
+                                const targetTs = new Date(`${dateStr}T18:00:00+05:30`).getTime() || new Date(dateStr).getTime();
+                                if (targetTs > Date.now()) {
+                                    upcomingEvents.push({ targetTs, ...d });
+                                }
+                            }
+                        });
+                        if (upcomingEvents.length > 0) {
+                            upcomingEvents.sort((a, b) => a.targetTs - b.targetTs);
+                            target = upcomingEvents[0].targetTs;
+                        }
+                    }
+                }).catch(err => console.log('Countdown Firestore note:', err));
+            }
+
             function update() {
                 const diff = target - Date.now();
                 if (diff <= 0) {
-                    ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => document.getElementById(id).textContent = '00');
+                    ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) el.textContent = '00';
+                    });
                     return;
                 }
                 const d = Math.floor(diff / 86400000);
                 const h = Math.floor((diff % 86400000) / 3600000);
                 const m = Math.floor((diff % 3600000) / 60000);
                 const s = Math.floor((diff % 60000) / 1000);
-                document.getElementById('cd-days').textContent  = String(d).padStart(2,'0');
-                document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
-                document.getElementById('cd-mins').textContent  = String(m).padStart(2,'0');
-                document.getElementById('cd-secs').textContent  = String(s).padStart(2,'0');
+                const daysEl = document.getElementById('cd-days');
+                if (daysEl) {
+                    daysEl.textContent = String(d).padStart(2,'0');
+                    document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+                    document.getElementById('cd-mins').textContent  = String(m).padStart(2,'0');
+                    document.getElementById('cd-secs').textContent  = String(s).padStart(2,'0');
+                }
             }
             update();
             setInterval(update, 1000);
