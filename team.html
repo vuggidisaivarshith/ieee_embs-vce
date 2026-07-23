@@ -120,12 +120,17 @@
             letter-spacing: 1px;
             box-shadow: 0 6px 16px rgba(0,0,0,0.12);
             flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
         }
         .avatar img {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
+            z-index: 2;
         }
         /* Gradient avatars per role */
         .av-1  { background: linear-gradient(135deg, #00629B, #0099CC); }
@@ -187,6 +192,17 @@
             font-size: 2.5rem; font-weight: 700; color: white;
             flex-shrink: 0;
             box-shadow: 0 8px 24px rgba(123,44,137,0.25);
+            position: relative;
+            overflow: hidden;
+        }
+        .faculty-avatar img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            z-index: 2;
         }
         .faculty-details { text-align: left; flex: 1; }
         .faculty-details .member-name { font-size: 1.5rem; margin-bottom: 6px; }
