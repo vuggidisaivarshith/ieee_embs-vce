@@ -514,18 +514,22 @@
                                     <label>Photo Title *</label>
                                     <input type="text" id="photoTitle" required placeholder="e.g. Digital Health Talk 2026 Group Photo">
                                 </div>
-                                <div class="form-group full-width">
-                                    <label>Image URL *</label>
-                                    <input type="url" id="photoUrl" required placeholder="https://example.com/photo.jpg">
+                                <div class="form-group">
+                                    <label>Upload Image File (from device)</label>
+                                    <input type="file" id="photoFile" accept="image/*">
                                 </div>
                                 <div class="form-group">
+                                    <label>OR Image Web URL</label>
+                                    <input type="url" id="photoUrl" placeholder="https://example.com/photo.jpg">
+                                </div>
+                                <div class="form-group full-width">
                                     <label>Category</label>
-                                    <input type="text" id="photoCategory" placeholder="e.g. Expert Talk / Workshop">
+                                    <input type="text" id="photoCategory" placeholder="e.g. Expert Talk / Workshop / Event">
                                 </div>
                             </div>
                             <div style="margin-top:16px; display:flex; gap:10px; justify-content:flex-end;">
                                 <button type="button" class="btn-logout" style="color:#64748B;" onclick="toggleForm('galleryFormCard')">Cancel</button>
-                                <button type="submit" class="btn-add">Save Photo</button>
+                                <button type="submit" class="btn-add" id="gallerySaveBtn"><i class="fas fa-upload"></i> Save & Publish Photo</button>
                             </div>
                         </form>
                     </div>
@@ -778,14 +782,51 @@
 
         function saveGalleryPhoto(e) {
             e.preventDefault();
-            db.collection('gallery').add({
-                title: document.getElementById('photoTitle').value,
-                url: document.getElementById('photoUrl').value,
-                category: document.getElementById('photoCategory').value,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => {
-                toggleForm('galleryFormCard');
-            });
+            const btn = document.getElementById('gallerySaveBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            btn.disabled = true;
+
+            const title = document.getElementById('photoTitle').value;
+            const category = document.getElementById('photoCategory').value || 'Event';
+            const urlInput = document.getElementById('photoUrl').value;
+            const fileInput = document.getElementById('photoFile');
+
+            function saveToFirestore(finalUrl) {
+                db.collection('gallery').add({
+                    title: title,
+                    url: finalUrl,
+                    category: category,
+                    author: currentUser.displayName || currentUser.email,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(() => {
+                    document.getElementById('photoTitle').value = '';
+                    document.getElementById('photoUrl').value = '';
+                    document.getElementById('photoCategory').value = '';
+                    fileInput.value = '';
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    toggleForm('galleryFormCard');
+                }).catch(err => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    alert('Error saving photo: ' + err.message);
+                });
+            }
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    saveToFirestore(event.target.result);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else if (urlInput) {
+                saveToFirestore(urlInput);
+            } else {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                alert('Please select an image file or enter an image URL.');
+            }
         }
 
         function deleteGalleryPhoto(id) {

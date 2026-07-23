@@ -667,28 +667,28 @@
 
             <!-- FEATURED EVENT CARD -->
             <div class="featured-card-wrapper">
-                <div class="featured-card">
-                    <span class="event-label">Upcoming Event</span>
-                    <h3 class="event-title">Expert Talk on Digital Health, Telemedicine & Remote Patient Monitoring</h3>
+                <div class="featured-card" id="homeFeaturedCard">
+                    <span class="event-label" id="homeEventBadge">Upcoming Event</span>
+                    <h3 class="event-title" id="homeEventTitle">Expert Talk on Digital Health, Telemedicine & Remote Patient Monitoring</h3>
                     
                     <div class="event-details">
                         <div class="event-detail-item">
                             <i class="fas fa-user-md"></i>
-                            <span>Dr. Ajit Kumar, XIM University</span>
+                            <span id="homeEventSpeaker">Dr. Ajit Kumar, XIM University</span>
                         </div>
                         <div class="event-detail-item">
                             <i class="far fa-calendar-alt"></i>
-                            <span>13 August 2026 | 6:00 PM IST</span>
+                            <span id="homeEventDate">13 August 2026 | 6:00 PM IST</span>
                         </div>
                         <div class="event-detail-item">
                             <i class="fas fa-globe"></i>
-                            <span>Online Event</span>
+                            <span id="homeEventMode">Online Event</span>
                         </div>
                     </div>
 
                     <div class="event-footer">
-                        <a href="events/digital-health-talk/" class="btn btn-primary">Register Now</a>
-                        <span class="deadline-note">Deadline: 12 Aug 2026</span>
+                        <a href="events/digital-health-talk/" id="homeEventLink" class="btn btn-primary">Register Now</a>
+                        <span class="deadline-note" id="homeEventDeadline">Deadline: 12 Aug 2026</span>
                     </div>
                 </div>
             </div>
@@ -903,7 +903,7 @@
             setInterval(update, 1000);
         })();
 
-        // ── Live Announcements Listener ──
+        // ── Live Announcements & Featured Event Listener ──
         try {
             firebase.initializeApp(firebaseConfig);
             const db = firebase.firestore();
@@ -916,9 +916,23 @@
                         annBar.id = 'announcementTickerBar';
                         annBar.style.cssText = 'background: linear-gradient(90deg, #F59E0B, #D97706); color: #78350F; font-weight: 600; text-align: center; padding: 8px 16px; font-size: 0.9rem; position: fixed; top: 0; left: 0; right: 0; z-index: 1001; box-shadow: 0 2px 8px rgba(0,0,0,0.15); font-family: Outfit, sans-serif; display: flex; align-items: center; justify-content: center; gap: 10px;';
                         document.body.prepend(annBar);
-                        document.querySelector('.navbar').style.top = '36px';
+                        const nav = document.querySelector('nav');
+                        if (nav) nav.style.top = '36px';
                     }
-                    annBar.innerHTML = `<i class="fas fa-bullhorn"></i> <span>${ann.text}</span> <button onclick="this.parentElement.remove(); document.querySelector('.navbar').style.top='0';" style="background:none; border:none; color:#78350F; cursor:pointer; margin-left:12px; font-size:1.1rem;">&times;</button>`;
+                    annBar.innerHTML = `<i class="fas fa-bullhorn"></i> <span>${ann.text}</span> <button onclick="this.parentElement.remove(); const n=document.querySelector('nav'); if(n) n.style.top='0';" style="background:none; border:none; color:#78350F; cursor:pointer; margin-left:12px; font-size:1.1rem;">&times;</button>`;
+                }
+            });
+
+            // Live Featured Upcoming Event
+            db.collection('events').where('status', '==', 'upcoming').limit(1).onSnapshot(snapshot => {
+                if (!snapshot.empty) {
+                    const doc = snapshot.docs[0];
+                    const ev = doc.data();
+                    if (document.getElementById('homeEventTitle')) document.getElementById('homeEventTitle').textContent = ev.title;
+                    if (document.getElementById('homeEventSpeaker')) document.getElementById('homeEventSpeaker').textContent = (ev.speaker || '') + (ev.speakerOrg ? ', ' + ev.speakerOrg : '');
+                    if (document.getElementById('homeEventDate')) document.getElementById('homeEventDate').textContent = (ev.date || '') + (ev.time ? ' | ' + ev.time : '');
+                    if (document.getElementById('homeEventMode')) document.getElementById('homeEventMode').textContent = ev.mode || 'Online Event';
+                    if (document.getElementById('homeEventLink')) document.getElementById('homeEventLink').href = ev.slug || ('events/event.html?id=' + doc.id);
                 }
             });
         } catch(e) {
