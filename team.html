@@ -11,25 +11,17 @@
     <style>
         /* ---- Page Hero ---- */
         .page-hero {
-            background: linear-gradient(135deg, #0F172A, #1E1B4B);
+            background: var(--hero-gradient);
             color: white;
             padding: 140px 0 80px;
             text-align: center;
             position: relative;
             overflow: hidden;
         }
-        .page-hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 70% 30%, rgba(0,181,226,0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 30% 70%, rgba(123,44,137,0.2) 0%, transparent 50%);
-        }
-        .page-hero .container { position: relative; z-index: 1; }
         .page-hero .badge {
             display: inline-block;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
             padding: 6px 18px;
             border-radius: 50px;
             font-size: 0.8rem;
@@ -39,7 +31,7 @@
             margin-bottom: 20px;
         }
         .page-hero h1 { color: white; font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 16px; }
-        .page-hero p { color: #CBD5E1; font-size: 1.1rem; max-width: 560px; margin: 0 auto; }
+        .page-hero p { color: rgba(255,255,255,0.85); font-size: 1.1rem; max-width: 560px; margin: 0 auto; }
 
         /* ---- Info Banner ---- */
         .info-banner {
@@ -51,7 +43,7 @@
             align-items: center;
             gap: 12px;
             max-width: 700px;
-            margin: 0 auto 56px;
+            margin: 0 auto 48px;
             font-size: 0.95rem;
             color: var(--primary);
         }
@@ -62,7 +54,7 @@
             display: flex;
             align-items: center;
             gap: 16px;
-            margin-bottom: 40px;
+            margin-bottom: 36px;
         }
         .section-label h2 { font-size: 1.8rem; margin: 0; }
         .section-label::after {
@@ -76,33 +68,36 @@
         .team-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
-            margin-bottom: 64px;
+            gap: 28px;
+            margin-bottom: 56px;
         }
 
         /* ---- Team Card ---- */
         .team-card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 20px;
             padding: 32px 24px;
             text-align: center;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+            box-shadow: var(--card-shadow);
             border: 1px solid var(--border);
-            transition: all 0.25s ease;
+            transition: var(--transition);
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .team-card::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0;
             height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            background: linear-gradient(90deg, var(--primary), var(--accent));
             transform: scaleX(0);
             transform-origin: left;
             transition: transform 0.3s ease;
         }
-        .team-card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(0,98,155,0.13); }
+        .team-card:hover { transform: translateY(-6px); box-shadow: var(--card-shadow-hover); }
         .team-card:hover::before { transform: scaleX(1); }
 
         /* Avatar & Crop Standardization */
@@ -122,7 +117,7 @@
             flex-shrink: 0;
             position: relative;
             overflow: hidden;
-            background: linear-gradient(135deg, #00629B, #0D9488);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             border: 3px solid rgba(255,255,255,0.9);
         }
         .avatar img, .faculty-avatar img {
@@ -135,14 +130,8 @@
             object-position: center top;
             z-index: 2;
         }
-        /* Gradient avatars per role */
-        .av-1  { background: linear-gradient(135deg, #00629B, #0099CC); }
-        .av-2  { background: linear-gradient(135deg, #003D6B, #00629B); }
-        .av-3  { background: linear-gradient(135deg, #059669, #10B981); }
-        .av-4  { background: linear-gradient(135deg, #D97706, #F59E0B); }
-        .av-fac{ background: linear-gradient(135deg, #00629B, #0D9488); }
 
-        .member-name { font-size: 1.2rem; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+        .member-name { font-size: 1.2rem; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
         .member-role {
             font-size: 0.88rem; font-weight: 600; color: var(--primary);
             text-transform: uppercase; letter-spacing: 1px;
@@ -157,7 +146,7 @@
             justify-content: center;
             gap: 8px;
             font-size: 0.88rem;
-            color: var(--muted);
+            color: var(--text-muted);
         }
         .info-row i { color: var(--accent); width: 14px; flex-shrink: 0; }
         .info-row a { color: var(--primary); }
@@ -167,17 +156,17 @@
         .social-ico {
             width: 36px; height: 36px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            background: var(--light); color: var(--muted); font-size: 0.9rem;
+            background: var(--bg); color: var(--text-muted); font-size: 0.9rem;
             border: 1px solid var(--border); transition: all 0.2s;
         }
         .social-ico:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
         /* ---- Faculty Section ---- */
         .faculty-section {
-            background: linear-gradient(135deg, rgba(0,98,155,0.04), rgba(13,148,136,0.04));
+            background: var(--bg-alt);
             border-radius: 24px;
             padding: 40px 32px;
-            border: 1px solid rgba(0,98,155,0.12);
+            border: 1px solid var(--border);
             margin-bottom: 48px;
         }
         .faculty-card {
@@ -195,7 +184,7 @@
 
         /* ---- CTA Section ---- */
         .cta-box {
-            background: linear-gradient(135deg, #001B44 0%, #003D6B 50%, #00629B 100%);
+            background: var(--hero-gradient);
             border-radius: 20px;
             padding: 44px 32px;
             text-align: center;
@@ -207,13 +196,12 @@
         .cta-box p { color: rgba(255,255,255,0.85); margin-bottom: 24px; }
         .btn-cta-white {
             display: inline-flex; align-items: center; gap: 8px;
-            background: #F59E0B; color: white; padding: 12px 28px;
+            background: var(--cta-amber); color: white; padding: 12px 28px;
             border-radius: 50px; font-weight: 700; font-size: 0.95rem;
             transition: all 0.2s; box-shadow: 0 4px 15px rgba(245,158,11,0.4);
         }
-        .btn-cta-white:hover { background: #D97706; color: white; transform: translateY(-2px); }
+        .btn-cta-white:hover { background: var(--cta-amber-hover); color: white; transform: translateY(-2px); }
 
-        /* ---- Responsive ---- */
         @media (max-width: 640px) {
             .faculty-card { flex-direction: column; text-align: center; }
             .faculty-details { text-align: center; }
@@ -222,6 +210,11 @@
             .faculty-section { padding: 32px 20px; }
         }
     </style>
+
+    <!-- Firebase SDK Compat -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
 </head>
 <body>
 
@@ -231,7 +224,7 @@
         <div class="preloader-bar"><div class="preloader-progress"></div></div>
     </div>
 
-    <!-- Navbar -->
+    <!-- NAVBAR -->
     <nav class="navbar">
         <div class="navbar-container">
             <div class="nav-brand-logos">
@@ -259,7 +252,7 @@
 
     <!-- Page Hero -->
     <header class="page-hero">
-        <div class="container">
+        <div class="container" style="max-width:1200px; margin:0 auto;">
             <div class="badge">2025–26 Executive Committee</div>
             <h1>Meet the Team</h1>
             <p>The dedicated students and faculty driving IEEE EMBS Vardhaman forward every day.</p>
@@ -267,132 +260,39 @@
     </header>
 
     <!-- Main Content -->
-    <main class="section" style="padding-bottom: 40px;">
-        <div class="container">
+    <main class="section" style="padding:60px 5% 30px; max-width:1240px; margin:0 auto;">
 
-            <!-- Info Note -->
-            <div class="info-banner">
-                <i class="fas fa-info-circle"></i>
-                <span>To update team member details — name, department, LinkedIn, or photo — contact the Secretary (Vuggidi Sai Varshith).</span>
-            </div>
-
-            <!-- Student Office Bearers -->
-            <div class="section-label">
-                <h2>Student Office Bearers</h2>
-            </div>
-
-            <div class="team-grid">
-
-                <!-- Vuggidi Sai Varshith — Secretary -->
-                <div class="team-card">
-                    <div class="avatar av-1">
-                        <img src="assets/secretary.png" alt="Vuggidi Sai Varshith" onerror="this.style.display='none';">
-                        <span>VSV</span>
-                    </div>
-                    <div class="member-name">Vuggidi Sai Varshith</div>
-                    <div class="member-role">Secretary</div>
-                    <div class="member-info">
-                        <div class="info-row"><i class="fas fa-graduation-cap"></i> <span>4th Year · IT Dept</span></div>
-                        <div class="info-row"><i class="fas fa-envelope"></i> <a href="mailto:vuggidisaivarshith@gmail.com">vuggidisaivarshith@gmail.com</a></div>
-                        <div class="info-row"><i class="fas fa-phone"></i> <a href="tel:9059573313">+91 9059573313</a></div>
-                    </div>
-                    <div class="member-socials">
-                        <a href="https://www.linkedin.com/in/vuggidisaivarshith/" target="_blank" class="social-ico" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="mailto:vuggidisaivarshith@gmail.com" class="social-ico" title="Email"><i class="fas fa-envelope"></i></a>
-                    </div>
-                </div>
-
-                <!-- Maruthi Sai Teja — Chairperson -->
-                <div class="team-card">
-                    <div class="avatar av-2">
-                        <img src="assets/chair.jpeg" alt="Maruthi Sai Teja" onerror="this.src='assets/speaker.jpeg'; this.onerror=function(){this.style.display='none';};">
-                        <span>MST</span>
-                    </div>
-                    <div class="member-name">Maruthi Sai Teja</div>
-                    <div class="member-role">Chairperson</div>
-                    <div class="member-info">
-                        <div class="info-row"><i class="fas fa-graduation-cap"></i> <span>4th Year · IT Dept</span></div>
-                        <div class="info-row"><i class="fas fa-envelope"></i> <a href="mailto:maruthisaiteja9@gmail.com">maruthisaiteja9@gmail.com</a></div>
-                        <div class="info-row"><i class="fas fa-phone"></i> <a href="tel:9490298994">+91 9490298994</a></div>
-                    </div>
-                    <div class="member-socials">
-                        <a href="https://www.linkedin.com/in/pillimaruthisaiteja/" target="_blank" class="social-ico" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="mailto:maruthisaiteja9@gmail.com" class="social-ico" title="Email"><i class="fas fa-envelope"></i></a>
-                    </div>
-                </div>
-
-                <!-- Vigrahala Jahnavi — Vice Chairperson -->
-                <div class="team-card">
-                    <div class="avatar av-3">
-                        <img src="assets/vice.jpeg" alt="Vigrahala Jahnavi" onerror="this.src='assets/vicechair.png'; this.onerror=function(){this.style.display='none';};">
-                        <span>VJ</span>
-                    </div>
-                    <div class="member-name">Vigrahala Jahnavi</div>
-                    <div class="member-role">Vice Chairperson</div>
-                    <div class="member-info">
-                        <div class="info-row"><i class="fas fa-graduation-cap"></i> <span>4th Year · IT Dept</span></div>
-                        <div class="info-row"><i class="fas fa-envelope"></i> <a href="mailto:jahnavivigrahala@gmail.com">jahnavivigrahala@gmail.com</a></div>
-                        <div class="info-row"><i class="fas fa-phone"></i> <a href="tel:8688909558">+91 8688909558</a></div>
-                    </div>
-                    <div class="member-socials">
-                        <a href="https://www.linkedin.com/in/jahnavi-vigrahala-94aa9034a/" target="_blank" class="social-ico" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="mailto:jahnavivigrahala@gmail.com" class="social-ico" title="Email"><i class="fas fa-envelope"></i></a>
-                    </div>
-                </div>
-
-                <!-- Tanmay Challa — Treasurer & Webmaster -->
-                <div class="team-card">
-                    <div class="avatar av-4">
-                        <img src="assets/treasurer.jpeg" alt="Tanmay Challa" onerror="this.src='assets/webmaster.jpeg'; this.onerror=function(){this.style.display='none';};">
-                        <span>TC</span>
-                    </div>
-                    <div class="member-name">Tanmay Challa</div>
-                    <div class="member-role">Treasurer & Webmaster</div>
-                    <div class="member-info">
-                        <div class="info-row"><i class="fas fa-graduation-cap"></i> <span>4th Year · IT Dept</span></div>
-                        <div class="info-row"><i class="fas fa-envelope"></i> <a href="mailto:tanmaychalla@gmail.com">tanmaychalla@gmail.com</a></div>
-                        <div class="info-row"><i class="fas fa-phone"></i> <a href="tel:7093811232">+91 7093811232</a></div>
-                    </div>
-                    <div class="member-socials">
-                        <a href="https://www.linkedin.com/in/tanmay-challa" target="_blank" class="social-ico" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="mailto:tanmaychalla@gmail.com" class="social-ico" title="Email"><i class="fas fa-envelope"></i></a>
-                    </div>
-                </div>
-
-            </div><!-- /team-grid -->
-
-            <!-- Faculty Section -->
-            <div class="section-label">
-                <h2>Faculty Co-ordinator</h2>
-            </div>
-
-            <div class="faculty-section">
-                <div class="faculty-card">
-                    <div class="faculty-avatar av-fac">
-                        <img src="assets/faculty.jpeg" alt="Polisetty Swetha" onerror="this.src='assets/speaker.jpeg'; this.onerror=function(){this.style.display='none';};">
-                        <span>PS</span>
-                    </div>
-                    <div class="faculty-details">
-                        <div class="member-name">Polisetty Swetha</div>
-                        <div class="member-role">Faculty Co-ordinator (IEEE EMBS)</div>
-                        <div class="member-info">
-                            <div class="info-row"><i class="fas fa-building"></i> <span>Department of Information Technology</span></div>
-                            <div class="info-row"><i class="fas fa-phone"></i> <a href="tel:7993136780">+91 7993136780</a></div>
-                            <div class="info-row"><i class="fas fa-envelope"></i> <a href="mailto:swethabharath27@vardhaman.org">swethabharath27@vardhaman.org</a></div>
-                            <div class="info-row"><i class="fas fa-map-marker-alt"></i> <span>Vardhaman College of Engineering, Hyderabad</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CTA -->
-            <div class="cta-box">
-                <h3>Interested in joining the executive committee?</h3>
-                <p>We're always looking for passionate students to take leadership roles and help grow the chapter.</p>
-                <a href="contact.html" class="btn-cta-white"><i class="fas fa-paper-plane"></i> Contact Us</a>
-            </div>
-
+        <!-- Info Note -->
+        <div class="info-banner">
+            <i class="fas fa-info-circle"></i>
+            <span>To update team member details — name, department, LinkedIn, or photo — contact the Secretary (Vuggidi Sai Varshith).</span>
         </div>
+
+        <!-- Student Office Bearers Section -->
+        <div class="section-label">
+            <h2>Student Office Bearers</h2>
+        </div>
+
+        <div class="team-grid" id="studentsTeamGrid">
+            <!-- Dynamic Firestore Student Cards -->
+        </div>
+
+        <!-- Faculty Section -->
+        <div class="section-label">
+            <h2>Faculty Co-ordinator</h2>
+        </div>
+
+        <div class="faculty-section" id="facultyContainer">
+            <!-- Dynamic Firestore Faculty Card -->
+        </div>
+
+        <!-- CTA Box -->
+        <div class="cta-box">
+            <h3>Interested in joining the executive committee?</h3>
+            <p>We're always looking for passionate students to take leadership roles and help grow the chapter.</p>
+            <a href="contact.html" class="btn-cta-white"><i class="fas fa-paper-plane"></i> Contact Us</a>
+        </div>
+
     </main>
 
     <!-- FOOTER -->
@@ -444,5 +344,118 @@
     </footer>
 
     <script src="js/shared.js"></script>
+    <script>
+        function getInitials(name) {
+            if (!name) return "EMBS";
+            const parts = name.trim().split(" ");
+            if (parts.length === 1) return parts[0].substr(0, 2).toUpperCase();
+            return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+        }
+
+        function renderTeamMemberCard(m) {
+            const initials = getInitials(m.name);
+            const photoImg = m.photoUrl ? `<img src="${m.photoUrl}" alt="${m.name}" onerror="this.style.display='none';">` : '';
+            const phoneClean = m.phone ? m.phone.replace(/[^0-9+]/g, '') : '';
+            
+            return `
+                <div class="team-card animate-fade-up">
+                    <div class="avatar">
+                        ${photoImg}
+                        <span>${initials}</span>
+                    </div>
+                    <div>
+                        <div class="member-name">${m.name}</div>
+                        <div class="member-role">${m.role}</div>
+                        <div class="member-info">
+                            ${m.year || m.department ? `<div class="info-row"><i class="fas fa-graduation-cap"></i> <span>${m.year ? m.year + ' · ' : ''}${m.department || ''}</span></div>` : ''}
+                            ${m.email ? `<div class="info-row"><i class="fas fa-envelope"></i> <a href="mailto:${m.email}">${m.email}</a></div>` : ''}
+                            ${m.phone ? `<div class="info-row"><i class="fas fa-phone"></i> <a href="tel:${phoneClean}">${m.phone}</a></div>` : ''}
+                        </div>
+                    </div>
+                    <div class="member-socials">
+                        ${m.linkedin ? `<a href="${m.linkedin}" target="_blank" class="social-ico" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>` : ''}
+                        ${m.email ? `<a href="mailto:${m.email}" class="social-ico" title="Email"><i class="fas fa-envelope"></i></a>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderFacultyCard(m) {
+            const initials = getInitials(m.name);
+            const photoImg = m.photoUrl ? `<img src="${m.photoUrl}" alt="${m.name}" onerror="this.style.display='none';">` : '';
+            const phoneClean = m.phone ? m.phone.replace(/[^0-9+]/g, '') : '';
+
+            return `
+                <div class="faculty-card animate-fade-up">
+                    <div class="faculty-avatar av-fac">
+                        ${photoImg}
+                        <span>${initials}</span>
+                    </div>
+                    <div class="faculty-details">
+                        <div class="member-name">${m.name}</div>
+                        <div class="member-role">${m.role}</div>
+                        <div class="member-info">
+                            ${m.department ? `<div class="info-row"><i class="fas fa-building"></i> <span>${m.department}</span></div>` : ''}
+                            ${m.phone ? `<div class="info-row"><i class="fas fa-phone"></i> <a href="tel:${phoneClean}">${m.phone}</a></div>` : ''}
+                            ${m.email ? `<div class="info-row"><i class="fas fa-envelope"></i> <a href="mailto:${m.email}">${m.email}</a></div>` : ''}
+                            <div class="info-row"><i class="fas fa-map-marker-alt"></i> <span>Vardhaman College of Engineering, Hyderabad</span></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadTeamPageData() {
+            const studentGrid = document.getElementById('studentsTeamGrid');
+            const facultyContainer = document.getElementById('facultyContainer');
+
+            if (!db) {
+                renderFallbackTeam();
+                return;
+            }
+
+            db.collection('team')
+              .where('active', '==', true)
+              .get()
+              .then(snapshot => {
+                  if (snapshot.empty) {
+                      renderFallbackTeam();
+                      return;
+                  }
+
+                  let members = [];
+                  snapshot.forEach(doc => {
+                      members.push({ id: doc.id, ...doc.data() });
+                  });
+
+                  members.sort((a, b) => (a.order || 99) - (b.order || 99));
+
+                  const students = members.filter(m => m.category !== 'faculty');
+                  const faculty = members.filter(m => m.category === 'faculty');
+
+                  studentGrid.innerHTML = students.map(renderTeamMemberCard).join('');
+                  facultyContainer.innerHTML = faculty.length > 0 
+                      ? faculty.map(renderFacultyCard).join('') 
+                      : renderFacultyCard(DEFAULT_TEAM_MEMBERS[0]);
+              })
+              .catch(err => {
+                  console.log('Firestore team query fallback:', err);
+                  renderFallbackTeam();
+              });
+        }
+
+        function renderFallbackTeam() {
+            const studentGrid = document.getElementById('studentsTeamGrid');
+            const facultyContainer = document.getElementById('facultyContainer');
+
+            const students = DEFAULT_TEAM_MEMBERS.filter(m => m.category !== 'faculty');
+            const faculty = DEFAULT_TEAM_MEMBERS.filter(m => m.category === 'faculty');
+
+            studentGrid.innerHTML = students.map(renderTeamMemberCard).join('');
+            facultyContainer.innerHTML = faculty.map(renderFacultyCard).join('');
+        }
+
+        loadTeamPageData();
+    </script>
 </body>
 </html>

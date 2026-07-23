@@ -725,19 +725,19 @@
     <section class="stats-section">
         <div class="stats-grid">
             <div class="stat-item">
-                <span class="stat-number"><span class="counter" data-target="85">0</span>+</span>
+                <span class="stat-number"><span class="counter" data-stat="members" data-target="85">0</span>+</span>
                 <span class="stat-label">Members</span>
             </div>
             <div class="stat-item">
-                <span class="stat-number"><span class="counter" data-target="12">0</span>+</span>
+                <span class="stat-number"><span class="counter" data-stat="events" data-target="12">0</span>+</span>
                 <span class="stat-label">Events</span>
             </div>
             <div class="stat-item">
-                <span class="stat-number"><span class="counter" data-target="3">0</span>+</span>
+                <span class="stat-number"><span class="counter" data-stat="years" data-target="3">0</span>+</span>
                 <span class="stat-label">Years Active</span>
             </div>
             <div class="stat-item">
-                <span class="stat-number"><span class="counter" data-target="5">0</span>+</span>
+                <span class="stat-number"><span class="counter" data-stat="awards" data-target="5">0</span>+</span>
                 <span class="stat-label">Awards</span>
             </div>
         </div>
@@ -1049,6 +1049,19 @@
     <script src="js/firebase-config.js"></script>
     <script src="js/shared.js"></script>
     <script>
+        // ── Live Site Config Stats Loader ──
+        if (typeof db !== 'undefined' && db) {
+            db.collection('siteConfig').doc('homepage').get().then(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.membersCount != null) document.querySelector('[data-stat="members"]')?.setAttribute('data-target', data.membersCount);
+                    if (data.eventsCount != null) document.querySelector('[data-stat="events"]')?.setAttribute('data-target', data.eventsCount);
+                    if (data.yearsActive != null) document.querySelector('[data-stat="years"]')?.setAttribute('data-target', data.yearsActive);
+                    if (data.awardsCount != null) document.querySelector('[data-stat="awards"]')?.setAttribute('data-target', data.awardsCount);
+                }
+            }).catch(err => console.log('siteConfig Firestore note:', err));
+        }
+
         // ── Counter Animation ──
         const counters = document.querySelectorAll('.counter');
         const obs = new IntersectionObserver(entries => {

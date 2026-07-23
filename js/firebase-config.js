@@ -9,7 +9,16 @@ const firebaseConfig = {
   measurementId: "G-W1HX22X4YY"
 };
 
-// List of authorized admin emails
+// Initialize Firebase App & Services safely
+if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+const db = typeof firebase !== 'undefined' ? firebase.firestore() : null;
+const auth = typeof firebase !== 'undefined' ? firebase.auth() : null;
+const storage = typeof firebase !== 'undefined' ? firebase.storage() : null;
+
+// List of authorized admin emails (Strict Admin Access)
 const AUTHORIZED_ADMIN_EMAILS = [
   "vuggidisaivarshith@gmail.com",
   "maruthisaiteja9@gmail.com",
@@ -19,10 +28,91 @@ const AUTHORIZED_ADMIN_EMAILS = [
   "pollishetty.swetha@vardhaman.org"
 ];
 
-// Check if email is admin
+// Check if email is authorized admin
 function isAuthorizedAdmin(email) {
   if (!email) return false;
-  // If list is non-empty, check against allowed list (case-insensitive)
   const lower = email.toLowerCase().trim();
   return AUTHORIZED_ADMIN_EMAILS.some(a => a.toLowerCase().trim() === lower);
 }
+
+// Initial Team Dataset (Fallback if Firestore collection is empty)
+const DEFAULT_TEAM_MEMBERS = [
+  {
+    id: "faculty-swetha",
+    name: "Polisetty Swetha",
+    role: "Faculty Co-ordinator (IEEE EMBS)",
+    department: "Department of Information Technology",
+    year: "Faculty",
+    email: "swethabharath27@vardhaman.org",
+    phone: "+91 7993136780",
+    linkedin: "",
+    photoUrl: "assets/faculty.jpeg",
+    category: "faculty",
+    order: 1,
+    active: true
+  },
+  {
+    id: "secretary-varshith",
+    name: "Vuggidi Sai Varshith",
+    role: "Secretary",
+    department: "IT Dept",
+    year: "4th Year",
+    email: "vuggidisaivarshith@gmail.com",
+    phone: "+91 9059573313",
+    linkedin: "https://www.linkedin.com/in/vuggidisaivarshith/",
+    photoUrl: "assets/secretary.png",
+    category: "student",
+    order: 2,
+    active: true
+  },
+  {
+    id: "chair-teja",
+    name: "Maruthi Sai Teja",
+    role: "Chairperson",
+    department: "IT Dept",
+    year: "4th Year",
+    email: "maruthisaiteja9@gmail.com",
+    phone: "+91 9490298994",
+    linkedin: "https://www.linkedin.com/in/pillimaruthisaiteja/",
+    photoUrl: "assets/chair.jpeg",
+    category: "student",
+    order: 3,
+    active: true
+  },
+  {
+    id: "vice-jahnavi",
+    name: "Vigrahala Jahnavi",
+    role: "Vice Chairperson",
+    department: "IT Dept",
+    year: "4th Year",
+    email: "jahnavivigrahala@gmail.com",
+    phone: "+91 8688909558",
+    linkedin: "https://www.linkedin.com/in/jahnavi-vigrahala-94aa9034a/",
+    photoUrl: "assets/vice.jpeg",
+    category: "student",
+    order: 4,
+    active: true
+  },
+  {
+    id: "treasurer-tanmay",
+    name: "Tanmay Challa",
+    role: "Treasurer & Webmaster",
+    department: "IT Dept",
+    year: "4th Year",
+    email: "tanmaychalla@gmail.com",
+    phone: "+91 7093811232",
+    linkedin: "https://www.linkedin.com/in/tanmay-challa",
+    photoUrl: "assets/treasurer.jpeg",
+    category: "student",
+    order: 5,
+    active: true
+  }
+];
+
+// Initial Site Stats Dataset (Fallback for siteConfig/homepage)
+const DEFAULT_SITE_STATS = {
+  membersCount: 85,
+  eventsCount: 12,
+  yearsActive: 3,
+  awardsCount: 5
+};

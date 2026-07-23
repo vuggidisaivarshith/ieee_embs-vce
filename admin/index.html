@@ -13,13 +13,14 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
     <script src="../js/firebase-config.js"></script>
 
     <style>
         :root {
-            --primary: #0F766E;
-            --primary-dark: #134E4A;
-            --secondary: #1B2A4A;
+            --primary: #00629B;
+            --primary-dark: #003D6B;
+            --secondary: #0D9488;
             --accent: #F59E0B;
             --dark: #0F172A;
             --light: #F8FAFC;
@@ -45,7 +46,7 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #0F766E 0%, #134E4A 100%);
+            background: linear-gradient(135deg, #003D6B 0%, #00629B 100%);
             padding: 20px;
         }
         .login-card {
@@ -98,75 +99,76 @@
         .btn-google:hover {
             border-color: var(--primary);
             background: #F8FAFC;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        .btn-google img { height: 20px; width: 20px; }
         .auth-error {
-            background: #FEF2F2;
-            color: var(--danger);
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 0.88rem;
             margin-top: 16px;
-            display: none;
+            padding: 12px;
+            background: #FEF2F2;
             border: 1px solid #FCA5A5;
-            text-align: left;
+            color: #991B1B;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            display: none;
         }
 
         /* Dashboard Screen */
         #dashboardScreen { display: none; }
         .admin-nav {
-            background: var(--dark);
+            background: var(--primary-dark);
             color: white;
-            padding: 0 5%;
-            height: 70px;
+            padding: 16px 32px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         .nav-brand {
             display: flex;
             align-items: center;
             gap: 12px;
             font-family: 'Sora', sans-serif;
-            font-size: 1.1rem;
             font-weight: 700;
+            font-size: 1.2rem;
         }
-        .nav-brand span {
-            background: linear-gradient(135deg, #2DD4BF, #0EA5E9);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        .user-profile { display: flex; align-items: center; gap: 16px; }
-        .user-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
         .user-details { text-align: right; }
         .user-name { font-weight: 600; font-size: 0.9rem; }
         .user-role { font-size: 0.75rem; color: #94A3B8; }
-        .btn-logout { background: rgba(255,255,255,0.1); border: none; color: white; padding: 8px 16px; border-radius: 50px; cursor: pointer; font-size: 0.85rem; font-weight: 500; transition: 0.2s; }
-        .btn-logout:hover { background: rgba(239,68,68,0.2); color: #FCA5A5; }
+        .btn-logout {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-left: 12px;
+        }
+        .btn-logout:hover { background: rgba(255,255,255,0.2); }
 
-        /* Container Layout */
         .dash-container {
-            max-width: 1280px;
-            margin: 30px auto;
-            padding: 0 20px;
             display: grid;
             grid-template-columns: 240px 1fr;
-            gap: 30px;
+            min-height: calc(100vh - 68px);
         }
-
         .admin-sidebar {
             background: white;
-            border-radius: var(--radius);
-            padding: 16px;
-            box-shadow: var(--shadow);
-            height: fit-content;
+            border-right: 1px solid var(--border);
+            padding: 24px 16px;
         }
+        .admin-content { padding: 32px; }
+
         .tab-btn {
             display: flex;
             align-items: center;
@@ -174,8 +176,8 @@
             width: 100%;
             padding: 12px 16px;
             border: none;
-            background: none;
-            border-radius: 8px;
+            border-radius: 10px;
+            background: transparent;
             font-size: 0.95rem;
             font-weight: 500;
             color: #64748B;
@@ -185,7 +187,7 @@
             margin-bottom: 6px;
         }
         .tab-btn:hover { background: #F1F5F9; color: var(--primary); }
-        .tab-btn.active { background: rgba(15,118,110,0.1); color: var(--primary); font-weight: 600; }
+        .tab-btn.active { background: rgba(0,98,155,0.1); color: var(--primary); font-weight: 600; }
 
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
@@ -204,10 +206,10 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 12px rgba(15,118,110,0.25);
+            box-shadow: 0 4px 12px rgba(0,98,155,0.25);
             transition: 0.2s;
         }
-        .btn-add:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(15,118,110,0.35); }
+        .btn-add:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,98,155,0.35); }
 
         /* Form Card */
         .form-card {
@@ -242,7 +244,7 @@
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(15,118,110,0.1);
+            box-shadow: 0 0 0 3px rgba(0,98,155,0.1);
         }
 
         /* Items List */
@@ -263,7 +265,9 @@
         .item-badge { background: #E0F2FE; color: #0369A1; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
         .badge-upcoming { background: #D1FAE5; color: #047857; }
         .badge-past { background: #F1F5F9; color: #64748B; }
-        
+        .badge-active { background: #D1FAE5; color: #047857; }
+        .badge-inactive { background: #FEE2E2; color: #991B1B; }
+
         .item-actions { display: flex; gap: 8px; }
         .btn-icon {
             width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border);
@@ -290,7 +294,7 @@
                 <img src="../assets/vardhaman-logo.png" alt="VCE Logo">
             </div>
             <h1>IEEE EMBS Admin Portal</h1>
-            <p>Role-based content management portal for events, announcements, and photo gallery.</p>
+            <p>Admin-only portal for events, announcements, team roster, gallery, and site metrics.</p>
             
             <button class="btn-google" onclick="handleGoogleLogin()">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
@@ -330,6 +334,12 @@
                 <button class="tab-btn" onclick="switchTab('galleryTab', this)">
                     <i class="fas fa-images"></i> Photo Gallery
                 </button>
+                <button class="tab-btn" onclick="switchTab('teamTab', this)">
+                    <i class="fas fa-users"></i> Manage Team
+                </button>
+                <button class="tab-btn" onclick="switchTab('siteConfigTab', this)">
+                    <i class="fas fa-sliders-h"></i> Site Settings
+                </button>
                 <button class="tab-btn" onclick="switchTab('adminsTab', this)">
                     <i class="fas fa-user-shield"></i> Access & Rules
                 </button>
@@ -347,7 +357,7 @@
                         </button>
                     </div>
 
-                    <!-- Add/Edit Event Form (17+ Capturing Fields) -->
+                    <!-- Add/Edit Event Form -->
                     <div class="form-card" id="eventFormCard" style="display:none;">
                         <h3 style="margin-bottom:8px; font-size:1.2rem;" id="eventFormHeading">Create New Event</h3>
                         <p style="color:var(--muted); font-size:0.85rem; margin-bottom:20px;">Fill out event details below. Required fields marked with *</p>
@@ -425,7 +435,7 @@
                                     <textarea id="eventDesc" rows="3" placeholder="Full description of the session..."></textarea>
                                 </div>
 
-                                <div class="form-section-title">4. Links & Action Buttons (Smart Button Logic)</div>
+                                <div class="form-section-title">4. Links & Action Buttons</div>
 
                                 <div class="form-group">
                                     <label>Google Form Registration Link (If empty, Register button is hidden)</label>
@@ -505,7 +515,7 @@
                 <!-- GALLERY TAB -->
                 <div id="galleryTab" class="tab-panel">
                     <div class="panel-header">
-                        <h2 class="panel-title">Photo Gallery Uploads</h2>
+                        <h2 class="panel-title">Photo Gallery Uploads (Admin Only)</h2>
                         <button class="btn-add" onclick="toggleForm('galleryFormCard')">
                             <i class="fas fa-plus"></i> Upload Photo
                         </button>
@@ -520,7 +530,7 @@
                                     <input type="text" id="photoTitle" required placeholder="e.g. Digital Health Talk 2026 Group Photo">
                                 </div>
                                 <div class="form-group">
-                                    <label>Upload Image File (from device)</label>
+                                    <label>Upload Image File (Firebase Storage)</label>
                                     <input type="file" id="photoFile" accept="image/*">
                                 </div>
                                 <div class="form-group">
@@ -544,10 +554,128 @@
                     </div>
                 </div>
 
+                <!-- TEAM MANAGER TAB -->
+                <div id="teamTab" class="tab-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">Team Roster Management</h2>
+                        <button class="btn-add" onclick="resetAndShowTeamForm()">
+                            <i class="fas fa-plus"></i> Add Team Member
+                        </button>
+                    </div>
+
+                    <div class="form-card" id="teamFormCard" style="display:none;">
+                        <h3 style="margin-bottom:16px;" id="teamFormHeading">Add Team Member</h3>
+                        <form id="teamForm" onsubmit="saveTeamMember(event)">
+                            <input type="hidden" id="teamMemberId">
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Full Name *</label>
+                                    <input type="text" id="teamName" required placeholder="e.g. Vuggidi Sai Varshith">
+                                </div>
+                                <div class="form-group">
+                                    <label>Role / Position *</label>
+                                    <input type="text" id="teamRole" required placeholder="e.g. Secretary">
+                                </div>
+                                <div class="form-group">
+                                    <label>Category *</label>
+                                    <select id="teamCategory">
+                                        <option value="student">Student Office Bearer</option>
+                                        <option value="faculty">Faculty Co-ordinator</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Display Order *</label>
+                                    <input type="number" id="teamOrder" required value="1">
+                                </div>
+                                <div class="form-group">
+                                    <label>Year (e.g., 4th Year / Faculty)</label>
+                                    <input type="text" id="teamYear" placeholder="e.g. 4th Year">
+                                </div>
+                                <div class="form-group">
+                                    <label>Department</label>
+                                    <input type="text" id="teamDepartment" placeholder="e.g. IT Dept">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input type="email" id="teamEmail" placeholder="vuggidisaivarshith@gmail.com">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="text" id="teamPhone" placeholder="+91 9059573313">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>LinkedIn Profile URL</label>
+                                    <input type="url" id="teamLinkedin" placeholder="https://www.linkedin.com/in/username">
+                                </div>
+                                <div class="form-group">
+                                    <label>Upload Photo (Firebase Storage /team/)</label>
+                                    <input type="file" id="teamPhotoFile" accept="image/*">
+                                </div>
+                                <div class="form-group">
+                                    <label>OR Existing Photo URL</label>
+                                    <input type="text" id="teamPhotoUrl" placeholder="assets/secretary.png">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Active Status</label>
+                                    <select id="teamActive">
+                                        <option value="true">Active (Visible on Team Page)</option>
+                                        <option value="false">Inactive / Deactivated (Hidden)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div style="margin-top:20px; display:flex; gap:10px; justify-content:flex-end;">
+                                <button type="button" class="btn-logout" style="color:#64748B;" onclick="toggleForm('teamFormCard')">Cancel</button>
+                                <button type="submit" class="btn-add" id="teamSaveBtn"><i class="fas fa-save"></i> Save Member</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="items-grid" id="teamListContainer">
+                        <div class="empty-state"><i class="fas fa-spinner fa-spin"></i> Loading team roster...</div>
+                    </div>
+                </div>
+
+                <!-- SITE SETTINGS TAB -->
+                <div id="siteConfigTab" class="tab-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">Site Settings & Key Metrics</h2>
+                    </div>
+
+                    <div class="form-card">
+                        <h3 style="margin-bottom:16px;">Homepage Stats Counters</h3>
+                        <form onsubmit="saveSiteConfig(event)">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Members Count (e.g. 85)</label>
+                                    <input type="number" id="cfgMembers" required value="85">
+                                </div>
+                                <div class="form-group">
+                                    <label>Events Conducted (e.g. 12)</label>
+                                    <input type="number" id="cfgEvents" required value="12">
+                                </div>
+                                <div class="form-group">
+                                    <label>Years Active (e.g. 3)</label>
+                                    <input type="number" id="cfgYears" required value="3">
+                                </div>
+                                <div class="form-group">
+                                    <label>Awards Received (e.g. 5)</label>
+                                    <input type="number" id="cfgAwards" required value="5">
+                                </div>
+                            </div>
+
+                            <div style="margin-top:24px; display:flex; justify-content:flex-end;">
+                                <button type="submit" class="btn-add" id="cfgSaveBtn"><i class="fas fa-save"></i> Update Live Stats</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
                 <!-- ACCESS TAB -->
                 <div id="adminsTab" class="tab-panel">
                     <div class="panel-header">
-                        <h2 class="panel-title">Admin Permissions & Rules</h2>
+                        <h2 class="panel-title">Admin Access & Security Policy</h2>
                     </div>
                     <div class="form-card">
                         <h4 style="margin-bottom:12px; color:var(--dark);">Authorized Admin Emails:</h4>
@@ -556,11 +684,13 @@
                         </ul>
 
                         <div style="background:#F8FAFC; padding:16px; border-radius:8px; border:1px solid #E2E8F0; font-size:0.88rem; color:#475569;">
-                            <strong>Firestore Security Rules Matrix:</strong>
+                            <strong>Firestore Security Policy:</strong>
                             <ul style="margin-top:8px; margin-left:20px; line-height:1.8;">
-                                <li><code>events</code>: Only authorized admins can write / edit / delete. Public reads.</li>
-                                <li><code>announcements</code>: Only authorized admins can write / delete. Public reads.</li>
-                                <li><code>gallery</code>: Any authenticated member can upload photos. Public reads.</li>
+                                <li><code>events</code>: Admin-only write. Public read.</li>
+                                <li><code>announcements</code>: Admin-only write. Public read.</li>
+                                <li><code>gallery</code>: Admin-only write & upload. Public read.</li>
+                                <li><code>team</code>: Admin-only write & photo upload. Public read.</li>
+                                <li><code>siteConfig</code>: Admin-only write. Public read.</li>
                             </ul>
                         </div>
                     </div>
@@ -572,16 +702,16 @@
 
     <!-- JS Logic -->
     <script>
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-
-        let currentUser = null;
-        let eventsCache = [];
+        let teamCache = [];
 
         auth.onAuthStateChanged(user => {
             if (user) {
-                currentUser = user;
+                if (!isAuthorizedAdmin(user.email)) {
+                    alert('Access Denied: Only authorized IEEE EMBS Admin emails can access this dashboard.');
+                    auth.signOut();
+                    return;
+                }
+
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('dashboardScreen').style.display = 'block';
                 
@@ -592,9 +722,10 @@
                 loadEvents();
                 loadAnnouncements();
                 loadGallery();
+                loadTeamRoster();
+                loadSiteConfig();
                 renderAdminsList();
             } else {
-                currentUser = null;
                 document.getElementById('loginScreen').style.display = 'flex';
                 document.getElementById('dashboardScreen').style.display = 'none';
             }
@@ -604,11 +735,7 @@
             const provider = new firebase.auth.GoogleAuthProvider();
             auth.signInWithPopup(provider).catch(err => {
                 const errDiv = document.getElementById('authError');
-                if (err.code === 'auth/unauthorized-domain') {
-                    errDiv.textContent = `Domain "${window.location.hostname}" is not authorized in Firebase Console -> Authentication -> Settings -> Authorized domains.`;
-                } else {
-                    errDiv.textContent = err.message;
-                }
+                errDiv.textContent = err.message;
                 errDiv.style.display = 'block';
             });
         }
@@ -643,7 +770,7 @@
                 const container = document.getElementById('eventsListContainer');
                 eventsCache = [];
                 if (snapshot.empty) {
-                    container.innerHTML = `<div class="empty-state">No dynamic events found in database. Create your first event using the button above!</div>`;
+                    container.innerHTML = `<div class="empty-state">No dynamic events found in database. Create your first event above!</div>`;
                     return;
                 }
                 
@@ -652,7 +779,6 @@
                     const data = doc.data();
                     eventsCache.push({ id: doc.id, ...data });
 
-                    // Auto-determine status
                     const todayStr = new Date().toISOString().split('T')[0];
                     const isUpcoming = data.status === 'upcoming' || (data.status === 'auto' && data.eventDate >= todayStr) || (!data.status && data.date);
                     
@@ -666,12 +792,10 @@
                                     <span><i class="far fa-calendar-alt"></i> ${data.eventDate || data.date || ''}</span>
                                     <span><i class="far fa-clock"></i> ${data.time || ''}</span>
                                     <span><i class="fas fa-video"></i> ${data.mode || ''}</span>
-                                    ${data.googleFormLink ? '<span style="color:#059669"><i class="fas fa-check-circle"></i> Reg Form Connected</span>' : '<span style="color:#64748B"><i class="fas fa-times-circle"></i> No Reg Link</span>'}
                                 </div>
                             </div>
                             <div class="item-actions">
                                 <button class="btn-icon" onclick="editEvent('${doc.id}')" title="Edit Event"><i class="fas fa-edit"></i></button>
-                                <a href="../events/event.html?id=${doc.id}" target="_blank" class="btn-icon" title="Preview Event Page"><i class="fas fa-external-link-alt"></i></a>
                                 <button class="btn-icon delete" onclick="deleteEvent('${doc.id}')" title="Delete Event"><i class="fas fa-trash"></i></button>
                             </div>
                         </div>
@@ -679,38 +803,6 @@
                 });
                 container.innerHTML = html;
             });
-        }
-
-        function editEvent(id) {
-            const ev = eventsCache.find(e => e.id === id);
-            if (!ev) return;
-            document.getElementById('eventId').value = id;
-            document.getElementById('eventTitle').value = ev.title || '';
-            document.getElementById('eventDate').value = ev.eventDate || '';
-            document.getElementById('eventTime').value = ev.time || '';
-            document.getElementById('eventMode').value = ev.mode || '';
-            document.getElementById('eventTopic').value = ev.topic || '';
-            document.getElementById('eventStatus').value = ev.status || 'auto';
-            document.getElementById('eventMaxParticipants').value = ev.maxParticipants || '';
-            document.getElementById('eventSpeaker').value = ev.speaker || '';
-            document.getElementById('eventSpeakerDesignation').value = ev.speakerDesignation || '';
-            document.getElementById('eventSpeakerOrg').value = ev.speakerOrg || '';
-            document.getElementById('eventSpeakerBio').value = ev.speakerBio || '';
-            document.getElementById('eventPoster').value = ev.poster || '';
-            document.getElementById('eventBanner').value = ev.banner || '';
-            document.getElementById('eventDesc').value = ev.description || '';
-            document.getElementById('eventGoogleFormLink').value = ev.googleFormLink || '';
-            document.getElementById('eventGoogleSheetLink').value = ev.googleSheetLink || '';
-            document.getElementById('eventDeadline').value = ev.registrationDeadline || '';
-            document.getElementById('eventMeetingLink').value = ev.meetingLink || '';
-            document.getElementById('eventFeedbackFormLink').value = ev.feedbackFormLink || '';
-            document.getElementById('eventCertificateLink').value = ev.certificateLink || '';
-            document.getElementById('eventGalleryFolderLink').value = ev.galleryFolderLink || '';
-            document.getElementById('eventReportPdfLink').value = ev.reportPdfLink || '';
-
-            document.getElementById('eventFormHeading').textContent = 'Edit Event: ' + ev.title;
-            document.getElementById('eventFormCard').style.display = 'block';
-            document.getElementById('eventFormCard').scrollIntoView({ behavior: 'smooth' });
         }
 
         function saveEvent(e) {
@@ -723,7 +815,7 @@
             const eventData = {
                 title: document.getElementById('eventTitle').value,
                 eventDate: document.getElementById('eventDate').value,
-                date: document.getElementById('eventDate').value, // fallback compatibility
+                date: document.getElementById('eventDate').value,
                 time: document.getElementById('eventTime').value,
                 mode: document.getElementById('eventMode').value,
                 topic: document.getElementById('eventTopic').value,
@@ -747,9 +839,7 @@
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             };
 
-            if (!id) {
-                eventData.timestamp = firebase.firestore.FieldValue.serverTimestamp();
-            }
+            if (!id) eventData.timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
             const p = id ? db.collection('events').doc(id).update(eventData) : db.collection('events').add(eventData);
 
@@ -803,7 +893,7 @@
             const text = document.getElementById('annText').value;
             db.collection('announcements').add({
                 text: text,
-                author: currentUser.displayName || currentUser.email,
+                author: auth.currentUser.displayName || auth.currentUser.email,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
                 document.getElementById('annText').value = '';
@@ -817,7 +907,7 @@
             }
         }
 
-        // GALLERY
+        // GALLERY (Admin Uploads)
         function loadGallery() {
             db.collection('gallery').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
                 const container = document.getElementById('galleryListContainer');
@@ -850,54 +940,241 @@
         function saveGalleryPhoto(e) {
             e.preventDefault();
             const btn = document.getElementById('gallerySaveBtn');
-            const originalText = btn.innerHTML;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
             btn.disabled = true;
 
             const title = document.getElementById('photoTitle').value;
-            const category = document.getElementById('photoCategory').value || 'Event';
+            const category = document.getElementById('photoCategory').value || 'Events';
             const urlInput = document.getElementById('photoUrl').value;
             const fileInput = document.getElementById('photoFile');
 
-            function saveToFirestore(finalUrl) {
+            function commitGalleryDoc(finalUrl) {
                 db.collection('gallery').add({
                     title: title,
                     url: finalUrl,
                     category: category,
-                    author: currentUser.displayName || currentUser.email,
+                    author: auth.currentUser.email,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 }).then(() => {
                     document.getElementById('photoTitle').value = '';
                     document.getElementById('photoUrl').value = '';
                     document.getElementById('photoCategory').value = '';
                     fileInput.value = '';
-                    btn.innerHTML = originalText;
+                    btn.innerHTML = '<i class="fas fa-upload"></i> Save Photo';
                     btn.disabled = false;
                     toggleForm('galleryFormCard');
                 }).catch(err => {
-                    btn.innerHTML = originalText;
+                    btn.innerHTML = '<i class="fas fa-upload"></i> Save Photo';
                     btn.disabled = false;
-                    alert('Error saving photo: ' + err.message);
+                    alert('Error: ' + err.message);
                 });
             }
 
-            if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(event) { saveToFirestore(event.target.result); };
-                reader.readAsDataURL(fileInput.files[0]);
+            if (fileInput.files && fileInput.files[0] && storage) {
+                const file = fileInput.files[0];
+                const storageRef = storage.ref('gallery/' + Date.now() + '_' + file.name);
+                storageRef.put(file).then(snapshot => snapshot.ref.getDownloadURL()).then(commitGalleryDoc).catch(err => {
+                    btn.innerHTML = '<i class="fas fa-upload"></i> Save Photo';
+                    btn.disabled = false;
+                    alert('Storage upload note: ' + err.message);
+                });
             } else if (urlInput) {
-                saveToFirestore(urlInput);
+                commitGalleryDoc(urlInput);
             } else {
-                btn.innerHTML = originalText;
+                btn.innerHTML = '<i class="fas fa-upload"></i> Save Photo';
                 btn.disabled = false;
-                alert('Please select an image file or enter an image URL.');
+                alert('Please provide an image file or URL.');
             }
         }
 
         function deleteGalleryPhoto(id) {
-            if (confirm('Delete photo?')) {
-                db.collection('gallery').doc(id).delete();
+            if (confirm('Delete photo?')) db.collection('gallery').doc(id).delete();
+        }
+
+        // -------------------------------------------------------------
+        // TEAM MANAGEMENT
+        // -------------------------------------------------------------
+        function loadTeamRoster() {
+            db.collection('team').onSnapshot(snapshot => {
+                const container = document.getElementById('teamListContainer');
+                teamCache = [];
+                if (snapshot.empty) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            No team members in Firestore yet. 
+                            <button class="btn-add" style="margin:16px auto 0;" onclick="seedInitialTeam()"><i class="fas fa-seedling"></i> Seed Initial Team Dataset</button>
+                        </div>`;
+                    return;
+                }
+
+                let html = '';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    teamCache.push({ id: doc.id, ...data });
+                });
+
+                teamCache.sort((a, b) => (a.order || 99) - (b.order || 99));
+
+                teamCache.forEach(m => {
+                    const isActive = m.active !== false;
+                    html += `
+                        <div class="item-card">
+                            <div style="display:flex; gap:16px; align-items:center;">
+                                <img src="${m.photoUrl || 'assets/secretary.png'}" style="width:50px; height:50px; border-radius:50%; object-fit:cover;" onerror="this.src='../assets/secretary.png';">
+                                <div class="item-info">
+                                    <span class="item-badge ${isActive ? 'badge-active' : 'badge-inactive'}">${isActive ? 'ACTIVE' : 'INACTIVE / HIDDEN'}</span>
+                                    <h4>${m.name} <small style="color:var(--muted); font-weight:normal;">(#${m.order || 1})</small></h4>
+                                    <p>${m.role} • ${m.department || ''} (${m.category || 'student'})</p>
+                                </div>
+                            </div>
+                            <div class="item-actions">
+                                <button class="btn-icon" onclick="editTeamMember('${m.id}')" title="Edit Member"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon delete" onclick="toggleTeamMemberActive('${m.id}', ${!isActive})" title="${isActive ? 'Deactivate' : 'Activate'}">
+                                    <i class="fas ${isActive ? 'fa-eye-slash' : 'fa-eye'}"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            });
+        }
+
+        function seedInitialTeam() {
+            if (!confirm('Seed default 5 team members (Varshith, Maruthi, Jahnavi, Tanmay, Swetha) into Firestore?')) return;
+            
+            const batch = db.batch();
+            DEFAULT_TEAM_MEMBERS.forEach(m => {
+                const ref = db.collection('team').doc(m.id);
+                batch.set(ref, m);
+            });
+            batch.commit().then(() => alert('Initial team dataset seeded successfully!'));
+        }
+
+        function resetAndShowTeamForm() {
+            document.getElementById('teamForm').reset();
+            document.getElementById('teamMemberId').value = '';
+            document.getElementById('teamFormHeading').textContent = 'Add Team Member';
+            document.getElementById('teamFormCard').style.display = 'block';
+            document.getElementById('teamFormCard').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function editTeamMember(id) {
+            const m = teamCache.find(x => x.id === id);
+            if (!m) return;
+            document.getElementById('teamMemberId').value = id;
+            document.getElementById('teamName').value = m.name || '';
+            document.getElementById('teamRole').value = m.role || '';
+            document.getElementById('teamCategory').value = m.category || 'student';
+            document.getElementById('teamOrder').value = m.order || 1;
+            document.getElementById('teamYear').value = m.year || '';
+            document.getElementById('teamDepartment').value = m.department || '';
+            document.getElementById('teamEmail').value = m.email || '';
+            document.getElementById('teamPhone').value = m.phone || '';
+            document.getElementById('teamLinkedin').value = m.linkedin || '';
+            document.getElementById('teamPhotoUrl').value = m.photoUrl || '';
+            document.getElementById('teamActive').value = String(m.active !== false);
+
+            document.getElementById('teamFormHeading').textContent = 'Edit Member: ' + m.name;
+            document.getElementById('teamFormCard').style.display = 'block';
+            document.getElementById('teamFormCard').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function saveTeamMember(e) {
+            e.preventDefault();
+            const btn = document.getElementById('teamSaveBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            btn.disabled = true;
+
+            const id = document.getElementById('teamMemberId').value;
+            const fileInput = document.getElementById('teamPhotoFile');
+            const photoUrlInput = document.getElementById('teamPhotoUrl').value;
+
+            function commitMemberData(finalPhotoUrl) {
+                const memberData = {
+                    name: document.getElementById('teamName').value,
+                    role: document.getElementById('teamRole').value,
+                    category: document.getElementById('teamCategory').value,
+                    order: parseInt(document.getElementById('teamOrder').value) || 1,
+                    year: document.getElementById('teamYear').value,
+                    department: document.getElementById('teamDepartment').value,
+                    email: document.getElementById('teamEmail').value,
+                    phone: document.getElementById('teamPhone').value,
+                    linkedin: document.getElementById('teamLinkedin').value,
+                    photoUrl: finalPhotoUrl,
+                    active: document.getElementById('teamActive').value === 'true',
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                const p = id ? db.collection('team').doc(id).update(memberData) : db.collection('team').add(memberData);
+
+                p.then(() => {
+                    btn.innerHTML = '<i class="fas fa-save"></i> Save Member';
+                    btn.disabled = false;
+                    toggleForm('teamFormCard');
+                    alert('Team member saved successfully!');
+                }).catch(err => {
+                    btn.innerHTML = '<i class="fas fa-save"></i> Save Member';
+                    btn.disabled = false;
+                    alert('Error: ' + err.message);
+                });
             }
+
+            if (fileInput.files && fileInput.files[0] && storage) {
+                const file = fileInput.files[0];
+                const storageRef = storage.ref('team/' + Date.now() + '_' + file.name);
+                storageRef.put(file).then(snapshot => snapshot.ref.getDownloadURL()).then(commitMemberData).catch(err => {
+                    btn.innerHTML = '<i class="fas fa-save"></i> Save Member';
+                    btn.disabled = false;
+                    alert('Upload note: ' + err.message);
+                });
+            } else {
+                commitMemberData(photoUrlInput);
+            }
+        }
+
+        function toggleTeamMemberActive(id, newActive) {
+            db.collection('team').doc(id).update({ active: newActive });
+        }
+
+        // -------------------------------------------------------------
+        // SITE CONFIG
+        // -------------------------------------------------------------
+        function loadSiteConfig() {
+            db.collection('siteConfig').doc('homepage').get().then(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    document.getElementById('cfgMembers').value = data.membersCount || 85;
+                    document.getElementById('cfgEvents').value = data.eventsCount || 12;
+                    document.getElementById('cfgYears').value = data.yearsActive || 3;
+                    document.getElementById('cfgAwards').value = data.awardsCount || 5;
+                }
+            });
+        }
+
+        function saveSiteConfig(e) {
+            e.preventDefault();
+            const btn = document.getElementById('cfgSaveBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            btn.disabled = true;
+
+            const configData = {
+                membersCount: parseInt(document.getElementById('cfgMembers').value) || 85,
+                eventsCount: parseInt(document.getElementById('cfgEvents').value) || 12,
+                yearsActive: parseInt(document.getElementById('cfgYears').value) || 3,
+                awardsCount: parseInt(document.getElementById('cfgAwards').value) || 5,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            db.collection('siteConfig').doc('homepage').set(configData, { merge: true }).then(() => {
+                btn.innerHTML = '<i class="fas fa-save"></i> Update Live Stats';
+                btn.disabled = false;
+                alert('Site statistics updated live on homepage & events page!');
+            }).catch(err => {
+                btn.innerHTML = '<i class="fas fa-save"></i> Update Live Stats';
+                btn.disabled = false;
+                alert('Error: ' + err.message);
+            });
         }
 
         function renderAdminsList() {
