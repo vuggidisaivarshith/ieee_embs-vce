@@ -3,11 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academic Resources | IEEE EMBS Vardhaman</title>
-    <meta name="description" content="Access IEEE Xplore, EMBS publications, student grants, paper templates, and career opportunities for biomedical engineering students.">
+    <title>Official IEEE & EMBS Resources | IEEE EMBS Vardhaman</title>
+    <meta name="description" content="Access official IEEE Xplore, EMBS publications, student grants, paper templates, learning portals, and career opportunities.">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/shared.css">
+
+    <style>
+        .resource-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 30px;
+            border: 1px solid var(--border);
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .resource-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--card-shadow-hover);
+            border-color: var(--border-hover);
+        }
+        .resource-icon-wrap {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(0,98,155,0.1), rgba(0,181,226,0.1));
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+        }
+        [data-theme="dark"] .resource-icon-wrap {
+            color: var(--accent);
+        }
+        .category-filter-btn {
+            background: var(--card-bg);
+            border: 1.5px solid var(--border);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .category-filter-btn:hover, .category-filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0, 98, 155, 0.25);
+        }
+    </style>
 </head>
 <body>
 
@@ -21,9 +73,9 @@
     <nav class="navbar">
         <div class="navbar-container">
             <div class="nav-brand-logos">
-                <img src="assets/college-logo.jpeg" alt="Vardhaman College">
+                <img src="assets/college-logo.jpeg" alt="VCE">
                 <img src="assets/embs-logo.png" alt="IEEE EMBS">
-                <img src="assets/vardhaman-logo.png" alt="VCE Student Branch">
+                <img src="assets/vardhaman-logo.png" alt="VCE SB">
             </div>
             <div class="nav-links-menu">
                 <a href="index.html" class="nav-link-item">Home</a>
@@ -38,86 +90,45 @@
             <div class="nav-utilities">
                 <button class="search-toggle-btn" id="searchToggleBtn" title="Search website"><i class="fas fa-search"></i></button>
                 <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
-                <a href="events/digital-health-talk/" class="btn btn-primary">Register Now</a>
+                <a href="events/digital-health-talk/" class="btn btn-primary" data-google-form="https://forms.google.com">Register Now</a>
             </div>
         </div>
     </nav>
 
     <!-- HERO -->
-    <header style="background:var(--hero-gradient); color:white; padding:120px 5% 70px; text-align:center;">
-        <div style="max-width:800px; margin:0 auto;">
-            <span class="status-pill status-open" style="background:rgba(255,255,255,0.15); color:white; border-color:rgba(255,255,255,0.3); margin-bottom:16px;">Academic & Career Hub</span>
-            <h1 style="font-size:clamp(2rem, 4vw, 3.2rem); color:white; margin-bottom:16px;">Student Resources & Publications</h1>
-            <p style="color:rgba(255,255,255,0.85); font-size:1.1rem;">Explore IEEE Xplore literature, research paper templates, EMBS scholarships, and career growth pathways.</p>
+    <header style="background:var(--hero-gradient); color:white; padding:120px 5% 70px; text-align:center; position:relative; overflow:hidden;">
+        <div style="max-width:850px; margin:0 auto; position:relative; z-index:1;">
+            <span class="status-pill status-open" style="background:rgba(255,255,255,0.15); color:white; border-color:rgba(255,255,255,0.3); margin-bottom:16px;">Official IEEE Directory</span>
+            <h1 style="font-size:clamp(2.2rem, 4.5vw, 3.4rem); color:white; margin-bottom:16px;">IEEE & EMBS Official Resources</h1>
+            <p style="color:rgba(255,255,255,0.85); font-size:1.1rem; margin-bottom:30px;">Direct access to official IEEE research digital libraries, publications, student grants, courses, and global career opportunities.</p>
+            
+            <!-- Filter & Keyword Search Bar -->
+            <div style="background:rgba(255,255,255,0.15); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.25); border-radius:50px; padding:8px 20px; display:flex; align-items:center; max-width:580px; margin:0 auto;">
+                <i class="fas fa-search" style="color:white; margin-right:12px;"></i>
+                <input type="text" id="resourceSearchInput" placeholder="Filter resources by title, topic, or keyword..." oninput="filterResources()" style="background:none; border:none; outline:none; color:white; font-size:1rem; width:100%; font-family:inherit;">
+            </div>
         </div>
     </header>
 
     <!-- MAIN RESOURCES SECTION -->
-    <main style="padding:70px 5%; max-width:1240px; margin:0 auto;">
+    <main style="padding:60px 5%; max-width:1280px; margin:0 auto;">
 
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:28px;">
-            
-            <!-- 1. IEEE Xplore -->
-            <div class="glass-card animate-fade-up" style="padding:32px;">
-                <div style="width:52px; height:52px; border-radius:14px; background:rgba(0,98,155,0.1); color:var(--primary); display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin-bottom:20px;">
-                    <i class="fas fa-book-open"></i>
-                </div>
-                <h3>IEEE Xplore Digital Library</h3>
-                <p style="color:var(--text-muted); font-size:0.92rem; margin:10px 0 20px;">Access over 5 million peer-reviewed research papers, standards, and conference proceedings in biomedical technology.</p>
-                <a href="https://ieeexplore.ieee.org" target="_blank" class="btn btn-outline" style="width:100%;">Visit IEEE Xplore <i class="fas fa-external-link-alt"></i></a>
-            </div>
-
-            <!-- 2. Paper Templates -->
-            <div class="glass-card animate-fade-up" style="padding:32px;">
-                <div style="width:52px; height:52px; border-radius:14px; background:rgba(0,181,226,0.1); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin-bottom:20px;">
-                    <i class="fas fa-file-alt"></i>
-                </div>
-                <h3>IEEE Manuscript Templates</h3>
-                <p style="color:var(--text-muted); font-size:0.92rem; margin:10px 0 20px;">Official IEEE LaTeX & Word manuscript templates for formatting research papers, conference proceedings, and thesis chapters.</p>
-                <a href="https://www.ieee.org/conferences/publishing/templates.html" target="_blank" class="btn btn-outline" style="width:100%;">Download Templates <i class="fas fa-download"></i></a>
-            </div>
-
-            <!-- 3. EMBS Scholarships & Grants -->
-            <div class="glass-card animate-fade-up" style="padding:32px;">
-                <div style="width:52px; height:52px; border-radius:14px; background:rgba(245,158,11,0.1); color:var(--warning); display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin-bottom:20px;">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
-                <h3>EMBS Scholarships & Grants</h3>
-                <p style="color:var(--text-muted); font-size:0.92rem; margin:10px 0 20px;">Travel grants, student paper contest prizes, and research fellowships provided annually by IEEE EMBS globally.</p>
-                <a href="https://www.embs.org/about-embs/awards-recognition/" target="_blank" class="btn btn-outline" style="width:100%;">Explore Grants <i class="fas fa-award"></i></a>
-            </div>
-
-            <!-- 4. Certificate Verification -->
-            <div class="glass-card animate-fade-up" style="padding:32px;">
-                <div style="width:52px; height:52px; border-radius:14px; background:rgba(34,197,94,0.1); color:var(--success); display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin-bottom:20px;">
-                    <i class="fas fa-certificate"></i>
-                </div>
-                <h3>Certificate Verification Portal</h3>
-                <p style="color:var(--text-muted); font-size:0.92rem; margin:10px 0 20px;">Verify official e-certificates issued for IEEE EMBS Vardhaman workshops, expert talks, and hackathons.</p>
-                <a href="verify.html" class="btn btn-primary" style="width:100%;">Verify Certificate <i class="fas fa-check-circle"></i></a>
-            </div>
-
-            <!-- 5. IEEE Membership Benefits -->
-            <div class="glass-card animate-fade-up" style="padding:32px;">
-                <div style="width:52px; height:52px; border-radius:14px; background:rgba(59,130,246,0.1); color:var(--info); display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin-bottom:20px;">
-                    <i class="fas fa-id-card"></i>
-                </div>
-                <h3>IEEE Student Membership</h3>
-                <p style="color:var(--text-muted); font-size:0.92rem; margin:10px 0 20px;">Join the world's largest technical professional organization. Enjoy 50%+ student discounts on IEEE & EMBS membership.</p>
-                <a href="https://www.ieee.org/membership/join/" target="_blank" class="btn btn-outline" style="width:100%;">Join IEEE Officially <i class="fas fa-user-plus"></i></a>
-            </div>
-
-            <!-- 6. Internships & Careers -->
-            <div class="glass-card animate-fade-up" style="padding:32px;">
-                <div style="width:52px; height:52px; border-radius:14px; background:rgba(239,68,68,0.1); color:var(--danger); display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin-bottom:20px;">
-                    <i class="fas fa-briefcase"></i>
-                </div>
-                <h3>IEEE Collabratec & Job Site</h3>
-                <p style="color:var(--text-muted); font-size:0.92rem; margin:10px 0 20px;">Connect with global biomedical researchers, find research internships, and explore health-tech job opportunities.</p>
-                <a href="https://collabratec.ieee.org" target="_blank" class="btn btn-outline" style="width:100%;">Explore Careers <i class="fas fa-external-link-alt"></i></a>
-            </div>
-
+        <!-- CATEGORY FILTERS -->
+        <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:44px;" id="categoryFilterBar">
+            <button class="category-filter-btn active" onclick="setCategoryFilter('all', this)">All Resources</button>
+            <button class="category-filter-btn" onclick="setCategoryFilter('Research & Papers', this)">Research & Papers</button>
+            <button class="category-filter-btn" onclick="setCategoryFilter('Membership', this)">Membership & Portal</button>
+            <button class="category-filter-btn" onclick="setCategoryFilter('Funding & Grants', this)">Funding & Grants</button>
+            <button class="category-filter-btn" onclick="setCategoryFilter('Publications', this)">Publications</button>
+            <button class="category-filter-btn" onclick="setCategoryFilter('Careers & Internships', this)">Careers & Internships</button>
+            <button class="category-filter-btn" onclick="setCategoryFilter('Learning & Courses', this)">Learning & Courses</button>
         </div>
+
+        <!-- 16 OFFICIAL RESOURCES GRID -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:28px;" id="resourcesGrid">
+            <!-- Populated via script for full 16 official IEEE resources -->
+        </div>
+
     </main>
 
     <!-- FOOTER -->
@@ -128,5 +139,175 @@
     </footer>
 
     <script src="js/shared.js"></script>
+    <script>
+        const officialResources = [
+            {
+                title: "IEEE Xplore Digital Library",
+                icon: "fa-book-open",
+                category: "Research & Papers",
+                description: "Access millions of research papers, journals, conference proceedings, standards, and technical publications published by IEEE.",
+                url: "https://ieeexplore.ieee.org/"
+            },
+            {
+                title: "IEEE Membership Portal",
+                icon: "fa-id-card",
+                category: "Membership",
+                description: "Become an IEEE member to access exclusive technical resources, networking opportunities, discounts, publications, and professional development programs.",
+                url: "https://www.ieee.org/membership/"
+            },
+            {
+                title: "IEEE Scholarships, Awards & Funding",
+                icon: "fa-graduation-cap",
+                category: "Funding & Grants",
+                description: "Explore scholarships, grants, fellowships, travel grants, awards, and funding opportunities available for IEEE student members.",
+                url: "https://students.ieee.org/membership-benefits/ieee-benefits/funds-and-awards/"
+            },
+            {
+                title: "IEEE Conferences Search",
+                icon: "fa-calendar-alt",
+                category: "Research & Papers",
+                description: "Search upcoming IEEE international conferences, symposiums, workshops, and technical events across various engineering disciplines.",
+                url: "https://conferences.ieee.org/"
+            },
+            {
+                title: "IEEE Research Papers Repository",
+                icon: "fa-file-alt",
+                category: "Research & Papers",
+                description: "Browse IEEE research publications, conference papers, journals, and magazines through the IEEE Xplore Digital Library.",
+                url: "https://ieeexplore.ieee.org/"
+            },
+            {
+                title: "IEEE EMBS Publications",
+                icon: "fa-microscope",
+                category: "Publications",
+                description: "Explore journals, magazines, newsletters, books, and publications from the IEEE Engineering in Medicine and Biology Society.",
+                url: "https://www.embs.org/publications/"
+            },
+            {
+                title: "IEEE Career Center",
+                icon: "fa-briefcase",
+                category: "Careers & Internships",
+                description: "Search internships, jobs, research positions, and career opportunities for engineers worldwide.",
+                url: "https://jobs.ieee.org/"
+            },
+            {
+                title: "IEEE Students Portal",
+                icon: "fa-users",
+                category: "Membership",
+                description: "Discover student benefits, competitions, scholarships, volunteering opportunities, and leadership programs.",
+                url: "https://students.ieee.org/"
+            },
+            {
+                title: "IEEE Learning Network",
+                icon: "fa-laptop-code",
+                category: "Learning & Courses",
+                description: "Access online technical courses, webinars, certifications, and professional learning resources.",
+                url: "https://iln.ieee.org/"
+            },
+            {
+                title: "IEEE Standards Association",
+                icon: "fa-shield-alt",
+                category: "Research & Papers",
+                description: "Explore IEEE standards, industry best practices, standards development activities, and technical specifications.",
+                url: "https://standards.ieee.org/"
+            },
+            {
+                title: "IEEE Spectrum Technology News",
+                icon: "fa-newspaper",
+                category: "Publications",
+                description: "Read the latest technology news, engineering innovations, AI developments, healthcare technology, robotics, electronics, and industry insights.",
+                url: "https://spectrum.ieee.org/"
+            },
+            {
+                title: "IEEE Collabratec Network",
+                icon: "fa-network-wired",
+                category: "Membership",
+                description: "Network with researchers, students, professionals, authors, and IEEE members through IEEE's professional collaboration platform.",
+                url: "https://ieeecollabratec.ieee.org/"
+            },
+            {
+                title: "IEEE Student Competitions",
+                icon: "fa-trophy",
+                category: "Funding & Grants",
+                description: "Participate in IEEE technical competitions, coding challenges, design contests, and innovation programs.",
+                url: "https://students.ieee.org/competitions/"
+            },
+            {
+                title: "IEEE Funding Opportunities",
+                icon: "fa-hand-holding-usd",
+                category: "Funding & Grants",
+                description: "Find grants, travel funding, scholarships, fellowships, and financial support programs offered by IEEE.",
+                url: "https://students.ieee.org/membership-benefits/ieee-benefits/funds-and-awards/"
+            },
+            {
+                title: "IEEE Internship & Career Opportunities",
+                icon: "fa-user-graduate",
+                category: "Careers & Internships",
+                description: "Explore internships, graduate programs, research opportunities, and early-career resources through IEEE Student Programs and the IEEE Career Center.",
+                url: "https://jobs.ieee.org/"
+            },
+            {
+                title: "IEEE EMBS Society Official Site",
+                icon: "fa-heartbeat",
+                category: "Publications",
+                description: "Learn about IEEE Engineering in Medicine and Biology Society, its conferences, publications, technical committees, membership benefits, and global activities.",
+                url: "https://www.embs.org/"
+            }
+        ];
+
+        let activeCategory = 'all';
+
+        function renderResourcesList() {
+            const grid = document.getElementById('resourcesGrid');
+            const searchVal = document.getElementById('resourceSearchInput').value.toLowerCase().trim();
+            
+            grid.innerHTML = '';
+
+            const filtered = officialResources.filter(res => {
+                const matchesCat = activeCategory === 'all' || res.category === activeCategory;
+                const matchesSearch = !searchVal || res.title.toLowerCase().includes(searchVal) || res.description.toLowerCase().includes(searchVal);
+                return matchesCat && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:50px; color:var(--text-muted);">No official IEEE resources match your search criteria.</div>`;
+                return;
+            }
+
+            filtered.forEach(res => {
+                const cardHtml = `
+                    <div class="resource-card animate-fade-up">
+                        <div>
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                <div class="resource-icon-wrap">
+                                    <i class="fas ${res.icon}"></i>
+                                </div>
+                                <span class="status-pill status-live">${res.category}</span>
+                            </div>
+                            <h3 style="font-size:1.15rem; margin-bottom:10px;">${res.title}</h3>
+                            <p style="color:var(--text-muted); font-size:0.92rem; line-height:1.65; margin-bottom:24px;">${res.description}</p>
+                        </div>
+                        <a href="${res.url}" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="width:100%;">
+                            Visit Resource <i class="fas fa-external-link-alt" style="margin-left:6px; font-size:0.8rem;"></i>
+                        </a>
+                    </div>
+                `;
+                grid.insertAdjacentHTML('beforeend', cardHtml);
+            });
+        }
+
+        function setCategoryFilter(cat, btn) {
+            activeCategory = cat;
+            document.querySelectorAll('#categoryFilterBar .category-filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderResourcesList();
+        }
+
+        function filterResources() {
+            renderResourcesList();
+        }
+
+        renderResourcesList();
+    </script>
 </body>
 </html>
