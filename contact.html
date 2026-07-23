@@ -7,6 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/shared.css">
+    <!-- EmailJS SDK — free email delivery from static HTML, no backend needed -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         .hero {
             padding: 120px 5% 60px;
@@ -459,11 +461,61 @@
 
     <script src="js/shared.js"></script>
     <script>
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            this.style.display = 'none';
-            document.getElementById('formSuccess').style.display = 'block';
-        });
+    // ===================================================================
+    // EMAILJS CONFIGURATION
+    // 1. Go to https://www.emailjs.com and sign up (FREE — 200 emails/month)
+    // 2. Create an Email Service (Gmail works) → copy the Service ID
+    // 3. Create an Email Template with variables:
+    //    {{from_name}}, {{from_email}}, {{subject}}, {{message}}, {{reply_to}}
+    //    Set "To Email" in template to: vuggidisaivarshith@gmail.com
+    //    Add a CC field: pollishettyswethavardhaman@gmail.com (faculty email)
+    // 4. Copy your Public Key from EmailJS dashboard → Account → API Keys
+    // 5. Replace the 3 values below:
+    // ===================================================================
+    const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';      // e.g. 'abc123XYZ'
+    const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';      // e.g. 'service_xxxx'
+    const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';     // e.g. 'template_xxxx'
+
+    // Initialize EmailJS
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const btn = this.querySelector('.submit-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        btn.disabled = true;
+
+        const params = {
+            from_name:  document.getElementById('fullName').value,
+            from_email: document.getElementById('email').value,
+            reply_to:   document.getElementById('email').value,
+            subject:    document.getElementById('subject').value,
+            message:    document.getElementById('message').value,
+        };
+
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params)
+            .then(() => {
+                // Success — show confirmation
+                this.style.display = 'none';
+                document.getElementById('formSuccess').style.display = 'block';
+            })
+            .catch((err) => {
+                console.error('EmailJS error:', err);
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                // Fallback: open mail client with prefilled content
+                const fallback = 'mailto:vuggidisaivarshith@gmail.com?cc=pollishetty.swetha@vardhaman.org'
+                    + '&subject=' + encodeURIComponent('[EMBS Web] ' + params.subject)
+                    + '&body=' + encodeURIComponent(
+                        'From: ' + params.from_name + ' <' + params.from_email + '>\n\n'
+                        + params.message
+                    );
+                alert('Direct email send failed. Opening your email client as backup.');
+                window.location.href = fallback;
+            });
+    });
     </script>
 </body>
 </html>

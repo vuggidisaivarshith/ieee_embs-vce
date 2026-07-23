@@ -3,19 +3,22 @@
    Used across all pages
    ========================================= */
 
-/* --- Variables --- */
+/* --- Variables (Vardhaman + IEEE EMBS Brand Palette) --- */
 :root {
-    --primary: #00629B;
-    --secondary: #7B2C89;
-    --accent: #00B5E2;
+    /* Vardhaman-inspired primary = deep maroon */
+    --primary: #8B1A1A;
+    /* IEEE navy as secondary */
+    --secondary: #1B2A4A;
+    /* Gold accent (VCE/IEEE warmth) */
+    --accent: #C8922A;
     --dark: #0F172A;
-    --light: #F8FAFC;
-    --text: #334155;
-    --muted: #64748B;
+    --light: #FAF6F3;
+    --text: #2D1F1F;
+    --muted: #7A6060;
     --white: #FFFFFF;
     --danger: #EF4444;
     --success: #10B981;
-    --border: #E2E8F0;
+    --border: #E8D8D0;
 
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
     --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
