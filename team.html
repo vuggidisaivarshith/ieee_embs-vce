@@ -105,41 +105,42 @@
         .team-card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(0,98,155,0.13); }
         .team-card:hover::before { transform: scaleX(1); }
 
-        /* Avatar */
-        .avatar {
-            width: 100px;
-            height: 100px;
+        /* Avatar & Crop Standardization */
+        .avatar, .faculty-avatar {
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
             margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: white;
             letter-spacing: 1px;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+            box-shadow: 0 8px 24px rgba(0,98,155,0.18);
             flex-shrink: 0;
             position: relative;
             overflow: hidden;
+            background: linear-gradient(135deg, #00629B, #0D9488);
+            border: 3px solid rgba(255,255,255,0.9);
         }
-        .avatar img {
+        .avatar img, .faculty-avatar img {
             position: absolute;
-            inset: 0;
+            top: 0; left: 0;
             width: 100%;
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
+            object-position: center top;
             z-index: 2;
         }
         /* Gradient avatars per role */
         .av-1  { background: linear-gradient(135deg, #00629B, #0099CC); }
-        .av-2  { background: linear-gradient(135deg, #7B2C89, #A855B8); }
+        .av-2  { background: linear-gradient(135deg, #003D6B, #00629B); }
         .av-3  { background: linear-gradient(135deg, #059669, #10B981); }
         .av-4  { background: linear-gradient(135deg, #D97706, #F59E0B); }
-        .av-5  { background: linear-gradient(135deg, #4F46E5, #818CF8); }
-        .av-6  { background: linear-gradient(135deg, #DC2626, #F87171); }
-        .av-fac{ background: linear-gradient(135deg, #7B2C89, #00629B); }
+        .av-fac{ background: linear-gradient(135deg, #00629B, #0D9488); }
 
         .member-name { font-size: 1.2rem; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
         .member-role {
@@ -173,36 +174,18 @@
 
         /* ---- Faculty Section ---- */
         .faculty-section {
-            background: linear-gradient(135deg, rgba(0,98,155,0.04), rgba(123,44,137,0.04));
+            background: linear-gradient(135deg, rgba(0,98,155,0.04), rgba(13,148,136,0.04));
             border-radius: 24px;
-            padding: 48px;
-            border: 1px solid rgba(0,98,155,0.1);
-            margin-bottom: 64px;
+            padding: 40px 32px;
+            border: 1px solid rgba(0,98,155,0.12);
+            margin-bottom: 48px;
         }
         .faculty-card {
             display: flex;
             align-items: center;
             gap: 32px;
-            max-width: 700px;
+            max-width: 750px;
             margin: 0 auto;
-        }
-        .faculty-avatar {
-            width: 120px; height: 120px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2.5rem; font-weight: 700; color: white;
-            flex-shrink: 0;
-            box-shadow: 0 8px 24px rgba(123,44,137,0.25);
-            position: relative;
-            overflow: hidden;
-        }
-        .faculty-avatar img {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            z-index: 2;
         }
         .faculty-details { text-align: left; flex: 1; }
         .faculty-details .member-name { font-size: 1.5rem; margin-bottom: 6px; }
@@ -212,22 +195,23 @@
 
         /* ---- CTA Section ---- */
         .cta-box {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, #001B44 0%, #003D6B 50%, #00629B 100%);
             border-radius: 20px;
-            padding: 48px 32px;
+            padding: 44px 32px;
             text-align: center;
             color: white;
             margin-bottom: 0;
+            box-shadow: 0 10px 30px rgba(0,98,155,0.2);
         }
         .cta-box h3 { color: white; font-size: 1.6rem; margin-bottom: 12px; }
-        .cta-box p { color: rgba(255,255,255,0.8); margin-bottom: 24px; }
+        .cta-box p { color: rgba(255,255,255,0.85); margin-bottom: 24px; }
         .btn-cta-white {
             display: inline-flex; align-items: center; gap: 8px;
-            background: white; color: var(--primary); padding: 12px 28px;
+            background: #F59E0B; color: white; padding: 12px 28px;
             border-radius: 50px; font-weight: 700; font-size: 0.95rem;
-            transition: all 0.2s;
+            transition: all 0.2s; box-shadow: 0 4px 15px rgba(245,158,11,0.4);
         }
-        .btn-cta-white:hover { background: var(--accent); color: white; transform: translateY(-2px); }
+        .btn-cta-white:hover { background: #D97706; color: white; transform: translateY(-2px); }
 
         /* ---- Responsive ---- */
         @media (max-width: 640px) {
@@ -283,7 +267,7 @@
     </header>
 
     <!-- Main Content -->
-    <main class="section">
+    <main class="section" style="padding-bottom: 40px;">
         <div class="container">
 
             <!-- Info Note -->
@@ -321,7 +305,7 @@
                 <!-- Maruthi Sai Teja — Chairperson -->
                 <div class="team-card">
                     <div class="avatar av-2">
-                        <img src="assets/chair.png" alt="Maruthi Sai Teja" onerror="this.style.display='none';">
+                        <img src="assets/chair.jpeg" alt="Maruthi Sai Teja" onerror="this.src='assets/speaker.jpeg'; this.onerror=function(){this.style.display='none';};">
                         <span>MST</span>
                     </div>
                     <div class="member-name">Maruthi Sai Teja</div>
@@ -340,7 +324,7 @@
                 <!-- Vigrahala Jahnavi — Vice Chairperson -->
                 <div class="team-card">
                     <div class="avatar av-3">
-                        <img src="assets/vice.jpeg" alt="Vigrahala Jahnavi" onerror="this.src='assets/vicechair.png'; this.onerror=function(){this.style.display='none'};">
+                        <img src="assets/vice.jpeg" alt="Vigrahala Jahnavi" onerror="this.src='assets/vicechair.png'; this.onerror=function(){this.style.display='none';};">
                         <span>VJ</span>
                     </div>
                     <div class="member-name">Vigrahala Jahnavi</div>
@@ -359,7 +343,7 @@
                 <!-- Tanmay Challa — Treasurer & Webmaster -->
                 <div class="team-card">
                     <div class="avatar av-4">
-                        <img src="assets/treasurer.jpeg" alt="Tanmay Challa" onerror="this.src='assets/webmaster.jpeg'; this.onerror=function(){this.style.display='none'};">
+                        <img src="assets/treasurer.jpeg" alt="Tanmay Challa" onerror="this.src='assets/webmaster.jpeg'; this.onerror=function(){this.style.display='none';};">
                         <span>TC</span>
                     </div>
                     <div class="member-name">Tanmay Challa</div>
@@ -385,7 +369,7 @@
             <div class="faculty-section">
                 <div class="faculty-card">
                     <div class="faculty-avatar av-fac">
-                        <img src="assets/faculty.jpeg" alt="Polisetty Swetha" onerror="this.src='assets/faculty.png'; this.onerror=function(){this.style.display='none';};">
+                        <img src="assets/faculty.jpeg" alt="Polisetty Swetha" onerror="this.src='assets/speaker.jpeg'; this.onerror=function(){this.style.display='none';};">
                         <span>PS</span>
                     </div>
                     <div class="faculty-details">
@@ -412,7 +396,7 @@
     </main>
 
     <!-- FOOTER -->
-    <footer style="background:var(--secondary); color:#94A3B8; padding:60px 5% 24px; font-family:Inter,sans-serif;">
+    <footer style="background:#0F172A; color:#94A3B8; padding:60px 5% 24px; font-family:Inter,sans-serif; border-top:1px solid #1E293B;">
         <div style="max-width:1240px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:40px; margin-bottom:40px;">
             <div>
                 <h3 style="color:white; margin-bottom:16px;">IEEE EMBS VCE</h3>
