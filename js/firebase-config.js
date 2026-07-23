@@ -14,6 +14,7 @@ const AUTHORIZED_ADMIN_EMAILS = [
   "vuggidisaivarshith@gmail.com",
   "maruthisaiteja9@gmail.com",
   "challatanmay@gmail.com",
+  "swethabharath27@vardhaman.org",
   "pollishettyswethavardhaman@gmail.com",
   "pollishetty.swetha@vardhaman.org"
 ];
