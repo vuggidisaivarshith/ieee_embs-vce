@@ -8,7 +8,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Firebase SDK Compat -->
@@ -34,7 +34,7 @@
         h1,h2,h3,h4 { font-family:'Sora',sans-serif; color:var(--heading); }
         a { text-decoration:none; color:inherit; }
 
-        /* Header / Navbar */
+        /* Navbar */
         .navbar { position:fixed; top:0; left:0; right:0; height:70px; background:rgba(255,255,255,0.95); backdrop-filter:blur(12px); z-index:1000; border-bottom:1px solid var(--border); display:flex; align-items:center; }
         .nav-inner { max-width:1200px; margin:0 auto; width:100%; padding:0 5%; display:flex; align-items:center; justify-content:space-between; }
         .nav-logos { display:flex; align-items:center; gap:8px; }
@@ -46,31 +46,93 @@
         /* Hero */
         .hero {
             background: linear-gradient(145deg, #0F766E 0%, #134E4A 100%);
-            color: white; padding: 110px 5% 80px; min-height: 70vh; display: flex; align-items: center; position: relative;
+            color: white; padding: 110px 5% 70px; min-height: 55vh; display: flex; align-items: center; position: relative;
         }
-        .hero-container { max-width: 900px; margin: 0 auto; width: 100%; }
-        .hero-badge { display:inline-block; background:rgba(255,255,255,0.12); padding:6px 16px; border-radius:50px; font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:20px; }
-        .hero-title { font-size: clamp(2rem, 4.5vw, 3rem); font-weight: 800; color: white; margin-bottom: 16px; line-height: 1.2; }
-        .hero-sub { font-size: 1.1rem; color: rgba(255,255,255,0.85); margin-bottom: 30px; }
-        .meta-pills { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 30px; }
-        .meta-pill { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 50px; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px; }
+        .hero-container { max-width: 1000px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 300px; gap: 40px; align-items: center; }
+        .hero-badge { display:inline-block; background:rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); padding:6px 16px; border-radius:50px; font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:20px; }
+        .hero-title { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; color: white; margin-bottom: 16px; line-height: 1.2; }
+        .hero-sub { font-size: 1.05rem; color: rgba(255,255,255,0.85); margin-bottom: 24px; }
+        .meta-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+        .meta-pill { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 50px; font-size: 0.88rem; display: inline-flex; align-items: center; gap: 8px; }
 
-        .section { padding: 80px 5%; }
+        /* Event Poster Card */
+        .poster-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border: 3px solid white;
+        }
+        .poster-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        /* Section Layout */
+        .section { padding: 70px 5%; }
         .container { max-width: 1000px; margin: 0 auto; }
-        .sec-title { font-size: 1.8rem; margin-bottom: 16px; text-align: center; }
-        .divider { width: 44px; height: 4px; background: var(--teal-mid); border-radius: 2px; margin: 10px auto 30px; }
+        .sec-title { font-size: 1.6rem; margin-bottom: 12px; }
+        .divider { width: 44px; height: 4px; background: var(--teal-mid); border-radius: 2px; margin-bottom: 24px; }
 
         .box-card { background: white; border-radius: var(--radius-lg); padding: 36px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.06); margin-bottom: 30px; }
 
-        /* Form */
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .full { grid-column: 1 / -1; }
-        .fg { display: flex; flex-direction: column; gap: 6px; }
-        .fg label { font-size: 0.88rem; font-weight: 600; }
-        .fg input, .fg select, .fg textarea { padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.94rem; }
-        .btn-submit { background: linear-gradient(135deg, var(--amber), var(--amber-dark)); color: white; border: none; padding: 15px 36px; border-radius: 50px; font-weight: 700; font-size: 1rem; cursor: pointer; width: 100%; margin-top: 20px; }
+        /* Action Buttons Row */
+        .action-buttons-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 20px;
+        }
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 26px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-register { background: linear-gradient(135deg, var(--amber), var(--amber-dark)); color: white; box-shadow: 0 4px 14px rgba(245,158,11,0.35); }
+        .btn-register:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(245,158,11,0.45); }
+        .btn-secondary-action { background: var(--teal-mid); color: white; }
+        .btn-secondary-action:hover { background: var(--teal-dark); }
+        .btn-outline-action { background: white; border: 1.5px solid var(--border); color: var(--heading); }
+        .btn-outline-action:hover { border-color: var(--teal-mid); color: var(--teal-mid); }
 
-        @media(max-width: 768px) { .form-grid { grid-template-columns: 1fr; } .nav-links { display: none; } }
+        /* Speaker Card */
+        .speaker-box {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 24px;
+            align-items: center;
+        }
+        .speaker-avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Notice banner */
+        .status-banner {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+        }
+        .status-upcoming-bg { background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0; }
+        .status-past-bg { background: #F1F5F9; color: #475569; border: 1px solid #CBD5E1; }
+
+        @media(max-width: 768px) {
+            .hero-container { grid-template-columns: 1fr; }
+            .speaker-box { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+            .nav-links { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -90,7 +152,7 @@
                 <a href="../gallery.html">Gallery</a>
                 <a href="../team.html">Team</a>
                 <a href="../contact.html">Contact</a>
-                <a href="#register" class="btn-nav">Register</a>
+                <a href="../events.html" class="btn-nav">All Events</a>
             </div>
         </div>
     </nav>
@@ -98,15 +160,27 @@
     <!-- HERO -->
     <header class="hero">
         <div class="hero-container">
-            <div class="hero-badge" id="eventBadge">IEEE EMBS Event</div>
-            <h1 class="hero-title" id="eventTitle">Loading Event Details...</h1>
-            <p class="hero-sub" id="eventSub">Connecting engineering students with biomedical innovation.</p>
+            <div>
+                <div class="hero-badge" id="eventBadge">IEEE EMBS Event</div>
+                <h1 class="hero-title" id="eventTitle">Loading Event...</h1>
+                <p class="hero-sub" id="eventSub">Connecting engineering students with biomedical innovation.</p>
 
-            <div class="meta-pills">
-                <div class="meta-pill"><i class="fas fa-calendar-alt"></i> <span id="eventDate">--</span></div>
-                <div class="meta-pill"><i class="fas fa-clock"></i> <span id="eventTime">--</span></div>
-                <div class="meta-pill"><i class="fas fa-video"></i> <span id="eventMode">--</span></div>
-                <div class="meta-pill"><i class="fas fa-tag"></i> <span id="eventTopic">--</span></div>
+                <div class="meta-pills">
+                    <div class="meta-pill"><i class="fas fa-calendar-alt"></i> <span id="eventDate">--</span></div>
+                    <div class="meta-pill"><i class="fas fa-clock"></i> <span id="eventTime">--</span></div>
+                    <div class="meta-pill"><i class="fas fa-video"></i> <span id="eventMode">--</span></div>
+                    <div class="meta-pill" id="pillDeadline" style="display:none;"><i class="fas fa-hourglass-half"></i> Deadline: <span id="eventDeadline">--</span></div>
+                </div>
+
+                <!-- Dynamic Action Buttons (Smart Logic) -->
+                <div class="action-buttons-row" id="heroActionsRow">
+                    <!-- Injected dynamically -->
+                </div>
+            </div>
+
+            <!-- Poster image card if present -->
+            <div class="poster-card" id="posterCardWrapper" style="display:none;">
+                <img src="" id="eventPosterImg" alt="Event Poster">
             </div>
         </div>
     </header>
@@ -114,117 +188,208 @@
     <main class="section">
         <div class="container">
 
-            <!-- ABOUT SESSION -->
+            <!-- EVENT STATUS NOTICE -->
+            <div class="status-banner" id="statusBanner">
+                <i class="fas fa-info-circle"></i> <span id="statusBannerText">Loading status...</span>
+            </div>
+
+            <!-- ABOUT EVENT & SPEAKER -->
             <div class="box-card">
-                <h2 style="margin-bottom:12px;">About the Event</h2>
-                <p id="eventDesc" style="color:var(--body); line-height:1.7;">Loading session description...</p>
-                <div style="margin-top:20px; padding:16px; background:var(--off-white); border-radius:10px;">
-                    <p><strong>Speaker:</strong> <span id="eventSpeaker">TBA</span> (<span id="eventSpeakerOrg">IEEE EMBS</span>)</p>
+                <h2 class="sec-title">About the Session</h2>
+                <div class="divider"></div>
+                <p id="eventDesc" style="color:var(--body); line-height:1.8; margin-bottom:24px;">Loading session details...</p>
+
+                <!-- Speaker Sub-card -->
+                <div class="speaker-box" id="speakerBox">
+                    <img src="../assets/speaker.jpeg" id="speakerPhoto" class="speaker-avatar" alt="Speaker" onerror="this.src='../assets/embs-logo.png'">
+                    <div>
+                        <h3 id="speakerName" style="font-size:1.2rem; color:var(--heading);">Speaker Name</h3>
+                        <p id="speakerRole" style="color:var(--teal-mid); font-weight:600; font-size:0.9rem;">Designation</p>
+                        <p id="speakerOrg" style="color:var(--muted); font-size:0.85rem; margin-bottom:10px;">Organization</p>
+                        <p id="speakerBio" style="font-size:0.88rem; color:#475569;">Speaker biography...</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- REGISTRATION FORM -->
-            <section id="register" class="box-card">
-                <h2 class="sec-title">Register Now</h2>
+            <!-- RECAP & ARCHIVE MATERIALS (If Past Event / Materials Provided) -->
+            <div class="box-card" id="recapSection" style="display:none;">
+                <h2 class="sec-title">Event Materials & Downloads</h2>
                 <div class="divider"></div>
-                <form id="dynamicRegForm" onsubmit="handleRegistration(event)">
-                    <div class="form-grid">
-                        <div class="fg full">
-                            <label>Email Address *</label>
-                            <input type="email" id="dEmail" required placeholder="your@email.com">
-                        </div>
-                        <div class="fg full">
-                            <label>Full Name *</label>
-                            <input type="text" id="dName" required placeholder="Enter full name for certificate">
-                        </div>
-                        <div class="fg">
-                            <label>Roll Number / ID *</label>
-                            <input type="text" id="dRoll" required placeholder="e.g. 21881A05XX">
-                        </div>
-                        <div class="fg">
-                            <label>Mobile Number *</label>
-                            <input type="tel" id="dMobile" required placeholder="+91 XXXXX XXXXX">
-                        </div>
-                        <div class="fg">
-                            <label>Department *</label>
-                            <select id="dDept" required>
-                                <option value="" disabled selected>Select Dept</option>
-                                <option>CSE</option><option>IT</option><option>CSM</option><option>CSD</option><option>ECE</option><option>EEE</option><option>MECH</option>
-                            </select>
-                        </div>
-                        <div class="fg">
-                            <label>Year of Study *</label>
-                            <select id="dYear" required>
-                                <option value="" disabled selected>Select Year</option>
-                                <option>1st</option><option>2nd</option><option>3rd</option><option>4th</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn-submit" id="dSubmitBtn"><i class="fas fa-paper-plane"></i> Complete Registration</button>
-                </form>
-            </section>
+                <div class="action-buttons-row" id="recapActionsRow">
+                    <!-- Injected dynamically -->
+                </div>
+            </div>
 
         </div>
     </main>
 
-    <!-- FOOTER -->
     <footer style="background:#0F172A; color:#94A3B8; padding:40px 5%; text-align:center; font-size:0.9rem;">
-        &copy; 2026 IEEE EMBS Student Branch Chapter, Vardhaman College of Engineering.
+        &copy; 2026 IEEE EMBS Student Branch Chapter, Vardhaman College of Engineering. All rights reserved.
     </footer>
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const eventId = urlParams.get('id');
 
-        const defaultData = {
-            title: 'Expert Talk: Digital Health, Telemedicine & Remote Patient Monitoring',
-            speaker: 'Dr. Ajit Kumar',
-            speakerOrg: 'XIM University',
+        const defaultEvent = {
+            id: 'digital-health-talk',
+            title: 'Expert Talk on Digital Health, Telemedicine & Remote Patient Monitoring',
             date: '13 August 2026',
+            eventDate: '2026-08-13',
             time: '6:00 PM IST',
             mode: 'Online Mode',
             topic: 'Digital Health & Telemedicine',
-            description: 'This session provides participants with insights into the latest advancements in digital healthcare technologies, telemedicine platforms, remote patient monitoring systems, wearable health devices, AI in healthcare, and the future of connected medical services.'
+            speaker: 'Dr. Ajit Kumar, Ph.D.',
+            speakerDesignation: 'Associate Professor, Information Systems',
+            speakerOrg: 'XIM University, Bhubaneswar',
+            speakerBio: 'Dr. Ajit Kumar specializes in Information Systems, Digital Health, and AI-driven healthcare technologies.',
+            description: 'This session provides participants with insights into the latest advancements in digital healthcare technologies, telemedicine platforms, remote patient monitoring systems, wearable health devices, AI in healthcare, and the future of connected medical services.',
+            registrationDeadline: '12 August 2026',
+            googleFormLink: '../events/digital-health-talk/#register',
+            feedbackFormLink: '',
+            meetingLink: '',
+            poster: '../assets/digital-health-thumb.jpg'
         };
 
-        function populateEventData(data) {
-            document.title = data.title + ' | IEEE EMBS Vardhaman';
-            document.getElementById('eventTitle').textContent = data.title;
-            document.getElementById('eventSub').textContent = data.description || defaultData.description;
-            document.getElementById('eventDate').textContent = data.date || defaultData.date;
-            document.getElementById('eventTime').textContent = data.time || defaultData.time;
-            document.getElementById('eventMode').textContent = data.mode || defaultData.mode;
-            document.getElementById('eventTopic').textContent = data.topic || defaultData.topic;
-            document.getElementById('eventDesc').textContent = data.description || defaultData.description;
-            document.getElementById('eventSpeaker').textContent = data.speaker || defaultData.speaker;
-            document.getElementById('eventSpeakerOrg').textContent = data.speakerOrg || defaultData.speakerOrg;
+        function renderEventPage(eventData) {
+            document.title = (eventData.title || 'Event') + ' | IEEE EMBS Vardhaman';
+            document.getElementById('eventTitle').textContent = eventData.title || defaultEvent.title;
+            document.getElementById('eventSub').textContent = eventData.description || defaultEvent.description;
+            document.getElementById('eventDate').textContent = eventData.date || eventData.eventDate || defaultEvent.date;
+            document.getElementById('eventTime').textContent = eventData.time || defaultEvent.time;
+            document.getElementById('eventMode').textContent = eventData.mode || defaultEvent.mode;
+            document.getElementById('eventDesc').textContent = eventData.description || defaultEvent.description;
+
+            if (eventData.registrationDeadline) {
+                document.getElementById('pillDeadline').style.display = 'inline-flex';
+                document.getElementById('eventDeadline').textContent = eventData.registrationDeadline;
+            }
+
+            // Speaker info
+            document.getElementById('speakerName').textContent = eventData.speaker || defaultEvent.speaker;
+            document.getElementById('speakerRole').textContent = eventData.speakerDesignation || defaultEvent.speakerDesignation;
+            document.getElementById('speakerOrg').textContent = eventData.speakerOrg || defaultEvent.speakerOrg;
+            document.getElementById('speakerBio').textContent = eventData.speakerBio || defaultEvent.speakerBio;
+            if (eventData.speakerPhoto) document.getElementById('speakerPhoto').src = eventData.speakerPhoto;
+
+            // Poster card
+            if (eventData.poster) {
+                document.getElementById('posterCardWrapper').style.display = 'block';
+                document.getElementById('eventPosterImg').src = eventData.poster;
+            }
+
+            // Auto-detect Upcoming vs Past
+            const todayStr = new Date().toISOString().split('T')[0];
+            const eventDateStr = eventData.eventDate || '2026-08-13';
+            const isPast = eventData.status === 'past' || (eventDateStr < todayStr && eventData.status !== 'upcoming');
+
+            const banner = document.getElementById('statusBanner');
+            const bannerText = document.getElementById('statusBannerText');
+            if (isPast) {
+                banner.className = 'status-banner status-past-bg';
+                bannerText.textContent = 'This event has concluded. View event summary, materials, and certificates below.';
+                document.getElementById('eventBadge').textContent = 'Past Event (Archived)';
+            } else {
+                banner.className = 'status-banner status-upcoming-bg';
+                bannerText.textContent = 'Upcoming Event · Registration is open to all students, faculty, and researchers.';
+                document.getElementById('eventBadge').textContent = 'Upcoming Event';
+            }
+
+            // ---------------------------------------------------------
+            // SMART BUTTON LOGIC (Strict Requirements)
+            // ---------------------------------------------------------
+            const heroActions = document.getElementById('heroActionsRow');
+            heroActions.innerHTML = '';
+
+            // 1. Registration Button: If googleFormLink exists, show button. If empty, HIDE COMPLETELY.
+            if (eventData.googleFormLink && eventData.googleFormLink.trim() !== '') {
+                heroActions.innerHTML += `
+                    <a href="${eventData.googleFormLink}" target="_blank" class="btn-action btn-register">
+                        <i class="fas fa-pen-nib"></i> Register Now
+                    </a>
+                `;
+            }
+
+            // 2. Meeting Link Button (if present)
+            if (eventData.meetingLink && eventData.meetingLink.trim() !== '') {
+                heroActions.innerHTML += `
+                    <a href="${eventData.meetingLink}" target="_blank" class="btn-action btn-secondary-action">
+                        <i class="fas fa-video"></i> Join Live Session
+                    </a>
+                `;
+            }
+
+            // 3. Feedback Form Link & Recap Actions
+            const recapSection = document.getElementById('recapSection');
+            const recapActions = document.getElementById('recapActionsRow');
+            recapActions.innerHTML = '';
+            let hasRecapItems = false;
+
+            if (eventData.feedbackFormLink && eventData.feedbackFormLink.trim() !== '') {
+                hasRecapItems = true;
+                recapActions.innerHTML += `
+                    <button onclick="handleFeedbackClick('${eventData.feedbackFormLink}')" class="btn-action btn-secondary-action">
+                        <i class="fas fa-comment-dots"></i> Submit Feedback
+                    </button>
+                `;
+            }
+
+            if (eventData.certificateLink && eventData.certificateLink.trim() !== '') {
+                hasRecapItems = true;
+                recapActions.innerHTML += `
+                    <a href="${eventData.certificateLink}" target="_blank" class="btn-action btn-outline-action">
+                        <i class="fas fa-award"></i> Download E-Certificate
+                    </a>
+                `;
+            }
+
+            if (eventData.reportPdfLink && eventData.reportPdfLink.trim() !== '') {
+                hasRecapItems = true;
+                recapActions.innerHTML += `
+                    <a href="${eventData.reportPdfLink}" target="_blank" class="btn-action btn-outline-action">
+                        <i class="fas fa-file-pdf"></i> Event Report (PDF)
+                    </a>
+                `;
+            }
+
+            if (eventData.galleryFolderLink && eventData.galleryFolderLink.trim() !== '') {
+                hasRecapItems = true;
+                recapActions.innerHTML += `
+                    <a href="${eventData.galleryFolderLink}" target="_blank" class="btn-action btn-outline-action">
+                        <i class="fas fa-images"></i> View Event Gallery
+                    </a>
+                `;
+            }
+
+            if (hasRecapItems) {
+                recapSection.style.display = 'block';
+            }
         }
 
+        function handleFeedbackClick(link) {
+            alert("Thank you for your valuable feedback.");
+            if (link && link.startsWith('http')) {
+                window.open(link, '_blank');
+            }
+        }
+
+        // Fetch Event from Firestore or Fallback
         if (eventId) {
             try {
                 firebase.initializeApp(firebaseConfig);
                 const db = firebase.firestore();
                 db.collection('events').doc(eventId).get().then(doc => {
                     if (doc.exists) {
-                        populateEventData(doc.data());
+                        renderEventPage({ id: doc.id, ...doc.data() });
                     } else {
-                        populateEventData(defaultData);
+                        renderEventPage(defaultEvent);
                     }
-                }).catch(() => populateEventData(defaultData));
+                }).catch(() => renderEventPage(defaultEvent));
             } catch(e) {
-                populateEventData(defaultData);
+                renderEventPage(defaultEvent);
             }
         } else {
-            populateEventData(defaultData);
-        }
-
-        function handleRegistration(e) {
-            e.preventDefault();
-            const btn = document.getElementById('dSubmitBtn');
-            btn.innerHTML = '<i class="fas fa-check-circle"></i> Registration Successful!';
-            btn.style.background = '#10B981';
-            btn.disabled = true;
-            alert('Thank you for registering! Registration details recorded.');
+            renderEventPage(defaultEvent);
         }
     </script>
 </body>

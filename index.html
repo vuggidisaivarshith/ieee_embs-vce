@@ -717,6 +717,34 @@
         </div>
     </section>
 
+    <!-- ANNOUNCEMENTS & NEWS FEED (Showing Last 3 Announcements) -->
+    <section class="section announcements-section" style="background: linear-gradient(135deg, #0F766E 0%, #134E4A 100%); color: white; padding: 60px 5%;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 16px;">
+                <div>
+                    <span style="background: rgba(255,255,255,0.15); padding: 4px 14px; border-radius: 50px; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">Official Updates</span>
+                    <h2 style="font-family: Sora, sans-serif; font-size: 1.8rem; color: white; margin-top: 8px;"><i class="fas fa-bullhorn" style="color: #F59E0B; margin-right: 10px;"></i> Announcements & Chapter News</h2>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;" id="homeAnnouncementsGrid">
+                <!-- Fallback Announcements (Overridden by Firestore live feed) -->
+                <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.18); border-radius: 14px; padding: 20px; position: relative;">
+                    <div style="font-size: 0.78rem; color: #5EEAD4; font-weight: 600; margin-bottom: 8px;"><i class="far fa-clock"></i> Latest Notice</div>
+                    <p style="font-size: 0.95rem; line-height: 1.5; color: white; font-weight: 500;">Registration is now open for the Expert Talk on Digital Health, Telemedicine & Remote Patient Monitoring!</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.18); border-radius: 14px; padding: 20px; position: relative;">
+                    <div style="font-size: 0.78rem; color: #5EEAD4; font-weight: 600; margin-bottom: 8px;"><i class="far fa-clock"></i> E-Certificates Notice</div>
+                    <p style="font-size: 0.95rem; line-height: 1.5; color: white; font-weight: 500;">E-Certificates will be issued to all participants attending the full 1-hour live session from start to finish.</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.18); border-radius: 14px; padding: 20px; position: relative;">
+                    <div style="font-size: 0.78rem; color: #5EEAD4; font-weight: 600; margin-bottom: 8px;"><i class="far fa-clock"></i> WhatsApp Community</div>
+                    <p style="font-size: 0.95rem; line-height: 1.5; color: white; font-weight: 500;">Join the official IEEE EMBS WhatsApp group for instant meeting links, real-time reminders & event Q&A.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- ABOUT SNAPSHOT -->
     <section class="section about-snapshot-section">
         <div class="about-snapshot">
@@ -903,13 +931,14 @@
             setInterval(update, 1000);
         })();
 
-        // ── Live Announcements & Featured Event Listener ──
+        // ── Live Announcements (Top Ticker + 3 Last Announcements Grid) ──
         try {
             firebase.initializeApp(firebaseConfig);
             const db = firebase.firestore();
-            db.collection('announcements').orderBy('timestamp', 'desc').limit(1).onSnapshot(snapshot => {
+            db.collection('announcements').orderBy('timestamp', 'desc').limit(3).onSnapshot(snapshot => {
                 if (!snapshot.empty) {
-                    const ann = snapshot.docs[0].data();
+                    // Update Top Ticker Bar
+                    const latestAnn = snapshot.docs[0].data();
                     let annBar = document.getElementById('announcementTickerBar');
                     if (!annBar) {
                         annBar = document.createElement('div');
@@ -919,7 +948,24 @@
                         const nav = document.querySelector('nav');
                         if (nav) nav.style.top = '36px';
                     }
-                    annBar.innerHTML = `<i class="fas fa-bullhorn"></i> <span>${ann.text}</span> <button onclick="this.parentElement.remove(); const n=document.querySelector('nav'); if(n) n.style.top='0';" style="background:none; border:none; color:#78350F; cursor:pointer; margin-left:12px; font-size:1.1rem;">&times;</button>`;
+                    annBar.innerHTML = `<i class="fas fa-bullhorn"></i> <span>${latestAnn.text}</span> <button onclick="this.parentElement.remove(); const n=document.querySelector('nav'); if(n) n.style.top='0';" style="background:none; border:none; color:#78350F; cursor:pointer; margin-left:12px; font-size:1.1rem;">&times;</button>`;
+
+                    // Update Homepage Announcements Section Grid (Last 3)
+                    const grid = document.getElementById('homeAnnouncementsGrid');
+                    if (grid) {
+                        let html = '';
+                        snapshot.docs.forEach((doc, idx) => {
+                            const data = doc.data();
+                            html += `
+                                <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.18); border-radius: 14px; padding: 20px; position: relative;">
+                                    <div style="font-size: 0.78rem; color: #5EEAD4; font-weight: 600; margin-bottom: 8px;"><i class="far fa-bell"></i> Announcement #${idx + 1}</div>
+                                    <p style="font-size: 0.95rem; line-height: 1.5; color: white; font-weight: 500; margin-bottom: 10px;">${data.text}</p>
+                                    <div style="font-size: 0.75rem; color: rgba(255,255,255,0.5);">Posted by ${data.author || 'IEEE EMBS Admin'}</div>
+                                </div>
+                            `;
+                        });
+                        grid.innerHTML = html;
+                    }
                 }
             });
 

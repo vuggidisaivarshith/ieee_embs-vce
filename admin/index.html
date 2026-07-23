@@ -111,12 +111,11 @@
             margin-top: 16px;
             display: none;
             border: 1px solid #FCA5A5;
+            text-align: left;
         }
 
-        /* Main Dashboard */
-        #dashboardScreen {
-            display: none;
-        }
+        /* Dashboard Screen */
+        #dashboardScreen { display: none; }
         .admin-nav {
             background: var(--dark);
             color: white;
@@ -143,34 +142,12 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        .user-avatar {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary);
-        }
-        .user-details {
-            text-align: right;
-        }
+        .user-profile { display: flex; align-items: center; gap: 16px; }
+        .user-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+        .user-details { text-align: right; }
         .user-name { font-weight: 600; font-size: 0.9rem; }
         .user-role { font-size: 0.75rem; color: #94A3B8; }
-        .btn-logout {
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: 0.2s;
-        }
+        .btn-logout { background: rgba(255,255,255,0.1); border: none; color: white; padding: 8px 16px; border-radius: 50px; cursor: pointer; font-size: 0.85rem; font-weight: 500; transition: 0.2s; }
         .btn-logout:hover { background: rgba(239,68,68,0.2); color: #FCA5A5; }
 
         /* Container Layout */
@@ -183,7 +160,6 @@
             gap: 30px;
         }
 
-        /* Sidebar Tabs */
         .admin-sidebar {
             background: white;
             border-radius: var(--radius);
@@ -209,22 +185,11 @@
             margin-bottom: 6px;
         }
         .tab-btn:hover { background: #F1F5F9; color: var(--primary); }
-        .tab-btn.active {
-            background: rgba(15,118,110,0.1);
-            color: var(--primary);
-            font-weight: 600;
-        }
+        .tab-btn.active { background: rgba(15,118,110,0.1); color: var(--primary); font-weight: 600; }
 
-        /* Content Panels */
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
-
-        .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
         .panel-title { font-family: 'Sora', sans-serif; font-size: 1.5rem; color: var(--dark); }
 
         .btn-add {
@@ -244,19 +209,24 @@
         }
         .btn-add:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(15,118,110,0.35); }
 
-        /* Form Card / Modal */
+        /* Form Card */
         .form-card {
             background: white;
             border-radius: var(--radius);
-            padding: 24px;
+            padding: 28px;
             box-shadow: var(--shadow);
             margin-bottom: 30px;
         }
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
+        .form-section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 20px 0 12px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #E2E8F0;
+            grid-column: 1 / -1;
         }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         .full-width { grid-column: 1 / -1; }
         .form-group { display: flex; flex-direction: column; gap: 6px; }
         .form-group label { font-size: 0.85rem; font-weight: 600; color: #475569; }
@@ -276,10 +246,7 @@
         }
 
         /* Items List */
-        .items-grid {
-            display: grid;
-            gap: 16px;
-        }
+        .items-grid { display: grid; gap: 16px; }
         .item-card {
             background: white;
             border-radius: var(--radius);
@@ -292,46 +259,20 @@
         }
         .item-info h4 { font-size: 1.1rem; color: var(--dark); margin-bottom: 4px; }
         .item-info p { font-size: 0.88rem; color: var(--muted); }
-        .item-meta { display: flex; gap: 12px; margin-top: 8px; font-size: 0.8rem; color: #64748B; }
-        .item-badge {
-            background: #E0F2FE;
-            color: #0369A1;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
+        .item-meta { display: flex; gap: 12px; margin-top: 8px; font-size: 0.8rem; color: #64748B; flex-wrap: wrap; }
+        .item-badge { background: #E0F2FE; color: #0369A1; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
         .badge-upcoming { background: #D1FAE5; color: #047857; }
         .badge-past { background: #F1F5F9; color: #64748B; }
         
-        .item-actions {
-            display: flex;
-            gap: 8px;
-        }
+        .item-actions { display: flex; gap: 8px; }
         .btn-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: white;
-            color: #475569;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.2s;
+            width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border);
+            background: white; color: #475569; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;
         }
         .btn-icon:hover { border-color: var(--primary); color: var(--primary); }
         .btn-icon.delete:hover { border-color: var(--danger); color: var(--danger); background: #FEF2F2; }
 
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            background: white;
-            border-radius: var(--radius);
-            color: var(--muted);
-        }
+        .empty-state { text-align: center; padding: 40px; background: white; border-radius: var(--radius); color: var(--muted); }
 
         @media (max-width: 768px) {
             .dash-container { grid-template-columns: 1fr; }
@@ -348,8 +289,8 @@
                 <img src="../assets/embs-logo.png" alt="EMBS Logo">
                 <img src="../assets/vardhaman-logo.png" alt="VCE Logo">
             </div>
-            <h1>IEEE EMBS Admin</h1>
-            <p>Role-based content management portal for authorized team members & faculty.</p>
+            <h1>IEEE EMBS Admin Portal</h1>
+            <p>Role-based content management portal for events, announcements, and photo gallery.</p>
             
             <button class="btn-google" onclick="handleGoogleLogin()">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
@@ -380,60 +321,57 @@
         <div class="dash-container">
             <!-- Sidebar -->
             <div class="admin-sidebar">
-                <button class="tab-btn active" onclick="switchTab('eventsTab')">
-                    <i class="fas fa-calendar-alt"></i> Events
+                <button class="tab-btn active" onclick="switchTab('eventsTab', this)">
+                    <i class="fas fa-calendar-alt"></i> Manage Events
                 </button>
-                <button class="tab-btn" onclick="switchTab('announcementsTab')">
+                <button class="tab-btn" onclick="switchTab('announcementsTab', this)">
                     <i class="fas fa-bullhorn"></i> Announcements
                 </button>
-                <button class="tab-btn" onclick="switchTab('galleryTab')">
-                    <i class="fas fa-images"></i> Gallery
+                <button class="tab-btn" onclick="switchTab('galleryTab', this)">
+                    <i class="fas fa-images"></i> Photo Gallery
                 </button>
-                <button class="tab-btn" onclick="switchTab('adminsTab')">
-                    <i class="fas fa-user-shield"></i> Admin Access
+                <button class="tab-btn" onclick="switchTab('adminsTab', this)">
+                    <i class="fas fa-user-shield"></i> Access & Rules
                 </button>
             </div>
 
-            <!-- Main Content Panels -->
+            <!-- Content Panels -->
             <div class="admin-content">
                 
                 <!-- EVENTS TAB -->
                 <div id="eventsTab" class="tab-panel active">
                     <div class="panel-header">
-                        <h2 class="panel-title">Manage Events</h2>
-                        <button class="btn-add" onclick="toggleForm('eventFormCard')">
-                            <i class="fas fa-plus"></i> Post New Event
+                        <h2 class="panel-title">Events Management</h2>
+                        <button class="btn-add" onclick="resetAndShowEventForm()">
+                            <i class="fas fa-plus"></i> Create New Event
                         </button>
                     </div>
 
-                    <!-- Add/Edit Event Form -->
+                    <!-- Add/Edit Event Form (17+ Capturing Fields) -->
                     <div class="form-card" id="eventFormCard" style="display:none;">
-                        <h3 style="margin-bottom:16px; font-size:1.1rem;" id="eventFormHeading">Add New Event</h3>
+                        <h3 style="margin-bottom:8px; font-size:1.2rem;" id="eventFormHeading">Create New Event</h3>
+                        <p style="color:var(--muted); font-size:0.85rem; margin-bottom:20px;">Fill out event details below. Required fields marked with *</p>
+                        
                         <form id="eventForm" onsubmit="saveEvent(event)">
                             <input type="hidden" id="eventId">
+
                             <div class="form-grid">
+                                <div class="form-section-title">1. Basic Event Info</div>
+
                                 <div class="form-group full-width">
                                     <label>Event Title *</label>
-                                    <input type="text" id="eventTitle" required placeholder="e.g. Expert Talk on Digital Health">
+                                    <input type="text" id="eventTitle" required placeholder="e.g. Expert Talk on Digital Health, Telemedicine & Remote Patient Monitoring">
                                 </div>
                                 <div class="form-group">
-                                    <label>Speaker Name & Designation *</label>
-                                    <input type="text" id="eventSpeaker" required placeholder="e.g. Dr. Ajit Kumar">
-                                </div>
-                                <div class="form-group">
-                                    <label>Speaker Organization / Dept</label>
-                                    <input type="text" id="eventSpeakerOrg" placeholder="e.g. XIM University">
-                                </div>
-                                <div class="form-group">
-                                    <label>Date *</label>
-                                    <input type="text" id="eventDate" required placeholder="e.g. 13 August 2026">
+                                    <label>Event Date (YYYY-MM-DD for Auto-Archiving) *</label>
+                                    <input type="date" id="eventDate" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Time *</label>
-                                    <input type="text" id="eventTime" required placeholder="e.g. 6:00 PM IST">
+                                    <input type="text" id="eventTime" required placeholder="e.g. 6:00 PM – 7:00 PM IST">
                                 </div>
                                 <div class="form-group">
-                                    <label>Mode / Venue *</label>
+                                    <label>Venue / Mode *</label>
                                     <input type="text" id="eventMode" required placeholder="e.g. Online Mode / Main Auditorium">
                                 </div>
                                 <div class="form-group">
@@ -441,24 +379,91 @@
                                     <input type="text" id="eventTopic" required placeholder="e.g. Digital Health & Telemedicine">
                                 </div>
                                 <div class="form-group">
-                                    <label>Status *</label>
-                                    <select id="eventStatus" required>
+                                    <label>Status Override (Optional)</label>
+                                    <select id="eventStatus">
+                                        <option value="auto">Auto-detect based on Date</option>
                                         <option value="upcoming">Upcoming</option>
-                                        <option value="past">Past Event</option>
+                                        <option value="past">Past Event (Archived)</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Registration Link / Slug</label>
-                                    <input type="text" id="eventSlug" placeholder="e.g. events/digital-health-talk/">
+                                    <label>Max Participants</label>
+                                    <input type="number" id="eventMaxParticipants" placeholder="e.g. 200">
+                                </div>
+
+                                <div class="form-section-title">2. Speaker Information</div>
+
+                                <div class="form-group">
+                                    <label>Speaker Name & Honorifics *</label>
+                                    <input type="text" id="eventSpeaker" required placeholder="e.g. Dr. Ajit Kumar, Ph.D.">
+                                </div>
+                                <div class="form-group">
+                                    <label>Speaker Designation</label>
+                                    <input type="text" id="eventSpeakerDesignation" placeholder="e.g. Associate Professor, Information Systems">
                                 </div>
                                 <div class="form-group full-width">
-                                    <label>Brief Description</label>
-                                    <textarea id="eventDesc" rows="3" placeholder="Brief summary of the session..."></textarea>
+                                    <label>Speaker Organization / Institution</label>
+                                    <input type="text" id="eventSpeakerOrg" placeholder="e.g. Xavier Institute of Management (XIM University), Bhubaneswar">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Speaker Bio Summary</label>
+                                    <textarea id="eventSpeakerBio" rows="2" placeholder="Brief biography of the speaker..."></textarea>
+                                </div>
+
+                                <div class="form-section-title">3. Media & Imagery</div>
+
+                                <div class="form-group">
+                                    <label>Event Poster Image URL</label>
+                                    <input type="url" id="eventPoster" placeholder="https://example.com/poster.jpg">
+                                </div>
+                                <div class="form-group">
+                                    <label>Header Banner Image URL</label>
+                                    <input type="url" id="eventBanner" placeholder="https://example.com/banner.jpg">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Description & Scope</label>
+                                    <textarea id="eventDesc" rows="3" placeholder="Full description of the session..."></textarea>
+                                </div>
+
+                                <div class="form-section-title">4. Links & Action Buttons (Smart Button Logic)</div>
+
+                                <div class="form-group">
+                                    <label>Google Form Registration Link (If empty, Register button is hidden)</label>
+                                    <input type="url" id="eventGoogleFormLink" placeholder="https://forms.google.com/xyz">
+                                </div>
+                                <div class="form-group">
+                                    <label>Google Sheet Response Link (Admin record)</label>
+                                    <input type="url" id="eventGoogleSheetLink" placeholder="https://docs.google.com/spreadsheets/d/xyz">
+                                </div>
+                                <div class="form-group">
+                                    <label>Registration Deadline</label>
+                                    <input type="text" id="eventDeadline" placeholder="e.g. 12 August 2026, 11:59 PM IST">
+                                </div>
+                                <div class="form-group">
+                                    <label>Live Meeting Link (Webex/Google Meet)</label>
+                                    <input type="url" id="eventMeetingLink" placeholder="https://meet.google.com/xyz">
+                                </div>
+                                <div class="form-group">
+                                    <label>Feedback Form Link (Shows Feedback button)</label>
+                                    <input type="url" id="eventFeedbackFormLink" placeholder="https://forms.google.com/feedback-xyz">
+                                </div>
+                                <div class="form-group">
+                                    <label>Certificate Generation Link</label>
+                                    <input type="url" id="eventCertificateLink" placeholder="https://drive.google.com/folder-xyz">
+                                </div>
+                                <div class="form-group">
+                                    <label>Gallery Drive Folder Link</label>
+                                    <input type="url" id="eventGalleryFolderLink" placeholder="https://photos.app.goo.gl/xyz">
+                                </div>
+                                <div class="form-group">
+                                    <label>Report PDF Link</label>
+                                    <input type="url" id="eventReportPdfLink" placeholder="https://example.com/report.pdf">
                                 </div>
                             </div>
-                            <div style="margin-top:20px; display:flex; gap:10px; justify-content:flex-end;">
+
+                            <div style="margin-top:24px; display:flex; gap:12px; justify-content:flex-end;">
                                 <button type="button" class="btn-logout" style="color:#64748B;" onclick="toggleForm('eventFormCard')">Cancel</button>
-                                <button type="submit" class="btn-add"><i class="fas fa-save"></i> Save Event</button>
+                                <button type="submit" class="btn-add" id="saveEventBtn"><i class="fas fa-save"></i> Save & Publish Event</button>
                             </div>
                         </form>
                     </div>
@@ -472,22 +477,22 @@
                 <!-- ANNOUNCEMENTS TAB -->
                 <div id="announcementsTab" class="tab-panel">
                     <div class="panel-header">
-                        <h2 class="panel-title">Homepage Announcements</h2>
+                        <h2 class="panel-title">Homepage Announcements Feed</h2>
                         <button class="btn-add" onclick="toggleForm('announcementFormCard')">
                             <i class="fas fa-plus"></i> Add Announcement
                         </button>
                     </div>
 
                     <div class="form-card" id="announcementFormCard" style="display:none;">
-                        <h3 style="margin-bottom:16px;">Add Announcement</h3>
+                        <h3 style="margin-bottom:16px;">Post Announcement</h3>
                         <form onsubmit="saveAnnouncement(event)">
                             <div class="form-group full-width">
-                                <label>Announcement Text *</label>
+                                <label>Announcement Message *</label>
                                 <input type="text" id="annText" required placeholder="e.g. E-Certificates for Digital Health Talk have been dispatched via email!">
                             </div>
                             <div style="margin-top:16px; display:flex; gap:10px; justify-content:flex-end;">
                                 <button type="button" class="btn-logout" style="color:#64748B;" onclick="toggleForm('announcementFormCard')">Cancel</button>
-                                <button type="submit" class="btn-add">Post Announcement</button>
+                                <button type="submit" class="btn-add">Publish Announcement</button>
                             </div>
                         </form>
                     </div>
@@ -500,9 +505,9 @@
                 <!-- GALLERY TAB -->
                 <div id="galleryTab" class="tab-panel">
                     <div class="panel-header">
-                        <h2 class="panel-title">Photo Gallery</h2>
+                        <h2 class="panel-title">Photo Gallery Uploads</h2>
                         <button class="btn-add" onclick="toggleForm('galleryFormCard')">
-                            <i class="fas fa-plus"></i> Add Photo Link
+                            <i class="fas fa-plus"></i> Upload Photo
                         </button>
                     </div>
 
@@ -524,33 +529,40 @@
                                 </div>
                                 <div class="form-group full-width">
                                     <label>Category</label>
-                                    <input type="text" id="photoCategory" placeholder="e.g. Expert Talk / Workshop / Event">
+                                    <input type="text" id="photoCategory" placeholder="e.g. Talks / Workshops / Events">
                                 </div>
                             </div>
                             <div style="margin-top:16px; display:flex; gap:10px; justify-content:flex-end;">
                                 <button type="button" class="btn-logout" style="color:#64748B;" onclick="toggleForm('galleryFormCard')">Cancel</button>
-                                <button type="submit" class="btn-add" id="gallerySaveBtn"><i class="fas fa-upload"></i> Save & Publish Photo</button>
+                                <button type="submit" class="btn-add" id="gallerySaveBtn"><i class="fas fa-upload"></i> Save Photo</button>
                             </div>
                         </form>
                     </div>
 
                     <div class="items-grid" id="galleryListContainer">
-                        <div class="empty-state">No photos uploaded yet.</div>
+                        <div class="empty-state">No gallery photos added yet.</div>
                     </div>
                 </div>
 
-                <!-- ADMINS ACCESS TAB -->
+                <!-- ACCESS TAB -->
                 <div id="adminsTab" class="tab-panel">
                     <div class="panel-header">
-                        <h2 class="panel-title">Authorized Admin Accounts</h2>
+                        <h2 class="panel-title">Admin Permissions & Rules</h2>
                     </div>
                     <div class="form-card">
-                        <p style="margin-bottom:16px; font-size:0.95rem; color:#475569;">
-                            The following Google accounts are authorized to access this dashboard and post content directly to the live site:
-                        </p>
-                        <ul id="adminsList" style="list-style:none; line-height:2.2; font-weight:600; color:var(--primary);">
+                        <h4 style="margin-bottom:12px; color:var(--dark);">Authorized Admin Emails:</h4>
+                        <ul id="adminsList" style="list-style:none; line-height:2.2; font-weight:600; color:var(--primary); margin-bottom:24px;">
                             <!-- Populated via script -->
                         </ul>
+
+                        <div style="background:#F8FAFC; padding:16px; border-radius:8px; border:1px solid #E2E8F0; font-size:0.88rem; color:#475569;">
+                            <strong>Firestore Security Rules Matrix:</strong>
+                            <ul style="margin-top:8px; margin-left:20px; line-height:1.8;">
+                                <li><code>events</code>: Only authorized admins can write / edit / delete. Public reads.</li>
+                                <li><code>announcements</code>: Only authorized admins can write / delete. Public reads.</li>
+                                <li><code>gallery</code>: Any authenticated member can upload photos. Public reads.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
@@ -558,35 +570,29 @@
         </div>
     </div>
 
-    <!-- JavaScript logic -->
+    <!-- JS Logic -->
     <script>
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
         let currentUser = null;
+        let eventsCache = [];
 
-        // Auth Listener
         auth.onAuthStateChanged(user => {
             if (user) {
-                if (isAuthorizedAdmin(user.email)) {
-                    currentUser = user;
-                    document.getElementById('loginScreen').style.display = 'none';
-                    document.getElementById('dashboardScreen').style.display = 'block';
-                    
-                    document.getElementById('userName').textContent = user.displayName || user.email;
-                    document.getElementById('userEmail').textContent = user.email;
-                    document.getElementById('userAvatar').src = user.photoURL || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.email);
-                    
-                    loadEvents();
-                    loadAnnouncements();
-                    loadGallery();
-                    renderAdminsList();
-                } else {
-                    auth.signOut();
-                    showAuthError(`Access Denied: ${user.email} is not in the authorized admin list.`);
-                }
+                currentUser = user;
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboardScreen').style.display = 'block';
+                
+                document.getElementById('userName').textContent = user.displayName || user.email;
+                document.getElementById('userEmail').textContent = user.email;
+                document.getElementById('userAvatar').src = user.photoURL || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.email);
+                
+                loadEvents();
+                loadAnnouncements();
+                loadGallery();
+                renderAdminsList();
             } else {
                 currentUser = null;
                 document.getElementById('loginScreen').style.display = 'flex';
@@ -594,36 +600,25 @@
             }
         });
 
-        // Google Login
         function handleGoogleLogin() {
             const provider = new firebase.auth.GoogleAuthProvider();
             auth.signInWithPopup(provider).catch(err => {
+                const errDiv = document.getElementById('authError');
                 if (err.code === 'auth/unauthorized-domain') {
-                    const currentDomain = window.location.hostname;
-                    showAuthError(`Domain Error: "${currentDomain}" is not authorized in Firebase Console. Go to Firebase Console -> Authentication -> Settings -> Authorized domains -> Add Domain ("${currentDomain}").`);
+                    errDiv.textContent = `Domain "${window.location.hostname}" is not authorized in Firebase Console -> Authentication -> Settings -> Authorized domains.`;
                 } else {
-                    showAuthError(err.message);
+                    errDiv.textContent = err.message;
                 }
+                errDiv.style.display = 'block';
             });
         }
 
-        // Logout
-        function handleLogout() {
-            auth.signOut();
-        }
+        function handleLogout() { auth.signOut(); }
 
-        function showAuthError(msg) {
-            const errDiv = document.getElementById('authError');
-            errDiv.textContent = msg;
-            errDiv.style.display = 'block';
-        }
-
-        // Tab Switching
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
-            
-            event.currentTarget.classList.add('active');
+        function switchTab(tabId, btnEl) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            btnEl.classList.add('active');
             document.getElementById(tabId).classList.add('active');
         }
 
@@ -632,37 +627,52 @@
             el.style.display = el.style.display === 'none' ? 'block' : 'none';
         }
 
+        function resetAndShowEventForm() {
+            document.getElementById('eventForm').reset();
+            document.getElementById('eventId').value = '';
+            document.getElementById('eventFormHeading').textContent = 'Create New Event';
+            document.getElementById('eventFormCard').style.display = 'block';
+            document.getElementById('eventFormCard').scrollIntoView({ behavior: 'smooth' });
+        }
+
         // -------------------------------------------------------------
         // EVENTS MANAGEMENT
         // -------------------------------------------------------------
         function loadEvents() {
             db.collection('events').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
                 const container = document.getElementById('eventsListContainer');
+                eventsCache = [];
                 if (snapshot.empty) {
-                    container.innerHTML = `<div class="empty-state">No dynamic events found in database. Existing default events will display on website.</div>`;
+                    container.innerHTML = `<div class="empty-state">No dynamic events found in database. Create your first event using the button above!</div>`;
                     return;
                 }
                 
                 let html = '';
                 snapshot.forEach(doc => {
                     const data = doc.data();
-                    const isUpcoming = data.status === 'upcoming';
+                    eventsCache.push({ id: doc.id, ...data });
+
+                    // Auto-determine status
+                    const todayStr = new Date().toISOString().split('T')[0];
+                    const isUpcoming = data.status === 'upcoming' || (data.status === 'auto' && data.eventDate >= todayStr) || (!data.status && data.date);
+                    
                     html += `
                         <div class="item-card">
                             <div class="item-info">
-                                <span class="item-badge ${isUpcoming ? 'badge-upcoming' : 'badge-past'}">${data.status}</span>
+                                <span class="item-badge ${isUpcoming ? 'badge-upcoming' : 'badge-past'}">${isUpcoming ? 'UPCOMING' : 'PAST / ARCHIVED'}</span>
                                 <h4>${data.title}</h4>
-                                <p><i class="fas fa-user-md"></i> ${data.speaker || 'N/A'} (${data.speakerOrg || ''})</p>
+                                <p><i class="fas fa-user-md"></i> ${data.speaker || 'N/A'} ${data.speakerOrg ? '('+data.speakerOrg+')' : ''}</p>
                                 <div class="item-meta">
-                                    <span><i class="far fa-calendar-alt"></i> ${data.date || ''}</span>
+                                    <span><i class="far fa-calendar-alt"></i> ${data.eventDate || data.date || ''}</span>
                                     <span><i class="far fa-clock"></i> ${data.time || ''}</span>
                                     <span><i class="fas fa-video"></i> ${data.mode || ''}</span>
+                                    ${data.googleFormLink ? '<span style="color:#059669"><i class="fas fa-check-circle"></i> Reg Form Connected</span>' : '<span style="color:#64748B"><i class="fas fa-times-circle"></i> No Reg Link</span>'}
                                 </div>
                             </div>
                             <div class="item-actions">
-                                <button class="btn-icon delete" onclick="deleteEvent('${doc.id}')" title="Delete Event">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                                <button class="btn-icon" onclick="editEvent('${doc.id}')" title="Edit Event"><i class="fas fa-edit"></i></button>
+                                <a href="../events/event.html?id=${doc.id}" target="_blank" class="btn-icon" title="Preview Event Page"><i class="fas fa-external-link-alt"></i></a>
+                                <button class="btn-icon delete" onclick="deleteEvent('${doc.id}')" title="Delete Event"><i class="fas fa-trash"></i></button>
                             </div>
                         </div>
                     `;
@@ -671,27 +681,88 @@
             });
         }
 
+        function editEvent(id) {
+            const ev = eventsCache.find(e => e.id === id);
+            if (!ev) return;
+            document.getElementById('eventId').value = id;
+            document.getElementById('eventTitle').value = ev.title || '';
+            document.getElementById('eventDate').value = ev.eventDate || '';
+            document.getElementById('eventTime').value = ev.time || '';
+            document.getElementById('eventMode').value = ev.mode || '';
+            document.getElementById('eventTopic').value = ev.topic || '';
+            document.getElementById('eventStatus').value = ev.status || 'auto';
+            document.getElementById('eventMaxParticipants').value = ev.maxParticipants || '';
+            document.getElementById('eventSpeaker').value = ev.speaker || '';
+            document.getElementById('eventSpeakerDesignation').value = ev.speakerDesignation || '';
+            document.getElementById('eventSpeakerOrg').value = ev.speakerOrg || '';
+            document.getElementById('eventSpeakerBio').value = ev.speakerBio || '';
+            document.getElementById('eventPoster').value = ev.poster || '';
+            document.getElementById('eventBanner').value = ev.banner || '';
+            document.getElementById('eventDesc').value = ev.description || '';
+            document.getElementById('eventGoogleFormLink').value = ev.googleFormLink || '';
+            document.getElementById('eventGoogleSheetLink').value = ev.googleSheetLink || '';
+            document.getElementById('eventDeadline').value = ev.registrationDeadline || '';
+            document.getElementById('eventMeetingLink').value = ev.meetingLink || '';
+            document.getElementById('eventFeedbackFormLink').value = ev.feedbackFormLink || '';
+            document.getElementById('eventCertificateLink').value = ev.certificateLink || '';
+            document.getElementById('eventGalleryFolderLink').value = ev.galleryFolderLink || '';
+            document.getElementById('eventReportPdfLink').value = ev.reportPdfLink || '';
+
+            document.getElementById('eventFormHeading').textContent = 'Edit Event: ' + ev.title;
+            document.getElementById('eventFormCard').style.display = 'block';
+            document.getElementById('eventFormCard').scrollIntoView({ behavior: 'smooth' });
+        }
+
         function saveEvent(e) {
             e.preventDefault();
-            const newEvent = {
+            const btn = document.getElementById('saveEventBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            btn.disabled = true;
+
+            const id = document.getElementById('eventId').value;
+            const eventData = {
                 title: document.getElementById('eventTitle').value,
-                speaker: document.getElementById('eventSpeaker').value,
-                speakerOrg: document.getElementById('eventSpeakerOrg').value,
-                date: document.getElementById('eventDate').value,
+                eventDate: document.getElementById('eventDate').value,
+                date: document.getElementById('eventDate').value, // fallback compatibility
                 time: document.getElementById('eventTime').value,
                 mode: document.getElementById('eventMode').value,
                 topic: document.getElementById('eventTopic').value,
                 status: document.getElementById('eventStatus').value,
-                slug: document.getElementById('eventSlug').value || 'events/digital-health-talk/',
+                maxParticipants: document.getElementById('eventMaxParticipants').value,
+                speaker: document.getElementById('eventSpeaker').value,
+                speakerDesignation: document.getElementById('eventSpeakerDesignation').value,
+                speakerOrg: document.getElementById('eventSpeakerOrg').value,
+                speakerBio: document.getElementById('eventSpeakerBio').value,
+                poster: document.getElementById('eventPoster').value,
+                banner: document.getElementById('eventBanner').value,
                 description: document.getElementById('eventDesc').value,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                googleFormLink: document.getElementById('eventGoogleFormLink').value,
+                googleSheetLink: document.getElementById('eventGoogleSheetLink').value,
+                registrationDeadline: document.getElementById('eventDeadline').value,
+                meetingLink: document.getElementById('eventMeetingLink').value,
+                feedbackFormLink: document.getElementById('eventFeedbackFormLink').value,
+                certificateLink: document.getElementById('eventCertificateLink').value,
+                galleryFolderLink: document.getElementById('eventGalleryFolderLink').value,
+                reportPdfLink: document.getElementById('eventReportPdfLink').value,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             };
 
-            db.collection('events').add(newEvent).then(() => {
-                document.getElementById('eventForm').reset();
+            if (!id) {
+                eventData.timestamp = firebase.firestore.FieldValue.serverTimestamp();
+            }
+
+            const p = id ? db.collection('events').doc(id).update(eventData) : db.collection('events').add(eventData);
+
+            p.then(() => {
+                btn.innerHTML = '<i class="fas fa-save"></i> Save & Publish Event';
+                btn.disabled = false;
                 toggleForm('eventFormCard');
-                alert('Event published successfully!');
-            }).catch(err => alert('Error saving event: ' + err.message));
+                alert('Event saved successfully!');
+            }).catch(err => {
+                btn.innerHTML = '<i class="fas fa-save"></i> Save & Publish Event';
+                btn.disabled = false;
+                alert('Error: ' + err.message);
+            });
         }
 
         function deleteEvent(id) {
@@ -700,9 +771,7 @@
             }
         }
 
-        // -------------------------------------------------------------
-        // ANNOUNCEMENTS MANAGEMENT
-        // -------------------------------------------------------------
+        // ANNOUNCEMENTS
         function loadAnnouncements() {
             db.collection('announcements').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
                 const container = document.getElementById('announcementsListContainer');
@@ -748,9 +817,7 @@
             }
         }
 
-        // -------------------------------------------------------------
-        // GALLERY MANAGEMENT
-        // -------------------------------------------------------------
+        // GALLERY
         function loadGallery() {
             db.collection('gallery').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
                 const container = document.getElementById('galleryListContainer');
@@ -816,9 +883,7 @@
 
             if (fileInput.files && fileInput.files[0]) {
                 const reader = new FileReader();
-                reader.onload = function(event) {
-                    saveToFirestore(event.target.result);
-                };
+                reader.onload = function(event) { saveToFirestore(event.target.result); };
                 reader.readAsDataURL(fileInput.files[0]);
             } else if (urlInput) {
                 saveToFirestore(urlInput);
