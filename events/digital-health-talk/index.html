@@ -4,495 +4,1076 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expert Talk: Digital Health & Telemedicine | IEEE EMBS Vardhaman</title>
-    
-    <!-- SEO & Open Graph Meta Tags -->
-    <meta name="description" content="IEEE EMBS Vardhaman College of Engineering presents an expert talk on Digital Health, Telemedicine, and Remote Patient Monitoring Systems by Dr. Ajit Kumar on 13 August 2026.">
+    <meta name="description" content="IEEE EMBS Vardhaman presents an expert talk on Digital Health, Telemedicine, and Remote Patient Monitoring by Dr. Ajit Kumar on 13 August 2026.">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Expert Talk: Digital Health & Telemedicine | IEEE EMBS Vardhaman">
     <meta property="og:description" content="Join us for an insightful session on Digital Health, Telemedicine & Remote Patient Monitoring by Dr. Ajit Kumar, XIM University. 13 Aug 2026, 6 PM IST. Free E-certificate.">
-    <meta property="og:image" content="assets/embs-logo.png">
-    <meta name="twitter:card" content="summary_large_image">
-    
-    <!-- Google Fonts -->
+
+    <!-- Fonts: Sora (headings) + Inter (body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome for misc icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="../../style.css">
+
+    <!-- Lucide Icons (healthcare icon set) -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <style>
+    /* ═══════════════════════════════════════════════
+       TOKENS & RESET
+    ═══════════════════════════════════════════════ */
+    :root {
+        /* Primary: teal-blue health-tech gradient */
+        --teal:      #0d9488;
+        --blue:      #0369a1;
+        --teal-mid:  #0891b2;
+
+        /* Neutrals */
+        --charcoal:  #1e293b;
+        --body-text: #374151;
+        --muted:     #6b7280;
+        --border:    #e5e7eb;
+        --surface:   #f8fafc;
+
+        /* Warm accent — buttons ONLY */
+        --amber:     #d97706;
+        --amber-dark:#b45309;
+
+        /* Backgrounds */
+        --white:     #ffffff;
+        --bg-light:  #f0fdfa;   /* very faint teal tint */
+
+        /* Shadows */
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05);
+        --shadow-md: 0 4px 16px rgba(0,0,0,0.09);
+        --shadow-lg: 0 12px 32px rgba(0,0,0,0.11);
+        --shadow-xl: 0 20px 48px rgba(0,0,0,0.13);
+
+        --radius:    12px;
+        --radius-lg: 20px;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; font-size:16px; }
+    body {
+        font-family: 'Inter', system-ui, sans-serif;
+        color: var(--body-text);
+        background: var(--white);
+        line-height: 1.65;
+        overflow-x: hidden;
+    }
+    h1,h2,h3,h4,h5 { font-family: 'Sora', sans-serif; line-height: 1.25; color: var(--charcoal); }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { max-width:100%; display:block; }
+
+    /* ═══════════════════════════════════════════════
+       NAVBAR
+    ═══════════════════════════════════════════════ */
+    .navbar {
+        position: fixed; top:0; left:0; right:0; z-index:1000;
+        background: rgba(255,255,255,0.96);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+        height: 68px;
+        display: flex; align-items: center;
+    }
+    .nav-inner {
+        max-width: 1200px; margin: 0 auto; width: 100%;
+        padding: 0 5%;
+        display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logos { display:flex; align-items:center; gap:10px; }
+    .nav-logos img { height:40px; width:auto; object-fit:contain; }
+    .nav-links-row { display:flex; align-items:center; gap:24px; }
+    .nav-links-row a { color:var(--charcoal); font-size:0.9rem; font-weight:500; transition:color .2s; }
+    .nav-links-row a:hover { color:var(--teal); }
+    .btn-nav {
+        background: linear-gradient(135deg, var(--teal), var(--blue));
+        color: white !important;
+        padding: 8px 20px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.88rem;
+    }
+    .btn-nav:hover { opacity:.9; transform:translateY(-1px); }
+    .hamburger-btn {
+        display:none; background:none; border:none;
+        font-size:1.4rem; color:var(--charcoal); cursor:pointer;
+    }
+    .mobile-overlay {
+        display:none; position:fixed; inset:0;
+        background:rgba(15,23,42,0.97); z-index:999;
+        flex-direction:column; align-items:center; justify-content:center; gap:28px;
+    }
+    .mobile-overlay.open { display:flex; }
+    .mobile-overlay a { color:white; font-size:1.4rem; font-weight:600; }
+    .mobile-overlay .close-x {
+        position:absolute; top:20px; right:24px;
+        background:none; border:none; color:white; font-size:2rem; cursor:pointer;
+    }
+    @media(max-width:768px){
+        .nav-links-row { display:none; }
+        .hamburger-btn { display:block; }
+    }
+
+    /* ═══════════════════════════════════════════════
+       HERO — teal→blue gradient (ONLY place)
+    ═══════════════════════════════════════════════ */
+    .hero {
+        min-height: 100vh;
+        background: linear-gradient(140deg, #0f4c4c 0%, #0d9488 25%, #0369a1 65%, #1e3a5f 100%);
+        position: relative;
+        display: flex; align-items: center;
+        padding: 110px 5% 80px;
+        overflow: hidden;
+        color: white;
+    }
+    /* Subtle geometric shapes */
+    .hero::before {
+        content:'';
+        position:absolute; inset:0;
+        background:
+            radial-gradient(ellipse 800px 600px at 80% 20%, rgba(255,255,255,0.04) 0%, transparent 60%),
+            radial-gradient(ellipse 500px 500px at 10% 90%, rgba(13,148,136,0.3) 0%, transparent 60%);
+    }
+    .hero-body { position:relative; z-index:1; max-width:760px; }
+    .hero-badge {
+        display:inline-flex; align-items:center; gap:8px;
+        background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2);
+        padding:6px 16px; border-radius:50px;
+        font-size:0.78rem; font-weight:600; letter-spacing:1.5px; text-transform:uppercase;
+        margin-bottom:24px;
+    }
+    .hero-badge i { color: #5eead4; }
+    h1.hero-title {
+        font-size: clamp(1.9rem, 4.5vw, 3rem);
+        font-weight: 800;
+        color: white;
+        margin-bottom: 16px;
+        line-height: 1.15;
+    }
+    .hero-sub {
+        color: rgba(255,255,255,0.78);
+        font-size: 1.05rem;
+        margin-bottom: 36px;
+        max-width: 580px;
+    }
+
+    /* Meta pills */
+    .meta-pills { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:36px; }
+    .meta-pill {
+        display:inline-flex; align-items:center; gap:8px;
+        background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.18);
+        padding:8px 16px; border-radius:50px;
+        font-size:0.88rem; font-weight:500;
+    }
+    .meta-pill i { color:#5eead4; }
+
+    /* Countdown */
+    .countdown-block { margin-bottom:36px; }
+    .cd-label { font-size:0.8rem; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.55); margin-bottom:12px; }
+    .cd-units { display:flex; gap:10px; flex-wrap:wrap; }
+    .cd-unit {
+        background:rgba(255,255,255,0.08);
+        border:1px solid rgba(255,255,255,0.15);
+        border-radius:10px;
+        padding:12px 18px;
+        text-align:center; min-width:72px;
+    }
+    .cd-num { display:block; font-family:'Sora',sans-serif; font-size:2rem; font-weight:700; line-height:1; color:white; }
+    .cd-text { display:block; font-size:0.65rem; text-transform:uppercase; letter-spacing:1px; color:rgba(255,255,255,0.5); margin-top:4px; }
+
+    /* CTA */
+    .hero-actions { display:flex; gap:14px; flex-wrap:wrap; align-items:center; }
+    .btn-primary {
+        display:inline-flex; align-items:center; gap:8px;
+        background: linear-gradient(135deg, var(--amber), var(--amber-dark));
+        color: white;
+        padding:14px 32px; border-radius:50px;
+        font-weight:700; font-size:1rem;
+        box-shadow: 0 4px 16px rgba(217,119,6,0.35);
+        transition: all .25s;
+        cursor:pointer; border:none; font-family:inherit;
+    }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(217,119,6,0.45); }
+    .cert-note { font-size:0.83rem; color:rgba(255,255,255,0.6); display:flex; align-items:center; gap:6px; }
+    .cert-note i { color:#5eead4; }
+
+    /* ═══════════════════════════════════════════════
+       STATS BAR
+    ═══════════════════════════════════════════════ */
+    .stats-section {
+        background: var(--charcoal);
+        padding: 40px 5%;
+    }
+    .stats-grid {
+        max-width:960px; margin:0 auto;
+        display:grid; grid-template-columns:repeat(4,1fr);
+        gap:0; text-align:center;
+    }
+    .stat-item {
+        padding: 12px 20px;
+        border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .stat-item:last-child { border-right:none; }
+    .stat-icon { color:var(--teal); font-size:1.4rem; margin-bottom:8px; display:block; }
+    .stat-num {
+        font-family:'Sora',sans-serif;
+        font-size:2.2rem; font-weight:800;
+        color:white; line-height:1;
+        display:block; margin-bottom:4px;
+    }
+    .stat-label { font-size:0.78rem; color:rgba(255,255,255,0.55); text-transform:uppercase; letter-spacing:1px; }
+    @media(max-width:640px){
+        .stats-grid { grid-template-columns:repeat(2,1fr); }
+        .stat-item:nth-child(2) { border-right:none; }
+        .stat-item:nth-child(1),.stat-item:nth-child(2) { border-bottom:1px solid rgba(255,255,255,0.08); }
+    }
+
+    /* ═══════════════════════════════════════════════
+       SHARED SECTION LAYOUT
+    ═══════════════════════════════════════════════ */
+    .section { padding: 90px 5%; }
+    .bg-light { background: var(--bg-light); }
+    .container { max-width:1080px; margin:0 auto; }
+    .section-label {
+        text-align:center; margin-bottom:56px;
+    }
+    .section-label h2 { font-size:clamp(1.6rem,3vw,2.2rem); color:var(--charcoal); margin-bottom:12px; }
+    .section-label p { color:var(--muted); font-size:1rem; }
+    .section-label .divider {
+        width:48px; height:4px;
+        background:linear-gradient(90deg, var(--teal), var(--blue));
+        border-radius:2px; margin:16px auto 0;
+    }
+
+    /* ═══════════════════════════════════════════════
+       ABOUT CARD
+    ═══════════════════════════════════════════════ */
+    .about-card {
+        background:white;
+        border-radius:var(--radius-lg);
+        padding:40px;
+        box-shadow:var(--shadow-md);
+        border:1px solid var(--border);
+    }
+    .about-card p { color:var(--body-text); margin-bottom:20px; font-size:1rem; line-height:1.75; }
+    .about-card p:last-of-type { margin-bottom:28px; }
+
+    .who-attend h4 {
+        font-size:0.88rem; font-weight:600; text-transform:uppercase; letter-spacing:1px;
+        color:var(--teal); margin-bottom:14px;
+        display:flex; align-items:center; gap:8px;
+    }
+    .attend-tags { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:24px; }
+    .tag {
+        display:inline-flex; align-items:center; gap:7px;
+        padding:7px 15px; border-radius:50px;
+        background:rgba(13,148,136,0.08); color:var(--teal);
+        border:1px solid rgba(13,148,136,0.2);
+        font-size:0.85rem; font-weight:500;
+    }
+    .deadline-note {
+        display:flex; align-items:center; gap:10px;
+        background:#fef3c7; border:1px solid #fcd34d;
+        padding:12px 18px; border-radius:10px;
+        font-size:0.9rem; color:#92400e;
+    }
+    .deadline-note i { color:var(--amber); flex-shrink:0; }
+
+    /* ═══════════════════════════════════════════════
+       TOPIC CARDS — icons + hover lift
+    ═══════════════════════════════════════════════ */
+    .topics-grid {
+        display:grid;
+        grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+        gap:20px;
+    }
+    .topic-card {
+        background:white;
+        border:1px solid var(--border);
+        border-radius:var(--radius);
+        padding:28px 24px;
+        box-shadow:var(--shadow-sm);
+        transition:all .25s ease;
+        display:flex; flex-direction:column; gap:12px;
+    }
+    .topic-card:hover {
+        transform:translateY(-5px);
+        box-shadow:var(--shadow-lg);
+        border-color: rgba(13,148,136,0.3);
+    }
+    .topic-icon-wrap {
+        width:48px; height:48px;
+        background:linear-gradient(135deg, rgba(13,148,136,0.1), rgba(3,105,161,0.1));
+        border-radius:12px;
+        display:flex; align-items:center; justify-content:center;
+        color:var(--teal);
+    }
+    .topic-icon-wrap svg { width:22px; height:22px; stroke:var(--teal); }
+    .topic-card h3 { font-size:1.05rem; font-weight:700; color:var(--charcoal); }
+    .topic-card p { font-size:0.88rem; color:var(--muted); line-height:1.6; }
+
+    /* ═══════════════════════════════════════════════
+       SPEAKER CARD — elevated, featured
+    ═══════════════════════════════════════════════ */
+    .speaker-card {
+        background:white;
+        border-radius:var(--radius-lg);
+        padding:40px;
+        box-shadow:var(--shadow-xl);
+        border:1px solid var(--border);
+        display:grid;
+        grid-template-columns:200px 1fr;
+        gap:40px;
+        align-items:start;
+        position:relative;
+        overflow:hidden;
+    }
+    .speaker-card::before {
+        content:'';
+        position:absolute; left:0; top:0; bottom:0; width:4px;
+        background:linear-gradient(180deg, var(--teal), var(--blue));
+    }
+    .speaker-photo-wrap {
+        display:flex; flex-direction:column; align-items:center; gap:12px;
+    }
+    .speaker-photo {
+        width:180px; height:180px; border-radius:50%;
+        object-fit:cover;
+        box-shadow:0 8px 32px rgba(0,0,0,0.15);
+        border:4px solid white;
+    }
+    .avatar-placeholder {
+        width:180px; height:180px; border-radius:50%;
+        background:linear-gradient(135deg, var(--teal), var(--blue));
+        display:flex; align-items:center; justify-content:center;
+        font-size:4rem; color:white;
+        box-shadow:0 8px 32px rgba(0,0,0,0.15);
+    }
+    .speaker-name { font-size:1.6rem; font-weight:800; color:var(--charcoal); margin-bottom:4px; }
+    .speaker-role { font-size:0.95rem; font-weight:600; color:var(--teal); margin-bottom:4px; }
+    .speaker-org { font-size:0.9rem; color:var(--muted); margin-bottom:20px; }
+    .speaker-bio { font-size:0.95rem; color:var(--body-text); line-height:1.75; margin-bottom:24px; }
+    .speaker-links { display:flex; gap:12px; flex-wrap:wrap; }
+    .social-link {
+        display:inline-flex; align-items:center; gap:8px;
+        padding:8px 18px; border-radius:50px;
+        border:1.5px solid var(--border);
+        font-size:0.88rem; font-weight:600; color:var(--charcoal);
+        transition:all .2s;
+    }
+    .social-link:hover { border-color:var(--teal); color:var(--teal); background:rgba(13,148,136,0.05); }
+    @media(max-width:640px){
+        .speaker-card { grid-template-columns:1fr; gap:24px; }
+        .speaker-card::before { left:0; right:0; top:0; bottom:auto; width:auto; height:4px; }
+        .speaker-photo-wrap { flex-direction:row; }
+    }
+
+    /* ═══════════════════════════════════════════════
+       TIMELINE AGENDA — proper vertical line + dots
+    ═══════════════════════════════════════════════ */
+    .timeline {
+        position:relative;
+        padding-left:48px;
+    }
+    /* The vertical connecting line */
+    .timeline::before {
+        content:'';
+        position:absolute; left:16px; top:12px; bottom:12px; width:2px;
+        background:linear-gradient(180deg, var(--teal), var(--blue));
+    }
+    .tl-item {
+        position:relative;
+        margin-bottom:32px;
+        display:flex; gap:20px; align-items:flex-start;
+    }
+    .tl-item:last-child { margin-bottom:0; }
+    /* Dot marker */
+    .tl-dot {
+        position:absolute; left:-46px; top:16px;
+        width:30px; height:30px; border-radius:50%;
+        background:linear-gradient(135deg, var(--teal), var(--blue));
+        display:flex; align-items:center; justify-content:center;
+        color:white; font-size:0.75rem;
+        box-shadow:0 0 0 4px white, 0 0 0 6px rgba(13,148,136,0.2);
+        flex-shrink:0; z-index:1;
+    }
+    .tl-content {
+        background:white;
+        border:1px solid var(--border);
+        border-radius:var(--radius);
+        padding:20px 24px;
+        flex:1;
+        box-shadow:var(--shadow-sm);
+        transition:box-shadow .2s, transform .2s;
+    }
+    .tl-content:hover { box-shadow:var(--shadow-md); transform:translateX(4px); }
+    .tl-time {
+        display:inline-block;
+        font-size:0.78rem; font-weight:700; letter-spacing:1px;
+        color:var(--teal); text-transform:uppercase;
+        background:rgba(13,148,136,0.08); padding:3px 10px; border-radius:50px;
+        margin-bottom:8px;
+    }
+    .tl-content h4 { font-size:1rem; font-weight:700; color:var(--charcoal); margin-bottom:6px; }
+    .tl-content p { font-size:0.88rem; color:var(--muted); line-height:1.6; }
+
+    /* ═══════════════════════════════════════════════
+       REGISTRATION FORM
+    ═══════════════════════════════════════════════ */
+    .registration-section { background:var(--surface); }
+    .form-card {
+        background:white; border-radius:var(--radius-lg);
+        padding:40px; box-shadow:var(--shadow-lg);
+        border:1px solid var(--border);
+        max-width:720px; margin:0 auto;
+    }
+    .form-grid {
+        display:grid; grid-template-columns:1fr 1fr; gap:20px;
+    }
+    .full-width { grid-column:1 / -1; }
+    .form-group { display:flex; flex-direction:column; gap:6px; }
+    .form-group label {
+        font-size:0.88rem; font-weight:600; color:var(--charcoal);
+    }
+    .help-text { font-size:0.78rem; color:var(--muted); }
+    .required { color:var(--amber); }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding:10px 14px;
+        border:1.5px solid var(--border);
+        border-radius:8px;
+        font-family:inherit; font-size:0.95rem;
+        color:var(--charcoal);
+        transition:border-color .2s, box-shadow .2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline:none;
+        border-color:var(--teal);
+        box-shadow:0 0 0 3px rgba(13,148,136,0.1);
+    }
+    .checkbox-container {
+        display:flex; align-items:flex-start; gap:10px;
+        font-size:0.88rem; color:var(--body-text);
+    }
+    .checkbox-container input[type=checkbox] { margin-top:3px; flex-shrink:0; }
+    .privacy-note, .cert-eligibility {
+        display:flex; align-items:flex-start; gap:10px;
+        background:rgba(13,148,136,0.06); padding:14px 18px;
+        border-radius:10px; border-left:4px solid var(--teal);
+        font-size:0.85rem; color:var(--body-text);
+        margin-top:20px;
+    }
+    .privacy-note i, .cert-eligibility i { color:var(--teal); flex-shrink:0; margin-top:2px; }
+    .form-submit { margin-top:28px; text-align:center; }
+    .btn-block { width:100%; justify-content:center; font-size:1.05rem; padding:16px 32px; }
+    @media(max-width:580px){ .form-grid { grid-template-columns:1fr; } }
+
+    /* ═══════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════ */
+    .footer {
+        background:var(--charcoal); color:rgba(255,255,255,0.7);
+        padding:60px 5% 24px;
+    }
+    .footer-grid {
+        max-width:1080px; margin:0 auto;
+        display:grid; grid-template-columns:2fr 1fr 1fr; gap:48px;
+        padding-bottom:40px;
+        border-bottom:1px solid rgba(255,255,255,0.08);
+        margin-bottom:24px;
+    }
+    .footer h4 { color:white; font-size:0.95rem; margin-bottom:16px; text-transform:uppercase; letter-spacing:1px; }
+    .footer p { font-size:0.88rem; line-height:1.7; }
+    .contact-item { display:flex; gap:12px; margin-bottom:16px; font-size:0.88rem; }
+    .contact-item i { color:var(--teal); flex-shrink:0; margin-top:3px; }
+    .contact-item a { color:rgba(255,255,255,0.7); }
+    .contact-item a:hover { color:var(--teal); }
+    .footer-links ul { display:flex; flex-direction:column; gap:10px; }
+    .footer-links a { font-size:0.88rem; display:flex; align-items:center; gap:8px; }
+    .footer-links a:hover { color:var(--teal); }
+    .footer-bottom { max-width:1080px; margin:0 auto; text-align:center; font-size:0.82rem; color:rgba(255,255,255,0.35); }
+    @media(max-width:768px){
+        .footer-grid { grid-template-columns:1fr; gap:32px; }
+    }
+
+    /* ═══════════════════════════════════════════════
+       SUCCESS MODAL
+    ═══════════════════════════════════════════════ */
+    .modal {
+        display:none; position:fixed; inset:0;
+        background:rgba(15,23,42,0.7); z-index:2000;
+        align-items:center; justify-content:center; padding:20px;
+    }
+    .modal.open { display:flex; }
+    .modal-inner {
+        background:white; border-radius:var(--radius-lg);
+        padding:40px; max-width:480px; width:100%;
+        text-align:center; position:relative;
+        box-shadow:var(--shadow-xl);
+    }
+    .modal-icon { font-size:3rem; color:var(--teal); margin-bottom:16px; }
+    .modal-inner h2 { font-size:1.5rem; margin-bottom:12px; }
+    .modal-inner p { font-size:0.93rem; color:var(--muted); margin-bottom:16px; }
+    .close-modal {
+        position:absolute; top:14px; right:18px;
+        background:none; border:none; font-size:1.5rem;
+        color:var(--muted); cursor:pointer;
+    }
+    .modal-whatsapp {
+        display:flex; align-items:center; gap:12px;
+        background:#f0fdf4; border:1px solid #bbf7d0;
+        border-radius:10px; padding:16px; margin:16px 0; text-align:left;
+    }
+    .modal-whatsapp .fab { font-size:1.8rem; color:#16a34a; flex-shrink:0; }
+    .modal-whatsapp p { font-size:0.85rem; margin:0; }
+    .btn-whatsapp {
+        display:inline-flex; align-items:center; gap:8px;
+        background:#16a34a; color:white;
+        padding:8px 18px; border-radius:50px;
+        font-size:0.85rem; font-weight:600; margin-top:10px;
+        transition:background .2s;
+    }
+    .btn-whatsapp:hover { background:#15803d; }
+    .btn-close-modal {
+        display:inline-flex; align-items:center; gap:8px;
+        background:linear-gradient(135deg, var(--teal), var(--blue));
+        color:white; padding:10px 28px;
+        border-radius:50px; border:none;
+        font-family:inherit; font-size:0.95rem; font-weight:600;
+        cursor:pointer; margin-top:8px; transition:opacity .2s;
+    }
+    .btn-close-modal:hover { opacity:.9; }
+
+    /* Nav underline animation */
+    .nav-links-row a:not(.btn-nav) {
+        position:relative;
+    }
+    .nav-links-row a:not(.btn-nav)::after {
+        content:''; position:absolute; bottom:-2px; left:0; right:0; height:2px;
+        background:var(--teal); transform:scaleX(0); transform-origin:left;
+        transition:transform .25s ease;
+    }
+    .nav-links-row a:not(.btn-nav):hover::after { transform:scaleX(1); }
+    </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="container nav-container">
-            <div class="logos">
-                <img src="../../assets/college-logo.jpeg" alt="Vardhaman College Logo" class="nav-logo college-logo">
-                <img src="../../assets/embs-logo.png" alt="IEEE EMBS Logo" class="nav-logo" id="embs-logo">
-                <img src="../../assets/vardhaman-logo.png" alt="Vardhaman Student Branch Logo" class="nav-logo" id="v-logo">
-            </div>
-            <ul class="nav-links">
-                <li><a href="../../index.html">Home</a></li>
-                <li><a href="../../about.html">About</a></li>
-                <li><a href="../../events.html">Events</a></li>
-                <li><a href="../../team.html">Team</a></li>
-                <li><a href="../../contact.html">Contact</a></li>
-                <li><a href="#register" class="btn-primary">Register Now</a></li>
-            </ul>
-            <div class="hamburger">
-                <i class="fas fa-bars"></i>
+
+<!-- ── NAVBAR ── -->
+<nav class="navbar">
+    <div class="nav-inner">
+        <div class="nav-logos">
+            <img src="../../assets/college-logo.jpeg" alt="Vardhaman College">
+            <img src="../../assets/embs-logo.png" alt="IEEE EMBS">
+            <img src="../../assets/vardhaman-logo.png" alt="Vardhaman SB">
+        </div>
+        <div class="nav-links-row">
+            <a href="../../index.html">Home</a>
+            <a href="../../about.html">About</a>
+            <a href="../../events.html">Events</a>
+            <a href="../../team.html">Team</a>
+            <a href="../../contact.html">Contact</a>
+            <a href="#register" class="btn-nav">Register Now</a>
+        </div>
+        <button class="hamburger-btn" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</nav>
+<div class="mobile-overlay" id="mobileMenu">
+    <button class="close-x" onclick="document.getElementById('mobileMenu').classList.remove('open')">&times;</button>
+    <a href="../../index.html" onclick="document.getElementById('mobileMenu').classList.remove('open')">Home</a>
+    <a href="../../about.html" onclick="document.getElementById('mobileMenu').classList.remove('open')">About</a>
+    <a href="../../events.html" onclick="document.getElementById('mobileMenu').classList.remove('open')">Events</a>
+    <a href="../../team.html" onclick="document.getElementById('mobileMenu').classList.remove('open')">Team</a>
+    <a href="../../contact.html" onclick="document.getElementById('mobileMenu').classList.remove('open')">Contact</a>
+    <a href="#register" onclick="document.getElementById('mobileMenu').classList.remove('open')"
+       style="background:linear-gradient(135deg,#d97706,#b45309);padding:12px 32px;border-radius:50px;">Register Now</a>
+</div>
+
+<!-- ── HERO ── -->
+<header class="hero">
+    <div class="hero-body">
+        <div class="hero-badge"><i class="fas fa-microchip"></i> IEEE EMBS Chapter · Expert Talk</div>
+        <h1 class="hero-title">Digital Health, Telemedicine &amp; Remote Patient Monitoring Systems</h1>
+        <p class="hero-sub">Explore the future of connected medical services and AI in healthcare with Dr. Ajit Kumar, XIM University.</p>
+
+        <div class="meta-pills">
+            <span class="meta-pill"><i class="fas fa-calendar-alt"></i> 13 August 2026 (Thursday)</span>
+            <span class="meta-pill"><i class="fas fa-clock"></i> 6:00 PM – 7:00 PM IST</span>
+            <span class="meta-pill"><i class="fas fa-video"></i> Online Mode</span>
+            <span class="meta-pill"><i class="fas fa-certificate"></i> Free · E-Certificate</span>
+        </div>
+
+        <!-- Live Countdown -->
+        <div class="countdown-block">
+            <div class="cd-label">Event starts in</div>
+            <div class="cd-units">
+                <div class="cd-unit"><span class="cd-num" id="cd-d">--</span><span class="cd-text">Days</span></div>
+                <div class="cd-unit"><span class="cd-num" id="cd-h">--</span><span class="cd-text">Hours</span></div>
+                <div class="cd-unit"><span class="cd-num" id="cd-m">--</span><span class="cd-text">Mins</span></div>
+                <div class="cd-unit"><span class="cd-num" id="cd-s">--</span><span class="cd-text">Secs</span></div>
             </div>
         </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <header class="hero">
-        <div class="hero-overlay"></div>
-        <div class="container hero-content">
-            <span class="badge">IEEE EMBS Chapter Expert Talk</span>
-            <h1 class="hero-title">Digital Health, Telemedicine, and Remote Patient Monitoring Systems</h1>
-            <p class="hero-subtitle">Explore the future of connected medical services and AI in healthcare.</p>
-            
-            <div class="event-meta">
-                <div class="meta-item">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>13 August 2026 (Thursday)</span>
-                </div>
-                <div class="meta-item">
-                    <i class="fas fa-clock"></i>
-                    <span>6:00 PM – 7:00 PM IST</span>
-                </div>
-                <div class="meta-item">
-                    <i class="fas fa-video"></i>
-                    <span>Online Mode</span>
-                </div>
-                <div class="meta-item">
-                    <i class="fas fa-hourglass-half"></i>
-                    <span>Free | E-Certificate</span>
-                </div>
-            </div>
-
-            <!-- Countdown Timer -->
-            <div class="countdown-wrapper">
-                <p class="countdown-label">Event starts in</p>
-                <div class="countdown" id="countdown">
-                    <div class="countdown-item">
-                        <span id="days">00</span>
-                        <small>Days</small>
-                    </div>
-                    <div class="countdown-sep">:</div>
-                    <div class="countdown-item">
-                        <span id="hours">00</span>
-                        <small>Hours</small>
-                    </div>
-                    <div class="countdown-sep">:</div>
-                    <div class="countdown-item">
-                        <span id="minutes">00</span>
-                        <small>Minutes</small>
-                    </div>
-                    <div class="countdown-sep">:</div>
-                    <div class="countdown-item">
-                        <span id="seconds">00</span>
-                        <small>Seconds</small>
-                    </div>
-                </div>
-            </div>
-
-            <div class="hero-cta">
-                <a href="#register" class="btn-primary btn-large">Secure Your Spot</a>
-                <p class="cert-note"><i class="fas fa-certificate"></i> E-certificates will be provided to eligible participants who attend the full session.</p>
-            </div>
-        </div>
-        <div class="hero-shapes">
-            <div class="shape shape-1"></div>
-            <div class="shape shape-2"></div>
-            <div class="shape shape-3"></div>
-        </div>
-    </header>
-
-    <!-- Stats Counter Section -->
-    <section class="stats-section">
-        <div class="container">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <i class="fas fa-users"></i>
-                    <span class="stat-number" data-target="500">0</span>
-                    <small>Members</small>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-sitemap"></i>
-                    <span class="stat-number" data-target="12">0</span>
-                    <small>Chapters</small>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-calendar-check"></i>
-                    <span class="stat-number" data-target="30">0</span>
-                    <small>Events</small>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-award"></i>
-                    <span class="stat-number" data-target="15">0</span>
-                    <small>Awards</small>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Main Content -->
-    <main>
-        <!-- About Section -->
-        <section id="about" class="section about-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>About the Session</h2>
-                    <div class="divider"></div>
-                </div>
-                <div class="about-content box-card">
-                    <p>The IEEE Engineering in Medicine and Biology Society (IEEE EMBS) Student Branch Chapter, Vardhaman College of Engineering, Hyderabad, is organizing an expert talk on <strong>"Digital Health, Telemedicine, and Remote Patient Monitoring Systems."</strong></p>
-                    <p>This session aims to provide participants with insights into the latest advancements in digital healthcare technologies, telemedicine platforms, remote patient monitoring systems, wearable health devices, artificial intelligence in healthcare, and the future of connected medical services.</p>
-                    <div class="who-attend">
-                        <h4><i class="fas fa-user-check"></i> Who Should Attend?</h4>
-                        <div class="attend-tags">
-                            <span class="tag"><i class="fas fa-graduation-cap"></i> UG & PG Students (All Branches)</span>
-                            <span class="tag"><i class="fas fa-chalkboard-teacher"></i> Faculty Members</span>
-                            <span class="tag"><i class="fas fa-id-badge"></i> IEEE & Non-IEEE Members</span>
-                            <span class="tag"><i class="fas fa-flask"></i> Researchers</span>
-                        </div>
-                    </div>
-                    <div class="reg-deadline">
-                        <i class="fas fa-clock"></i>
-                        <p><strong>Registration Deadline:</strong> 12 August 2026, 11:59 PM IST</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Topics Section -->
-        <section id="topics" class="section topics-section bg-light">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Topics to be Covered</h2>
-                    <div class="divider"></div>
-                </div>
-                <div class="topics-grid">
-                    <div class="topic-card">
-                        <div class="topic-icon"><i class="fas fa-heartbeat"></i></div>
-                        <h3>Digital Health</h3>
-                        <p>Introduction to the modern digital health landscape.</p>
-                    </div>
-                    <div class="topic-card">
-                        <div class="topic-icon"><i class="fas fa-user-md"></i></div>
-                        <h3>Telemedicine</h3>
-                        <p>Evolution and applications of telemedicine in current practice.</p>
-                    </div>
-                    <div class="topic-card">
-                        <div class="topic-icon"><i class="fas fa-laptop-medical"></i></div>
-                        <h3>Remote Monitoring</h3>
-                        <p>Technologies enabling Remote Patient Monitoring systems.</p>
-                    </div>
-                    <div class="topic-card">
-                        <div class="topic-icon"><i class="fas fa-clock"></i></div>
-                        <h3>IoT & Wearables</h3>
-                        <p>IoT and wearable devices in everyday healthcare.</p>
-                    </div>
-                    <div class="topic-card">
-                        <div class="topic-icon"><i class="fas fa-brain"></i></div>
-                        <h3>AI & Analytics</h3>
-                        <p>AI and Data Analytics driving clinical decisions.</p>
-                    </div>
-                    <div class="topic-card">
-                        <div class="topic-icon"><i class="fas fa-shield-alt"></i></div>
-                        <h3>Future Trends</h3>
-                        <p>Challenges, security, privacy, and future healthcare trends.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Speaker Section -->
-        <section id="speaker" class="section speaker-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Meet the Speaker</h2>
-                    <div class="divider"></div>
-                </div>
-                <div class="speaker-card box-card">
-                    <div class="speaker-image">
-                        <img src="../../assets/speaker.jpeg" alt="Dr. Ajit Kumar" class="speaker-photo" onerror="this.parentElement.innerHTML='<div class=\'avatar-placeholder\'><i class=\'fas fa-user-tie\'></i></div>'">
-                    </div>
-                    <div class="speaker-details">
-                        <h3 class="speaker-name">Dr. Ajit Kumar, Ph.D.</h3>
-                        <p class="speaker-designation">Associate Professor, Information Systems</p>
-                        <p class="speaker-org">Xavier Institute of Management (XIM University)<br>Bhubaneswar, Odisha</p>
-                        <p class="speaker-bio">Dr. Ajit Kumar holds a Ph.D. from Taiwan and specializes in Information Systems, Digital Health, and AI-driven healthcare technologies. With extensive research in telemedicine platforms, data analytics, and smart healthcare ecosystems, he brings a rich blend of academic expertise and industry insights. He has published in leading journals and delivered talks at international forums on the future of connected healthcare.</p>
-                        <div class="speaker-socials">
-                            <a href="https://www.linkedin.com/in/drajitkumar-ai-dt/" target="_blank" class="social-link"><i class="fab fa-linkedin"></i> LinkedIn Profile</a>
-                            <a href="https://ximb.edu.in/faculty-research/faculty-profile/prof-ajit-kumar/" target="_blank" class="social-link"><i class="fas fa-globe"></i> Faculty Profile</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Schedule / Agenda Section -->
-        <section id="schedule" class="section schedule-section bg-light">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Event Agenda</h2>
-                    <p>13 August 2026 &nbsp;|&nbsp; 6:00 PM – 7:00 PM IST</p>
-                    <div class="divider"></div>
-                </div>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-dot"><i class="fas fa-flag"></i></div>
-                        <div class="timeline-content box-card">
-                            <span class="timeline-time">6:00 PM</span>
-                            <h4>Welcome & Introduction</h4>
-                            <p>Opening remarks and introduction of the speaker by IEEE EMBS Chapter representatives.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"><i class="fas fa-microphone-alt"></i></div>
-                        <div class="timeline-content box-card">
-                            <span class="timeline-time">6:05 PM</span>
-                            <h4>Expert Talk by Dr. Ajit Kumar</h4>
-                            <p>A deep dive into Digital Health, Telemedicine, Remote Patient Monitoring, AI in healthcare, and the future of connected medical services.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"><i class="fas fa-comments"></i></div>
-                        <div class="timeline-content box-card">
-                            <span class="timeline-time">6:45 PM</span>
-                            <h4>Q&A Session</h4>
-                            <p>Open floor for participants to interact with the speaker and ask questions.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"><i class="fas fa-check-circle"></i></div>
-                        <div class="timeline-content box-card">
-                            <span class="timeline-time">6:55 PM</span>
-                            <h4>Closing Remarks & Vote of Thanks</h4>
-                            <p>Formal conclusion of the session with a vote of thanks from IEEE EMBS Chapter.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Registration Form Section -->
-        <section id="register" class="section registration-section">
-            <div class="container form-container">
-                <div class="section-header">
-                    <h2>Register Now</h2>
-                    <p>Secure your spot for this insightful academic session. <strong>Deadline: 12 August 2026.</strong></p>
-                    <div class="divider"></div>
-                </div>
-                
-                <form id="registrationForm" class="box-card form-card">
-                    <div class="form-grid">
-                        <!-- Email -->
-                        <div class="form-group full-width">
-                            <label for="email">Email <span class="required">*</span></label>
-                            <input type="email" id="email" name="email" required placeholder="Your email address">
-                        </div>
-                        
-                        <!-- Full Name -->
-                        <div class="form-group full-width">
-                            <label for="fullName">Full Name <span class="required">*</span></label>
-                            <span class="help-text">As it should appear on the certificate</span>
-                            <input type="text" id="fullName" name="fullName" required placeholder="Enter your full name">
-                        </div>
-
-                        <!-- Roll Number -->
-                        <div class="form-group">
-                            <label for="rollNumber">Roll Number / Employee ID <span class="required">*</span></label>
-                            <input type="text" id="rollNumber" name="rollNumber" required placeholder="e.g. 21881A05XX">
-                        </div>
-
-                        <!-- Mobile Number -->
-                        <div class="form-group">
-                            <label for="mobile">Mobile Number <span class="required">*</span></label>
-                            <input type="tel" id="mobile" name="mobile" required placeholder="Your mobile number">
-                        </div>
-
-                        <!-- Department -->
-                        <div class="form-group">
-                            <label for="department">Department/Branch <span class="required">*</span></label>
-                            <select id="department" name="department" required>
-                                <option value="" disabled selected>Select Department</option>
-                                <option value="CSE">CSE</option>
-                                <option value="IT">IT</option>
-                                <option value="CSM">CSM</option>
-                                <option value="CSD">CSD</option>
-                                <option value="ECE">ECE</option>
-                                <option value="EEE">EEE</option>
-                                <option value="MECH">MECH</option>
-                            </select>
-                        </div>
-
-                        <!-- Section -->
-                        <div class="form-group">
-                            <label for="section">Section <span class="required">*</span></label>
-                            <select id="section" name="section" required>
-                                <option value="" disabled selected>Select Section</option>
-                                <option value="A">A</option>
-                                <option value="B">B</option>
-                                <option value="C">C</option>
-                                <option value="D">D</option>
-                                <option value="E">E</option>
-                                <option value="F">F</option>
-                                <option value="G">G</option>
-                                <option value="H">H</option>
-                            </select>
-                        </div>
-
-                        <!-- Year of Study -->
-                        <div class="form-group">
-                            <label for="year">Year of Study <span class="required">*</span></label>
-                            <select id="year" name="year" required>
-                                <option value="" disabled selected>Select Year</option>
-                                <option value="2nd">2nd</option>
-                                <option value="3rd">3rd</option>
-                                <option value="4th">4th</option>
-                            </select>
-                        </div>
-
-                        <!-- IEEE Membership -->
-                        <div class="form-group">
-                            <label for="membership">IEEE Membership Status <span class="required">*</span></label>
-                            <select id="membership" name="membership" required>
-                                <option value="" disabled selected>Select Status</option>
-                                <option value="IEEE Member">IEEE Member</option>
-                                <option value="Non-IEEE Member">Non-IEEE Member</option>
-                            </select>
-                        </div>
-
-                        <!-- Questions for Speaker -->
-                        <div class="form-group full-width">
-                            <label for="questions">Questions for the Speaker</label>
-                            <textarea id="questions" name="questions" rows="3" placeholder="Any specific questions you would like addressed?"></textarea>
-                        </div>
-
-                        <!-- Consents -->
-                        <div class="form-group full-width consent-group">
-                            <label>Consent <span class="required">*</span></label>
-                            <div class="checkbox-container">
-                                <input type="checkbox" id="consent1" name="consent1" required>
-                                <label for="consent1">I confirm that the information provided is accurate.</label>
-                            </div>
-                            <div class="checkbox-container">
-                                <input type="checkbox" id="consent2" name="consent2" required>
-                                <label for="consent2">I agree that my attendance will be used for certificate generation and event communication.</label>
-                            </div>
-                            <div class="checkbox-container">
-                                <input type="checkbox" id="consent3" name="consent3" required>
-                                <label for="consent3">I consent to receive event-related communications.</label>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="privacy-note">
-                        <i class="fas fa-lock"></i>
-                        <p>Your data is secure. We will not share your information outside of event communication.</p>
-                    </div>
-
-                    <!-- Certificate Eligibility Note -->
-                    <div class="cert-eligibility">
-                        <i class="fas fa-certificate"></i>
-                        <p><strong>Certificate Eligibility:</strong> Full attendance for the complete 1-hour session is required. Certificates will be issued only to participants who attend from start to finish and have submitted this registration form.</p>
-                    </div>
-
-                    <div class="form-submit">
-                        <button type="submit" class="btn-primary btn-large btn-block">Submit Registration</button>
-                    </div>
-                </form>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container footer-content">
-            <div class="footer-top-grid">
-                <!-- Organizer -->
-                <div class="organizer-info">
-                    <h4>Organized by</h4>
-                    <p><strong>IEEE Engineering in Medicine and Biology Society (IEEE EMBS) Student Branch Chapter</strong></p>
-                    <p>Department of Information Technology</p>
-                    <p>Vardhaman College of Engineering</p>
-                    <p>Kacharam, Shamshabad, Ranga Reddy District,<br>Hyderabad, Telangana – 501218, India</p>
-                </div>
-                <!-- Contacts -->
-                <div class="footer-contacts">
-                    <h4>Contact Us</h4>
-                    <div class="contact-item">
-                        <i class="fas fa-user"></i>
-                        <div>
-                            <strong>Vuggidi Sai Varshith</strong><br>
-                            Secretary, IEEE EMBS<br>
-                            <a href="tel:9059573313">+91 9059573313</a> &nbsp;|&nbsp;
-                            <a href="mailto:vuggidisaivarshith@gmail.com">vuggidisaivarshith@gmail.com</a>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                        <div>
-                            <strong>Pollishetty Swetha</strong><br>
-                            Faculty Co-ordinator, IT Dept.<br>
-                            <a href="tel:7993136780">+91 7993136780</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Quick Links -->
-                <div class="footer-links">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="https://www.ieee.org/membership/join/" target="_blank"><i class="fas fa-external-link-alt"></i> Join IEEE</a></li>
-                        <li><a href="#register"><i class="fas fa-pen"></i> Register for Event</a></li>
-                        <li><a href="https://chat.whatsapp.com/JiJpTTCV3uQLwUf4SFXYwI" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Group</a></li>
-                        <li><a href="https://vardhaman.org/" target="_blank"><i class="fas fa-university"></i> Vardhaman College</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 IEEE EMBS Vardhaman College of Engineering. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Success Modal -->
-    <div id="successModal" class="modal">
-        <div class="modal-content box-card">
-            <span class="close-modal">&times;</span>
-            <div class="modal-icon">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <h2>Registration Confirmed!</h2>
-            <p>Thank you for registering for the IEEE EMBS Expert Talk on <strong>"Digital Health, Telemedicine, and Remote Patient Monitoring Systems."</strong></p>
-            <p>The meeting link and joining instructions will be sent to your registered email before the event.</p>
-
-            <!-- WhatsApp Join prompt in modal -->
-            <div class="modal-whatsapp">
-                <i class="fab fa-whatsapp"></i>
-                <div>
-                    <strong>Stay Updated!</strong>
-                    <p>Join our WhatsApp group for the meeting link and real-time updates.</p>
-                    <a href="https://chat.whatsapp.com/JiJpTTCV3uQLwUf4SFXYwI" target="_blank" class="btn-whatsapp" style="margin-top: 10px; display: inline-flex;">
-                        <i class="fab fa-whatsapp"></i> Join WhatsApp Group
-                    </a>
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <p><strong>IEEE EMBS Student Branch Chapter</strong><br>Vardhaman College of Engineering, Hyderabad</p>
-            </div>
-            <button class="btn-primary btn-close-modal">Close</button>
+        <div class="hero-actions">
+            <a href="#register" class="btn-primary"><i class="fas fa-pen-nib"></i> Secure Your Spot</a>
+            <span class="cert-note"><i class="fas fa-certificate"></i> E-certificate for full attendees</span>
         </div>
     </div>
+</header>
 
-    <!-- Scripts -->
-    <script src="../../script.js"></script>
+<!-- ── STATS BAR ── -->
+<section class="stats-section">
+    <div class="stats-grid">
+        <div class="stat-item">
+            <i class="fas fa-users stat-icon"></i>
+            <span class="stat-num" data-target="85">0</span>
+            <span class="stat-label">Members</span>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-calendar-check stat-icon"></i>
+            <span class="stat-num" data-target="12">0</span>
+            <span class="stat-label">Events Hosted</span>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-clock stat-icon"></i>
+            <span class="stat-num" data-target="3">0</span>
+            <span class="stat-label">Years Active</span>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-award stat-icon"></i>
+            <span class="stat-num" data-target="5">0</span>
+            <span class="stat-label">Recognitions</span>
+        </div>
+    </div>
+</section>
+
+<main>
+
+<!-- ── ABOUT ── -->
+<section id="about" class="section">
+    <div class="container">
+        <div class="section-label">
+            <h2>About the Session</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="about-card">
+            <p>The <strong>IEEE Engineering in Medicine and Biology Society (IEEE EMBS) Student Branch Chapter</strong>, Vardhaman College of Engineering, Hyderabad, is organizing an expert talk on <strong>"Digital Health, Telemedicine, and Remote Patient Monitoring Systems."</strong></p>
+            <p>This session provides participants with insights into the latest advancements in digital healthcare technologies, telemedicine platforms, remote patient monitoring systems, wearable health devices, artificial intelligence in healthcare, and the future of connected medical services.</p>
+            <div class="who-attend">
+                <h4><i class="fas fa-user-check"></i> Who Should Attend?</h4>
+                <div class="attend-tags">
+                    <span class="tag"><i class="fas fa-graduation-cap"></i> UG &amp; PG Students</span>
+                    <span class="tag"><i class="fas fa-chalkboard-teacher"></i> Faculty Members</span>
+                    <span class="tag"><i class="fas fa-id-badge"></i> IEEE &amp; Non-IEEE Members</span>
+                    <span class="tag"><i class="fas fa-flask"></i> Researchers</span>
+                </div>
+            </div>
+            <div class="deadline-note">
+                <i class="fas fa-hourglass-end"></i>
+                <p><strong>Registration Deadline:</strong> 12 August 2026, 11:59 PM IST</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── TOPICS ── -->
+<section id="topics" class="section bg-light">
+    <div class="container">
+        <div class="section-label">
+            <h2>Topics to be Covered</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="topics-grid">
+
+            <div class="topic-card">
+                <div class="topic-icon-wrap">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                </div>
+                <h3>Digital Health</h3>
+                <p>Introduction to the modern digital health landscape — platforms, ecosystems, and policy.</p>
+            </div>
+
+            <div class="topic-card">
+                <div class="topic-icon-wrap">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                </div>
+                <h3>Telemedicine</h3>
+                <p>Evolution and real-world applications of telemedicine in clinical practice today.</p>
+            </div>
+
+            <div class="topic-card">
+                <div class="topic-icon-wrap">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </div>
+                <h3>Remote Monitoring</h3>
+                <p>Technologies enabling continuous Remote Patient Monitoring and real-time vitals.</p>
+            </div>
+
+            <div class="topic-card">
+                <div class="topic-icon-wrap">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                </div>
+                <h3>IoT &amp; Wearables</h3>
+                <p>IoT sensors and wearable devices transforming everyday patient health tracking.</p>
+            </div>
+
+            <div class="topic-card">
+                <div class="topic-icon-wrap">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M8.46 8.46a5 5 0 0 0 0 7.07"/></svg>
+                </div>
+                <h3>AI &amp; Analytics</h3>
+                <p>AI and Data Analytics powering faster, smarter clinical decision-making.</p>
+            </div>
+
+            <div class="topic-card">
+                <div class="topic-icon-wrap">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <h3>Future Trends &amp; Security</h3>
+                <p>Challenges, data security, privacy regulations, and the next frontier in digital healthcare.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ── SPEAKER ── -->
+<section id="speaker" class="section">
+    <div class="container">
+        <div class="section-label">
+            <h2>Meet the Speaker</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="speaker-card">
+            <div class="speaker-photo-wrap">
+                <img src="../../assets/speaker.jpeg" alt="Dr. Ajit Kumar" class="speaker-photo"
+                     onerror="this.outerHTML='<div class=\'avatar-placeholder\'><i class=\'fas fa-user-tie\'></i></div>'">
+            </div>
+            <div class="speaker-details">
+                <h3 class="speaker-name">Dr. Ajit Kumar, Ph.D.</h3>
+                <p class="speaker-role">Associate Professor, Information Systems</p>
+                <p class="speaker-org">Xavier Institute of Management (XIM University), Bhubaneswar, Odisha</p>
+                <p class="speaker-bio">Dr. Ajit Kumar holds a Ph.D. from Taiwan and specializes in Information Systems, Digital Health, and AI-driven healthcare technologies. With extensive research in telemedicine platforms, data analytics, and smart healthcare ecosystems, he brings a rich blend of academic expertise and industry insights. He has published in leading journals and delivered talks at international forums on the future of connected healthcare.</p>
+                <div class="speaker-links">
+                    <a href="https://www.linkedin.com/in/drajitkumar-ai-dt/" target="_blank" class="social-link"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                    <a href="https://ximb.edu.in/faculty-research/faculty-profile/prof-ajit-kumar/" target="_blank" class="social-link"><i class="fas fa-globe"></i> Faculty Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── AGENDA TIMELINE ── -->
+<section id="schedule" class="section bg-light">
+    <div class="container">
+        <div class="section-label">
+            <h2>Event Agenda</h2>
+            <p>13 August 2026 &nbsp;|&nbsp; 6:00 PM – 7:00 PM IST</p>
+            <div class="divider"></div>
+        </div>
+        <div class="timeline">
+
+            <div class="tl-item">
+                <div class="tl-dot"><i class="fas fa-flag" style="font-size:0.7rem"></i></div>
+                <div class="tl-content">
+                    <span class="tl-time">6:00 PM</span>
+                    <h4>Welcome &amp; Introduction</h4>
+                    <p>Opening remarks and introduction of the speaker by IEEE EMBS Chapter representatives.</p>
+                </div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-dot"><i class="fas fa-microphone" style="font-size:0.7rem"></i></div>
+                <div class="tl-content">
+                    <span class="tl-time">6:05 PM</span>
+                    <h4>Expert Talk — Dr. Ajit Kumar</h4>
+                    <p>A deep dive into Digital Health, Telemedicine, Remote Patient Monitoring, AI in healthcare, and the future of connected medical services.</p>
+                </div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-dot"><i class="fas fa-comments" style="font-size:0.7rem"></i></div>
+                <div class="tl-content">
+                    <span class="tl-time">6:45 PM</span>
+                    <h4>Q&amp;A Session</h4>
+                    <p>Open floor for participants to interact with the speaker and ask questions.</p>
+                </div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-dot"><i class="fas fa-check" style="font-size:0.7rem"></i></div>
+                <div class="tl-content">
+                    <span class="tl-time">6:55 PM</span>
+                    <h4>Closing Remarks &amp; Vote of Thanks</h4>
+                    <p>Formal conclusion with a vote of thanks from IEEE EMBS Chapter Vardhaman.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ── REGISTRATION FORM ── -->
+<section id="register" class="section registration-section">
+    <div class="container">
+        <div class="section-label">
+            <h2>Register Now</h2>
+            <p>Secure your spot for this insightful academic session. <strong>Deadline: 12 August 2026.</strong></p>
+            <div class="divider"></div>
+        </div>
+
+        <div class="form-card">
+            <form id="registrationForm">
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label for="email">Email Address <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required placeholder="your@email.com">
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="fullName">Full Name <span class="required">*</span></label>
+                        <span class="help-text">As it should appear on the certificate</span>
+                        <input type="text" id="fullName" name="fullName" required placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="rollNumber">Roll Number / Employee ID <span class="required">*</span></label>
+                        <input type="text" id="rollNumber" name="rollNumber" required placeholder="e.g. 21881A05XX">
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number <span class="required">*</span></label>
+                        <input type="tel" id="mobile" name="mobile" required placeholder="+91 XXXXX XXXXX">
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department / Branch <span class="required">*</span></label>
+                        <select id="department" name="department" required>
+                            <option value="" disabled selected>Select Department</option>
+                            <option>CSE</option><option>IT</option><option>CSM</option><option>CSD</option>
+                            <option>ECE</option><option>EEE</option><option>MECH</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Year of Study <span class="required">*</span></label>
+                        <select id="year" name="year" required>
+                            <option value="" disabled selected>Select Year</option>
+                            <option>1st</option><option>2nd</option><option>3rd</option><option>4th</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="section">Section <span class="required">*</span></label>
+                        <select id="section" name="section" required>
+                            <option value="" disabled selected>Select Section</option>
+                            <option>A</option><option>B</option><option>C</option><option>D</option>
+                            <option>E</option><option>F</option><option>G</option><option>H</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="membership">IEEE Membership Status <span class="required">*</span></label>
+                        <select id="membership" name="membership" required>
+                            <option value="" disabled selected>Select Status</option>
+                            <option>IEEE Member</option><option>Non-IEEE Member</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="questions">Questions for the Speaker</label>
+                        <textarea id="questions" name="questions" rows="3" placeholder="Any specific questions you'd like addressed?"></textarea>
+                    </div>
+                    <div class="form-group full-width" style="gap:12px">
+                        <label>Consent <span class="required">*</span></label>
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="c1" required>
+                            <label for="c1">I confirm the information provided is accurate.</label>
+                        </div>
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="c2" required>
+                            <label for="c2">I agree that my attendance will be used for certificate generation and event communication.</label>
+                        </div>
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="c3" required>
+                            <label for="c3">I consent to receive event-related communications from IEEE EMBS Vardhaman.</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="privacy-note">
+                    <i class="fas fa-lock"></i>
+                    <p>Your data is secure. We will not share your information outside of event communication.</p>
+                </div>
+                <div class="cert-eligibility">
+                    <i class="fas fa-certificate"></i>
+                    <p><strong>Certificate Eligibility:</strong> Full attendance for the complete 1-hour session is required. Certificates will be issued only to participants who attend from start to finish.</p>
+                </div>
+                <div class="form-submit">
+                    <button type="submit" class="btn-primary btn-block" id="submitBtn">
+                        <i class="fas fa-paper-plane"></i> Submit Registration
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+    <div class="footer-grid">
+        <div>
+            <h4>Organised By</h4>
+            <p><strong style="color:white;">IEEE EMBS Student Branch Chapter</strong></p>
+            <p>Department of Information Technology<br>
+            Vardhaman College of Engineering<br>
+            Kacharam, Shamshabad, Ranga Reddy<br>
+            Hyderabad, Telangana – 501218</p>
+        </div>
+        <div class="footer-contacts">
+            <h4>Contact</h4>
+            <div class="contact-item">
+                <i class="fas fa-user"></i>
+                <div>
+                    <strong style="color:white;">Vuggidi Sai Varshith</strong><br>
+                    Secretary<br>
+                    <a href="tel:9059573313">+91 9059573313</a><br>
+                    <a href="mailto:vuggidisaivarshith@gmail.com">vuggidisaivarshith@gmail.com</a>
+                </div>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <div>
+                    <strong style="color:white;">Pollishetty Swetha</strong><br>
+                    Faculty Co-ordinator, IT Dept.<br>
+                    <a href="tel:7993136780">+91 7993136780</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-links">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="https://www.ieee.org/membership/join/" target="_blank"><i class="fas fa-external-link-alt"></i> Join IEEE</a></li>
+                <li><a href="#register"><i class="fas fa-pen"></i> Register for Event</a></li>
+                <li><a href="https://chat.whatsapp.com/JiJpTTCV3uQLwUf4SFXYwI" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Group</a></li>
+                <li><a href="https://vardhaman.org/" target="_blank"><i class="fas fa-university"></i> Vardhaman College</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 IEEE EMBS Student Branch Chapter, Vardhaman College of Engineering. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- ── SUCCESS MODAL ── -->
+<div id="successModal" class="modal">
+    <div class="modal-inner">
+        <button class="close-modal" onclick="document.getElementById('successModal').classList.remove('open')">&times;</button>
+        <div class="modal-icon"><i class="fas fa-check-circle"></i></div>
+        <h2>Registration Confirmed!</h2>
+        <p>Thank you for registering for the IEEE EMBS Expert Talk on <strong>"Digital Health, Telemedicine, and Remote Patient Monitoring Systems."</strong></p>
+        <p>The meeting link and joining instructions will be sent to your registered email before the event.</p>
+        <div class="modal-whatsapp">
+            <i class="fab fa-whatsapp"></i>
+            <div>
+                <strong>Stay Updated!</strong>
+                <p>Join our WhatsApp group for the meeting link and real-time updates.</p>
+                <a href="https://chat.whatsapp.com/JiJpTTCV3uQLwUf4SFXYwI" target="_blank" class="btn-whatsapp">
+                    <i class="fab fa-whatsapp"></i> Join WhatsApp Group
+                </a>
+            </div>
+        </div>
+        <p style="font-size:.82rem;color:#6b7280;margin-bottom:12px;"><strong>IEEE EMBS Student Branch Chapter</strong><br>Vardhaman College of Engineering, Hyderabad</p>
+        <button class="btn-close-modal" onclick="document.getElementById('successModal').classList.remove('open')">Close</button>
+    </div>
+</div>
+
+<script src="../../script.js"></script>
+<script>
+// ── LIVE COUNTDOWN ──
+(function() {
+    const target = new Date('2026-08-13T18:00:00+05:30').getTime();
+    function tick() {
+        const diff = target - Date.now();
+        if (diff <= 0) {
+            ['cd-d','cd-h','cd-m','cd-s'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent='00'; });
+            return;
+        }
+        const d = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        const pad = n => String(n).padStart(2,'0');
+        document.getElementById('cd-d').textContent = pad(d);
+        document.getElementById('cd-h').textContent = pad(h);
+        document.getElementById('cd-m').textContent = pad(m);
+        document.getElementById('cd-s').textContent = pad(s);
+    }
+    tick(); setInterval(tick, 1000);
+})();
+
+// ── STATS COUNTER ──
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = +el.dataset.target;
+        const inc = target / 80;
+        let cur = 0;
+        const run = () => {
+            cur = Math.min(cur + inc, target);
+            el.textContent = Math.ceil(cur);
+            if (cur < target) requestAnimationFrame(run);
+        };
+        run();
+        observer.unobserve(el);
+    });
+}, { threshold: 0.5 });
+document.querySelectorAll('.stat-num[data-target]').forEach(el => observer.observe(el));
+
+// ── REGISTRATION FORM → Google Apps Script ──
+document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+    btn.disabled = true;
+
+    const data = {
+        email:      document.getElementById('email').value,
+        fullName:   document.getElementById('fullName').value,
+        rollNumber: document.getElementById('rollNumber').value,
+        mobile:     document.getElementById('mobile').value,
+        department: document.getElementById('department').value,
+        year:       document.getElementById('year').value,
+        section:    document.getElementById('section').value,
+        membership: document.getElementById('membership').value,
+        questions:  document.getElementById('questions').value,
+        timestamp:  new Date().toISOString()
+    };
+
+    try {
+        await fetch('https://script.google.com/macros/s/AKfycbx1Tr8k7Td31e7YP4A8bRpo5-ed4zjwh_EoCKBzleBDelvvFffgNpY3Czb7d4dxsuEU/exec', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+    } catch(err) {
+        console.log('Sheet POST note:', err);
+    }
+
+    document.getElementById('successModal').classList.add('open');
+    this.reset();
+    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Registration';
+    btn.disabled = false;
+});
+
+// close modal on backdrop click
+document.getElementById('successModal').addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('open');
+});
+</script>
 </body>
 </html>
