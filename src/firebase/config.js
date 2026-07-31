@@ -145,7 +145,7 @@ export const DEFAULT_SITE_DATA = {
       venue: "Online (Google Meet)",
       speaker: "Dr. Ajit Kumar (Biomedical Innovation Specialist)",
       posterUrl: "/assets/speaker.jpeg",
-      registrationLink: "https://forms.google.com/",
+      registrationLink: "https://forms.gle/FPtQfzauCd6PeaTQ8",
       status: "upcoming",
       featured: true,
       agenda: [
