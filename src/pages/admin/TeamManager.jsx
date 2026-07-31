@@ -106,143 +106,158 @@ export default function TeamManager() {
     <div className="space-y-6">
       {toastMessage && <Toast message={toastMessage} type={toastType} onClose={() => setToastMessage(null)} />}
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between pb-4 border-b border-slate-700/60">
         <div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white">Team & Office Bearers</h2>
-          <p className="text-xs text-slate-500">Manage chapter officers, advisors, and committee hierarchy.</p>
+          <h2 className="text-xl font-extrabold text-white">Team & Office Bearers</h2>
+          <p className="text-xs text-slate-300">Manage chapter officers, advisors, and committee hierarchy.</p>
         </div>
         <button
           onClick={handleOpenCreate}
-          className="px-4 py-2.5 rounded-xl font-bold text-xs text-white bg-ieee-blue hover:bg-ieee-dark transition flex items-center gap-1.5"
+          className="px-4 py-2.5 rounded-xl font-extrabold text-xs text-white bg-ieee-blue hover:bg-ieee-dark transition flex items-center gap-1.5 shadow-md"
         >
           <UserPlus className="w-4 h-4" /> Add Member
         </button>
       </div>
 
       {isEditing ? (
-        <form onSubmit={handleSave} className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-4">
-          <h3 className="text-lg font-bold">Edit Member Details</h3>
+        <form onSubmit={handleSave} className="bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-2xl border-2 border-slate-300 dark:border-slate-600 shadow-2xl space-y-5">
+          <h3 className="text-lg font-extrabold text-slate-900 dark:text-white pb-2 border-b border-slate-200 dark:border-slate-700">
+            {currentMember.id ? 'Edit Member Details' : 'New Team Member'}
+          </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold mb-1">Full Name *</label>
+              <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Full Name *</label>
               <input 
                 type="text" required
                 value={currentMember.name}
                 onChange={e => setCurrentMember({ ...currentMember, name: e.target.value })}
-                className="w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-slate-700 text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold mb-1">Role / Designation *</label>
+              <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Role / Designation *</label>
               <input 
                 type="text" required
                 value={currentMember.role}
                 onChange={e => setCurrentMember({ ...currentMember, role: e.target.value })}
-                className="w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-slate-700 text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-bold mb-1">Category</label>
+              <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Category</label>
               <select
                 value={currentMember.category}
                 onChange={e => setCurrentMember({ ...currentMember, category: e.target.value })}
-                className="w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-slate-700 text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium"
               >
-                <option value="faculty">Faculty</option>
+                <option value="faculty">Faculty Advisor</option>
                 <option value="student">Student Leader</option>
               </select>
             </div>
             <div>
-              <label className="block text-xs font-bold mb-1">Department</label>
+              <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Department</label>
               <input 
                 type="text"
                 value={currentMember.department}
                 onChange={e => setCurrentMember({ ...currentMember, department: e.target.value })}
-                className="w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-slate-700 text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold mb-1">Display Order</label>
+              <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Display Order</label>
               <input 
                 type="number"
                 value={currentMember.order}
                 onChange={e => setCurrentMember({ ...currentMember, order: parseInt(e.target.value) || 1 })}
-                className="w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-slate-700 text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-bold mb-1">Email</label>
+              <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Email</label>
               <input 
                 type="email"
                 value={currentMember.email}
                 onChange={e => setCurrentMember({ ...currentMember, email: e.target.value })}
-                className="w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-slate-700 text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold mb-1">Phone</label>
+              <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Phone</label>
               <input 
                 type="text"
                 value={currentMember.phone}
                 onChange={e => setCurrentMember({ ...currentMember, phone: e.target.value })}
-                className="w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-slate-700 text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold mb-1">LinkedIn URL</label>
+              <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">LinkedIn URL</label>
               <input 
                 type="url"
                 value={currentMember.linkedin}
                 onChange={e => setCurrentMember({ ...currentMember, linkedin: e.target.value })}
-                className="w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-slate-700 text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold mb-1">Profile Photo</label>
+            <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Profile Photo</label>
             <input 
               type="file"
               accept="image/*"
               onChange={handlePhotoUpload}
-              className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-ieee-blue file:text-white"
+              className="block w-full text-xs text-slate-600 dark:text-slate-300 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-ieee-blue file:text-white"
             />
             {currentMember.photoUrl && (
-              <img src={currentMember.photoUrl} alt="" className="w-16 h-16 rounded-xl object-cover mt-2 border" />
+              <img src={currentMember.photoUrl} alt="" className="w-16 h-16 rounded-xl object-cover mt-2 border-2 border-slate-300" />
             )}
           </div>
 
-          <div className="flex justify-end gap-2 pt-4">
-            <button type="button" onClick={() => setIsEditing(false)} className="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-700">Cancel</button>
-            <button type="submit" className="px-5 py-2 rounded-xl text-xs font-bold text-white bg-ieee-blue">Save Member</button>
+          <div className="flex justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
+            <button 
+              type="button" 
+              onClick={() => setIsEditing(false)} 
+              className="px-5 py-2.5 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-100 bg-slate-200 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 hover:bg-slate-300 dark:hover:bg-slate-600 transition"
+            >
+              Cancel
+            </button>
+            <button 
+              type="submit" 
+              className="px-6 py-2.5 rounded-xl text-xs font-extrabold text-white bg-ieee-blue hover:bg-ieee-dark transition shadow-lg"
+            >
+              Save Member
+            </button>
           </div>
         </form>
       ) : (
-        <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
-          <div className="divide-y divide-slate-100 dark:divide-slate-700">
-            {team.map(m => (
-              <div key={m.id} className="p-4 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <img src={m.photoUrl || "/assets/embs-logo.png"} alt="" className="w-10 h-10 rounded-full object-cover border" />
-                  <div>
-                    <h4 className="text-sm font-bold text-slate-900 dark:text-white">{m.name}</h4>
-                    <p className="text-xs text-ieee-blue dark:text-sky-400 font-semibold">{m.role}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button onClick={() => handleOpenEdit(m)} className="p-2 text-slate-500 hover:text-ieee-blue"><Edit2 className="w-4 h-4" /></button>
-                  <button onClick={() => { setTargetToDelete(m); setDeleteModalOpen(true); }} className="p-2 text-slate-500 hover:text-rose-500"><Trash2 className="w-4 h-4" /></button>
+        <div className="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden divide-y divide-slate-700 shadow-md">
+          {team.map(m => (
+            <div key={m.id} className="p-4 flex items-center justify-between gap-4 hover:bg-slate-750 transition">
+              <div className="flex items-center gap-3">
+                <img src={m.photoUrl || "/assets/embs-logo.png"} alt="" className="w-10 h-10 rounded-full object-cover border border-slate-600" />
+                <div>
+                  <h4 className="text-sm font-bold text-white">{m.name}</h4>
+                  <p className="text-xs text-sky-400 font-bold">{m.role}</p>
                 </div>
               </div>
-            ))}
-          </div>
+              <div className="flex items-center gap-2">
+                <button onClick={() => handleOpenEdit(m)} className="p-2 text-slate-300 hover:text-sky-400 bg-slate-700 rounded-lg hover:bg-slate-600 transition">
+                  <Edit2 className="w-4 h-4" />
+                </button>
+                <button onClick={() => { setTargetToDelete(m); setDeleteModalOpen(true); }} className="p-2 text-slate-300 hover:text-rose-400 bg-slate-700 rounded-lg hover:bg-slate-600 transition">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       )}
 
@@ -250,7 +265,7 @@ export default function TeamManager() {
         isOpen={deleteModalOpen}
         title="Remove Member?"
         message={`Remove "${targetToDelete?.name}" from team listing?`}
-        confirmText="Remove"
+        confirmText="Remove Member"
         isDanger={true}
         onConfirm={handleDelete}
         onClose={() => setDeleteModalOpen(false)}

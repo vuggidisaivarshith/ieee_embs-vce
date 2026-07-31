@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Trash2, CheckCircle2, Clock } from 'lucide-react';
-import { collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
+import { Mail, Trash2, CheckCircle2 } from 'lucide-react';
+import { collection, getDocs, doc, setDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import Modal from '../../components/ui/Modal';
 import Toast from '../../components/ui/Toast';
 
 export default function MessagesManager() {
   const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [toastMessage, setToastMessage] = useState(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [targetToDelete, setTargetToDelete] = useState(null);
 
   useEffect(() => {
-    loadMessages();
+    loadData();
   }, []);
 
-  async function loadMessages() {
+  async function loadData() {
     try {
-      const snap = await getDocs(query(collection(db, 'contactMessages'), orderBy('timestamp', 'desc')));
+      const snap = await getDocs(collection(db, 'inquiries'));
       if (!snap.empty) {
         setMessages(snap.docs.map(d => ({ id: d.id, ...d.data() })));
       } else {
@@ -26,17 +25,14 @@ export default function MessagesManager() {
       }
     } catch (err) {
       console.log(err);
-      setMessages([]);
-    } finally {
-      setLoading(false);
     }
   }
 
-  const toggleReadStatus = async (msg) => {
+  const handleMarkRead = async (msg) => {
     try {
-      await updateDoc(doc(db, 'contactMessages', msg.id), { isRead: !msg.isRead });
-      setToastMessage('Message status updated.');
-      loadMessages();
+      await setDoc(doc(db, 'inquiries', msg.id), { ...msg, read: true });
+      setToastMessage('Marked as read.');
+      loadData();
     } catch (err) {
       console.error(err);
     }
@@ -45,10 +41,10 @@ export default function MessagesManager() {
   const handleDelete = async () => {
     if (!targetToDelete) return;
     try {
-      await deleteDoc(doc(db, 'contactMessages', targetToDelete.id));
-      setToastMessage('Message deleted.');
+      await deleteDoc(doc(db, 'inquiries', targetToDelete.id));
+      setToastMessage('Inquiry deleted.');
       setDeleteModalOpen(false);
-      loadMessages();
+      loadData();
     } catch (err) {
       console.error(err);
     }
@@ -58,65 +54,47 @@ export default function MessagesManager() {
     <div className="space-y-6">
       {toastMessage && <Toast message={toastMessage} type="success" onClose={() => setToastMessage(null)} />}
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between pb-4 border-b border-slate-700/60">
         <div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white">Contact Form Inquiries</h2>
-          <p className="text-xs text-slate-500">Read and respond to contact submissions sent from the website.</p>
+          <h2 className="text-xl font-extrabold text-white">Contact Form Inquiries</h2>
+          <p className="text-xs text-slate-300">View and manage messages submitted through the public Contact page.</p>
         </div>
       </div>
 
       {messages.length === 0 ? (
-        <div className="text-center py-16 bg-white dark:bg-slate-800 rounded-2xl border p-8">
-          <Mail className="w-12 h-12 text-slate-400 mx-auto mb-3" />
-          <h4 className="text-sm font-bold">No Contact Messages Yet</h4>
+        <div className="text-center py-16 bg-slate-800 rounded-2xl border border-slate-700 p-8">
+          <Mail className="w-12 h-12 text-slate-500 mx-auto mb-3" />
+          <h3 className="text-base font-bold text-white">No Contact Inquiries Yet</h3>
+          <p className="text-xs text-slate-400 mt-1">Submitted messages from visitors will appear here.</p>
         </div>
       ) : (
-        <div className="space-y-4">
-          {messages.map(msg => (
-            <div 
-              key={msg.id}
-              className={`p-6 rounded-2xl border transition ${
-                msg.isRead 
-                  ? 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 opacity-80' 
-                  : 'bg-sky-50/50 dark:bg-slate-800/90 border-sky-300 dark:border-sky-700 shadow-sm'
-              }`}
-            >
-              <div className="flex items-start justify-between gap-4 mb-2">
-                <div>
-                  <h4 className="text-base font-bold text-slate-900 dark:text-white">{msg.name}</h4>
-                  <p className="text-xs text-ieee-blue font-semibold">{msg.email}</p>
-                </div>
+        <div className="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden divide-y divide-slate-700 shadow-md">
+          {messages.map(m => (
+            <div key={m.id} className={`p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${m.read ? 'opacity-75' : 'bg-slate-750'}`}>
+              <div className="space-y-1.5 max-w-2xl">
                 <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => toggleReadStatus(msg)}
-                    className={`px-3 py-1 rounded-xl text-xs font-bold ${
-                      msg.isRead ? 'bg-slate-200 dark:bg-slate-700 text-slate-600' : 'bg-emerald-500 text-white'
-                    }`}
-                  >
-                    {msg.isRead ? 'Mark Unread' : 'Mark Read'}
-                  </button>
-                  <button
-                    onClick={() => { setTargetToDelete(msg); setDeleteModalOpen(true); }}
-                    className="p-2 text-slate-500 hover:text-rose-500"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  <h4 className="text-sm font-bold text-white">{m.name}</h4>
+                  <span className="text-xs font-semibold text-sky-400">&lt;{m.email}&gt;</span>
                 </div>
+                <p className="text-xs font-semibold text-amber-300">{m.subject}</p>
+                <p className="text-xs text-slate-300 leading-relaxed bg-slate-900/60 p-3 rounded-xl border border-slate-700">{m.message}</p>
               </div>
-
-              {msg.subject && (
-                <p className="text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Subject: {msg.subject}</p>
-              )}
-
-              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl">
-                {msg.message}
-              </p>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                {!m.read && (
+                  <button onClick={() => handleMarkRead(m)} className="p-2 text-xs font-bold text-emerald-400 bg-emerald-950/50 border border-emerald-800 rounded-lg hover:bg-emerald-900/50 transition flex items-center gap-1">
+                    <CheckCircle2 className="w-4 h-4" /> Mark Read
+                  </button>
+                )}
+                <button onClick={() => { setTargetToDelete(m); setDeleteModalOpen(true); }} className="p-2 text-slate-300 hover:text-rose-400 bg-slate-700 rounded-lg hover:bg-slate-600 transition">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           ))}
         </div>
       )}
 
-      <Modal isOpen={deleteModalOpen} title="Delete Message?" message="Delete this message entry permanently?" confirmText="Delete" isDanger={true} onConfirm={handleDelete} onClose={() => setDeleteModalOpen(false)} />
+      <Modal isOpen={deleteModalOpen} title="Delete Inquiry?" message={`Delete message from "${targetToDelete?.name}"?`} confirmText="Delete" isDanger={true} onConfirm={handleDelete} onClose={() => setDeleteModalOpen(false)} />
     </div>
   );
 }

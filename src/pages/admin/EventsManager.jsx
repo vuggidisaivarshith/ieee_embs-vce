@@ -72,9 +72,7 @@ export default function EventsManager() {
       return;
     }
     
-    // Preview
     setImagePreview(URL.createObjectURL(file));
-
     setUploadingImage(true);
     try {
       const storageRef = ref(storage, `events/${Date.now()}_${file.name}`);
@@ -86,7 +84,7 @@ export default function EventsManager() {
     } catch (err) {
       console.error(err);
       setToastType('error');
-      setToastMessage('Image upload failed. Check storage rules.');
+      setToastMessage('Image upload failed.');
     } finally {
       setUploadingImage(false);
     }
@@ -109,31 +107,16 @@ export default function EventsManager() {
     }
   };
 
-  const confirmDelete = (evt) => {
-    setTargetToDelete(evt);
-    setDeleteModalOpen(true);
-  };
-
   const handleDelete = async () => {
     if (!targetToDelete) return;
     try {
       await deleteDoc(doc(db, 'events', targetToDelete.id));
-      if (targetToDelete.posterUrl && targetToDelete.posterUrl.includes('firebasestorage')) {
-        try {
-          const fileRef = ref(storage, targetToDelete.posterUrl);
-          await deleteObject(fileRef);
-        } catch (e) {
-          console.log("Storage file delete bypass:", e);
-        }
-      }
       setToastType('success');
       setToastMessage('Event deleted.');
       setDeleteModalOpen(false);
       loadEvents();
     } catch (err) {
       console.error(err);
-      setToastType('error');
-      setToastMessage('Failed to delete event.');
     }
   };
 
@@ -141,81 +124,81 @@ export default function EventsManager() {
     <div className="space-y-6">
       {toastMessage && <Toast message={toastMessage} type={toastType} onClose={() => setToastMessage(null)} />}
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between pb-4 border-b border-slate-700/60">
         <div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white">Manage Events</h2>
-          <p className="text-xs text-slate-500">Add, edit, or remove upcoming and past chapter events.</p>
+          <h2 className="text-xl font-extrabold text-white">Manage Events</h2>
+          <p className="text-xs text-slate-300">Add, edit, or remove upcoming and past chapter events.</p>
         </div>
         <button
           onClick={handleOpenCreate}
-          className="px-4 py-2.5 rounded-xl font-bold text-xs text-white bg-ieee-blue hover:bg-ieee-dark transition flex items-center gap-1.5 shadow-md"
+          className="px-4 py-2.5 rounded-xl font-extrabold text-xs text-white bg-ieee-blue hover:bg-ieee-dark transition flex items-center gap-1.5 shadow-md"
         >
           <Plus className="w-4 h-4" /> Add Event
         </button>
       </div>
 
       {isEditing ? (
-        <form onSubmit={handleSave} className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-4">
-          <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+        <form onSubmit={handleSave} className="bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-2xl border-2 border-slate-300 dark:border-slate-600 shadow-2xl space-y-5">
+          <h3 className="text-lg font-extrabold text-slate-900 dark:text-white pb-2 border-b border-slate-200 dark:border-slate-700">
             {currentEvent.id ? 'Edit Event' : 'New Event'}
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold mb-1">Title *</label>
+              <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Event Title *</label>
               <input 
                 type="text" required
                 value={currentEvent.title}
                 onChange={e => setCurrentEvent({ ...currentEvent, title: e.target.value })}
-                className="w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-slate-700 text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-ieee-blue"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold mb-1">Topic/Category</label>
+              <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Topic / Category</label>
               <input 
                 type="text"
                 value={currentEvent.topic}
                 onChange={e => setCurrentEvent({ ...currentEvent, topic: e.target.value })}
-                className="w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-slate-700 text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-ieee-blue"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold mb-1">Description</label>
+            <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Description *</label>
             <textarea
               rows={3}
               value={currentEvent.description}
               onChange={e => setCurrentEvent({ ...currentEvent, description: e.target.value })}
-              className="w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-slate-700 text-sm"
+              className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-ieee-blue"
             ></textarea>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-bold mb-1">Date</label>
+              <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Date</label>
               <input 
                 type="date"
                 value={currentEvent.date}
                 onChange={e => setCurrentEvent({ ...currentEvent, date: e.target.value })}
-                className="w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-slate-700 text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold mb-1">Time</label>
+              <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Time</label>
               <input 
                 type="text"
                 value={currentEvent.time}
                 onChange={e => setCurrentEvent({ ...currentEvent, time: e.target.value })}
-                className="w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-slate-700 text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold mb-1">Status</label>
+              <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Status</label>
               <select
                 value={currentEvent.status}
                 onChange={e => setCurrentEvent({ ...currentEvent, status: e.target.value })}
-                className="w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-slate-700 text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium"
               >
                 <option value="upcoming">Upcoming</option>
                 <option value="past">Past</option>
@@ -225,99 +208,100 @@ export default function EventsManager() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold mb-1">Venue</label>
+              <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Venue</label>
               <input 
                 type="text"
                 value={currentEvent.venue}
                 onChange={e => setCurrentEvent({ ...currentEvent, venue: e.target.value })}
-                className="w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-slate-700 text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold mb-1">Speaker</label>
+              <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Speaker</label>
               <input 
                 type="text"
                 value={currentEvent.speaker}
                 onChange={e => setCurrentEvent({ ...currentEvent, speaker: e.target.value })}
-                className="w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-slate-700 text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold mb-1">Registration Link (Google Form URL)</label>
+            <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Registration Link (Google Form URL)</label>
             <input 
               type="url"
               value={currentEvent.registrationLink}
               onChange={e => setCurrentEvent({ ...currentEvent, registrationLink: e.target.value })}
-              className="w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-slate-700 text-sm"
+              placeholder="https://forms.gle/..."
+              className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold mb-1">Poster Image Upload (Max 5MB)</label>
+            <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Poster Image Upload (Max 5MB)</label>
             <input 
               type="file"
               accept="image/jpeg,image/png,image/webp"
               onChange={handleImageFileChange}
-              className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-ieee-blue file:text-white"
+              className="block w-full text-xs text-slate-600 dark:text-slate-300 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-ieee-blue file:text-white"
             />
             {imagePreview && (
-              <img src={imagePreview} alt="Preview" className="h-32 mt-2 rounded-xl object-cover border" />
+              <img src={imagePreview} alt="Preview" className="h-32 mt-2 rounded-xl object-cover border-2 border-slate-300" />
             )}
           </div>
 
-          <div className="flex items-center gap-2 pt-2">
+          <div className="flex items-center gap-2.5 p-3 rounded-xl bg-slate-100 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600">
             <input
               type="checkbox"
               id="featured"
               checked={currentEvent.featured}
               onChange={e => setCurrentEvent({ ...currentEvent, featured: e.target.checked })}
-              className="rounded text-ieee-blue"
+              className="w-4 h-4 rounded text-ieee-blue focus:ring-ieee-blue"
             />
-            <label htmlFor="featured" className="text-xs font-semibold">Feature on Home Page</label>
+            <label htmlFor="featured" className="text-xs font-bold text-slate-900 dark:text-slate-100 cursor-pointer">
+              Feature on Home Page Hero Card
+            </label>
           </div>
 
-          <div className="flex justify-end gap-2 pt-4">
+          <div className="flex justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
             <button
               type="button"
               onClick={() => setIsEditing(false)}
-              className="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-700"
+              className="px-5 py-2.5 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-100 bg-slate-200 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 hover:bg-slate-300 dark:hover:bg-slate-600 transition"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={uploadingImage}
-              className="px-5 py-2 rounded-xl text-xs font-bold text-white bg-ieee-blue hover:bg-ieee-dark"
+              className="px-6 py-2.5 rounded-xl text-xs font-extrabold text-white bg-ieee-blue hover:bg-ieee-dark transition shadow-lg"
             >
               Save Event
             </button>
           </div>
         </form>
       ) : (
-        <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
-          <div className="divide-y divide-slate-100 dark:divide-slate-700">
-            {events.map(evt => (
-              <div key={evt.id} className="p-4 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                  <img src={evt.posterUrl || "/assets/embs-logo.png"} alt={evt.title} className="w-12 h-12 rounded-xl object-cover" />
-                  <div>
-                    <h4 className="text-sm font-bold text-slate-900 dark:text-white">{evt.title}</h4>
-                    <p className="text-xs text-slate-500">{evt.date} • <span className="capitalize font-semibold text-ieee-blue">{evt.status}</span></p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button onClick={() => handleOpenEdit(evt)} className="p-2 text-slate-500 hover:text-ieee-blue">
-                    <Edit2 className="w-4 h-4" />
-                  </button>
-                  <button onClick={() => confirmDelete(evt)} className="p-2 text-slate-500 hover:text-rose-500">
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+        <div className="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden divide-y divide-slate-700 shadow-md">
+          {events.map(evt => (
+            <div key={evt.id} className="p-4 flex items-center justify-between gap-4 hover:bg-slate-750 transition">
+              <div className="flex items-center gap-4">
+                <img src={evt.posterUrl || "/assets/embs-logo.png"} alt={evt.title} className="w-12 h-12 rounded-xl object-cover border border-slate-600" />
+                <div>
+                  <h4 className="text-sm font-bold text-white">{evt.title}</h4>
+                  <p className="text-xs text-slate-300">{evt.date} • <span className="capitalize font-bold text-sky-400">{evt.status}</span></p>
                 </div>
               </div>
-            ))}
-          </div>
+              <div className="flex items-center gap-2">
+                <button onClick={() => handleOpenEdit(evt)} className="p-2 text-slate-300 hover:text-sky-400 bg-slate-700 rounded-lg hover:bg-slate-600 transition">
+                  <Edit2 className="w-4 h-4" />
+                </button>
+                <button onClick={() => { setTargetToDelete(evt); setDeleteModalOpen(true); }} className="p-2 text-slate-300 hover:text-rose-400 bg-slate-700 rounded-lg hover:bg-slate-600 transition">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       )}
 
