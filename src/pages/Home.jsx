@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Calendar, Users, Award, Clock, ArrowRight, Activity, 
-  Sparkles, CheckCircle2, Megaphone, ChevronRight, Shield 
+  Sparkles, CheckCircle2, Megaphone, ChevronRight, Shield, HeartPulse 
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { collection, getDocs, doc, getDoc, query, orderBy, limit } from 'firebase/firestore';
 import { db, DEFAULT_SITE_DATA } from '../firebase/config';
-import Skeleton from '../components/ui/Skeleton';
 
 export default function Home() {
   const [siteSettings, setSiteSettings] = useState(DEFAULT_SITE_DATA.siteSettings);
@@ -47,12 +47,29 @@ export default function Home() {
     e.currentTarget.src = "/assets/embs-logo.png";
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { staggerChildren: 0.15, delayChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 25 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+  };
+
   return (
-    <div className="pt-20 animate-fade-in">
+    <div className="pt-20">
       
       {/* Announcement Banner Ticker */}
       {latestAnnouncement && (
-        <div className="bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange text-white py-2.5 px-4 text-xs sm:text-sm font-medium shadow-sm animate-gradient">
+        <motion.div 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange text-white py-2.5 px-4 text-xs sm:text-sm font-medium shadow-sm animate-gradient"
+        >
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-2 overflow-hidden">
               <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5 flex-shrink-0">
@@ -64,7 +81,7 @@ export default function Home() {
               View All <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* Hero Banner Section */}
@@ -72,10 +89,15 @@ export default function Home() {
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#00629B_1px,transparent_1px)] [background-size:16px_16px]"></div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
+          >
             
             {/* Left Hero Column */}
-            <div className="lg:col-span-7 space-y-6 text-center lg:text-left animate-slide-up">
+            <motion.div variants={itemVariants} className="lg:col-span-7 space-y-6 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md text-xs font-semibold text-sky-300">
                 <Sparkles className="w-4 h-4 text-vardhaman-orange animate-pulse" />
                 <span>IEEE EMBS Vardhaman Student Branch Chapter</span>
@@ -92,7 +114,7 @@ export default function Home() {
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
                 <Link
                   to="/events"
-                  className="px-6 py-3.5 rounded-xl font-bold text-sm text-white bg-ieee-blue hover:bg-ieee-dark shadow-lg shadow-ieee-blue/30 transition-all flex items-center gap-2 transform hover:-translate-y-0.5"
+                  className="px-6 py-3.5 rounded-xl font-bold text-sm text-white bg-ieee-blue hover:bg-ieee-dark shadow-lg shadow-ieee-blue/30 transition-all flex items-center gap-2 transform hover:-translate-y-0.5 hover:scale-105"
                 >
                   <Calendar className="w-4 h-4" />
                   <span>Explore Events</span>
@@ -100,7 +122,7 @@ export default function Home() {
 
                 <Link
                   to="/about"
-                  className="px-6 py-3.5 rounded-xl font-bold text-sm text-slate-200 bg-white/10 hover:bg-white/20 border border-white/15 backdrop-blur-md transition-all flex items-center gap-2"
+                  className="px-6 py-3.5 rounded-xl font-bold text-sm text-slate-200 bg-white/10 hover:bg-white/20 border border-white/15 backdrop-blur-md transition-all flex items-center gap-2 transform hover:scale-105"
                 >
                   <span>About Our Chapter</span>
                   <ArrowRight className="w-4 h-4" />
@@ -110,28 +132,28 @@ export default function Home() {
               {/* Quick Trust Badges */}
               <div className="pt-6 grid grid-cols-3 gap-4 border-t border-white/10 text-center lg:text-left">
                 <div>
-                  <div className="text-2xl font-bold text-sky-400">{siteSettings.membersCount}+</div>
+                  <div className="text-2xl sm:text-3xl font-black text-sky-400">{siteSettings.membersCount}+</div>
                   <div className="text-xs text-slate-400 font-medium">Active Members</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-emerald-400">{siteSettings.eventsCount}+</div>
+                  <div className="text-2xl sm:text-3xl font-black text-emerald-400">{siteSettings.eventsCount}+</div>
                   <div className="text-xs text-slate-400 font-medium">Events Hosted</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-amber-400">{siteSettings.yearsActive} Years</div>
+                  <div className="text-2xl sm:text-3xl font-black text-amber-400">{siteSettings.yearsActive} Years</div>
                   <div className="text-xs text-slate-400 font-medium">Active Chapter</div>
                 </div>
               </div>
 
-            </div>
+            </motion.div>
 
             {/* Right Featured Event Highlight Card */}
-            <div className="lg:col-span-5 animate-slide-up">
+            <motion.div variants={itemVariants} className="lg:col-span-5">
               <div className="relative group rounded-3xl p-1 bg-gradient-to-b from-sky-500/30 via-purple-500/20 to-orange-500/30 shadow-2xl hover-card-lift">
                 <div className="bg-slate-900/90 backdrop-blur-xl rounded-[22px] p-6 border border-white/10 space-y-5">
                   <div className="flex items-center justify-between">
-                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase tracking-wider">
-                      Featured Event
+                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Featured Session
                     </span>
                     <span className="text-xs text-slate-400 flex items-center gap-1">
                       <Clock className="w-3.5 h-3.5" /> {featuredEvent?.date}
@@ -168,18 +190,24 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Chapter Welcome & Overview */}
       <section className="py-20 bg-neutralLight dark:bg-slate-900 transition">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
+          >
             
-            <div className="lg:col-span-6 space-y-6 animate-slide-up">
+            <div className="lg:col-span-6 space-y-6">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ieee-blue/10 text-ieee-blue dark:bg-ieee-blue/20 dark:text-sky-400 text-xs font-bold">
                 <Activity className="w-4 h-4" />
                 <span>About Our Student Branch Chapter</span>
@@ -219,11 +247,11 @@ export default function Home() {
             </div>
 
             {/* Coordinator Quote Card */}
-            <div className="lg:col-span-6 animate-slide-up">
+            <div className="lg:col-span-6">
               <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 relative hover-card-lift">
                 <div className="flex items-center gap-4 mb-6">
                   <img 
-                    src={siteSettings.facultyPhoto} 
+                    src={siteSettings.facultyPhoto || "/assets/faculty.jpeg"} 
                     alt={siteSettings.facultyName} 
                     onError={handleImgError}
                     className="w-16 h-16 rounded-2xl object-cover border-2 border-ieee-blue shadow-md"
@@ -241,7 +269,7 @@ export default function Home() {
               </div>
             </div>
 
-          </div>
+          </motion.div>
         </div>
       </section>
 
