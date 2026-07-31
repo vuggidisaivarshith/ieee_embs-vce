@@ -17,13 +17,11 @@ export default function Home() {
   useEffect(() => {
     async function loadHomeData() {
       try {
-        // Load Site Settings
         const settingsSnap = await getDoc(doc(db, 'siteSettings', 'singletonDoc'));
         if (settingsSnap.exists()) {
           setSiteSettings(prev => ({ ...prev, ...settingsSnap.data() }));
         }
 
-        // Load Events
         const eventsSnap = await getDocs(collection(db, 'events'));
         if (!eventsSnap.empty) {
           const eventsList = eventsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -31,7 +29,6 @@ export default function Home() {
           setFeaturedEvent(feat);
         }
 
-        // Load Latest Announcement
         const annSnap = await getDocs(query(collection(db, 'announcements'), orderBy('date', 'desc'), limit(1)));
         if (!annSnap.empty) {
           setLatestAnnouncement({ id: annSnap.docs[0].id, ...annSnap.docs[0].data() });
@@ -45,16 +42,21 @@ export default function Home() {
     loadHomeData();
   }, []);
 
+  const handleImgError = (e) => {
+    e.currentTarget.onerror = null;
+    e.currentTarget.src = "/assets/embs-logo.png";
+  };
+
   return (
-    <div className="pt-20">
+    <div className="pt-20 animate-fade-in">
       
       {/* Announcement Banner Ticker */}
       {latestAnnouncement && (
-        <div className="bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange text-white py-2.5 px-4 text-xs sm:text-sm font-medium">
+        <div className="bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange text-white py-2.5 px-4 text-xs sm:text-sm font-medium shadow-sm animate-gradient">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-2 overflow-hidden">
-              <span className="bg-white/20 px-2 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider flex items-center gap-1">
-                <Megaphone className="w-3 h-3" /> Announcement
+              <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5 flex-shrink-0">
+                <Megaphone className="w-3.5 h-3.5" /> Announcement
               </span>
               <p className="truncate font-semibold">{latestAnnouncement.title}</p>
             </div>
@@ -66,16 +68,16 @@ export default function Home() {
       )}
 
       {/* Hero Banner Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-slate-900 via-neutralDark to-slate-950 text-white py-20 lg:py-28">
+      <section className="relative overflow-hidden bg-gradient-to-b from-slate-900 via-neutralDark to-slate-950 text-white py-20 lg:py-28 animate-gradient">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#00629B_1px,transparent_1px)] [background-size:16px_16px]"></div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
             {/* Left Hero Column */}
-            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+            <div className="lg:col-span-7 space-y-6 text-center lg:text-left animate-slide-up">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md text-xs font-semibold text-sky-300">
-                <Sparkles className="w-4 h-4 text-vardhaman-orange" />
+                <Sparkles className="w-4 h-4 text-vardhaman-orange animate-pulse" />
                 <span>IEEE EMBS Vardhaman Student Branch Chapter</span>
               </div>
 
@@ -124,8 +126,8 @@ export default function Home() {
             </div>
 
             {/* Right Featured Event Highlight Card */}
-            <div className="lg:col-span-5">
-              <div className="relative group rounded-3xl p-1 bg-gradient-to-b from-sky-500/30 via-purple-500/20 to-orange-500/30 shadow-2xl">
+            <div className="lg:col-span-5 animate-slide-up">
+              <div className="relative group rounded-3xl p-1 bg-gradient-to-b from-sky-500/30 via-purple-500/20 to-orange-500/30 shadow-2xl hover-card-lift">
                 <div className="bg-slate-900/90 backdrop-blur-xl rounded-[22px] p-6 border border-white/10 space-y-5">
                   <div className="flex items-center justify-between">
                     <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase tracking-wider">
@@ -140,6 +142,7 @@ export default function Home() {
                     <img 
                       src={featuredEvent?.posterUrl || "/assets/speaker.jpeg"} 
                       alt={featuredEvent?.title}
+                      onError={handleImgError}
                       className="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
                     />
                   </div>
@@ -176,7 +179,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
-            <div className="lg:col-span-6 space-y-6">
+            <div className="lg:col-span-6 space-y-6 animate-slide-up">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ieee-blue/10 text-ieee-blue dark:bg-ieee-blue/20 dark:text-sky-400 text-xs font-bold">
                 <Activity className="w-4 h-4" />
                 <span>About Our Student Branch Chapter</span>
@@ -216,12 +219,13 @@ export default function Home() {
             </div>
 
             {/* Coordinator Quote Card */}
-            <div className="lg:col-span-6">
-              <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 relative">
+            <div className="lg:col-span-6 animate-slide-up">
+              <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 relative hover-card-lift">
                 <div className="flex items-center gap-4 mb-6">
                   <img 
                     src={siteSettings.facultyPhoto} 
                     alt={siteSettings.facultyName} 
+                    onError={handleImgError}
                     className="w-16 h-16 rounded-2xl object-cover border-2 border-ieee-blue shadow-md"
                   />
                   <div>
@@ -242,26 +246,26 @@ export default function Home() {
       </section>
 
       {/* Stats Counter Section */}
-      <section className="py-16 bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange text-white">
+      <section className="py-16 bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange text-white animate-gradient">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             
-            <div className="p-4">
+            <div className="p-4 hover-card-lift">
               <div className="text-4xl sm:text-5xl font-black mb-2">{siteSettings.membersCount}+</div>
               <div className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-white/80">Student Members</div>
             </div>
 
-            <div className="p-4">
+            <div className="p-4 hover-card-lift">
               <div className="text-4xl sm:text-5xl font-black mb-2">{siteSettings.eventsCount}+</div>
               <div className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-white/80">Events & Workshops</div>
             </div>
 
-            <div className="p-4">
+            <div className="p-4 hover-card-lift">
               <div className="text-4xl sm:text-5xl font-black mb-2">{siteSettings.yearsActive}+</div>
               <div className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-white/80">Years Active</div>
             </div>
 
-            <div className="p-4">
+            <div className="p-4 hover-card-lift">
               <div className="text-4xl sm:text-5xl font-black mb-2">{siteSettings.awardsCount}+</div>
               <div className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-white/80">Recognitions & Awards</div>
             </div>

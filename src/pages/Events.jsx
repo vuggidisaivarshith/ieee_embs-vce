@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Clock, MapPin, Search, ChevronRight, User, Sparkles } from 'lucide-react';
+import { Calendar, Clock, MapPin, Search, ChevronRight, User } from 'lucide-react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db, DEFAULT_SITE_DATA } from '../firebase/config';
 import Skeleton from '../components/ui/Skeleton';
@@ -28,6 +28,11 @@ export default function Events() {
     loadEvents();
   }, []);
 
+  const handleImgError = (e) => {
+    e.currentTarget.onerror = null;
+    e.currentTarget.src = "/assets/embs-logo.png";
+  };
+
   const filteredEvents = events.filter(e => {
     const matchesFilter = filter === 'all' || e.status === filter;
     const matchesSearch = e.title.toLowerCase().includes(search.toLowerCase()) || 
@@ -36,11 +41,11 @@ export default function Events() {
   });
 
   return (
-    <div className="pt-24 pb-20">
+    <div className="pt-24 pb-20 animate-fade-in">
       
       {/* Hero Banner */}
-      <section className="bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+      <section className="bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange text-white py-16 animate-gradient">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4 animate-slide-up">
           <h1 className="text-3xl sm:text-5xl font-extrabold">Events & Activities</h1>
           <p className="text-slate-200 text-base sm:text-lg max-w-2xl mx-auto">
             Explore upcoming workshops, expert seminars, guest lectures, and student hackathons hosted by IEEE EMBS Vardhaman.
@@ -107,13 +112,14 @@ export default function Events() {
             {filteredEvents.map(event => (
               <div 
                 key={event.id}
-                className="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700/80 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col group"
+                className="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700/80 shadow-lg hover-card-lift flex flex-col group"
               >
                 {/* Poster Image */}
                 <div className="relative h-48 overflow-hidden bg-slate-900">
                   <img 
                     src={event.posterUrl || "/assets/embs-logo.png"} 
                     alt={event.title}
+                    onError={handleImgError}
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
                   />
                   <span className={`absolute top-4 right-4 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider ${

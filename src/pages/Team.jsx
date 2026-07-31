@@ -26,15 +26,20 @@ export default function Team() {
     loadTeam();
   }, []);
 
+  const handleImgError = (e) => {
+    e.currentTarget.onerror = null;
+    e.currentTarget.src = "/assets/embs-logo.png";
+  };
+
   const facultyMembers = team.filter(m => m.category === 'faculty');
   const studentLeaders = team.filter(m => m.category !== 'faculty');
 
   return (
-    <div className="pt-24 pb-20">
+    <div className="pt-24 pb-20 animate-fade-in">
       
       {/* Header Banner */}
-      <section className="bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+      <section className="bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange text-white py-16 animate-gradient">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4 animate-slide-up">
           <h1 className="text-3xl sm:text-5xl font-extrabold">Office Bearers & Team</h1>
           <p className="text-slate-200 text-base sm:text-lg max-w-2xl mx-auto">
             Meet the faculty advisors, student executive committee, and lead organizers driving IEEE EMBS Vardhaman.
@@ -47,7 +52,7 @@ export default function Team() {
         
         {/* Faculty Advisor Section */}
         {facultyMembers.length > 0 && (
-          <div className="space-y-8">
+          <div className="space-y-8 animate-slide-up">
             <div className="text-center">
               <span className="px-3.5 py-1 rounded-full text-xs font-bold bg-ieee-blue/10 text-ieee-blue dark:bg-ieee-blue/20 dark:text-sky-400 uppercase tracking-wider">
                 Faculty Guidance
@@ -57,10 +62,11 @@ export default function Team() {
 
             <div className="max-w-xl mx-auto">
               {facultyMembers.map(member => (
-                <div key={member.id} className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 text-center space-y-4">
+                <div key={member.id} className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 text-center space-y-4 hover-card-lift">
                   <img 
                     src={member.photoUrl || "/assets/faculty.jpeg"} 
-                    alt={member.name} 
+                    alt={member.name}
+                    onError={handleImgError}
                     className="w-32 h-32 rounded-3xl object-cover border-4 border-ieee-blue mx-auto shadow-lg"
                   />
                   <div>
@@ -88,7 +94,7 @@ export default function Team() {
         )}
 
         {/* Student Executive Committee */}
-        <div className="space-y-8">
+        <div className="space-y-8 animate-slide-up">
           <div className="text-center">
             <span className="px-3.5 py-1 rounded-full text-xs font-bold bg-embs-purple/10 text-embs-purple dark:bg-embs-purple/20 dark:text-purple-300 uppercase tracking-wider">
               Student Leadership
@@ -100,12 +106,13 @@ export default function Team() {
             {studentLeaders.map(member => (
               <div 
                 key={member.id}
-                className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-lg border border-slate-200 dark:border-slate-700 text-center space-y-4 hover:shadow-2xl transition duration-300 group"
+                className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-lg border border-slate-200 dark:border-slate-700 text-center space-y-4 hover-card-lift group"
               >
                 <div className="relative w-28 h-28 mx-auto">
                   <img 
                     src={member.photoUrl || "/assets/embs-logo.png"} 
-                    alt={member.name} 
+                    alt={member.name}
+                    onError={handleImgError}
                     className="w-full h-full rounded-2xl object-cover border-2 border-slate-200 dark:border-slate-700 group-hover:border-ieee-blue transition"
                   />
                 </div>

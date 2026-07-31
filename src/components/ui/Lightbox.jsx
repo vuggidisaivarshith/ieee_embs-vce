@@ -6,8 +6,13 @@ export default function Lightbox({ images, currentIndex, isOpen, onClose, onPrev
 
   const currentImg = images[currentIndex] || {};
 
+  const handleImgError = (e) => {
+    e.currentTarget.onerror = null;
+    e.currentTarget.src = "/assets/embs-logo.png";
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 animate-fade-in">
       <button 
         onClick={onClose}
         className="absolute top-6 right-6 text-white/70 hover:text-white p-2 rounded-full bg-white/10 transition"
@@ -36,10 +41,11 @@ export default function Lightbox({ images, currentIndex, isOpen, onClose, onPrev
         <img 
           src={currentImg.url || currentImg.imageUrl} 
           alt={currentImg.caption || "Gallery Preview"} 
+          onError={handleImgError}
           className="max-w-full max-h-[75vh] object-contain rounded-lg shadow-2xl"
         />
         {currentImg.caption && (
-          <p className="mt-4 text-white/90 text-center text-sm font-medium bg-black/40 px-4 py-2 rounded-full">
+          <p className="mt-4 text-white/90 text-center text-sm font-medium bg-black/40 px-4 py-2 rounded-full backdrop-blur-md">
             {currentImg.caption}
           </p>
         )}

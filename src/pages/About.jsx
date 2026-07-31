@@ -20,12 +20,17 @@ export default function About() {
     loadAboutData();
   }, []);
 
+  const handleImgError = (e) => {
+    e.currentTarget.onerror = null;
+    e.currentTarget.src = "/assets/embs-logo.png";
+  };
+
   return (
-    <div className="pt-24 pb-20">
+    <div className="pt-24 pb-20 animate-fade-in">
       
       {/* Header */}
-      <section className="bg-gradient-to-r from-ieee-blue to-embs-purple text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange text-white py-16 animate-gradient">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-slide-up">
           <h1 className="text-3xl sm:text-5xl font-extrabold mb-4">About Our Chapter</h1>
           <p className="text-slate-200 text-base sm:text-lg max-w-3xl mx-auto">
             Empowering students at Vardhaman College of Engineering to explore biomedical technologies, digital health systems, and healthcare engineering innovations.
@@ -37,7 +42,7 @@ export default function About() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           
-          <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-slate-200 dark:border-slate-700">
+          <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 hover-card-lift animate-slide-up">
             <div className="p-3 bg-ieee-blue/10 text-ieee-blue rounded-2xl w-fit mb-6">
               <Target className="w-8 h-8" />
             </div>
@@ -47,7 +52,7 @@ export default function About() {
             </p>
           </div>
 
-          <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-slate-200 dark:border-slate-700">
+          <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 hover-card-lift animate-slide-up">
             <div className="p-3 bg-embs-purple/10 text-embs-purple rounded-2xl w-fit mb-6">
               <Heart className="w-8 h-8" />
             </div>
@@ -63,10 +68,11 @@ export default function About() {
       {/* Faculty Coordinator Highlight */}
       <section className="bg-slate-50 dark:bg-slate-800/50 py-16 border-y border-slate-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 sm:p-12 shadow-xl border border-slate-200 dark:border-slate-700 flex flex-col md:flex-row items-center gap-10">
+          <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 sm:p-12 shadow-xl border border-slate-200 dark:border-slate-700 flex flex-col md:flex-row items-center gap-10 hover-card-lift animate-slide-up">
             <img 
-              src={siteSettings.facultyPhoto} 
-              alt={siteSettings.facultyName} 
+              src={siteSettings.facultyPhoto || "/assets/faculty.jpeg"} 
+              alt={siteSettings.facultyName}
+              onError={handleImgError}
               className="w-40 h-40 sm:w-48 sm:h-48 rounded-3xl object-cover border-4 border-ieee-blue shadow-xl flex-shrink-0"
             />
             <div className="space-y-4 text-center md:text-left">

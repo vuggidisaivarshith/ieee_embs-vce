@@ -3,6 +3,11 @@ import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Instagram, Linkedin, ShieldCheck, Heart } from 'lucide-react';
 
 export default function Footer() {
+  const handleImgError = (e) => {
+    e.currentTarget.onerror = null;
+    e.currentTarget.src = "/assets/embs-logo.png";
+  };
+
   return (
     <footer className="bg-neutralDark text-slate-300 pt-16 pb-8 border-t border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -11,8 +16,18 @@ export default function Footer() {
           {/* Col 1: Chapter Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <img src="/assets/embs-logo.png" alt="IEEE EMBS" className="h-10 w-auto bg-white/10 p-1.5 rounded-lg" />
-              <img src="/assets/college-logo.jpeg" alt="Vardhaman College" className="h-10 w-auto bg-white/10 p-1.5 rounded-lg" />
+              <img 
+                src="/assets/embs-logo.png" 
+                alt="IEEE EMBS" 
+                onError={handleImgError}
+                className="h-10 w-auto bg-white/10 p-1.5 rounded-lg object-contain" 
+              />
+              <img 
+                src="/assets/college-logo.jpeg" 
+                alt="Vardhaman College" 
+                onError={handleImgError}
+                className="h-10 w-auto bg-white/10 p-1.5 rounded-lg object-contain" 
+              />
             </div>
             <h4 className="text-lg font-bold text-white">IEEE EMBS Chapter</h4>
             <p className="text-sm text-slate-400 leading-relaxed">
@@ -23,7 +38,7 @@ export default function Footer() {
                 href="https://www.instagram.com/ieee_embs_vce" 
                 target="_blank" 
                 rel="noreferrer"
-                className="p-2.5 bg-slate-800 hover:bg-embs-purple text-slate-300 hover:text-white rounded-xl transition"
+                className="p-2.5 bg-slate-800 hover:bg-embs-purple text-slate-300 hover:text-white rounded-xl transition transform hover:-translate-y-0.5"
                 title="Instagram"
               >
                 <Instagram className="w-5 h-5" />
@@ -32,7 +47,7 @@ export default function Footer() {
                 href="https://www.linkedin.com/in/vuggidisaivarshith/" 
                 target="_blank" 
                 rel="noreferrer"
-                className="p-2.5 bg-slate-800 hover:bg-ieee-blue text-slate-300 hover:text-white rounded-xl transition"
+                className="p-2.5 bg-slate-800 hover:bg-ieee-blue text-slate-300 hover:text-white rounded-xl transition transform hover:-translate-y-0.5"
                 title="LinkedIn"
               >
                 <Linkedin className="w-5 h-5" />
@@ -92,9 +107,9 @@ export default function Footer() {
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1">Made with <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" /> for Healthcare Innovation</span>
             <span className="text-slate-700">|</span>
-            <Link to="/admin/login" className="text-slate-500 hover:text-slate-300 flex items-center gap-1 transition opacity-70 hover:opacity-100">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Admin Portal</span>
+            <Link to="/admin/login" className="text-slate-400 hover:text-white flex items-center gap-1.5 transition font-semibold">
+              <ShieldCheck className="w-3.5 h-3.5 text-ieee-blue" />
+              <span>Admin Portal Login</span>
             </Link>
           </div>
         </div>
