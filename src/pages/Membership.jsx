@@ -1,0 +1,91 @@
+import React from 'react';
+import { HeartPulse, CheckCircle2, ShieldCheck, ExternalLink, Globe, Sparkles, Award } from 'lucide-react';
+
+export default function Membership() {
+  const benefits = [
+    "Unlimited access to IEEE Xplore Digital Library research papers",
+    "Discounts on IEEE international conference registrations worldwide",
+    "Eligibility for IEEE EMBS student travel grants & research awards",
+    "Networking with global biomedical engineering pioneers",
+    "Access to IEEE Collabratec research portal & career center",
+    "Leadership opportunities in chapter executive committees"
+  ];
+
+  return (
+    <div className="pt-24 pb-20">
+      
+      {/* Hero Header */}
+      <section className="bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange text-white py-16 text-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+          <span className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-white/20 uppercase tracking-wider inline-flex items-center gap-1.5">
+            <HeartPulse className="w-4 h-4 text-emerald-300" /> Join IEEE EMBS Today
+          </span>
+          <h1 className="text-3xl sm:text-5xl font-extrabold">Become an IEEE EMBS Member</h1>
+          <p className="text-slate-200 text-base sm:text-lg max-w-2xl mx-auto">
+            Join the world's largest society of biomedical engineers and unlock unprecedented research, career, and technical opportunities.
+          </p>
+        </div>
+      </section>
+
+      {/* Content Section */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
+        
+        {/* Benefits Grid */}
+        <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 sm:p-12 shadow-xl border border-slate-200 dark:border-slate-700 space-y-8">
+          <div className="text-center space-y-2">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Why Join IEEE EMBS?</h2>
+            <p className="text-slate-600 dark:text-slate-300 text-sm">Key advantages available to registered student members.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {benefits.map((item, idx) => (
+              <div key={idx} className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-700">
+                <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0 mt-0.5" />
+                <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Steps to Join Card */}
+        <div className="bg-gradient-to-b from-slate-900 to-neutralDark text-white rounded-3xl p-8 sm:p-12 shadow-2xl border border-slate-800 space-y-8">
+          <h2 className="text-2xl font-bold text-center">3 Steps to Complete Membership</h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-6 rounded-2xl bg-white/5 border border-white/10 text-center space-y-3">
+              <div className="w-10 h-10 rounded-full bg-ieee-blue text-white font-black flex items-center justify-center mx-auto text-lg">1</div>
+              <h4 className="font-bold text-base">Visit IEEE Portal</h4>
+              <p className="text-xs text-slate-400">Go to official ieee.org membership portal.</p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-white/5 border border-white/10 text-center space-y-3">
+              <div className="w-10 h-10 rounded-full bg-embs-purple text-white font-black flex items-center justify-center mx-auto text-lg">2</div>
+              <h4 className="font-bold text-base">Select Student Plan</h4>
+              <p className="text-xs text-slate-400">Choose Student Member + EMBS Society add-on.</p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-white/5 border border-white/10 text-center space-y-3">
+              <div className="w-10 h-10 rounded-full bg-vardhaman-orange text-white font-black flex items-center justify-center mx-auto text-lg">3</div>
+              <h4 className="font-bold text-base">Enter Vardhaman SB</h4>
+              <p className="text-xs text-slate-400">Select Vardhaman College of Engineering as your Student Branch.</p>
+            </div>
+          </div>
+
+          <div className="text-center pt-4">
+            <a
+              href="https://www.ieee.org/membership/join/index.html"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange shadow-lg hover:shadow-2xl transition transform hover:-translate-y-0.5"
+            >
+              <span>Proceed to Official IEEE Join Portal</span>
+              <ExternalLink className="w-4 h-4" />
+            </a>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  );
+}
