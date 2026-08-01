@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Image as ImageIcon, Maximize2, Calendar } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { collection, getDocs } from 'firebase/firestore';
 import { db, DEFAULT_SITE_DATA } from '../firebase/config';
 import Lightbox from '../components/ui/Lightbox';
@@ -41,16 +42,21 @@ export default function Gallery() {
   };
 
   return (
-    <div className="pt-24 pb-20 animate-fade-in">
+    <div className="pt-24 pb-20">
       
       {/* Header */}
       <section className="bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange text-white py-16 animate-gradient">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4 animate-slide-up">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4"
+        >
           <h1 className="text-3xl sm:text-5xl font-extrabold">Photo Gallery & Memories</h1>
           <p className="text-slate-200 text-base sm:text-lg max-w-2xl mx-auto">
             Browse through photo highlights from our workshops, guest lectures, paper presentations, and chapter gatherings.
           </p>
-        </div>
+        </motion.div>
       </section>
 
       {/* Main Gallery Container */}
@@ -58,7 +64,8 @@ export default function Gallery() {
         
         {/* Album Filters */}
         <div className="flex flex-wrap gap-2 justify-center mb-10">
-          <button
+          <motion.button
+            whileTap={{ scale: 0.95 }}
             onClick={() => setSelectedAlbum('all')}
             className={`px-5 py-2.5 rounded-full text-xs font-bold transition ${
               selectedAlbum === 'all'
@@ -67,10 +74,11 @@ export default function Gallery() {
             }`}
           >
             All Photos ({allImages.length})
-          </button>
+          </motion.button>
           {albums.map(album => (
-            <button
+            <motion.button
               key={album.id}
+              whileTap={{ scale: 0.95 }}
               onClick={() => setSelectedAlbum(album.id)}
               className={`px-5 py-2.5 rounded-full text-xs font-bold transition ${
                 selectedAlbum === album.id
@@ -79,7 +87,7 @@ export default function Gallery() {
               }`}
             >
               {album.title}
-            </button>
+            </motion.button>
           ))}
         </div>
 
@@ -92,24 +100,28 @@ export default function Gallery() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {displayedImages.map((img, idx) => (
-              <div 
+              <motion.div 
                 key={img.id || idx}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.3, delay: idx * 0.05 }}
                 onClick={() => openLightbox(idx)}
-                className="group relative h-64 rounded-2xl overflow-hidden cursor-pointer bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-md hover-card-lift"
+                className="group relative h-64 rounded-2xl overflow-hidden cursor-pointer bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-ieee-blue hover:-translate-y-1 hover:shadow-xl transition-all duration-200"
               >
                 <img 
                   src={img.url || img.imageUrl} 
                   alt={img.caption || "Gallery Photo"}
                   onError={handleImgError}
-                  className="w-full h-full object-cover group-hover:scale-110 transition duration-500" 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition flex flex-col justify-end p-4 text-white">
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
                   <p className="text-xs font-semibold line-clamp-2">{img.caption}</p>
-                  <span className="text-[10px] text-sky-300 flex items-center gap-1 mt-1">
+                  <span className="text-[10px] text-sky-300 flex items-center gap-1 mt-1 font-bold">
                     <Maximize2 className="w-3 h-3" /> Click to expand
                   </span>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         )}

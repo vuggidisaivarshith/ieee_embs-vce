@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Linkedin, Mail, Phone, UserCheck, Shield, GraduationCap } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { collection, getDocs } from 'firebase/firestore';
 import { db, DEFAULT_SITE_DATA } from '../firebase/config';
 import Skeleton from '../components/ui/Skeleton';
@@ -35,16 +36,21 @@ export default function Team() {
   const studentLeaders = team.filter(m => m.category !== 'faculty');
 
   return (
-    <div className="pt-24 pb-20 animate-fade-in">
+    <div className="pt-24 pb-20">
       
       {/* Header Banner */}
       <section className="bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange text-white py-16 animate-gradient">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4 animate-slide-up">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4"
+        >
           <h1 className="text-3xl sm:text-5xl font-extrabold">Office Bearers & Team</h1>
           <p className="text-slate-200 text-base sm:text-lg max-w-2xl mx-auto">
             Meet the faculty advisors, student executive committee, and lead organizers driving IEEE EMBS Vardhaman.
           </p>
-        </div>
+        </motion.div>
       </section>
 
       {/* Team Content */}
@@ -52,7 +58,13 @@ export default function Team() {
         
         {/* Faculty Advisor Section */}
         {facultyMembers.length > 0 && (
-          <div className="space-y-8 animate-slide-up">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="space-y-8"
+          >
             <div className="text-center">
               <span className="px-3.5 py-1 rounded-full text-xs font-bold bg-ieee-blue/10 text-ieee-blue dark:bg-ieee-blue/20 dark:text-sky-400 uppercase tracking-wider">
                 Faculty Guidance
@@ -62,7 +74,7 @@ export default function Team() {
 
             <div className="max-w-xl mx-auto">
               {facultyMembers.map(member => (
-                <div key={member.id} className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 text-center space-y-4 hover-card-lift">
+                <div key={member.id} className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 text-center space-y-4 hover:-translate-y-1 hover:border-ieee-blue hover:shadow-2xl transition-all duration-200">
                   <img 
                     src={member.photoUrl || "/assets/faculty.jpeg"} 
                     alt={member.name}
@@ -77,24 +89,34 @@ export default function Team() {
 
                   <div className="pt-3 flex justify-center gap-3 border-t border-slate-100 dark:border-slate-700">
                     {member.email && (
-                      <a href={`mailto:${member.email}`} className="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-ieee-blue text-slate-600 dark:text-slate-300 hover:text-white transition">
+                      <motion.a 
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        href={`mailto:${member.email}`} 
+                        className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-ieee-blue text-slate-600 dark:text-slate-300 hover:text-white transition-colors"
+                      >
                         <Mail className="w-4 h-4" />
-                      </a>
+                      </motion.a>
                     )}
                     {member.phone && (
-                      <a href={`tel:${member.phone}`} className="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-vardhaman-orange text-slate-600 dark:text-slate-300 hover:text-white transition">
+                      <motion.a 
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        href={`tel:${member.phone}`} 
+                        className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-vardhaman-orange text-slate-600 dark:text-slate-300 hover:text-white transition-colors"
+                      >
                         <Phone className="w-4 h-4" />
-                      </a>
+                      </motion.a>
                     )}
                   </div>
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Student Executive Committee */}
-        <div className="space-y-8 animate-slide-up">
+        <div className="space-y-8">
           <div className="text-center">
             <span className="px-3.5 py-1 rounded-full text-xs font-bold bg-embs-purple/10 text-embs-purple dark:bg-embs-purple/20 dark:text-purple-300 uppercase tracking-wider">
               Student Leadership
@@ -103,44 +125,65 @@ export default function Team() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {studentLeaders.map(member => (
-              <div 
+            {studentLeaders.map((member, idx) => (
+              <motion.div 
                 key={member.id}
-                className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-lg border border-slate-200 dark:border-slate-700 text-center space-y-4 hover-card-lift group"
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.08 }}
+                className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-lg border border-slate-200 dark:border-slate-700 text-center space-y-4 hover:-translate-y-1 hover:border-ieee-blue hover:shadow-2xl transition-all duration-200 group"
               >
                 <div className="relative w-28 h-28 mx-auto">
                   <img 
                     src={member.photoUrl || "/assets/embs-logo.png"} 
                     alt={member.name}
                     onError={handleImgError}
-                    className="w-full h-full rounded-2xl object-cover border-2 border-slate-200 dark:border-slate-700 group-hover:border-ieee-blue transition"
+                    className="w-full h-full rounded-2xl object-cover border-2 border-slate-200 dark:border-slate-700 group-hover:border-ieee-blue group-hover:scale-105 transition-all duration-300"
                   />
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-ieee-blue transition">{member.name}</h3>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-ieee-blue transition-colors">{member.name}</h3>
                   <p className="text-xs font-bold text-ieee-blue dark:text-sky-400">{member.role}</p>
                   <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">{member.department} • {member.year}</p>
                 </div>
 
                 <div className="pt-3 flex justify-center gap-2 border-t border-slate-100 dark:border-slate-700">
                   {member.linkedin && (
-                    <a href={member.linkedin} target="_blank" rel="noreferrer" className="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-ieee-blue text-slate-600 dark:text-slate-300 hover:text-white transition">
+                    <motion.a 
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      href={member.linkedin} 
+                      target="_blank" 
+                      rel="noreferrer" 
+                      className="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-ieee-blue text-slate-600 dark:text-slate-300 hover:text-white transition-colors"
+                    >
                       <Linkedin className="w-4 h-4" />
-                    </a>
+                    </motion.a>
                   )}
                   {member.email && (
-                    <a href={`mailto:${member.email}`} className="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-embs-purple text-slate-600 dark:text-slate-300 hover:text-white transition">
+                    <motion.a 
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      href={`mailto:${member.email}`} 
+                      className="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-embs-purple text-slate-600 dark:text-slate-300 hover:text-white transition-colors"
+                    >
                       <Mail className="w-4 h-4" />
-                    </a>
+                    </motion.a>
                   )}
                   {member.phone && (
-                    <a href={`tel:${member.phone}`} className="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-vardhaman-orange text-slate-600 dark:text-slate-300 hover:text-white transition">
+                    <motion.a 
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      href={`tel:${member.phone}`} 
+                      className="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-vardhaman-orange text-slate-600 dark:text-slate-300 hover:text-white transition-colors"
+                    >
                       <Phone className="w-4 h-4" />
-                    </a>
+                    </motion.a>
                   )}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

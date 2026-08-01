@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, Clock, MapPin, Search, ChevronRight, User } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { collection, getDocs } from 'firebase/firestore';
 import { db, DEFAULT_SITE_DATA } from '../firebase/config';
 import Skeleton from '../components/ui/Skeleton';
@@ -41,16 +42,21 @@ export default function Events() {
   });
 
   return (
-    <div className="pt-24 pb-20 animate-fade-in">
+    <div className="pt-24 pb-20">
       
       {/* Hero Banner */}
       <section className="bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange text-white py-16 animate-gradient">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4 animate-slide-up">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4"
+        >
           <h1 className="text-3xl sm:text-5xl font-extrabold">Events & Activities</h1>
           <p className="text-slate-200 text-base sm:text-lg max-w-2xl mx-auto">
             Explore upcoming workshops, expert seminars, guest lectures, and student hackathons hosted by IEEE EMBS Vardhaman.
           </p>
-        </div>
+        </motion.div>
       </section>
 
       {/* Main Listing Section */}
@@ -62,8 +68,9 @@ export default function Events() {
           {/* Tabs */}
           <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl w-full md:w-auto">
             {['all', 'upcoming', 'past'].map(tab => (
-              <button
+              <motion.button
                 key={tab}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setFilter(tab)}
                 className={`flex-1 md:flex-none px-5 py-2.5 rounded-xl text-xs font-bold capitalize transition ${
                   filter === tab 
@@ -72,7 +79,7 @@ export default function Events() {
                 }`}
               >
                 {tab === 'all' ? 'All Events' : tab === 'upcoming' ? 'Upcoming Events' : 'Past Events'}
-              </button>
+              </motion.button>
             ))}
           </div>
 
@@ -94,8 +101,8 @@ export default function Events() {
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3].map(n => (
-              <div key={n} className="bg-white dark:bg-slate-800 rounded-3xl p-6 space-y-4">
-                <Skeleton className="h-48 w-full" />
+              <div key={n} className="bg-white dark:bg-slate-800 rounded-3xl p-6 space-y-4 border border-slate-200 dark:border-slate-700">
+                <Skeleton className="h-48 w-full rounded-2xl" />
                 <Skeleton className="h-6 w-3/4" />
                 <Skeleton className="h-4 w-full" />
               </div>
@@ -109,10 +116,14 @@ export default function Events() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredEvents.map(event => (
-              <div 
+            {filteredEvents.map((event, idx) => (
+              <motion.div 
                 key={event.id}
-                className="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700/80 shadow-lg hover-card-lift flex flex-col group"
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.08 }}
+                className="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700/80 shadow-lg hover:-translate-y-1 hover:border-ieee-blue hover:shadow-2xl transition-all duration-200 flex flex-col group"
               >
                 {/* Poster Image */}
                 <div className="relative h-48 overflow-hidden bg-slate-900">
@@ -120,7 +131,7 @@ export default function Events() {
                     src={event.posterUrl || "/assets/embs-logo.png"} 
                     alt={event.title}
                     onError={handleImgError}
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                   />
                   <span className={`absolute top-4 right-4 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider ${
                     event.status === 'upcoming' 
@@ -137,7 +148,7 @@ export default function Events() {
                     <span className="text-xs font-bold text-ieee-blue dark:text-sky-400 uppercase tracking-wider block">
                       {event.topic || 'Biomedical Engineering'}
                     </span>
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-ieee-blue transition line-clamp-2">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-ieee-blue transition-colors line-clamp-2">
                       {event.title}
                     </h3>
                     <p className="text-slate-600 dark:text-slate-300 text-xs line-clamp-3 leading-relaxed">
@@ -167,17 +178,19 @@ export default function Events() {
 
                   {/* Action Link */}
                   <div className="pt-2">
-                    <Link
-                      to={`/events/${event.id}`}
-                      className="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-center text-white bg-ieee-blue hover:bg-ieee-dark shadow-md flex items-center justify-center gap-1.5 transition"
-                    >
-                      <span>View Details & Register</span>
-                      <ChevronRight className="w-4 h-4" />
-                    </Link>
+                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                      <Link
+                        to={`/events/${event.id}`}
+                        className="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-center text-white bg-ieee-blue hover:bg-ieee-dark shadow-md flex items-center justify-center gap-1.5 transition-all"
+                      >
+                        <span>View Details & Register</span>
+                        <ChevronRight className="w-4 h-4" />
+                      </Link>
+                    </motion.div>
                   </div>
                 </div>
 
-              </div>
+              </motion.div>
             ))}
           </div>
         )}

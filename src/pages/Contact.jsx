@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, CheckCircle2, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Mail, Phone, MapPin, Send, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import emailjs from '@emailjs/browser';
 import { db } from '../firebase/config';
 import Toast from '../components/ui/Toast';
 
@@ -15,6 +17,25 @@ export default function Contact() {
   const [toastMessage, setToastMessage] = useState(null);
   const [toastType, setToastType] = useState('success');
 
+  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+  // Runtime environment check & EmailJS init
+  useEffect(() => {
+    if (!serviceId || !templateId || !publicKey) {
+      console.warn(
+        "EmailJS Warning: One or more environment variables are undefined (VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY). Email notifications will fall back to database logging."
+      );
+    } else {
+      try {
+        emailjs.init(publicKey);
+      } catch (err) {
+        console.error("EmailJS Init Error:", err);
+      }
+    }
+  }, [serviceId, templateId, publicKey]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) {
@@ -24,22 +45,63 @@ export default function Contact() {
     }
 
     setSubmitting(true);
-    try {
-      await addDoc(collection(db, 'contactMessages'), {
-        ...formData,
-        timestamp: serverTimestamp(),
-        isRead: false
-      });
-      setToastType('success');
-      setToastMessage('Your message has been sent successfully!');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    } catch (err) {
-      console.error("Error submitting contact form:", err);
-      setToastType('error');
-      setToastMessage('Failed to send message. Please try again later.');
-    } finally {
-      setSubmitting(false);
+    let emailJsSuccess = false;
+    let dbSuccess = false;
+    let emailJsErrorDetails = null;
+
+    // 1. Try sending via EmailJS if configured
+    if (serviceId && templateId && publicKey) {
+      try {
+        const templateParams = {
+          from_name: formData.name,
+          from_email: formData.email,
+          subject: formData.subject || 'IEEE EMBS Website Contact Inquiry',
+          message: formData.message,
+          to_email: 'swethabharath27@vardhaman.org'
+        };
+        const res = await emailjs.send(serviceId, templateId, templateParams, publicKey);
+        console.log("EmailJS Sent Successfully:", res);
+        emailJsSuccess = true;
+      } catch (err) {
+        emailJsErrorDetails = err;
+        console.error("EmailJS Error Response:", err);
+      }
     }
+
+    // 2. Save inquiry to Firestore database
+    try {
+      await addDoc(collection(db, 'inquiries'), {
+        ...formData,
+        date: new Date().toISOString(),
+        read: false,
+        timestamp: serverTimestamp()
+      });
+      dbSuccess = true;
+    } catch (err) {
+      console.error("Firestore Database Inquiry Error:", err);
+    }
+
+    // 3. User feedback evaluation
+    if (emailJsSuccess || dbSuccess) {
+      setToastType('success');
+      setToastMessage('Your message has been sent successfully! Our team will respond shortly.');
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } else {
+      setToastType('error');
+      if (emailJsErrorDetails) {
+        if (emailJsErrorDetails.status === 400 || emailJsErrorDetails.status === 401) {
+          setToastMessage('Email service configuration error. Message logged to admin database.');
+        } else if (!navigator.onLine) {
+          setToastMessage('Network failure detected. Please check your internet connection and try again.');
+        } else {
+          setToastMessage(`Failed to send message (${emailJsErrorDetails.text || 'Service Error'}). Please try again later.`);
+        }
+      } else {
+        setToastMessage('Failed to submit message. Please try again later.');
+      }
+    }
+
+    setSubmitting(false);
   };
 
   return (
@@ -51,13 +113,18 @@ export default function Contact() {
       )}
 
       {/* Header */}
-      <section className="bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange text-white py-16 text-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+      <section className="bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange text-white py-16 text-center animate-gradient">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4"
+        >
           <h1 className="text-3xl sm:text-5xl font-extrabold">Contact Us</h1>
           <p className="text-slate-200 text-base sm:text-lg max-w-2xl mx-auto">
             Have questions about upcoming events, membership, or research collaborations? Send us a message!
           </p>
-        </div>
+        </motion.div>
       </section>
 
       {/* Form + Map */}
@@ -65,7 +132,12 @@ export default function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           
           {/* Left Form */}
-          <div className="lg:col-span-7 bg-white dark:bg-slate-800 rounded-3xl p-8 sm:p-10 shadow-xl border border-slate-200 dark:border-slate-700 space-y-6">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="lg:col-span-7 bg-white dark:bg-slate-800 rounded-3xl p-8 sm:p-10 shadow-xl border border-slate-200 dark:border-slate-700 space-y-6"
+          >
             <div>
               <h3 className="text-2xl font-extrabold text-slate-900 dark:text-white">Send a Message</h3>
               <p className="text-slate-500 text-xs mt-1">Submissions are delivered directly to the chapter administration.</p>
@@ -74,65 +146,81 @@ export default function Contact() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Your Name *</label>
+                  <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Your Name *</label>
                   <input 
                     type="text"
                     required
                     value={formData.name}
                     onChange={e => setFormData({ ...formData, name: e.target.value })}
                     placeholder="Enter full name"
-                    className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ieee-blue"
+                    className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ieee-blue"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Email Address *</label>
+                  <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Email Address *</label>
                   <input 
                     type="email"
                     required
                     value={formData.email}
                     onChange={e => setFormData({ ...formData, email: e.target.value })}
                     placeholder="Enter email"
-                    className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ieee-blue"
+                    className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ieee-blue"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Subject</label>
+                <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Subject</label>
                 <input 
                   type="text"
                   value={formData.subject}
                   onChange={e => setFormData({ ...formData, subject: e.target.value })}
                   placeholder="e.g. Event Inquiry / Membership"
-                  className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ieee-blue"
+                  className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ieee-blue"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Message *</label>
+                <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Message *</label>
                 <textarea 
                   rows={4}
                   required
                   value={formData.message}
                   onChange={e => setFormData({ ...formData, message: e.target.value })}
                   placeholder="Type your message here..."
-                  className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ieee-blue"
+                  className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ieee-blue"
                 ></textarea>
               </div>
 
-              <button
+              <motion.button
+                whileHover={{ scale: submitting ? 1 : 1.03 }}
+                whileTap={{ scale: submitting ? 1 : 0.97 }}
                 type="submit"
                 disabled={submitting}
-                className="w-full py-3.5 rounded-xl text-sm font-bold text-white bg-ieee-blue hover:bg-ieee-dark transition shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full py-3.5 rounded-xl text-sm font-extrabold text-white bg-ieee-blue hover:bg-ieee-dark transition-all shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
               >
-                {submitting ? 'Sending...' : 'Send Message'}
-                <Send className="w-4 h-4" />
-              </button>
+                {submitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin text-white" />
+                    <span>Sending Message...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Send Message</span>
+                    <Send className="w-4 h-4" />
+                  </>
+                )}
+              </motion.button>
             </form>
-          </div>
+          </motion.div>
 
           {/* Right Location & Details */}
-          <div className="lg:col-span-5 space-y-6">
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="lg:col-span-5 space-y-6"
+          >
             <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 space-y-6">
               <h3 className="text-xl font-bold text-slate-900 dark:text-white">Contact Information</h3>
               
@@ -157,7 +245,7 @@ export default function Contact() {
                   <Phone className="w-5 h-5 text-embs-purple flex-shrink-0" />
                   <div>
                     <span className="font-bold block text-slate-900 dark:text-white">Student Helpline</span>
-                    <span className="text-slate-500 dark:text-slate-400">+91 9059573313 (Secretary) / +91 9490298994 (Chair)</span>
+                    <span className="text-slate-500 dark:text-slate-400">+91 9059573313 (Secretary) / +91 7993136780 (Chair)</span>
                   </div>
                 </div>
               </div>
@@ -175,7 +263,7 @@ export default function Contact() {
                 loading="lazy"
               ></iframe>
             </div>
-          </div>
+          </motion.div>
 
         </div>
       </section>
