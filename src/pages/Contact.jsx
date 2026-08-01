@@ -19,20 +19,17 @@ export default function Contact() {
 
   const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || "service_qnl317q";
   const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "template_h3g3uca";
-  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "mfL2Xh2IX0xWpfzT8";
 
   // Runtime environment check & EmailJS init
   useEffect(() => {
     if (publicKey) {
       try {
         emailjs.init(publicKey);
+        console.log("EmailJS initialized with Public Key.");
       } catch (err) {
         console.error("EmailJS Init Error:", err);
       }
-    } else {
-      console.warn(
-        "EmailJS Notice: Public key (VITE_EMAILJS_PUBLIC_KEY) is missing. Set VITE_EMAILJS_PUBLIC_KEY in Vercel/env to enable direct EmailJS inbox delivery."
-      );
     }
   }, [publicKey]);
 
@@ -49,16 +46,16 @@ export default function Contact() {
     let dbSuccess = false;
     let localBackupSuccess = false;
 
-    // 1. Attempt EmailJS submission with comprehensive template parameter aliases
+    // 1. Send via EmailJS using supplied Service ID, Template ID, and Public Key
     if (publicKey) {
       try {
         const templateParams = {
-          // Name fields
+          // Name aliases
           from_name: formData.name,
           user_name: formData.name,
           name: formData.name,
 
-          // Email fields
+          // Email aliases
           from_email: formData.email,
           user_email: formData.email,
           email: formData.email,
@@ -78,7 +75,7 @@ export default function Contact() {
       }
     }
 
-    // 2. Attempt Firestore database submission
+    // 2. Save inquiry to Firestore database for Admin Portal dashboard
     try {
       await addDoc(collection(db, 'inquiries'), {
         ...formData,
