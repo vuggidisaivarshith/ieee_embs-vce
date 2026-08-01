@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Instagram, Linkedin, ShieldCheck, Heart } from 'lucide-react';
+import { embsLogo, collegeLogo } from '../../assets/images';
 
 export default function Footer() {
   const handleImgError = (e) => {
     e.currentTarget.onerror = null;
-    e.currentTarget.src = "/assets/embs-logo.png";
+    e.currentTarget.src = embsLogo;
   };
 
   return (
@@ -17,13 +18,13 @@ export default function Footer() {
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <img 
-                src="/assets/embs-logo.png" 
+                src={embsLogo} 
                 alt="IEEE EMBS" 
                 onError={handleImgError}
                 className="h-10 w-auto bg-white/10 p-1.5 rounded-lg object-contain" 
               />
               <img 
-                src="/assets/college-logo.jpeg" 
+                src={collegeLogo} 
                 alt="Vardhaman College" 
                 onError={handleImgError}
                 className="h-10 w-auto bg-white/10 p-1.5 rounded-lg object-contain" 

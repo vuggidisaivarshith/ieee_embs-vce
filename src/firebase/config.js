@@ -2,6 +2,18 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
+import {
+  collegeLogo,
+  embsLogo,
+  vardhamanLogo,
+  facultyPhoto,
+  chairPhoto,
+  secretaryPhoto,
+  vicePhoto,
+  treasurerPhoto,
+  speakerPhoto,
+  webmasterPhoto
+} from '../assets/images';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyAurFY1ghJeFp1wxqiRd6Us-h45Bv6myoE",
@@ -34,13 +46,13 @@ export function isAuthorizedAdmin(email) {
   return AUTHORIZED_ADMIN_EMAILS.some(a => a.toLowerCase().trim() === cleanEmail);
 }
 
-// Fallback initial dataset (used when Firestore collections are empty)
+// Fallback initial dataset with Vite content-hashed image imports
 export const DEFAULT_SITE_DATA = {
   siteSettings: {
     heroTitle: "IEEE EMBS Student Branch Chapter",
     heroSubtitle: "Vardhaman College of Engineering",
     heroDescription: "Empowering biomedical engineering innovation, medical signal processing, and digital health technology for humanity.",
-    heroImage: "/assets/embs-logo.png",
+    heroImage: embsLogo,
     welcomeTitle: "Welcome to IEEE EMBS Vardhaman",
     welcomeText: "The IEEE Engineering in Medicine and Biology Society (EMBS) Student Branch Chapter at Vardhaman College of Engineering connects engineering students with the frontiers of biomedical innovation, digital health, and healthcare technology.",
     missionStatement: "To advance healthcare technology through research, workshops, collaborative projects, and multidisciplinary engineering solutions.",
@@ -49,7 +61,7 @@ export const DEFAULT_SITE_DATA = {
     facultyDept: "Department of Information Technology, VCE",
     facultyEmail: "swethabharath27@vardhaman.org",
     facultyPhone: "+91 7993136780",
-    facultyPhoto: "/assets/faculty.jpeg",
+    facultyPhoto: facultyPhoto,
     facultyQuote: "IEEE EMBS Vardhaman provides a transformative environment where students apply technical problem-solving to real healthcare challenges. We encourage every engineering student to explore biomedical technology and lead impactful research.",
     contactEmail: "ieee.embs@vardhaman.org",
     contactPhone: "+91 9059573313",
@@ -71,7 +83,7 @@ export const DEFAULT_SITE_DATA = {
       email: "swethabharath27@vardhaman.org",
       phone: "+91 7993136780",
       linkedin: "",
-      photoUrl: "/assets/faculty.jpeg",
+      photoUrl: facultyPhoto,
       category: "faculty",
       order: 1,
       active: true
@@ -85,7 +97,7 @@ export const DEFAULT_SITE_DATA = {
       email: "maruthisaiteja9@gmail.com",
       phone: "+91 9490298994",
       linkedin: "https://www.linkedin.com/in/pillimaruthisaiteja/",
-      photoUrl: "/assets/chair.jpeg",
+      photoUrl: chairPhoto,
       category: "student",
       order: 2,
       active: true
@@ -99,7 +111,7 @@ export const DEFAULT_SITE_DATA = {
       email: "vuggidisaivarshith@gmail.com",
       phone: "+91 9059573313",
       linkedin: "https://www.linkedin.com/in/vuggidisaivarshith/",
-      photoUrl: "/assets/secretary.png",
+      photoUrl: secretaryPhoto,
       category: "student",
       order: 3,
       active: true
@@ -113,7 +125,7 @@ export const DEFAULT_SITE_DATA = {
       email: "jahnavivigrahala@gmail.com",
       phone: "+91 8688909558",
       linkedin: "https://www.linkedin.com/in/jahnavi-vigrahala-94aa9034a/",
-      photoUrl: "/assets/vice.jpeg",
+      photoUrl: vicePhoto,
       category: "student",
       order: 4,
       active: true
@@ -127,7 +139,7 @@ export const DEFAULT_SITE_DATA = {
       email: "tanmaychalla@gmail.com",
       phone: "+91 7093811232",
       linkedin: "https://www.linkedin.com/in/tanmay-challa",
-      photoUrl: "/assets/treasurer.jpeg",
+      photoUrl: treasurerPhoto,
       category: "student",
       order: 5,
       active: true
@@ -144,7 +156,7 @@ export const DEFAULT_SITE_DATA = {
       time: "6:00 PM IST",
       venue: "Online (Google Meet)",
       speaker: "Dr. Ajit Kumar (Biomedical Innovation Specialist)",
-      posterUrl: "/assets/speaker.jpeg",
+      posterUrl: speakerPhoto,
       registrationLink: "https://forms.gle/FPtQfzauCd6PeaTQ8",
       status: "upcoming",
       featured: true,
@@ -164,7 +176,7 @@ export const DEFAULT_SITE_DATA = {
       time: "10:00 AM IST",
       venue: "Auditorium Hall, Vardhaman College",
       speaker: "Pollishetty Swetha & Guest Experts",
-      posterUrl: "/assets/embs-logo.png",
+      posterUrl: embsLogo,
       registrationLink: "https://forms.google.com/",
       status: "past",
       featured: false,
@@ -183,7 +195,7 @@ export const DEFAULT_SITE_DATA = {
       body: "IEEE EMBS Vardhaman invites all students to register for the upcoming expert session on Telemedicine and Digital Health Systems.",
       date: "2026-07-28",
       isPinned: true,
-      imageUrl: "/assets/speaker.jpeg"
+      imageUrl: speakerPhoto
     },
     {
       id: "ann-2",
@@ -191,7 +203,7 @@ export const DEFAULT_SITE_DATA = {
       body: "Gain access to IEEE Xplore, global webinars, networking, and conference travel grants by joining IEEE EMBS today.",
       date: "2026-07-15",
       isPinned: false,
-      imageUrl: "/assets/embs-logo.png"
+      imageUrl: embsLogo
     }
   ],
 
@@ -203,7 +215,7 @@ export const DEFAULT_SITE_DATA = {
       title: "Active Student Branch Chapter Status",
       description: "Recognized as an active, high-performing IEEE EMBS Student Branch Chapter under IEEE Hyderabad Section.",
       date: "2024-03-15",
-      proofUrl: "/assets/embs-logo.png"
+      proofUrl: embsLogo
     },
     {
       id: "ach-2",
@@ -238,9 +250,9 @@ export const DEFAULT_SITE_DATA = {
       title: "Biomedical Signal Processing Workshop 2024",
       date: "2024-02-20",
       images: [
-        { id: "img-1", url: "/assets/speaker.jpeg", caption: "Speaker presenting session" },
-        { id: "img-2", url: "/assets/faculty.jpeg", caption: "Faculty coordinator addressing students" },
-        { id: "img-3", url: "/assets/embs-logo.png", caption: "Chapter logo presentation" }
+        { id: "img-1", url: speakerPhoto, caption: "Speaker presenting session" },
+        { id: "img-2", url: facultyPhoto, caption: "Faculty coordinator addressing students" },
+        { id: "img-3", url: embsLogo, caption: "Chapter logo presentation" }
       ]
     }
   ]

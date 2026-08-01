@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Sun, Moon, Menu, X, HeartPulse, ChevronRight, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../../context/ThemeContext';
+import { collegeLogo, embsLogo, vardhamanLogo } from '../../assets/images';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -61,7 +62,7 @@ export default function Navbar() {
 
   const handleImgError = (e) => {
     e.currentTarget.onerror = null;
-    e.currentTarget.src = "/assets/embs-logo.png";
+    e.currentTarget.src = embsLogo;
   };
 
   return (
@@ -77,21 +78,21 @@ export default function Navbar() {
           <Link to="/" className="flex items-center gap-2 flex-shrink-0 group">
             <div className="flex items-center gap-1.5 bg-white dark:bg-slate-800 p-1 rounded-xl shadow-sm border border-slate-200/80 dark:border-slate-700">
               <img 
-                src="/assets/college-logo.jpeg" 
+                src={collegeLogo} 
                 alt="Vardhaman College" 
                 onError={handleImgError}
                 className="h-6 sm:h-7.5 w-auto object-contain flex-shrink-0" 
               />
               <div className="h-4 w-px bg-slate-200 dark:bg-slate-700"></div>
               <img 
-                src="/assets/embs-logo.png" 
+                src={embsLogo} 
                 alt="IEEE EMBS" 
                 onError={handleImgError}
                 className="h-6 sm:h-7.5 w-auto object-contain flex-shrink-0" 
               />
               <div className="h-4 w-px bg-slate-200 dark:bg-slate-700"></div>
               <img 
-                src="/assets/vardhaman-logo.png" 
+                src={vardhamanLogo} 
                 alt="Vardhaman SB" 
                 onError={handleImgError}
                 className="h-6 sm:h-7.5 w-auto object-contain flex-shrink-0" 
