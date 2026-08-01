@@ -17,24 +17,24 @@ export default function Contact() {
   const [toastMessage, setToastMessage] = useState(null);
   const [toastType, setToastType] = useState('success');
 
-  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || "service_qnl317q";
+  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "template_h3g3uca";
   const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
   // Runtime environment check & EmailJS init
   useEffect(() => {
-    if (!serviceId || !templateId || !publicKey) {
-      console.warn(
-        "EmailJS Notice: Environment variables (VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY) not provided. Contact inquiries will be stored via database/local storage backup."
-      );
-    } else {
+    if (publicKey) {
       try {
         emailjs.init(publicKey);
       } catch (err) {
         console.error("EmailJS Init Error:", err);
       }
+    } else {
+      console.warn(
+        "EmailJS Notice: Public key (VITE_EMAILJS_PUBLIC_KEY) is missing. Set VITE_EMAILJS_PUBLIC_KEY in Vercel/env to enable direct EmailJS inbox delivery."
+      );
     }
-  }, [serviceId, templateId, publicKey]);
+  }, [publicKey]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,16 +49,27 @@ export default function Contact() {
     let dbSuccess = false;
     let localBackupSuccess = false;
 
-    // 1. Attempt EmailJS submission if keys exist
-    if (serviceId && templateId && publicKey) {
+    // 1. Attempt EmailJS submission with comprehensive template parameter aliases
+    if (publicKey) {
       try {
         const templateParams = {
+          // Name fields
           from_name: formData.name,
+          user_name: formData.name,
+          name: formData.name,
+
+          // Email fields
           from_email: formData.email,
-          subject: formData.subject || 'IEEE EMBS Website Inquiry',
+          user_email: formData.email,
+          email: formData.email,
+          reply_to: formData.email,
+
+          // Content fields
+          subject: formData.subject || 'IEEE EMBS Website Contact Inquiry',
           message: formData.message,
           to_email: 'swethabharath27@vardhaman.org'
         };
+
         const res = await emailjs.send(serviceId, templateId, templateParams, publicKey);
         console.log("EmailJS Dispatch Success:", res);
         emailJsSuccess = true;
