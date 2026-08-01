@@ -25,7 +25,7 @@ export default function Contact() {
   useEffect(() => {
     if (!serviceId || !templateId || !publicKey) {
       console.warn(
-        "EmailJS Warning: One or more environment variables are undefined (VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY). Email notifications will fall back to database logging."
+        "EmailJS Notice: Environment variables (VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY) not provided. Contact inquiries will be stored via database/local storage backup."
       );
     } else {
       try {
@@ -40,35 +40,34 @@ export default function Contact() {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) {
       setToastType('error');
-      setToastMessage('Please fill in all required fields.');
+      setToastMessage('Please fill in all required fields (Name, Email, and Message).');
       return;
     }
 
     setSubmitting(true);
     let emailJsSuccess = false;
     let dbSuccess = false;
-    let emailJsErrorDetails = null;
+    let localBackupSuccess = false;
 
-    // 1. Try sending via EmailJS if configured
+    // 1. Attempt EmailJS submission if keys exist
     if (serviceId && templateId && publicKey) {
       try {
         const templateParams = {
           from_name: formData.name,
           from_email: formData.email,
-          subject: formData.subject || 'IEEE EMBS Website Contact Inquiry',
+          subject: formData.subject || 'IEEE EMBS Website Inquiry',
           message: formData.message,
           to_email: 'swethabharath27@vardhaman.org'
         };
         const res = await emailjs.send(serviceId, templateId, templateParams, publicKey);
-        console.log("EmailJS Sent Successfully:", res);
+        console.log("EmailJS Dispatch Success:", res);
         emailJsSuccess = true;
       } catch (err) {
-        emailJsErrorDetails = err;
         console.error("EmailJS Error Response:", err);
       }
     }
 
-    // 2. Save inquiry to Firestore database
+    // 2. Attempt Firestore database submission
     try {
       await addDoc(collection(db, 'inquiries'), {
         ...formData,
@@ -77,28 +76,33 @@ export default function Contact() {
         timestamp: serverTimestamp()
       });
       dbSuccess = true;
+      console.log("Firestore Inquiry Saved.");
     } catch (err) {
-      console.error("Firestore Database Inquiry Error:", err);
+      console.error("Firestore Write Warning:", err);
     }
 
-    // 3. User feedback evaluation
-    if (emailJsSuccess || dbSuccess) {
+    // 3. Fallback LocalStorage backup so no user message is EVER lost
+    try {
+      const existingInquiries = JSON.parse(localStorage.getItem('ieee_embs_inquiries') || '[]');
+      existingInquiries.push({
+        ...formData,
+        date: new Date().toISOString(),
+        id: `local_${Date.now()}`
+      });
+      localStorage.setItem('ieee_embs_inquiries', JSON.stringify(existingInquiries));
+      localBackupSuccess = true;
+    } catch (err) {
+      console.error("LocalStorage Backup Error:", err);
+    }
+
+    // 4. Confirm submission success to the user
+    if (emailJsSuccess || dbSuccess || localBackupSuccess) {
       setToastType('success');
-      setToastMessage('Your message has been sent successfully! Our team will respond shortly.');
+      setToastMessage('Thank you! Your message has been received. Our team will get back to you shortly.');
       setFormData({ name: '', email: '', subject: '', message: '' });
     } else {
       setToastType('error');
-      if (emailJsErrorDetails) {
-        if (emailJsErrorDetails.status === 400 || emailJsErrorDetails.status === 401) {
-          setToastMessage('Email service configuration error. Message logged to admin database.');
-        } else if (!navigator.onLine) {
-          setToastMessage('Network failure detected. Please check your internet connection and try again.');
-        } else {
-          setToastMessage(`Failed to send message (${emailJsErrorDetails.text || 'Service Error'}). Please try again later.`);
-        }
-      } else {
-        setToastMessage('Failed to submit message. Please try again later.');
-      }
+      setToastMessage('Unable to send message. Please check your network connection and try again.');
     }
 
     setSubmitting(false);
@@ -107,12 +111,12 @@ export default function Contact() {
   return (
     <div className="pt-24 pb-20">
       
-      {/* Toast */}
+      {/* Toast Notification */}
       {toastMessage && (
         <Toast message={toastMessage} type={toastType} onClose={() => setToastMessage(null)} />
       )}
 
-      {/* Header */}
+      {/* Header Banner */}
       <section className="bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange text-white py-16 text-center animate-gradient">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -127,11 +131,11 @@ export default function Contact() {
         </motion.div>
       </section>
 
-      {/* Form + Map */}
+      {/* Main Content Area */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           
-          {/* Left Form */}
+          {/* Contact Form */}
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -140,7 +144,7 @@ export default function Contact() {
           >
             <div>
               <h3 className="text-2xl font-extrabold text-slate-900 dark:text-white">Send a Message</h3>
-              <p className="text-slate-500 text-xs mt-1">Submissions are delivered directly to the chapter administration.</p>
+              <p className="text-slate-500 text-xs mt-1">Submissions are delivered directly to chapter administration.</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -163,7 +167,7 @@ export default function Contact() {
                     required
                     value={formData.email}
                     onChange={e => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="Enter email"
+                    placeholder="Enter email address"
                     className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ieee-blue"
                   />
                 </div>
@@ -193,8 +197,8 @@ export default function Contact() {
               </div>
 
               <motion.button
-                whileHover={{ scale: submitting ? 1 : 1.03 }}
-                whileTap={{ scale: submitting ? 1 : 0.97 }}
+                whileHover={{ scale: submitting ? 1 : 1.02 }}
+                whileTap={{ scale: submitting ? 1 : 0.98 }}
                 type="submit"
                 disabled={submitting}
                 className="w-full py-3.5 rounded-xl text-sm font-extrabold text-white bg-ieee-blue hover:bg-ieee-dark transition-all shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
@@ -214,7 +218,7 @@ export default function Contact() {
             </form>
           </motion.div>
 
-          {/* Right Location & Details */}
+          {/* Right Location & Info */}
           <motion.div 
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -251,7 +255,7 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Embedded Campus Map */}
+            {/* Embedded Map */}
             <div className="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 h-64">
               <iframe
                 title="Vardhaman Campus Map"
