@@ -2,19 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Calendar, Users, Award, Clock, ArrowRight, Activity, 
-  Sparkles, CheckCircle2, Megaphone, ChevronRight, Shield, HeartPulse 
+  Sparkles, CheckCircle2, Megaphone, ChevronRight, Shield, HeartPulse, Info 
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { collection, getDocs, doc, getDoc, query, orderBy, limit } from 'firebase/firestore';
 import { db, DEFAULT_SITE_DATA } from '../firebase/config';
 import { resolveImage } from '../utils/resolveImage';
 import CountdownTimer from '../components/ui/CountdownTimer';
+import SpeakerModal from '../components/ui/SpeakerModal';
 
 export default function Home() {
   const [siteSettings, setSiteSettings] = useState(DEFAULT_SITE_DATA.siteSettings);
   const [featuredEvent, setFeaturedEvent] = useState(DEFAULT_SITE_DATA.events[0]);
   const [latestAnnouncement, setLatestAnnouncement] = useState(DEFAULT_SITE_DATA.announcements[0]);
   const [loading, setLoading] = useState(true);
+  const [speakerModalOpen, setSpeakerModalOpen] = useState(false);
 
   useEffect(() => {
     async function loadHomeData() {
@@ -62,8 +64,36 @@ export default function Home() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
   };
 
+  const speakerData = {
+    name: featuredEvent?.speaker || "Dr. Ajit Kumar",
+    role: featuredEvent?.speakerRole || "Associate Professor of Information Systems, XIMB (XIM University)",
+    photoUrl: resolveImage(featuredEvent?.posterUrl || '/assets/speaker.jpeg'),
+    bio: featuredEvent?.speakerBio || `Associate Professor of Information Systems at Xavier Institute of Management (XIMB), XIM University, Bhubaneswar. Obtained Ph.D. in Medical Informatics from Taipei Medical University, Taiwan, and completed a Postdoctoral Fellowship at National Central University, Taiwan. Has over 18 years of combined industry and academic experience across Health IT, Telemedicine, Electronic Medical Records (EMR) standards (SNOMED), and AI adoption frameworks in healthcare.`,
+    education: featuredEvent?.speakerEducation || [
+      "Ph.D. in Medical Informatics — Taipei Medical University, Taiwan",
+      "Postdoctoral Fellowship in HCI — Taiwan",
+      "MCA (Master of Computer Applications) — India",
+      "B.Sc. in Computer Science — India"
+    ],
+    focusAreas: featuredEvent?.speakerFocusAreas || [
+      "Digital Health & Telemedicine Architectures",
+      "Electronic Medical Records (EMR) & SNOMED Adoption",
+      "Frameworks for Adopting Artificial Intelligence in Healthcare",
+      "Academic Integrity & Health Informatics Policy"
+    ],
+    linkedin: featuredEvent?.speakerLinkedin || "https://www.linkedin.com/in/drajitkumar-ai-dt/?originalSubdomain=in",
+    university: featuredEvent?.speakerUniversity || "https://ximb.edu.in/faculty-research/faculty-profile/prof-ajit-kumar/"
+  };
+
   return (
     <div className="pt-20">
+
+      {/* Speaker Bio Modal */}
+      <SpeakerModal 
+        isOpen={speakerModalOpen}
+        onClose={() => setSpeakerModalOpen(false)}
+        speakerData={speakerData}
+      />
       
       {/* Announcement Banner Ticker */}
       {latestAnnouncement && (
@@ -185,18 +215,30 @@ export default function Home() {
                     </div>
                   )}
 
-                  <div className="pt-2 flex items-center justify-between border-t border-white/10">
+                  <div className="pt-2 flex items-center justify-between gap-2 border-t border-white/10">
                     <div className="text-xs text-slate-300">
                       <span className="font-semibold block text-slate-400">Speaker:</span>
                       <span className="font-medium text-white">{featuredEvent?.speaker}</span>
                     </div>
-                    <Link
-                      to={`/events/${featuredEvent?.id || 'digital-health-talk'}`}
-                      className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-vardhaman-orange to-amber-500 hover:shadow-lg transition flex items-center gap-1"
-                    >
-                      <span>Register Now</span>
-                      <ChevronRight className="w-4 h-4" />
-                    </Link>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setSpeakerModalOpen(true)}
+                        className="px-3 py-2 rounded-xl text-xs font-bold text-sky-300 bg-white/10 hover:bg-white/20 border border-white/15 transition flex items-center gap-1"
+                        title="About Speaker Profile"
+                      >
+                        <Info className="w-3.5 h-3.5" />
+                        <span>About Speaker</span>
+                      </button>
+
+                      <Link
+                        to={`/events/${featuredEvent?.id || 'digital-health-talk'}`}
+                        className="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-vardhaman-orange to-amber-500 hover:shadow-lg transition flex items-center gap-1"
+                      >
+                        <span>Register</span>
+                        <ChevronRight className="w-4 h-4" />
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>

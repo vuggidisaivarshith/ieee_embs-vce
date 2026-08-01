@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit2, Trash2, Calendar, Upload, Image as ImageIcon } from 'lucide-react';
+import { Plus, Edit2, Trash2, Calendar, Upload, Image as ImageIcon, User, Linkedin, BookOpen } from 'lucide-react';
 import { collection, getDocs, doc, setDoc, deleteDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { db, storage, DEFAULT_SITE_DATA } from '../../firebase/config';
@@ -48,6 +48,10 @@ export default function EventsManager() {
       time: '6:00 PM IST',
       venue: '',
       speaker: '',
+      speakerRole: '',
+      speakerBio: '',
+      speakerLinkedin: '',
+      speakerUniversity: '',
       posterUrl: '',
       registrationLink: '',
       status: 'upcoming',
@@ -148,7 +152,7 @@ export default function EventsManager() {
               <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Event Title *</label>
               <input 
                 type="text" required
-                value={currentEvent.title}
+                value={currentEvent.title || ''}
                 onChange={e => setCurrentEvent({ ...currentEvent, title: e.target.value })}
                 className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-ieee-blue"
               />
@@ -157,7 +161,7 @@ export default function EventsManager() {
               <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Topic / Category</label>
               <input 
                 type="text"
-                value={currentEvent.topic}
+                value={currentEvent.topic || ''}
                 onChange={e => setCurrentEvent({ ...currentEvent, topic: e.target.value })}
                 className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-ieee-blue"
               />
@@ -168,7 +172,7 @@ export default function EventsManager() {
             <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Description *</label>
             <textarea
               rows={3}
-              value={currentEvent.description}
+              value={currentEvent.description || ''}
               onChange={e => setCurrentEvent({ ...currentEvent, description: e.target.value })}
               className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-ieee-blue"
             ></textarea>
@@ -179,7 +183,7 @@ export default function EventsManager() {
               <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Date</label>
               <input 
                 type="date"
-                value={currentEvent.date}
+                value={currentEvent.date || ''}
                 onChange={e => setCurrentEvent({ ...currentEvent, date: e.target.value })}
                 className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium"
               />
@@ -188,7 +192,7 @@ export default function EventsManager() {
               <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Time</label>
               <input 
                 type="text"
-                value={currentEvent.time}
+                value={currentEvent.time || ''}
                 onChange={e => setCurrentEvent({ ...currentEvent, time: e.target.value })}
                 className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium"
               />
@@ -196,7 +200,7 @@ export default function EventsManager() {
             <div>
               <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Status</label>
               <select
-                value={currentEvent.status}
+                value={currentEvent.status || 'upcoming'}
                 onChange={e => setCurrentEvent({ ...currentEvent, status: e.target.value })}
                 className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium"
               >
@@ -211,19 +215,76 @@ export default function EventsManager() {
               <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Venue</label>
               <input 
                 type="text"
-                value={currentEvent.venue}
+                value={currentEvent.venue || ''}
                 onChange={e => setCurrentEvent({ ...currentEvent, venue: e.target.value })}
                 className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Speaker</label>
+              <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Speaker Name</label>
               <input 
                 type="text"
-                value={currentEvent.speaker}
+                value={currentEvent.speaker || ''}
                 onChange={e => setCurrentEvent({ ...currentEvent, speaker: e.target.value })}
+                placeholder="e.g. Dr. Ajit Kumar"
                 className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium"
               />
+            </div>
+          </div>
+
+          {/* Detailed Speaker Profile Section */}
+          <div className="p-4 rounded-2xl bg-slate-100 dark:bg-slate-700/40 border border-slate-300 dark:border-slate-600 space-y-4">
+            <h4 className="text-xs font-black uppercase tracking-wider text-ieee-blue dark:text-sky-400 flex items-center gap-1.5">
+              <User className="w-4 h-4" /> Detailed Speaker Profile (Admin Editable)
+            </h4>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1">Speaker Role / Designation</label>
+              <input 
+                type="text"
+                value={currentEvent.speakerRole || ''}
+                onChange={e => setCurrentEvent({ ...currentEvent, speakerRole: e.target.value })}
+                placeholder="e.g. Associate Professor, Information Systems, XIMB"
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-xs font-medium"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1">Speaker Biography & Research Overview</label>
+              <textarea
+                rows={3}
+                value={currentEvent.speakerBio || ''}
+                onChange={e => setCurrentEvent({ ...currentEvent, speakerBio: e.target.value })}
+                placeholder="Full biography, research focus, education background..."
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-xs font-medium"
+              ></textarea>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1 flex items-center gap-1">
+                  <Linkedin className="w-3.5 h-3.5 text-[#0A66C2]" /> LinkedIn Profile URL
+                </label>
+                <input 
+                  type="url"
+                  value={currentEvent.speakerLinkedin || ''}
+                  onChange={e => setCurrentEvent({ ...currentEvent, speakerLinkedin: e.target.value })}
+                  placeholder="https://www.linkedin.com/in/drajitkumar-ai-dt/..."
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-xs font-medium"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1 flex items-center gap-1">
+                  <BookOpen className="w-3.5 h-3.5 text-embs-purple" /> University Profile URL
+                </label>
+                <input 
+                  type="url"
+                  value={currentEvent.speakerUniversity || ''}
+                  onChange={e => setCurrentEvent({ ...currentEvent, speakerUniversity: e.target.value })}
+                  placeholder="https://ximb.edu.in/faculty-research/faculty-profile/..."
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-xs font-medium"
+                />
+              </div>
             </div>
           </div>
 
@@ -231,7 +292,7 @@ export default function EventsManager() {
             <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5">Registration Link (Google Form URL)</label>
             <input 
               type="url"
-              value={currentEvent.registrationLink}
+              value={currentEvent.registrationLink || ''}
               onChange={e => setCurrentEvent({ ...currentEvent, registrationLink: e.target.value })}
               placeholder="https://forms.gle/..."
               className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-slate-100 text-sm font-medium"
@@ -255,7 +316,7 @@ export default function EventsManager() {
             <input
               type="checkbox"
               id="featured"
-              checked={currentEvent.featured}
+              checked={currentEvent.featured || false}
               onChange={e => setCurrentEvent({ ...currentEvent, featured: e.target.checked })}
               className="w-4 h-4 rounded text-ieee-blue focus:ring-ieee-blue"
             />
@@ -290,6 +351,7 @@ export default function EventsManager() {
                 <div>
                   <h4 className="text-sm font-bold text-white">{evt.title}</h4>
                   <p className="text-xs text-slate-300">{evt.date} • <span className="capitalize font-bold text-sky-400">{evt.status}</span></p>
+                  {evt.speaker && <p className="text-[11px] text-slate-400">Speaker: {evt.speaker}</p>}
                 </div>
               </div>
               <div className="flex items-center gap-2">

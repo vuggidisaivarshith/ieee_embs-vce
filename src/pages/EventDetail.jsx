@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Calendar, Clock, MapPin, User, ArrowLeft, ExternalLink, Download, CheckCircle, Share2 } from 'lucide-react';
+import { 
+  Calendar, Clock, MapPin, User, ArrowLeft, ExternalLink, 
+  Download, CheckCircle, Share2, Info, Linkedin, BookOpen 
+} from 'lucide-react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db, DEFAULT_SITE_DATA } from '../firebase/config';
 import { resolveImage } from '../utils/resolveImage';
 import CountdownTimer from '../components/ui/CountdownTimer';
+import SpeakerModal from '../components/ui/SpeakerModal';
 
 export default function EventDetail() {
   const { id } = useParams();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [speakerModalOpen, setSpeakerModalOpen] = useState(false);
 
   useEffect(() => {
     async function loadEvent() {
@@ -50,9 +55,37 @@ export default function EventDetail() {
 
   if (!event) return null;
 
+  const speakerData = {
+    name: event.speaker || "Dr. Ajit Kumar",
+    role: event.speakerRole || "Associate Professor of Information Systems, XIMB (XIM University)",
+    photoUrl: resolveImage(event.posterUrl || '/assets/speaker.jpeg'),
+    bio: event.speakerBio || `Associate Professor of Information Systems at Xavier Institute of Management (XIMB), XIM University, Bhubaneswar. Obtained Ph.D. in Medical Informatics from Taipei Medical University, Taiwan, and completed a Postdoctoral Fellowship at National Central University, Taiwan. Has over 18 years of combined industry and academic experience across Health IT, Telemedicine, Electronic Medical Records (EMR) standards (SNOMED), and AI adoption frameworks in healthcare.`,
+    education: event.speakerEducation || [
+      "Ph.D. in Medical Informatics — Taipei Medical University, Taiwan",
+      "Postdoctoral Fellowship in HCI — Taiwan",
+      "MCA (Master of Computer Applications) — India",
+      "B.Sc. in Computer Science — India"
+    ],
+    focusAreas: event.speakerFocusAreas || [
+      "Digital Health & Telemedicine Architectures",
+      "Electronic Medical Records (EMR) & SNOMED Adoption",
+      "Frameworks for Adopting Artificial Intelligence in Healthcare",
+      "Academic Integrity & Health Informatics Policy"
+    ],
+    linkedin: event.speakerLinkedin || "https://www.linkedin.com/in/drajitkumar-ai-dt/?originalSubdomain=in",
+    university: event.speakerUniversity || "https://ximb.edu.in/faculty-research/faculty-profile/prof-ajit-kumar/"
+  };
+
   return (
     <div className="pt-24 pb-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       
+      {/* Speaker Bio Modal */}
+      <SpeakerModal 
+        isOpen={speakerModalOpen}
+        onClose={() => setSpeakerModalOpen(false)}
+        speakerData={speakerData}
+      />
+
       {/* Back Button */}
       <Link 
         to="/events"
@@ -120,13 +153,64 @@ export default function EventDetail() {
           </p>
         </div>
 
-        {/* Speaker Profile */}
+        {/* Featured Speaker Card with "About Speaker" Button & Links */}
         {event.speaker && (
-          <div className="bg-slate-50 dark:bg-slate-700/30 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 space-y-2">
-            <h4 className="text-xs font-bold text-ieee-blue uppercase tracking-wider">Featured Speaker</h4>
-            <div className="flex items-center gap-3">
-              <User className="w-6 h-6 text-embs-purple" />
-              <p className="text-lg font-bold text-slate-900 dark:text-white">{event.speaker}</p>
+          <div className="bg-gradient-to-r from-slate-50 via-slate-100 to-slate-50 dark:from-slate-800 dark:via-slate-750 dark:to-slate-800 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-700 space-y-4 shadow-md">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-ieee-blue dark:text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
+                <User className="w-4 h-4" /> Keynote Speaker Profile
+              </span>
+              
+              {/* About Speaker Button */}
+              <button
+                onClick={() => setSpeakerModalOpen(true)}
+                className="px-4 py-2 rounded-xl text-xs font-extrabold text-white bg-ieee-blue hover:bg-ieee-dark shadow-md flex items-center gap-1.5 transition transform hover:scale-105"
+              >
+                <Info className="w-4 h-4" />
+                <span>About Speaker</span>
+              </button>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
+              <img 
+                src={resolveImage(event.posterUrl || '/assets/speaker.jpeg')} 
+                alt={event.speaker}
+                onError={handleImgError}
+                className="w-20 h-20 rounded-2xl object-cover border-2 border-ieee-blue shadow-md flex-shrink-0"
+              />
+              <div className="space-y-1 text-center sm:text-left">
+                <h4 className="text-xl font-extrabold text-slate-900 dark:text-white">{event.speaker}</h4>
+                <p className="text-xs font-semibold text-ieee-blue dark:text-sky-400">{speakerData.role}</p>
+                <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2 pt-1">{speakerData.bio}</p>
+                
+                {/* External Links */}
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 pt-3">
+                  {speakerData.linkedin && (
+                    <a
+                      href={speakerData.linkedin}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0A66C2] hover:underline"
+                    >
+                      <Linkedin className="w-4 h-4" />
+                      <span>LinkedIn Profile</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  )}
+                  {speakerData.university && (
+                    <a
+                      href={speakerData.university}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-embs-purple hover:underline"
+                    >
+                      <BookOpen className="w-4 h-4" />
+                      <span>XIMB Faculty Profile</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         )}
