@@ -4,6 +4,8 @@ import { Calendar, Clock, MapPin, Search, ChevronRight, User } from 'lucide-reac
 import { motion } from 'framer-motion';
 import { collection, getDocs } from 'firebase/firestore';
 import { db, DEFAULT_SITE_DATA } from '../firebase/config';
+import { resolveImage } from '../utils/resolveImage';
+import CountdownTimer from '../components/ui/CountdownTimer';
 import Skeleton from '../components/ui/Skeleton';
 
 export default function Events() {
@@ -31,7 +33,7 @@ export default function Events() {
 
   const handleImgError = (e) => {
     e.currentTarget.onerror = null;
-    e.currentTarget.src = "/assets/embs-logo.png";
+    e.currentTarget.src = resolveImage('/assets/embs-logo.png');
   };
 
   const filteredEvents = events.filter(e => {
@@ -128,7 +130,7 @@ export default function Events() {
                 {/* Poster Image */}
                 <div className="relative h-48 overflow-hidden bg-slate-900">
                   <img 
-                    src={event.posterUrl || "/assets/embs-logo.png"} 
+                    src={resolveImage(event.posterUrl || '/assets/embs-logo.png')} 
                     alt={event.title}
                     onError={handleImgError}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
@@ -155,6 +157,13 @@ export default function Events() {
                       {event.description}
                     </p>
                   </div>
+
+                  {/* Countdown Timer for Upcoming Events */}
+                  {event.status === 'upcoming' && event.date && (
+                    <div className="pt-2">
+                      <CountdownTimer targetDate={event.date} eventTitle={event.title} />
+                    </div>
+                  )}
 
                   {/* Metadata */}
                   <div className="space-y-2 text-xs text-slate-500 dark:text-slate-400 pt-3 border-t border-slate-100 dark:border-slate-700">

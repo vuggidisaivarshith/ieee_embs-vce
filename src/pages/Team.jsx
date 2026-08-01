@@ -3,6 +3,7 @@ import { Linkedin, Mail, Phone, UserCheck, Shield, GraduationCap } from 'lucide-
 import { motion } from 'framer-motion';
 import { collection, getDocs } from 'firebase/firestore';
 import { db, DEFAULT_SITE_DATA } from '../firebase/config';
+import { resolveImage } from '../utils/resolveImage';
 import Skeleton from '../components/ui/Skeleton';
 
 export default function Team() {
@@ -29,7 +30,7 @@ export default function Team() {
 
   const handleImgError = (e) => {
     e.currentTarget.onerror = null;
-    e.currentTarget.src = "/assets/embs-logo.png";
+    e.currentTarget.src = resolveImage('/assets/embs-logo.png');
   };
 
   const facultyMembers = team.filter(m => m.category === 'faculty');
@@ -76,7 +77,7 @@ export default function Team() {
               {facultyMembers.map(member => (
                 <div key={member.id} className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 text-center space-y-4 hover:-translate-y-1 hover:border-ieee-blue hover:shadow-2xl transition-all duration-200">
                   <img 
-                    src={member.photoUrl || "/assets/faculty.jpeg"} 
+                    src={resolveImage(member.photoUrl || member.id)} 
                     alt={member.name}
                     onError={handleImgError}
                     className="w-32 h-32 rounded-3xl object-cover border-4 border-ieee-blue mx-auto shadow-lg"
@@ -136,10 +137,10 @@ export default function Team() {
               >
                 <div className="relative w-28 h-28 mx-auto">
                   <img 
-                    src={member.photoUrl || "/assets/embs-logo.png"} 
+                    src={resolveImage(member.photoUrl || member.id)} 
                     alt={member.name}
                     onError={handleImgError}
-                    className="w-full h-full rounded-2xl object-cover border-2 border-slate-200 dark:border-slate-700 group-hover:border-ieee-blue group-hover:scale-105 transition-all duration-300"
+                    className="w-full h-full rounded-2xl object-cover border-2 border-slate-200 dark:border-slate-700 group-hover:border-ieee-blue group-hover:scale-105 transition-all duration-300 shadow-md"
                   />
                 </div>
 

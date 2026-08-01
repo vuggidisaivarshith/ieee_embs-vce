@@ -3,6 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import { Calendar, Clock, MapPin, User, ArrowLeft, ExternalLink, Download, CheckCircle, Share2 } from 'lucide-react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db, DEFAULT_SITE_DATA } from '../firebase/config';
+import { resolveImage } from '../utils/resolveImage';
+import CountdownTimer from '../components/ui/CountdownTimer';
 
 export default function EventDetail() {
   const { id } = useParams();
@@ -32,6 +34,11 @@ export default function EventDetail() {
     }
     loadEvent();
   }, [id]);
+
+  const handleImgError = (e) => {
+    e.currentTarget.onerror = null;
+    e.currentTarget.src = resolveImage('/assets/embs-logo.png');
+  };
 
   if (loading) {
     return (
@@ -86,12 +93,20 @@ export default function EventDetail() {
                 </div>
               )}
             </div>
+
+            {/* Countdown Timer for Upcoming Events */}
+            {event.date && (
+              <div className="pt-3 max-w-sm">
+                <CountdownTimer targetDate={event.date} eventTitle={event.title} />
+              </div>
+            )}
           </div>
 
           <div className="md:col-span-5">
             <img 
-              src={event.posterUrl || "/assets/speaker.jpeg"} 
+              src={resolveImage(event.posterUrl || '/assets/speaker.jpeg')} 
               alt={event.title}
+              onError={handleImgError}
               className="w-full h-64 object-cover rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700" 
             />
           </div>
@@ -142,7 +157,7 @@ export default function EventDetail() {
               href={event.registrationLink}
               target="_blank"
               rel="noreferrer"
-              className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange shadow-lg hover:shadow-xl transition flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange shadow-lg hover:shadow-xl transition flex items-center justify-center gap-2 transform hover:scale-105"
             >
               <span>Register via Google Form</span>
               <ExternalLink className="w-4 h-4" />

@@ -7,6 +7,8 @@ import {
 import { motion } from 'framer-motion';
 import { collection, getDocs, doc, getDoc, query, orderBy, limit } from 'firebase/firestore';
 import { db, DEFAULT_SITE_DATA } from '../firebase/config';
+import { resolveImage } from '../utils/resolveImage';
+import CountdownTimer from '../components/ui/CountdownTimer';
 
 export default function Home() {
   const [siteSettings, setSiteSettings] = useState(DEFAULT_SITE_DATA.siteSettings);
@@ -44,7 +46,7 @@ export default function Home() {
 
   const handleImgError = (e) => {
     e.currentTarget.onerror = null;
-    e.currentTarget.src = "/assets/embs-logo.png";
+    e.currentTarget.src = resolveImage('/assets/embs-logo.png');
   };
 
   const containerVariants = {
@@ -150,7 +152,8 @@ export default function Home() {
             {/* Right Featured Event Highlight Card */}
             <motion.div variants={itemVariants} className="lg:col-span-5">
               <div className="relative group rounded-3xl p-1 bg-gradient-to-b from-sky-500/30 via-purple-500/20 to-orange-500/30 shadow-2xl hover-card-lift">
-                <div className="bg-slate-900/90 backdrop-blur-xl rounded-[22px] p-6 border border-white/10 space-y-5">
+                <div className="bg-slate-900/90 backdrop-blur-xl rounded-[22px] p-6 border border-white/10 space-y-4">
+                  
                   <div className="flex items-center justify-between">
                     <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase tracking-wider flex items-center gap-1.5">
                       <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Featured Session
@@ -162,7 +165,7 @@ export default function Home() {
 
                   <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-800 border border-white/10">
                     <img 
-                      src={featuredEvent?.posterUrl || "/assets/speaker.jpeg"} 
+                      src={resolveImage(featuredEvent?.posterUrl || '/assets/speaker.jpeg')} 
                       alt={featuredEvent?.title}
                       onError={handleImgError}
                       className="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
@@ -174,6 +177,13 @@ export default function Home() {
                     <h3 className="text-xl font-bold text-white mt-1 line-clamp-2">{featuredEvent?.title}</h3>
                     <p className="text-slate-400 text-xs mt-2 line-clamp-2 leading-relaxed">{featuredEvent?.description}</p>
                   </div>
+
+                  {/* Live Countdown Timer */}
+                  {featuredEvent?.date && (
+                    <div className="pt-2 border-t border-white/10">
+                      <CountdownTimer targetDate={featuredEvent.date} eventTitle={featuredEvent.title} />
+                    </div>
+                  )}
 
                   <div className="pt-2 flex items-center justify-between border-t border-white/10">
                     <div className="text-xs text-slate-300">
@@ -251,7 +261,7 @@ export default function Home() {
               <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 relative hover-card-lift">
                 <div className="flex items-center gap-4 mb-6">
                   <img 
-                    src={siteSettings.facultyPhoto || "/assets/faculty.jpeg"} 
+                    src={resolveImage(siteSettings.facultyPhoto || '/assets/faculty.jpeg')} 
                     alt={siteSettings.facultyName} 
                     onError={handleImgError}
                     className="w-16 h-16 rounded-2xl object-cover border-2 border-ieee-blue shadow-md"
