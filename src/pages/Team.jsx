@@ -80,7 +80,7 @@ export default function Team() {
                     src={resolveImage(member.photoUrl || member.id)} 
                     alt={member.name}
                     onError={handleImgError}
-                    className="w-36 h-36 rounded-3xl object-cover object-top border-4 border-ieee-blue mx-auto shadow-lg"
+                    className="w-36 sm:w-40 aspect-[3/4] rounded-3xl object-cover object-top border-4 border-ieee-blue mx-auto shadow-lg"
                   />
                   <div>
                     <h3 className="text-xl font-bold text-slate-900 dark:text-white">{member.name}</h3>
@@ -133,21 +133,23 @@ export default function Team() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: idx * 0.08 }}
-                className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-lg border border-slate-200 dark:border-slate-700 text-center space-y-4 hover:-translate-y-1 hover:border-ieee-blue hover:shadow-2xl transition-all duration-200 group"
+                className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-lg border border-slate-200 dark:border-slate-700 text-center space-y-4 hover:-translate-y-1 hover:border-ieee-blue hover:shadow-2xl transition-all duration-200 group flex flex-col justify-between"
               >
-                <div className="relative w-32 h-36 mx-auto">
-                  <img 
-                    src={resolveImage(member.photoUrl || member.id)} 
-                    alt={member.name}
-                    onError={handleImgError}
-                    className="w-full h-full rounded-2xl object-cover object-top border-2 border-slate-200 dark:border-slate-700 group-hover:border-ieee-blue group-hover:scale-105 transition-all duration-300 shadow-md"
-                  />
-                </div>
+                <div className="space-y-4">
+                  <div className="relative w-32 sm:w-36 aspect-[3/4] mx-auto overflow-hidden rounded-2xl border-2 border-slate-200 dark:border-slate-700 group-hover:border-ieee-blue transition-all duration-300 shadow-md">
+                    <img 
+                      src={resolveImage(member.photoUrl || member.id)} 
+                      alt={member.name}
+                      onError={handleImgError}
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-all duration-300"
+                    />
+                  </div>
 
-                <div>
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-ieee-blue transition-colors">{member.name}</h3>
-                  <p className="text-xs font-bold text-ieee-blue dark:text-sky-400">{member.role}</p>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">{member.department} • {member.year}</p>
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-ieee-blue transition-colors">{member.name}</h3>
+                    <p className="text-xs font-bold text-ieee-blue dark:text-sky-400">{member.role}</p>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">{member.department} • {member.year}</p>
+                  </div>
                 </div>
 
                 <div className="pt-3 flex justify-center gap-2 border-t border-slate-100 dark:border-slate-700">
