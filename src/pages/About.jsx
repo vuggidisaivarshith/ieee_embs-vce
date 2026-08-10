@@ -73,7 +73,7 @@ export default function About() {
               src={siteSettings.facultyPhoto || "/assets/faculty.jpeg"} 
               alt={siteSettings.facultyName}
               onError={handleImgError}
-              className="w-40 h-40 sm:w-48 sm:h-48 rounded-3xl object-cover border-4 border-ieee-blue shadow-xl flex-shrink-0"
+              className="w-40 h-40 sm:w-48 sm:h-48 rounded-3xl object-cover object-top border-4 border-ieee-blue shadow-xl flex-shrink-0"
             />
             <div className="space-y-4 text-center md:text-left">
               <span className="px-3.5 py-1 rounded-full text-xs font-bold bg-ieee-blue/10 text-ieee-blue dark:bg-ieee-blue/20 dark:text-sky-400 uppercase tracking-wider">

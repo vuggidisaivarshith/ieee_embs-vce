@@ -80,7 +80,7 @@ export default function Team() {
                     src={resolveImage(member.photoUrl || member.id)} 
                     alt={member.name}
                     onError={handleImgError}
-                    className="w-32 h-32 rounded-3xl object-cover border-4 border-ieee-blue mx-auto shadow-lg"
+                    className="w-36 h-36 rounded-3xl object-cover object-top border-4 border-ieee-blue mx-auto shadow-lg"
                   />
                   <div>
                     <h3 className="text-xl font-bold text-slate-900 dark:text-white">{member.name}</h3>
@@ -135,12 +135,12 @@ export default function Team() {
                 transition={{ duration: 0.4, delay: idx * 0.08 }}
                 className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-lg border border-slate-200 dark:border-slate-700 text-center space-y-4 hover:-translate-y-1 hover:border-ieee-blue hover:shadow-2xl transition-all duration-200 group"
               >
-                <div className="relative w-28 h-28 mx-auto">
+                <div className="relative w-32 h-36 mx-auto">
                   <img 
                     src={resolveImage(member.photoUrl || member.id)} 
                     alt={member.name}
                     onError={handleImgError}
-                    className="w-full h-full rounded-2xl object-cover border-2 border-slate-200 dark:border-slate-700 group-hover:border-ieee-blue group-hover:scale-105 transition-all duration-300 shadow-md"
+                    className="w-full h-full rounded-2xl object-cover object-top border-2 border-slate-200 dark:border-slate-700 group-hover:border-ieee-blue group-hover:scale-105 transition-all duration-300 shadow-md"
                   />
                 </div>
 
