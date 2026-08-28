@@ -5,6 +5,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db, DEFAULT_SITE_DATA } from '../firebase/config';
 import { resolveImage } from '../utils/resolveImage';
 import Lightbox from '../components/ui/Lightbox';
+import { eventSlide1, eventSlide2, eventSlide3 } from '../assets/images';
 
 export default function Gallery() {
   const [albums, setAlbums] = useState(DEFAULT_SITE_DATA.gallery);
@@ -18,7 +19,17 @@ export default function Gallery() {
         const snap = await getDocs(collection(db, 'gallery'));
         if (!snap.empty) {
           const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-          setAlbums(list);
+          // Ensure default albums (including 13 Aug Expert Talk screenshots) are always preserved
+          const merged = [...DEFAULT_SITE_DATA.gallery];
+          list.forEach(dbItem => {
+            const existingIdx = merged.findIndex(m => m.id === dbItem.id);
+            if (existingIdx >= 0) {
+              merged[existingIdx] = { ...merged[existingIdx], ...dbItem };
+            } else {
+              merged.push(dbItem);
+            }
+          });
+          setAlbums(merged);
         }
       } catch (err) {
         console.log("Using default gallery album data");
