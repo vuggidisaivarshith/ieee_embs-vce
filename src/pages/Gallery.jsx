@@ -3,6 +3,7 @@ import { Image as ImageIcon, Maximize2, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { collection, getDocs } from 'firebase/firestore';
 import { db, DEFAULT_SITE_DATA } from '../firebase/config';
+import { resolveImage } from '../utils/resolveImage';
 import Lightbox from '../components/ui/Lightbox';
 
 export default function Gallery() {
@@ -28,7 +29,7 @@ export default function Gallery() {
 
   const handleImgError = (e) => {
     e.currentTarget.onerror = null;
-    e.currentTarget.src = "/assets/embs-logo.png";
+    e.currentTarget.src = resolveImage('/assets/embs-logo.png');
   };
 
   const allImages = albums.flatMap(album => album.images || []);
@@ -54,7 +55,7 @@ export default function Gallery() {
         >
           <h1 className="text-3xl sm:text-5xl font-extrabold">Photo Gallery & Memories</h1>
           <p className="text-slate-200 text-base sm:text-lg max-w-2xl mx-auto">
-            Browse through photo highlights from our workshops, guest lectures, paper presentations, and chapter gatherings.
+            Browse through photo highlights from our workshops, expert seminars, guest lectures, and chapter gatherings.
           </p>
         </motion.div>
       </section>
@@ -110,7 +111,7 @@ export default function Gallery() {
                 className="group relative h-64 rounded-2xl overflow-hidden cursor-pointer bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-ieee-blue hover:-translate-y-1 hover:shadow-xl transition-all duration-200"
               >
                 <img 
-                  src={img.url || img.imageUrl} 
+                  src={resolveImage(img.url || img.imageUrl)} 
                   alt={img.caption || "Gallery Photo"}
                   onError={handleImgError}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 

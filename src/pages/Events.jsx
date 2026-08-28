@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Clock, MapPin, Search, ChevronRight, User } from 'lucide-react';
+import { Calendar, Clock, MapPin, Search, ChevronRight, User, Image as ImageIcon, Info } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { collection, getDocs } from 'firebase/firestore';
 import { db, DEFAULT_SITE_DATA } from '../firebase/config';
@@ -56,7 +56,7 @@ export default function Events() {
         >
           <h1 className="text-3xl sm:text-5xl font-extrabold">Events & Activities</h1>
           <p className="text-slate-200 text-base sm:text-lg max-w-2xl mx-auto">
-            Explore upcoming workshops, expert seminars, guest lectures, and student hackathons hosted by IEEE EMBS Vardhaman.
+            Explore workshops, expert seminars, guest lectures, and student hackathons hosted by IEEE EMBS Vardhaman.
           </p>
         </motion.div>
       </section>
@@ -140,7 +140,7 @@ export default function Events() {
                       ? 'bg-emerald-500 text-white shadow-md' 
                       : 'bg-slate-900/80 text-slate-300 border border-white/20'
                   }`}>
-                    {event.status}
+                    {event.status === 'past' ? 'Completed' : event.status}
                   </span>
                 </div>
 
@@ -185,17 +185,23 @@ export default function Events() {
                     )}
                   </div>
 
-                  {/* Action Link */}
-                  <div className="pt-2">
-                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                      <Link
-                        to={`/events/${event.id}`}
-                        className="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-center text-white bg-ieee-blue hover:bg-ieee-dark shadow-md flex items-center justify-center gap-1.5 transition-all"
-                      >
-                        <span>View Details & Register</span>
-                        <ChevronRight className="w-4 h-4" />
-                      </Link>
-                    </motion.div>
+                  {/* Separated Action Buttons (Details & Event Gallery) */}
+                  <div className="pt-2 flex items-center gap-2">
+                    <Link
+                      to={`/events/${event.id}`}
+                      className="flex-1 py-2.5 px-3 rounded-xl text-xs font-extrabold text-center text-white bg-ieee-blue hover:bg-ieee-dark shadow-md flex items-center justify-center gap-1.5 transition-all"
+                    >
+                      <Info className="w-3.5 h-3.5" />
+                      <span>Details</span>
+                    </Link>
+
+                    <Link
+                      to="/gallery"
+                      className="flex-1 py-2.5 px-3 rounded-xl text-xs font-extrabold text-center text-slate-800 dark:text-slate-100 bg-slate-100 dark:bg-slate-700 hover:bg-embs-purple hover:text-white dark:hover:bg-embs-purple border border-slate-300 dark:border-slate-600 shadow-md flex items-center justify-center gap-1.5 transition-all"
+                    >
+                      <ImageIcon className="w-3.5 h-3.5" />
+                      <span>Event Gallery</span>
+                    </Link>
                   </div>
                 </div>
 

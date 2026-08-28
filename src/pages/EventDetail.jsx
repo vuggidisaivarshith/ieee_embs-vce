@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
   Calendar, Clock, MapPin, User, ArrowLeft, ExternalLink, 
-  Download, CheckCircle, Share2, Info, Linkedin, BookOpen 
+  Download, CheckCircle, Share2, Info, Linkedin, BookOpen, Image as ImageIcon 
 } from 'lucide-react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db, DEFAULT_SITE_DATA } from '../firebase/config';
 import { resolveImage } from '../utils/resolveImage';
-import CountdownTimer from '../components/ui/CountdownTimer';
+import EventCarousel from '../components/ui/EventCarousel';
 import SpeakerModal from '../components/ui/SpeakerModal';
+import { eventSlide1, eventSlide2, eventSlide3 } from '../assets/images';
 
 export default function EventDetail() {
   const { id } = useParams();
@@ -76,6 +77,14 @@ export default function EventDetail() {
     university: event.speakerUniversity || "https://ximb.edu.in/faculty-research/faculty-profile/prof-ajit-kumar/"
   };
 
+  const eventSlides = [
+    { url: eventSlide1, caption: "Dr. Ajit Kumar delivering expert keynote session on Digital Health & Telemedicine" },
+    { url: eventSlide2, caption: "Interactive presentation on Telemedicine & Healthcare AI Architectures" },
+    { url: eventSlide3, caption: "IEEE EMBS student interactive Q&A and felicitation" }
+  ];
+
+  const isPastEvent = event.status === 'past' || new Date(event.date) < new Date();
+
   return (
     <div className="pt-24 pb-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       
@@ -126,13 +135,6 @@ export default function EventDetail() {
                 </div>
               )}
             </div>
-
-            {/* Countdown Timer for Upcoming Events */}
-            {event.date && (
-              <div className="pt-3 max-w-sm">
-                <CountdownTimer targetDate={event.date} eventTitle={event.title} />
-              </div>
-            )}
           </div>
 
           <div className="md:col-span-5">
@@ -143,6 +145,12 @@ export default function EventDetail() {
               className="w-full h-64 object-cover rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700" 
             />
           </div>
+        </div>
+
+        {/* Cinematic Screenshots Banner Carousel */}
+        <div className="pt-4 border-t border-slate-100 dark:border-slate-700">
+          <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">Session Gallery Highlights</h3>
+          <EventCarousel slides={eventSlides} title={event.title} />
         </div>
 
         {/* Description */}
@@ -230,24 +238,35 @@ export default function EventDetail() {
           </div>
         )}
 
-        {/* Registration CTA */}
-        {event.registrationLink && (
-          <div className="pt-6 border-t border-slate-100 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div>
-              <p className="text-sm font-bold text-slate-900 dark:text-white">Ready to Participate?</p>
-              <p className="text-xs text-slate-500">Secure your spot for this session today.</p>
-            </div>
-            <a
-              href={event.registrationLink}
-              target="_blank"
-              rel="noreferrer"
-              className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange shadow-lg hover:shadow-xl transition flex items-center justify-center gap-2 transform hover:scale-105"
-            >
-              <span>Register via Google Form</span>
-              <ExternalLink className="w-4 h-4" />
-            </a>
+        {/* Separated Action Buttons (Event Gallery & About Speaker) - No Register button for completed event */}
+        <div className="pt-6 border-t border-slate-100 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <p className="text-sm font-bold text-slate-900 dark:text-white">
+              {isPastEvent ? "Session Completed on 13 Aug 2026" : "Ready to Participate?"}
+            </p>
+            <p className="text-xs text-slate-500">
+              {isPastEvent ? "Explore event session screenshots and speaker details." : "Secure your spot for this session today."}
+            </p>
           </div>
-        )}
+
+          <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+            <button
+              onClick={() => setSpeakerModalOpen(true)}
+              className="flex-1 sm:flex-initial px-5 py-3 rounded-xl text-xs font-extrabold text-slate-800 dark:text-slate-100 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 border border-slate-300 dark:border-slate-600 shadow-md flex items-center justify-center gap-1.5 transition"
+            >
+              <Info className="w-4 h-4 text-ieee-blue" />
+              <span>About Speaker</span>
+            </button>
+
+            <Link
+              to="/gallery"
+              className="flex-1 sm:flex-initial px-6 py-3 rounded-xl text-xs font-extrabold text-white bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange shadow-lg hover:shadow-xl transition flex items-center justify-center gap-2 transform hover:scale-105"
+            >
+              <ImageIcon className="w-4 h-4" />
+              <span>Event Gallery</span>
+            </Link>
+          </div>
+        </div>
 
       </div>
 
