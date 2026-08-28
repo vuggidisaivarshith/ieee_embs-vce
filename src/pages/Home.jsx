@@ -8,8 +8,9 @@ import { motion } from 'framer-motion';
 import { collection, getDocs, doc, getDoc, query, orderBy, limit } from 'firebase/firestore';
 import { db, DEFAULT_SITE_DATA } from '../firebase/config';
 import { resolveImage } from '../utils/resolveImage';
-import CountdownTimer from '../components/ui/CountdownTimer';
+import EventCarousel from '../components/ui/EventCarousel';
 import SpeakerModal from '../components/ui/SpeakerModal';
+import { eventSlide1, eventSlide2, eventSlide3 } from '../assets/images';
 
 export default function Home() {
   const [siteSettings, setSiteSettings] = useState(DEFAULT_SITE_DATA.siteSettings);
@@ -85,6 +86,12 @@ export default function Home() {
     university: featuredEvent?.speakerUniversity || "https://ximb.edu.in/faculty-research/faculty-profile/prof-ajit-kumar/"
   };
 
+  const eventSlides = [
+    { url: eventSlide1, caption: "Dr. Ajit Kumar presenting Digital Health & Telemedicine (13 Aug 2026)" },
+    { url: eventSlide2, caption: "Telemedicine Architectures & Healthcare AI Discussion" },
+    { url: eventSlide3, caption: "IEEE EMBS Student Chapter felicitation & Q&A session" }
+  ];
+
   return (
     <div className="pt-20">
 
@@ -94,8 +101,8 @@ export default function Home() {
         onClose={() => setSpeakerModalOpen(false)}
         speakerData={speakerData}
       />
-      
-      {/* Announcement Banner Ticker */}
+
+      {/* Post-Event Ticker Banner */}
       {latestAnnouncement && (
         <motion.div 
           initial={{ opacity: 0, y: -10 }}
@@ -105,12 +112,12 @@ export default function Home() {
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-2 overflow-hidden">
               <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5 flex-shrink-0">
-                <Megaphone className="w-3.5 h-3.5" /> Announcement
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-300" /> Event Summary
               </span>
               <p className="truncate font-semibold">{latestAnnouncement.title}</p>
             </div>
-            <Link to="/announcements" className="hidden sm:flex items-center gap-1 font-bold underline hover:opacity-90 transition whitespace-nowrap ml-4">
-              View All <ChevronRight className="w-4 h-4" />
+            <Link to="/gallery" className="hidden sm:flex items-center gap-1 font-bold underline hover:opacity-90 transition whitespace-nowrap ml-4">
+              View Event Gallery <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
         </motion.div>
@@ -179,63 +186,41 @@ export default function Home() {
 
             </motion.div>
 
-            {/* Right Featured Event Highlight Card */}
+            {/* Right Featured Event Sliding Banner (3 Screenshots Carousel) */}
             <motion.div variants={itemVariants} className="lg:col-span-5">
               <div className="relative group rounded-3xl p-1 bg-gradient-to-b from-sky-500/30 via-purple-500/20 to-orange-500/30 shadow-2xl hover-card-lift">
                 <div className="bg-slate-900/90 backdrop-blur-xl rounded-[22px] p-6 border border-white/10 space-y-4">
                   
-                  <div className="flex items-center justify-between">
-                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase tracking-wider flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Featured Session
-                    </span>
-                    <span className="text-xs text-slate-400 flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5" /> {featuredEvent?.date}
-                    </span>
-                  </div>
-
-                  <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-800 border border-white/10">
-                    <img 
-                      src={resolveImage(featuredEvent?.posterUrl || '/assets/speaker.jpeg')} 
-                      alt={featuredEvent?.title}
-                      onError={handleImgError}
-                      className="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
-                    />
-                  </div>
-
+                  {/* Event Title & Topic Header */}
                   <div>
-                    <span className="text-xs font-bold text-sky-400 uppercase tracking-wider">{featuredEvent?.topic}</span>
+                    <span className="text-xs font-bold text-sky-400 uppercase tracking-wider">{featuredEvent?.topic || 'Biomedical Engineering & AI'}</span>
                     <h3 className="text-xl font-bold text-white mt-1 line-clamp-2">{featuredEvent?.title}</h3>
-                    <p className="text-slate-400 text-xs mt-2 line-clamp-2 leading-relaxed">{featuredEvent?.description}</p>
                   </div>
 
-                  {/* Live Countdown Timer */}
-                  {featuredEvent?.date && (
-                    <div className="pt-2 border-t border-white/10">
-                      <CountdownTimer targetDate={featuredEvent.date} eventTitle={featuredEvent.title} />
-                    </div>
-                  )}
+                  {/* Interactive Sliding Screenshots Banner */}
+                  <EventCarousel slides={eventSlides} title={featuredEvent?.title} />
 
                   <div className="pt-2 flex items-center justify-between gap-2 border-t border-white/10">
                     <div className="text-xs text-slate-300">
                       <span className="font-semibold block text-slate-400">Speaker:</span>
-                      <span className="font-medium text-white">{featuredEvent?.speaker}</span>
+                      <span className="font-medium text-white">{featuredEvent?.speaker || 'Dr. Ajit Kumar'}</span>
                     </div>
 
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => setSpeakerModalOpen(true)}
-                        className="px-3 py-2 rounded-xl text-xs font-bold text-sky-300 bg-white/10 hover:bg-white/20 border border-white/15 transition flex items-center gap-1"
+                        className="px-3.5 py-2 rounded-xl text-xs font-bold text-sky-300 bg-white/10 hover:bg-white/20 border border-white/15 transition flex items-center gap-1.5"
                         title="About Speaker Profile"
                       >
-                        <Info className="w-3.5 h-3.5" />
+                        <Info className="w-4 h-4" />
                         <span>About Speaker</span>
                       </button>
 
                       <Link
                         to={`/events/${featuredEvent?.id || 'digital-health-talk'}`}
-                        className="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-vardhaman-orange to-amber-500 hover:shadow-lg transition flex items-center gap-1"
+                        className="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-ieee-blue hover:bg-ieee-dark transition flex items-center gap-1"
                       >
-                        <span>Register</span>
+                        <span>Details</span>
                         <ChevronRight className="w-4 h-4" />
                       </Link>
                     </div>

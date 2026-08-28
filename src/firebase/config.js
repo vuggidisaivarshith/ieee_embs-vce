@@ -12,7 +12,10 @@ import {
   vicePhoto,
   treasurerPhoto,
   speakerPhoto,
-  webmasterPhoto
+  webmasterPhoto,
+  eventSlide1,
+  eventSlide2,
+  eventSlide3
 } from '../assets/images';
 
 const firebaseConfig = {
@@ -68,7 +71,7 @@ export const DEFAULT_SITE_DATA = {
     instagram: "https://www.instagram.com/ieee_embs_vce",
     linkedin: "https://www.linkedin.com/in/vuggidisaivarshith/",
     membersCount: 85,
-    eventsCount: 12,
+    eventsCount: 13,
     yearsActive: 3,
     awardsCount: 5
   },
@@ -151,7 +154,7 @@ export const DEFAULT_SITE_DATA = {
       id: "digital-health-talk",
       title: "Expert Talk: Digital Health & Telemedicine",
       topic: "Biomedical Engineering & AI",
-      description: "Join us for an enlightening expert talk on Digital Health, Telemedicine, and Remote Patient Monitoring. Explore how AI and modern sensors are revolutionizing healthcare delivery.",
+      description: "Successfully conducted expert session on Digital Health, Telemedicine, and Remote Patient Monitoring led by Dr. Ajit Kumar (XIMB). Explored AI, biological sensors, and healthcare innovation.",
       date: "2026-08-13",
       time: "6:00 PM IST",
       venue: "Online (Google Meet)",
@@ -173,9 +176,10 @@ export const DEFAULT_SITE_DATA = {
       ],
       speakerLinkedin: "https://www.linkedin.com/in/drajitkumar-ai-dt/?originalSubdomain=in",
       speakerUniversity: "https://ximb.edu.in/faculty-research/faculty-profile/prof-ajit-kumar/",
-      posterUrl: speakerPhoto,
-      registrationLink: "https://forms.gle/FPtQfzauCd6PeaTQ8",
-      status: "upcoming",
+      posterUrl: eventSlide1,
+      screenshots: [eventSlide1, eventSlide2, eventSlide3],
+      registrationLink: "",
+      status: "past",
       featured: true,
       agenda: [
         "18:00 - Introduction & Welcome",
@@ -212,11 +216,11 @@ export const DEFAULT_SITE_DATA = {
   announcements: [
     {
       id: "ann-1",
-      title: "Registrations Open for Digital Health Expert Talk",
-      body: "IEEE EMBS Vardhaman invites all students to register for the upcoming expert session on Telemedicine and Digital Health Systems.",
-      date: "2026-07-28",
+      title: "Expert Talk on Digital Health & Telemedicine Completed Successfully",
+      body: "IEEE EMBS Vardhaman extends sincere gratitude to Dr. Ajit Kumar (XIMB) for an inspiring expert session on August 13, 2026.",
+      date: "2026-08-14",
       isPinned: true,
-      imageUrl: speakerPhoto
+      imageUrl: eventSlide1
     },
     {
       id: "ann-2",
@@ -266,6 +270,16 @@ export const DEFAULT_SITE_DATA = {
   ],
 
   gallery: [
+    {
+      id: "album-2",
+      title: "Expert Talk on Digital Health & Telemedicine (13 Aug 2026)",
+      date: "2026-08-13",
+      images: [
+        { id: "img-s1", url: eventSlide1, caption: "Dr. Ajit Kumar delivering expert talk on Digital Health" },
+        { id: "img-s2", url: eventSlide2, caption: "Interactive session on Telemedicine Architectures" },
+        { id: "img-s3", url: eventSlide3, caption: "Participant Q&A and IEEE EMBS vote of thanks" }
+      ]
+    },
     {
       id: "album-1",
       title: "Biomedical Signal Processing Workshop 2024",

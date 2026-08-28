@@ -8,7 +8,10 @@ import {
   vicePhoto,
   treasurerPhoto,
   speakerPhoto,
-  webmasterPhoto
+  webmasterPhoto,
+  eventSlide1,
+  eventSlide2,
+  eventSlide3
 } from '../assets/images';
 
 export function resolveImage(url, defaultFallback = embsLogo) {
@@ -16,6 +19,9 @@ export function resolveImage(url, defaultFallback = embsLogo) {
 
   const urlStr = String(url).toLowerCase();
 
+  if (urlStr.includes('slide-1') || urlStr.includes('screenshot 2026-08-13 1')) return eventSlide1;
+  if (urlStr.includes('slide-2') || urlStr.includes('screenshot 2026-08-13 2')) return eventSlide2;
+  if (urlStr.includes('slide-3') || urlStr.includes('screenshot 2026-08-13 3')) return eventSlide3;
   if (urlStr.includes('secretary')) return secretaryPhoto;
   if (urlStr.includes('faculty')) return facultyPhoto;
   if (urlStr.includes('chair') && !urlStr.includes('vice')) return chairPhoto;
