@@ -108,9 +108,9 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className={`hidden lg:flex items-center gap-1 p-1 rounded-2xl border backdrop-blur-md ${
-            isDarkWorld 
-              ? 'bg-slate-900/60 border-white/10' 
+          <nav className={`hidden lg:flex items-center gap-0.5 p-1.5 rounded-2xl border backdrop-blur-md ${
+            isDarkWorld
+              ? 'bg-slate-900/60 border-white/10'
               : 'bg-slate-50/80 border-slate-200/80 shadow-sm'
           }`}>
             {navLinks.map((link) => {
@@ -119,24 +119,38 @@ export default function Navbar() {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`relative px-2.5 xl:px-3 py-1.5 rounded-xl text-[11px] xl:text-xs font-semibold transition-all duration-200 flex items-center gap-1.5 whitespace-nowrap group ${
+                  className={`relative px-2.5 xl:px-3 py-1.5 rounded-xl text-[11px] xl:text-xs font-semibold transition-colors duration-200 flex items-center gap-1.5 whitespace-nowrap group ${
                     active
-                      ? isDarkWorld 
-                        ? 'text-white font-bold bg-white/10 shadow-sm' 
-                        : 'text-slate-900 font-bold bg-white shadow-sm border border-slate-200/80'
-                      : isDarkWorld 
-                        ? 'text-slate-300 hover:text-white hover:bg-white/5' 
-                        : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+                      ? isDarkWorld
+                        ? 'text-white font-bold'
+                        : 'text-slate-900 font-bold'
+                      : isDarkWorld
+                        ? 'text-slate-300 hover:text-white'
+                        : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
-                  {/* Small Biological Indicator Dot */}
-                  <span className={`w-1.5 h-1.5 rounded-full transition-transform duration-200 ${link.dotColor} ${
-                    active ? 'scale-125' : 'opacity-40 group-hover:opacity-80'
-                  }`}></span>
-                  
-                  <span>{link.name}</span>
+                  {/* Active pill background — shared spring morph */}
+                  {active && (
+                    <motion.span
+                      layoutId="navActivePill"
+                      className={`absolute inset-0 rounded-xl ${isDarkWorld ? 'bg-white/12' : 'bg-white shadow-sm border border-slate-200/80'}`}
+                      transition={{ type: "spring", stiffness: 400, damping: 38 }}
+                    />
+                  )}
 
-                  {/* Animated Subtle Underline Indicator on Active Tab */}
+                  {/* Hover bloom (non-active) */}
+                  {!active && (
+                    <span className={`absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-150 ${isDarkWorld ? 'bg-white/5' : 'bg-slate-100/70'}`} />
+                  )}
+
+                  {/* Color dot indicator */}
+                  <span className={`relative z-10 w-1.5 h-1.5 rounded-full transition-all duration-200 ${link.dotColor} ${
+                    active ? 'opacity-100 scale-125' : 'opacity-35 group-hover:opacity-70'
+                  }`} />
+
+                  <span className="relative z-10">{link.name}</span>
+
+                  {/* Active accent underline */}
                   {active && (
                     <motion.div
                       layoutId="activeTabUnderline"

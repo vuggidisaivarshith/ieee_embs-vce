@@ -141,3 +141,48 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Route transition — blur is GPU accelerated */
+.page-transition-enter {
+  will-change: opacity, transform, filter;
+}
+
+/* Dark-field gallery ambient specimen card */
+.specimen-card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(4, 7, 17, 0.96) 0%, rgba(7, 11, 22, 0.99) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 1px rgba(0, 168, 198, 0), 0 8px 24px -6px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.specimen-card:hover {
+  border-color: rgba(56, 189, 248, 0.35);
+  box-shadow: 0 0 0 1px rgba(0, 168, 198, 0.15), 0 16px 40px -8px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Bio-network leader card (Team page) */
+.network-card {
+  position: relative;
+  overflow: hidden;
+}
+.network-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 98, 155, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Gradient text utility shorthand */
+.gradient-bio {
+  background: linear-gradient(135deg, #00629B 0%, #00A8C6 50%, #772583 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.gradient-health {
+  background: linear-gradient(135deg, #00629B 0%, #00A8C6 60%, #2E9B68 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
