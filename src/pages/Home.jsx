@@ -11,6 +11,7 @@ import { db, DEFAULT_SITE_DATA } from '../firebase/config';
 import { resolveImage } from '../utils/resolveImage';
 import EventCarousel from '../components/ui/EventCarousel';
 import SpeakerModal from '../components/ui/SpeakerModal';
+import BioExplorer from '../components/ui/BioExplorer';
 import { eventSlide1, eventSlide2, eventSlide3 } from '../assets/images';
 
 export default function Home() {
@@ -306,6 +307,11 @@ export default function Home() {
                 </motion.div>
               );
             })}
+          </div>
+
+          {/* Interactive Microscopic Specimen Explorer */}
+          <div className="mt-16">
+            <BioExplorer />
           </div>
 
         </div>

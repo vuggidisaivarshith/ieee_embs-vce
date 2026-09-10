@@ -292,3 +292,5 @@ export const DEFAULT_SITE_DATA = {
     }
   ]
 };
+
+DEFAULT_SITE_DATA.team = DEFAULT_SITE_DATA.teamMembers;
