@@ -7,6 +7,7 @@ import { db, DEFAULT_SITE_DATA } from '../firebase/config';
 import { resolveImage } from '../utils/resolveImage';
 import CountdownTimer from '../components/ui/CountdownTimer';
 import Skeleton from '../components/ui/Skeleton';
+import TiltCard from '../components/ui/TiltCard';
 
 export default function Events() {
   const [events, setEvents] = useState(DEFAULT_SITE_DATA.events);
@@ -132,86 +133,89 @@ export default function Events() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: idx * 0.08 }}
-                className="bright-card rounded-3xl overflow-hidden shadow-bright hover:shadow-bright-hover flex flex-col group border border-slate-200/80 transition-all"
               >
-                {/* Poster Image */}
-                <div className="relative h-48 overflow-hidden bg-slate-100">
-                  <img 
-                    src={resolveImage(event.posterUrl || '/assets/embs-logo.png')} 
-                    alt={event.title}
-                    onError={handleImgError}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                  />
-                  <span className={`absolute top-4 right-4 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider ${
-                    event.status === 'upcoming' 
-                      ? 'bg-clinical-green text-white shadow-md' 
-                      : 'bg-white/90 text-slate-700 border border-slate-200 shadow-sm'
-                  }`}>
-                    {event.status === 'past' ? 'Completed' : event.status}
-                  </span>
-                </div>
-
-                {/* Content */}
-                <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                  <div className="space-y-2">
-                    <span className="text-xs font-bold text-embs-blue uppercase tracking-wider block font-mono">
-                      {event.topic || 'Biomedical Engineering'}
+                <TiltCard 
+                  maxTilt={5}
+                  className="bright-card rounded-3xl overflow-hidden shadow-bright hover:shadow-bright-hover flex flex-col group border border-slate-200/80 transition-all h-full"
+                >
+                  {/* Poster Image */}
+                  <div className="relative h-48 overflow-hidden bg-slate-100">
+                    <img 
+                      src={resolveImage(event.posterUrl || '/assets/embs-logo.png')} 
+                      alt={event.title}
+                      onError={handleImgError}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                    />
+                    <span className={`absolute top-4 right-4 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider ${
+                      event.status === 'upcoming' 
+                        ? 'bg-clinical-green text-white shadow-md' 
+                        : 'bg-white/90 text-slate-700 border border-slate-200 shadow-sm'
+                    }`}>
+                      {event.status === 'past' ? 'Completed' : event.status}
                     </span>
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-embs-blue transition-colors line-clamp-2">
-                      {event.title}
-                    </h3>
-                    <p className="text-slate-600 text-xs line-clamp-3 leading-relaxed">
-                      {event.description}
-                    </p>
                   </div>
 
-                  {/* Countdown Timer for Upcoming Events */}
-                  {event.status === 'upcoming' && event.date && (
-                    <div className="pt-2">
-                      <CountdownTimer targetDate={event.date} eventTitle={event.title} />
+                  {/* Content */}
+                  <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+                    <div className="space-y-2">
+                      <span className="text-xs font-bold text-embs-blue uppercase tracking-wider block font-mono">
+                        {event.topic || 'Biomedical Engineering'}
+                      </span>
+                      <h3 className="text-lg font-bold text-slate-900 group-hover:text-embs-blue transition-colors line-clamp-2">
+                        {event.title}
+                      </h3>
+                      <p className="text-slate-600 text-xs line-clamp-3 leading-relaxed">
+                        {event.description}
+                      </p>
                     </div>
-                  )}
 
-                  {/* Metadata */}
-                  <div className="space-y-2 text-xs text-slate-600 pt-3 border-t border-slate-100">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-embs-blue" />
-                      <span className="font-medium">{event.date} {event.time && `• ${event.time}`}</span>
-                    </div>
-                    {event.venue && (
-                      <div className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-warm-orange" />
-                        <span className="truncate">{event.venue}</span>
+                    {/* Countdown Timer for Upcoming Events */}
+                    {event.status === 'upcoming' && event.date && (
+                      <div className="pt-2">
+                        <CountdownTimer targetDate={event.date} eventTitle={event.title} />
                       </div>
                     )}
-                    {event.speaker && (
+
+                    {/* Metadata */}
+                    <div className="space-y-2 text-xs text-slate-600 pt-3 border-t border-slate-100">
                       <div className="flex items-center gap-2">
-                        <User className="w-4 h-4 text-embs-purple" />
-                        <span className="truncate font-semibold text-slate-700">{event.speaker}</span>
+                        <Calendar className="w-4 h-4 text-embs-blue" />
+                        <span className="font-medium">{event.date} {event.time && `• ${event.time}`}</span>
                       </div>
-                    )}
+                      {event.venue && (
+                        <div className="flex items-center gap-2">
+                          <MapPin className="w-4 h-4 text-warm-orange" />
+                          <span className="truncate">{event.venue}</span>
+                        </div>
+                      )}
+                      {event.speaker && (
+                        <div className="flex items-center gap-2">
+                          <User className="w-4 h-4 text-embs-purple" />
+                          <span className="truncate font-semibold text-slate-700">{event.speaker}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Separated Action Buttons (Details & Event Gallery) */}
+                    <div className="pt-2 flex items-center gap-2">
+                      <Link
+                        to={`/events/${event.id}`}
+                        className="flex-1 py-2.5 px-3 rounded-xl text-xs font-extrabold text-center text-white bg-embs-blue hover:bg-ieee-dark shadow-sm flex items-center justify-center gap-1.5 transition-all"
+                      >
+                        <Info className="w-3.5 h-3.5" />
+                        <span>Details</span>
+                      </Link>
+
+                      <Link
+                        to="/gallery"
+                        className="flex-1 py-2.5 px-3 rounded-xl text-xs font-extrabold text-center text-slate-700 bg-slate-100 hover:bg-embs-purple hover:text-white border border-slate-200 shadow-sm flex items-center justify-center gap-1.5 transition-all"
+                      >
+                        <ImageIcon className="w-3.5 h-3.5 text-embs-purple group-hover:text-white" />
+                        <span>Event Gallery</span>
+                      </Link>
+                    </div>
                   </div>
-
-                  {/* Separated Action Buttons (Details & Event Gallery) */}
-                  <div className="pt-2 flex items-center gap-2">
-                    <Link
-                      to={`/events/${event.id}`}
-                      className="flex-1 py-2.5 px-3 rounded-xl text-xs font-extrabold text-center text-white bg-embs-blue hover:bg-ieee-dark shadow-sm flex items-center justify-center gap-1.5 transition-all"
-                    >
-                      <Info className="w-3.5 h-3.5" />
-                      <span>Details</span>
-                    </Link>
-
-                    <Link
-                      to="/gallery"
-                      className="flex-1 py-2.5 px-3 rounded-xl text-xs font-extrabold text-center text-slate-700 bg-slate-100 hover:bg-embs-purple hover:text-white border border-slate-200 shadow-sm flex items-center justify-center gap-1.5 transition-all"
-                    >
-                      <ImageIcon className="w-3.5 h-3.5 text-embs-purple group-hover:text-white" />
-                      <span>Event Gallery</span>
-                    </Link>
-                  </div>
-                </div>
-
+                </TiltCard>
               </motion.div>
             ))}
           </div>

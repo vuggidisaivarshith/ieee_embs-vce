@@ -1,15 +1,15 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
 /**
  * BiologicalCursor.jsx
  * Organic fluid disturbance cursor overlay.
- * Renders a subtle bioluminescent microscopic focus reticle and fluid wake trail.
+ * Renders a subtle bioluminescent microscopic focus reticle that responds to interactive elements.
  */
 export default function BiologicalCursor() {
   const [pos, setPos] = useState({ x: -100, y: -100 });
   const [active, setActive] = useState(false);
+  const [isHoveringInteractive, setIsHoveringInteractive] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
-  const trailRef = useRef([]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -22,18 +22,21 @@ export default function BiologicalCursor() {
   useEffect(() => {
     if (reducedMotion) return;
 
-    let lastX = -100;
-    let lastY = -100;
-
     const handleMouseMove = (e) => {
       setPos({ x: e.clientX, y: e.clientY });
       setActive(true);
-      lastX = e.clientX;
-      lastY = e.clientY;
+
+      // Check if hovering over interactive element
+      const target = e.target;
+      if (target) {
+        const isInteractive = target.closest('a, button, input, textarea, [role="button"], .interactive-target');
+        setIsHoveringInteractive(!!isInteractive);
+      }
     };
 
     const handleMouseLeave = () => {
       setActive(false);
+      setIsHoveringInteractive(false);
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
@@ -49,15 +52,18 @@ export default function BiologicalCursor() {
 
   return (
     <div className="pointer-events-none fixed inset-0 z-40 overflow-hidden transition-opacity duration-300">
-      {/* Bioluminescent Micro-Reticle */}
+      {/* Bioluminescent Micro-Reticle with Focus Ring Expansion */}
       <div 
-        className="absolute w-8 h-8 -ml-4 -mt-4 rounded-full border border-sky-400/30 bg-sky-500/5 backdrop-blur-[1px] transition-transform duration-75 ease-out shadow-[0_0_15px_rgba(56,189,248,0.2)]"
+        className={`absolute rounded-full border border-sky-400/35 bg-sky-500/5 backdrop-blur-[0.5px] transition-all duration-100 ease-out shadow-[0_0_12px_rgba(0,168,198,0.18)] flex items-center justify-center ${
+          isHoveringInteractive 
+            ? 'w-10 h-10 -ml-5 -mt-5 border-embs-cyan/60 scale-110' 
+            : 'w-6 h-6 -ml-3 -mt-3'
+        }`}
         style={{
           transform: `translate3d(${pos.x}px, ${pos.y}px, 0)`
         }}
       >
-        <div className="absolute inset-1.5 rounded-full border border-pink-500/20"></div>
-        <div className="absolute top-1/2 left-1/2 w-1 h-1 -ml-0.5 -mt-0.5 rounded-full bg-sky-300"></div>
+        <div className="w-1 h-1 rounded-full bg-sky-400/90 shadow-sm" />
       </div>
     </div>
   );

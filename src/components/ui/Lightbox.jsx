@@ -1,5 +1,6 @@
 import React from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { resolveImage } from '../../utils/resolveImage';
 
 export default function Lightbox({ images, currentIndex, isOpen, onClose, onPrev, onNext }) {
   if (!isOpen || !images || images.length === 0) return null;
@@ -8,7 +9,7 @@ export default function Lightbox({ images, currentIndex, isOpen, onClose, onPrev
 
   const handleImgError = (e) => {
     e.currentTarget.onerror = null;
-    e.currentTarget.src = "/assets/embs-logo.png";
+    e.currentTarget.src = resolveImage('/assets/embs-logo.png');
   };
 
   return (
@@ -39,7 +40,7 @@ export default function Lightbox({ images, currentIndex, isOpen, onClose, onPrev
 
       <div className="max-w-4xl max-h-[85vh] flex flex-col items-center">
         <img 
-          src={currentImg.url || currentImg.imageUrl} 
+          src={resolveImage(currentImg.url || currentImg.imageUrl)} 
           alt={currentImg.caption || "Gallery Preview"} 
           onError={handleImgError}
           className="max-w-full max-h-[75vh] object-contain rounded-lg shadow-2xl"

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Phone, MapPin, Send, Loader2, CheckCircle2, AlertCircle, Activity } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Loader2, CheckCircle2, AlertCircle, Activity, Radio, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import emailjs from '@emailjs/browser';
 import { db } from '../firebase/config';
 import Toast from '../components/ui/Toast';
+import TiltCard from '../components/ui/TiltCard';
+import MagneticButton from '../components/ui/MagneticButton';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -150,14 +152,23 @@ export default function Contact() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="lg:col-span-7 bright-card rounded-3xl p-8 sm:p-10 space-y-6"
+            className="lg:col-span-7 bright-card rounded-3xl p-8 sm:p-10 space-y-6 relative overflow-hidden"
           >
-            <div>
-              <h3 className="text-2xl font-extrabold text-slate-900">Send Direct Message</h3>
-              <p className="text-slate-500 text-xs mt-1 font-mono">Dispatches to chapter faculty leadership and executive committee.</p>
+            {/* Subtle bio-pulse background beam */}
+            <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-embs-blue/10 via-embs-purple/5 to-transparent rounded-full blur-2xl pointer-events-none" />
+
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div>
+                <h3 className="text-2xl font-extrabold text-slate-900">Send Direct Message</h3>
+                <p className="text-slate-500 text-xs mt-1 font-mono">Dispatches to chapter faculty leadership and executive committee.</p>
+              </div>
+              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-[11px] font-mono text-slate-600">
+                <span className="w-2 h-2 rounded-full bg-clinical-green animate-ping" />
+                <span>Node 2026-ACTIVE</span>
+              </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1.5 font-mono">Your Name *</label>
@@ -167,7 +178,7 @@ export default function Contact() {
                     value={formData.name}
                     onChange={e => setFormData({ ...formData, name: e.target.value })}
                     placeholder="Enter full name"
-                    className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-embs-blue"
+                    className="w-full px-4 py-3 rounded-xl bg-slate-50/80 border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-embs-blue focus:bg-white transition-all shadow-inner"
                   />
                 </div>
                 <div>
@@ -178,7 +189,7 @@ export default function Contact() {
                     value={formData.email}
                     onChange={e => setFormData({ ...formData, email: e.target.value })}
                     placeholder="Enter email address"
-                    className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-embs-blue"
+                    className="w-full px-4 py-3 rounded-xl bg-slate-50/80 border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-embs-blue focus:bg-white transition-all shadow-inner"
                   />
                 </div>
               </div>
@@ -190,7 +201,7 @@ export default function Contact() {
                   value={formData.subject}
                   onChange={e => setFormData({ ...formData, subject: e.target.value })}
                   placeholder="e.g. Event Inquiry / Research Paper"
-                  className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-embs-blue"
+                  className="w-full px-4 py-3 rounded-xl bg-slate-50/80 border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-embs-blue focus:bg-white transition-all shadow-inner"
                 />
               </div>
 
@@ -202,29 +213,31 @@ export default function Contact() {
                   value={formData.message}
                   onChange={e => setFormData({ ...formData, message: e.target.value })}
                   placeholder="Type your message here..."
-                  className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-embs-blue"
+                  className="w-full px-4 py-3 rounded-xl bg-slate-50/80 border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-embs-blue focus:bg-white transition-all shadow-inner"
                 ></textarea>
               </div>
 
-              <motion.button
-                whileHover={{ scale: submitting ? 1 : 1.01 }}
-                whileTap={{ scale: submitting ? 1 : 0.99 }}
-                type="submit"
-                disabled={submitting}
-                className="w-full py-3.5 rounded-xl text-sm font-extrabold text-white bg-embs-blue hover:bg-ieee-dark transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-50"
-              >
-                {submitting ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin text-white" />
-                    <span>Sending Transmission...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Transmit Message</span>
-                    <Send className="w-4 h-4" />
-                  </>
-                )}
-              </motion.button>
+              <div className="pt-2">
+                <MagneticButton className="w-full" strength={0.15}>
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="w-full py-3.5 rounded-xl text-sm font-extrabold text-white bg-gradient-to-r from-embs-blue to-embs-purple hover:opacity-95 transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-50"
+                  >
+                    {submitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin text-white" />
+                        <span>Sending Transmission...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Transmit Message</span>
+                        <Send className="w-4 h-4" />
+                      </>
+                    )}
+                  </button>
+                </MagneticButton>
+              </div>
             </form>
           </motion.div>
 
@@ -235,7 +248,7 @@ export default function Contact() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="lg:col-span-5 space-y-6"
           >
-            <div className="bright-card rounded-3xl p-8 space-y-6">
+            <TiltCard maxTilt={4} className="bright-card rounded-3xl p-8 space-y-6 border border-slate-200/80 shadow-bright">
               <h3 className="text-xl font-bold text-slate-900">Campus Information</h3>
               
               <div className="space-y-4 text-sm">
@@ -263,7 +276,7 @@ export default function Contact() {
                   </div>
                 </div>
               </div>
-            </div>
+            </TiltCard>
 
             {/* Embedded Map */}
             <div className="bright-card rounded-3xl overflow-hidden h-64 border border-slate-200 shadow-bright">

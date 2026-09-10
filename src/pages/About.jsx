@@ -5,6 +5,8 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db, DEFAULT_SITE_DATA } from '../firebase/config';
 import { resolveImage } from '../utils/resolveImage';
 
+import TiltCard from '../components/ui/TiltCard';
+
 export default function About() {
   const [siteSettings, setSiteSettings] = useState(DEFAULT_SITE_DATA.siteSettings);
 
@@ -32,6 +34,7 @@ export default function About() {
       icon: Target,
       title: "Our Vision",
       desc: "To be a premier student society fostering breakthrough innovation at the intersection of biological science, engineering, and digital healthcare.",
+      impact: "Clinical Breakthroughs",
       color: "text-embs-purple",
       bg: "bg-purple-50",
       border: "hover:border-embs-purple/40"
@@ -40,6 +43,7 @@ export default function About() {
       icon: Compass,
       title: "Our Mission",
       desc: "To bridge academic engineering concepts with real-world clinical needs through hands-on technical workshops, symposia, and global IEEE research.",
+      impact: "Translational Engineering",
       color: "text-bio-red",
       bg: "bg-rose-50",
       border: "hover:border-bio-red/40"
@@ -48,6 +52,7 @@ export default function About() {
       icon: BookOpen,
       title: "Continuous Learning",
       desc: "Equipping student researchers with cutting-edge knowledge in neural engineering, medical signal processing, genomics, and telemedicine standards.",
+      impact: "Advanced Bio-Signal Lab",
       color: "text-embs-blue",
       bg: "bg-sky-50",
       border: "hover:border-embs-blue/40"
@@ -56,6 +61,7 @@ export default function About() {
       icon: Users,
       title: "Collaborative Community",
       desc: "Cultivating a multidisciplinary ecosystem connecting biomedical engineers, clinicians, computer scientists, and healthcare industry leaders.",
+      impact: "Global IEEE Network",
       color: "text-clinical-green",
       bg: "bg-emerald-50",
       border: "hover:border-clinical-green/40"
@@ -76,7 +82,7 @@ export default function About() {
         >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-purple-200 text-xs font-mono font-bold text-embs-purple shadow-sm">
             <Activity className="w-3.5 h-3.5 animate-pulse text-embs-purple" />
-            <span>Cellular Matrix Histology Environment</span>
+            <span>Cellular Histology Transformation Active</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
             About IEEE EMBS Vardhaman
@@ -90,25 +96,29 @@ export default function About() {
       {/* Main Content Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
         
-        {/* Core Values Cards */}
+        {/* Core Values Cards with Spatial Tilt */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {values.map((v, idx) => {
             const Icon = v.icon;
             return (
-              <motion.div
+              <TiltCard
                 key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.1 }}
-                className={`bright-card p-6 rounded-3xl space-y-4 ${v.border} transition-all group`}
+                maxTilt={5}
+                className={`bright-card p-6 rounded-3xl space-y-4 ${v.border} transition-all group flex flex-col justify-between`}
               >
-                <div className={`w-12 h-12 rounded-2xl ${v.bg} ${v.color} flex items-center justify-center border border-slate-100 shadow-sm group-hover:scale-110 transition-transform`}>
-                  <Icon className="w-6 h-6" />
+                <div className="space-y-3">
+                  <div className={`w-12 h-12 rounded-2xl ${v.bg} ${v.color} flex items-center justify-center border border-slate-100 shadow-sm group-hover:scale-110 transition-transform`}>
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-900">{v.title}</h3>
+                  <p className="text-slate-600 text-xs leading-relaxed">{v.desc}</p>
                 </div>
-                <h3 className="text-lg font-bold text-slate-900">{v.title}</h3>
-                <p className="text-slate-600 text-xs leading-relaxed">{v.desc}</p>
-              </motion.div>
+                
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-mono font-bold text-slate-500 group-hover:text-slate-800">
+                  <span>{v.impact}</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-clinical-green"></span>
+                </div>
+              </TiltCard>
             );
           })}
         </div>

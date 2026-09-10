@@ -5,6 +5,8 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db, DEFAULT_SITE_DATA } from '../firebase/config';
 import { resolveImage } from '../utils/resolveImage';
 
+import TiltCard from '../components/ui/TiltCard';
+
 export default function Team() {
   const defaultList = DEFAULT_SITE_DATA.teamMembers || DEFAULT_SITE_DATA.team || [];
   const [teamMembers, setTeamMembers] = useState(defaultList);
@@ -86,10 +88,9 @@ export default function Team() {
 
             <div className="flex justify-center">
               {faculty.map((member, idx) => (
-                <motion.div
+                <TiltCard
                   key={member.id || idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  maxTilt={4}
                   className="bright-card rounded-3xl p-6 max-w-md w-full flex flex-col sm:flex-row items-center gap-6 shadow-bright hover:shadow-bright-hover"
                 >
                   <div className="w-28 h-36 rounded-2xl overflow-hidden bg-slate-100 flex-shrink-0 border-2 border-embs-purple shadow-md">
@@ -112,7 +113,7 @@ export default function Team() {
                       </a>
                     )}
                   </div>
-                </motion.div>
+                </TiltCard>
               ))}
             </div>
           </div>
@@ -127,12 +128,9 @@ export default function Team() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {students.map((member, idx) => (
-              <motion.div
+              <TiltCard
                 key={member.id || idx}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.08 }}
+                maxTilt={5}
                 className="bright-card rounded-3xl overflow-hidden shadow-bright hover:shadow-bright-hover flex flex-col group border border-slate-200/80 transition-all"
               >
                 {/* 3:4 Aspect Ratio Portrait Container with object-top */}
@@ -185,8 +183,7 @@ export default function Team() {
                     )}
                   </div>
                 </div>
-
-              </motion.div>
+              </TiltCard>
             ))}
           </div>
         </div>

@@ -97,8 +97,8 @@ export class RBCSimulation {
     const width = this.canvas.width;
     const height = this.canvas.height;
     
-    // Slight flow vector curvature with scroll
-    const angle = this.flowAngle + Math.sin(scrollOffset * 0.001) * 0.1;
+    // Smooth flow angle with subtle scroll curvature
+    const angle = this.flowAngle + Math.sin(scrollOffset * 0.0008) * 0.08;
     const cosAngle = Math.cos(angle);
     const sinAngle = Math.sin(angle);
 
@@ -114,32 +114,49 @@ export class RBCSimulation {
       p.yaw += p.dYaw;
       p.roll += p.dRoll;
 
-      // Mouse fluid interaction
+      // Hydrodynamic Cursor Fluid Deflection
       if (this.mouse.active) {
         const dx = p.x - this.mouse.x;
         const dy = p.y - this.mouse.y;
         const distSq = dx * dx + dy * dy;
-        const maxDist = (p.z + 1) * 120;
+        const interactionRadius = (p.z + 1) * 110;
         
-        if (distSq < maxDist * maxDist && distSq > 0) {
+        if (distSq < interactionRadius * interactionRadius && distSq > 4) {
           const dist = Math.sqrt(distSq);
-          const force = (1 - dist / maxDist) * (0.8 + p.z * 0.5);
+          const normalizedDist = 1 - (dist / interactionRadius);
           
-          p.x += (dx / dist) * force * 3;
-          p.y += (dy / dist) * force * 3;
+          // Deflection force scaled by layer depth
+          const force = normalizedDist * (0.6 + p.z * 0.4);
           
-          // Induce fluid spin and deformation on proximity
-          p.dYaw += (this.mouse.vx || 0) * 0.001;
-          p.targetDeformation = Math.min(0.4, force * 0.5);
+          // Push along normalized vector away from cursor
+          p.x += (dx / dist) * force * 3.2;
+          p.y += (dy / dist) * force * 3.2;
+          
+          // Tangential stream velocity drag from cursor motion
+          if (this.mouse.vx || this.mouse.vy) {
+            p.x += (this.mouse.vx || 0) * normalizedDist * 0.25;
+            p.y += (this.mouse.vy || 0) * normalizedDist * 0.25;
+          }
+          
+          // Fluid shear torque on particle rotation
+          p.dYaw += (this.mouse.vx || 0) * 0.0008 + (dx > 0 ? 0.002 : -0.002);
+          p.dPitch += (this.mouse.vy || 0) * 0.0008;
+          p.targetDeformation = Math.min(0.35, force * 0.45);
         } else {
           p.targetDeformation = 0;
         }
+      } else {
+        p.targetDeformation = 0;
       }
 
-      // Smooth deformation relaxation
+      // Smooth decay of excess rotational velocity toward baseline
+      p.dYaw += ((Math.random() - 0.5) * 0.02 - p.dYaw) * 0.02;
+      p.dPitch += ((Math.random() - 0.5) * 0.015 - p.dPitch) * 0.02;
+
+      // Smooth biological deformation relaxation
       p.deformation += (p.targetDeformation - p.deformation) * 0.08;
 
-      // Wrap around bounds seamlessly
+      // Seamless toroidal boundary wrapping
       const margin = p.radius * 3;
       if (p.x > width + margin) {
         p.x = -margin;

@@ -5,6 +5,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db, DEFAULT_SITE_DATA } from '../firebase/config';
 import { resolveImage } from '../utils/resolveImage';
 import Lightbox from '../components/ui/Lightbox';
+import TiltCard from '../components/ui/TiltCard';
 import { eventSlide1, eventSlide2, eventSlide3 } from '../assets/images';
 
 export default function Gallery() {
@@ -123,20 +124,26 @@ export default function Gallery() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: idx * 0.05 }}
                 onClick={() => openLightbox(idx)}
-                className="group relative h-64 rounded-2xl overflow-hidden cursor-pointer bg-slate-950 border border-white/15 hover:border-sky-400 shadow-xl hover:-translate-y-1 hover:shadow-2xl transition-all duration-200"
+                className="cursor-pointer"
               >
-                <img 
-                  src={resolveImage(img.url || img.imageUrl)} 
-                  alt={img.caption || "Gallery Photo"}
-                  onError={handleImgError}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
-                  <p className="text-xs font-semibold line-clamp-2">{img.caption}</p>
-                  <span className="text-[10px] text-sky-400 flex items-center gap-1 mt-1 font-bold font-mono">
-                    <Maximize2 className="w-3 h-3" /> Click for Lightbox
-                  </span>
-                </div>
+                <TiltCard
+                  maxTilt={6}
+                  glareColor="rgba(0, 168, 198, 0.25)"
+                  className="group relative h-64 rounded-2xl overflow-hidden bg-slate-950 border border-white/15 hover:border-sky-400 shadow-xl transition-all duration-200"
+                >
+                  <img 
+                    src={resolveImage(img.url || img.imageUrl)} 
+                    alt={img.caption || "Gallery Photo"} 
+                    onError={handleImgError}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 text-white">
+                    <p className="text-xs font-semibold line-clamp-2">{img.caption}</p>
+                    <span className="text-[10px] text-sky-400 flex items-center gap-1 mt-1 font-bold font-mono">
+                      <Maximize2 className="w-3 h-3" /> Click for Lightbox
+                    </span>
+                  </div>
+                </TiltCard>
               </motion.div>
             ))}
           </div>

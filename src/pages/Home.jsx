@@ -12,6 +12,8 @@ import { resolveImage } from '../utils/resolveImage';
 import EventCarousel from '../components/ui/EventCarousel';
 import SpeakerModal from '../components/ui/SpeakerModal';
 import BioExplorer from '../components/ui/BioExplorer';
+import TiltCard from '../components/ui/TiltCard';
+import MagneticButton from '../components/ui/MagneticButton';
 import { eventSlide1, eventSlide2, eventSlide3 } from '../assets/images';
 
 export default function Home() {
@@ -58,13 +60,13 @@ export default function Home() {
     hidden: { opacity: 0 },
     visible: { 
       opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.1 }
+      transition: { staggerChildren: 0.18, delayChildren: 0.1 }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+    hidden: { opacity: 0, y: 24 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
   };
 
   const speakerData = {
@@ -165,7 +167,7 @@ export default function Home() {
          ======================================================= */}
       <section className="relative overflow-hidden text-white py-20 lg:py-28 bg-[#040711]">
         
-        {/* Subtle Atmospheric Light Cone */}
+        {/* Atmospheric Bioluminescent Glow Cones */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-embs-blue/15 rounded-full blur-3xl pointer-events-none"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-embs-purple/15 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -180,7 +182,7 @@ export default function Home() {
             {/* Left Hero Column */}
             <motion.div variants={itemVariants} className="lg:col-span-7 space-y-6 text-center lg:text-left">
               
-              {/* Category Pill */}
+              {/* Category Pill with Ambient Pulse */}
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-white/15 backdrop-blur-md text-xs font-semibold text-embs-cyan shadow-sm">
                 <Microscope className="w-4 h-4 text-warm-orange animate-pulse" />
                 <span>IEEE Engineering in Medicine and Biology Society</span>
@@ -194,19 +196,20 @@ export default function Home() {
                 Connecting engineering minds with clinical frontiers. Exploring healthcare AI, medical signal telemetry, and biomedical technology at Vardhaman College of Engineering.
               </p>
 
-              {/* Action Buttons */}
+              {/* Action Buttons with Tactile Magnetic Pull */}
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
-                <Link
+                <MagneticButton
+                  as={Link}
                   to="/events"
-                  className="px-6 py-3.5 rounded-xl font-bold text-sm text-white bg-embs-blue hover:bg-embs-blueAlt shadow-lg shadow-embs-blue/30 transition-all flex items-center gap-2 transform hover:-translate-y-0.5 border border-sky-400/30"
+                  className="px-6 py-3.5 rounded-xl font-bold text-sm text-white bg-embs-blue hover:bg-embs-blueAlt shadow-lg shadow-embs-blue/30 transition-all flex items-center gap-2 border border-sky-400/30"
                 >
                   <Calendar className="w-4 h-4" />
                   <span>Explore Events & Timeline</span>
-                </Link>
+                </MagneticButton>
 
                 <Link
                   to="/gallery"
-                  className="px-6 py-3.5 rounded-xl font-bold text-sm text-slate-200 bg-slate-900/80 hover:bg-slate-800 border border-white/15 backdrop-blur-md transition-all flex items-center gap-2 transform hover:scale-105"
+                  className="px-6 py-3.5 rounded-xl font-bold text-sm text-slate-200 bg-slate-900/80 hover:bg-slate-800 border border-white/15 backdrop-blur-md transition-all flex items-center gap-2 hover:border-embs-cyan/50"
                 >
                   <ImageIcon className="w-4 h-4 text-embs-cyan" />
                   <span>Event Photo Memories</span>
@@ -231,9 +234,9 @@ export default function Home() {
 
             </motion.div>
 
-            {/* Right Hero Column: Cinematic Session Showcase */}
+            {/* Right Hero Column: Cinematic Session Showcase with Spatial Tilt */}
             <motion.div variants={itemVariants} className="lg:col-span-5">
-              <div className="specular-card rounded-3xl p-6 space-y-4">
+              <TiltCard maxTilt={5} className="specular-card rounded-3xl p-6 space-y-4">
                 
                 <div className="flex items-center justify-between">
                   <span className="px-3 py-1 rounded-full text-xs font-bold bg-clinical-green/20 text-clinical-green border border-clinical-green/30 uppercase tracking-wider flex items-center gap-1.5 font-mono">
@@ -274,7 +277,7 @@ export default function Home() {
                   </Link>
                 </div>
 
-              </div>
+              </TiltCard>
             </motion.div>
 
           </motion.div>
@@ -304,12 +307,9 @@ export default function Home() {
             {innovationPillars.map((pillar, idx) => {
               const IconComp = pillar.icon;
               return (
-                <motion.div
+                <TiltCard
                   key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: idx * 0.08 }}
+                  maxTilt={4}
                   className={`bright-card p-6 rounded-2xl flex flex-col justify-between space-y-4 group ${pillar.borderHover}`}
                 >
                   <div className="space-y-3">
@@ -332,7 +332,7 @@ export default function Home() {
                     <span>Explore Domain</span>
                     <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
                   </div>
-                </motion.div>
+                </TiltCard>
               );
             })}
           </div>
