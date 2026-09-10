@@ -15,18 +15,18 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-slate-950/90 border-t border-white/10 text-slate-400 text-sm overflow-hidden z-20 backdrop-blur-xl">
+    <footer className="relative bg-[#070B16] border-t border-slate-800 text-slate-400 text-sm overflow-hidden z-20 backdrop-blur-xl">
       
       {/* Subtle Bioluminescent Ambient Glow */}
-      <div className="absolute top-0 left-1/4 w-96 h-1 bg-gradient-to-r from-transparent via-sky-500/50 to-transparent"></div>
-      <div className="absolute top-0 right-1/4 w-96 h-1 bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
+      <div className="absolute top-0 left-1/4 w-96 h-1 bg-gradient-to-r from-transparent via-embs-blue/40 to-transparent"></div>
+      <div className="absolute top-0 right-1/4 w-96 h-1 bg-gradient-to-r from-transparent via-embs-purple/40 to-transparent"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           
           {/* Brand & Mission Statement */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-2 bg-slate-900/90 p-2 rounded-2xl border border-white/15 w-fit shadow-inner">
+            <div className="flex items-center gap-2 bg-slate-900/90 p-2.5 rounded-2xl border border-slate-800 w-fit shadow-inner">
               <img 
                 src={collegeLogo} 
                 alt="Vardhaman College of Engineering" 
@@ -54,8 +54,8 @@ export default function Footer() {
             </p>
 
             {/* Live Bio-Telemetry Status Pill */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-emerald-500/30 text-[11px] font-mono text-emerald-400">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-clinical-green/40 text-[11px] font-mono text-clinical-green">
+              <span className="w-2 h-2 rounded-full bg-clinical-green animate-ping"></span>
               <span>Telemetry: Biological Motion Active</span>
             </div>
           </div>
@@ -64,11 +64,11 @@ export default function Footer() {
           <div className="space-y-3">
             <h4 className="text-white font-bold text-xs uppercase tracking-wider font-mono">Navigation</h4>
             <ul className="space-y-2 text-xs">
-              <li><Link to="/about" className="hover:text-sky-400 transition">About Chapter</Link></li>
-              <li><Link to="/events" className="hover:text-sky-400 transition">Events & Workshops</Link></li>
-              <li><Link to="/team" className="hover:text-sky-400 transition">Executive Committee</Link></li>
-              <li><Link to="/gallery" className="hover:text-sky-400 transition">Event Gallery</Link></li>
-              <li><Link to="/announcements" className="hover:text-sky-400 transition">Announcements</Link></li>
+              <li><Link to="/about" className="hover:text-embs-blue transition">About Chapter</Link></li>
+              <li><Link to="/events" className="hover:text-embs-blue transition">Events & Workshops</Link></li>
+              <li><Link to="/team" className="hover:text-embs-blue transition">Executive Committee</Link></li>
+              <li><Link to="/gallery" className="hover:text-embs-blue transition">Event Gallery</Link></li>
+              <li><Link to="/announcements" className="hover:text-embs-blue transition">Announcements</Link></li>
             </ul>
           </div>
 
@@ -76,15 +76,15 @@ export default function Footer() {
           <div className="space-y-3">
             <h4 className="text-white font-bold text-xs uppercase tracking-wider font-mono">Resources</h4>
             <ul className="space-y-2 text-xs">
-              <li><Link to="/membership" className="hover:text-sky-400 transition">Join IEEE EMBS</Link></li>
-              <li><Link to="/resources" className="hover:text-sky-400 transition">Research & Papers</Link></li>
-              <li><Link to="/achievements" className="hover:text-sky-400 transition">Awards & Honors</Link></li>
+              <li><Link to="/membership" className="hover:text-embs-blue transition">Join IEEE EMBS</Link></li>
+              <li><Link to="/resources" className="hover:text-embs-blue transition">Research & Papers</Link></li>
+              <li><Link to="/achievements" className="hover:text-embs-blue transition">Awards & Honors</Link></li>
               <li>
                 <a 
                   href="https://www.embs.org" 
                   target="_blank" 
                   rel="noreferrer" 
-                  className="inline-flex items-center gap-1 hover:text-sky-400 transition"
+                  className="inline-flex items-center gap-1 hover:text-embs-blue transition"
                 >
                   <span>IEEE EMBS Global</span>
                   <ExternalLink className="w-3 h-3" />
@@ -95,7 +95,7 @@ export default function Footer() {
                   href="https://vardhaman.org" 
                   target="_blank" 
                   rel="noreferrer" 
-                  className="inline-flex items-center gap-1 hover:text-sky-400 transition"
+                  className="inline-flex items-center gap-1 hover:text-embs-blue transition"
                 >
                   <span>Vardhaman College</span>
                   <ExternalLink className="w-3 h-3" />
@@ -109,17 +109,17 @@ export default function Footer() {
             <h4 className="text-white font-bold text-xs uppercase tracking-wider font-mono">Location & Inquiries</h4>
             <div className="space-y-2.5 text-xs">
               <div className="flex items-start gap-2 text-slate-300">
-                <MapPin className="w-4 h-4 text-vardhaman-orange flex-shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-warm-orange flex-shrink-0 mt-0.5" />
                 <span>Kacharam, Shamshabad, Hyderabad, Telangana 501218</span>
               </div>
               <div className="flex items-center gap-2 text-slate-300">
-                <Mail className="w-4 h-4 text-sky-400 flex-shrink-0" />
+                <Mail className="w-4 h-4 text-embs-blue flex-shrink-0" />
                 <a href="mailto:embs@vardhaman.org" className="hover:text-white transition">embs@vardhaman.org</a>
               </div>
               <div className="pt-2">
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-white bg-slate-900 border border-white/15 hover:bg-ieee-blue transition"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-slate-900 border border-slate-700 hover:bg-embs-blue transition"
                 >
                   <span>Send Contact Form</span>
                 </Link>
@@ -131,11 +131,11 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 mt-10 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-          <p className="text-slate-400 text-center sm:text-left">
+          <p className="text-slate-500 text-center sm:text-left">
             © {currentYear} IEEE EMBS Vardhaman College of Engineering Student Branch Chapter. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
-            <Link to="/admin/login" className="flex items-center gap-1 text-slate-400 hover:text-sky-400 transition">
+            <Link to="/admin/login" className="flex items-center gap-1 text-slate-500 hover:text-embs-blue transition font-mono">
               <Shield className="w-3.5 h-3.5" />
               <span>Admin Portal</span>
             </Link>

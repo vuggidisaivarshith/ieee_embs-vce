@@ -48,8 +48,8 @@ export default function EventDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen pt-32 flex justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-sky-400"></div>
+      <div className="min-h-screen pt-32 flex justify-center bg-slate-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-embs-blue"></div>
       </div>
     );
   }
@@ -86,178 +86,180 @@ export default function EventDetail() {
   const isPastEvent = event.status === 'past' || new Date(event.date) < new Date();
 
   return (
-    <div className="pt-24 pb-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      {/* Speaker Bio Modal */}
-      <SpeakerModal 
-        isOpen={speakerModalOpen}
-        onClose={() => setSpeakerModalOpen(false)}
-        speakerData={speakerData}
-      />
-
-      {/* Back Button */}
-      <Link 
-        to="/events"
-        className="inline-flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-sky-400 mb-6 transition"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        <span>Back to Events</span>
-      </Link>
-
-      <div className="specular-card rounded-3xl overflow-hidden p-6 sm:p-10 space-y-8 shadow-2xl">
+    <div className="pt-24 pb-20 bg-slate-50 min-h-screen text-slate-800">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Event Header Banner */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-          <div className="md:col-span-7 space-y-4">
-            <span className="px-3.5 py-1.5 rounded-full text-xs font-mono font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30 uppercase tracking-wider">
-              {event.topic || 'IEEE EMBS Event'}
-            </span>
-            <h1 className="text-2xl sm:text-4xl font-extrabold text-white leading-tight">
-              {event.title}
-            </h1>
-            
-            {/* Metadata Pills */}
-            <div className="flex flex-wrap gap-3 text-xs font-medium text-slate-300 pt-2">
-              <div className="flex items-center gap-2 bg-slate-900/80 px-3 py-2 rounded-xl border border-white/10">
-                <Calendar className="w-4 h-4 text-sky-400" />
-                <span>{event.date}</span>
-              </div>
-              {event.time && (
-                <div className="flex items-center gap-2 bg-slate-900/80 px-3 py-2 rounded-xl border border-white/10">
-                  <Clock className="w-4 h-4 text-purple-400" />
-                  <span>{event.time}</span>
-                </div>
-              )}
-              {event.venue && (
-                <div className="flex items-center gap-2 bg-slate-900/80 px-3 py-2 rounded-xl border border-white/10">
-                  <MapPin className="w-4 h-4 text-vardhaman-orange" />
-                  <span>{event.venue}</span>
-                </div>
-              )}
-            </div>
-          </div>
+        {/* Speaker Bio Modal */}
+        <SpeakerModal 
+          isOpen={speakerModalOpen}
+          onClose={() => setSpeakerModalOpen(false)}
+          speakerData={speakerData}
+        />
 
-          <div className="md:col-span-5">
-            <img 
-              src={resolveImage(event.posterUrl || '/assets/speaker.jpeg')} 
-              alt={event.title}
-              onError={handleImgError}
-              className="w-full h-64 object-cover rounded-2xl shadow-lg border border-white/15" 
-            />
-          </div>
-        </div>
+        {/* Back Button */}
+        <Link 
+          to="/events"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-embs-blue mb-6 transition"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back to Events</span>
+        </Link>
 
-        {/* Cinematic Screenshots Banner Carousel */}
-        <div className="pt-4 border-t border-white/10">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-xl font-bold text-white">Live Session Highlights</h3>
-            <span className="text-xs font-mono text-sky-400">13 AUG 2026</span>
-          </div>
-          <EventCarousel slides={eventSlides} title={event.title} />
-        </div>
-
-        {/* Description */}
-        <div className="border-t border-white/10 pt-6 space-y-4">
-          <h3 className="text-xl font-bold text-white">About the Event</h3>
-          <p className="text-slate-300 leading-relaxed text-sm sm:text-base whitespace-pre-line">
-            {event.description}
-          </p>
-        </div>
-
-        {/* Featured Speaker Card with "About Speaker" Button & Links */}
-        {event.speaker && (
-          <div className="bg-slate-900/90 rounded-3xl p-6 sm:p-8 border border-white/15 space-y-4 shadow-md">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1.5 font-mono">
-                <User className="w-4 h-4" /> Keynote Speaker Profile
+        <div className="bright-card rounded-3xl overflow-hidden p-6 sm:p-10 space-y-8 shadow-bright">
+          
+          {/* Event Header Banner */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            <div className="md:col-span-7 space-y-4">
+              <span className="px-3.5 py-1.5 rounded-full text-xs font-mono font-bold bg-sky-50 text-embs-blue border border-sky-200 uppercase tracking-wider inline-block">
+                {event.topic || 'IEEE EMBS Event'}
               </span>
+              <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 leading-tight tracking-tight">
+                {event.title}
+              </h1>
               
-              {/* About Speaker Button */}
-              <button
-                onClick={() => setSpeakerModalOpen(true)}
-                className="px-4 py-2 rounded-xl text-xs font-extrabold text-white bg-ieee-blue hover:bg-ieee-dark shadow-md flex items-center gap-1.5 transition transform hover:scale-105 border border-sky-400/30"
-              >
-                <Info className="w-4 h-4" />
-                <span>About Speaker</span>
-              </button>
+              {/* Metadata Pills */}
+              <div className="flex flex-wrap gap-3 text-xs font-medium text-slate-600 pt-2">
+                <div className="flex items-center gap-2 bg-slate-100 px-3 py-2 rounded-xl border border-slate-200">
+                  <Calendar className="w-4 h-4 text-embs-blue" />
+                  <span className="font-semibold">{event.date}</span>
+                </div>
+                {event.time && (
+                  <div className="flex items-center gap-2 bg-slate-100 px-3 py-2 rounded-xl border border-slate-200">
+                    <Clock className="w-4 h-4 text-embs-purple" />
+                    <span>{event.time}</span>
+                  </div>
+                )}
+                {event.venue && (
+                  <div className="flex items-center gap-2 bg-slate-100 px-3 py-2 rounded-xl border border-slate-200">
+                    <MapPin className="w-4 h-4 text-warm-orange" />
+                    <span className="truncate">{event.venue}</span>
+                  </div>
+                )}
+              </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
+            <div className="md:col-span-5">
               <img 
                 src={resolveImage(event.posterUrl || '/assets/speaker.jpeg')} 
-                alt={event.speaker}
+                alt={event.title}
                 onError={handleImgError}
-                className="w-20 h-20 rounded-2xl object-cover border-2 border-sky-400 shadow-md flex-shrink-0"
+                className="w-full h-64 object-cover rounded-2xl shadow-md border border-slate-200" 
               />
-              <div className="space-y-1 text-center sm:text-left">
-                <h4 className="text-xl font-extrabold text-white">{event.speaker}</h4>
-                <p className="text-xs font-semibold text-sky-400">{speakerData.role}</p>
-                <p className="text-xs text-slate-300 line-clamp-2 pt-1">{speakerData.bio}</p>
+            </div>
+          </div>
+
+          {/* Cinematic Screenshots Banner Carousel */}
+          <div className="pt-4 border-t border-slate-100">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-xl font-bold text-slate-900">Live Session Highlights</h3>
+              <span className="text-xs font-mono font-bold text-embs-blue">13 AUG 2026</span>
+            </div>
+            <EventCarousel slides={eventSlides} title={event.title} />
+          </div>
+
+          {/* Description */}
+          <div className="border-t border-slate-100 pt-6 space-y-4">
+            <h3 className="text-xl font-bold text-slate-900">About the Event</h3>
+            <p className="text-slate-600 leading-relaxed text-sm sm:text-base whitespace-pre-line">
+              {event.description}
+            </p>
+          </div>
+
+          {/* Featured Speaker Card with "About Speaker" Button & Links */}
+          {event.speaker && (
+            <div className="bg-slate-50 rounded-3xl p-6 sm:p-8 border border-slate-200 space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-embs-blue uppercase tracking-wider flex items-center gap-1.5 font-mono">
+                  <User className="w-4 h-4" /> Keynote Speaker Profile
+                </span>
                 
-                {/* External Links */}
-                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 pt-3">
-                  {speakerData.linkedin && (
-                    <a
-                      href={speakerData.linkedin}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-sky-400 hover:underline"
-                    >
-                      <Linkedin className="w-4 h-4" />
-                      <span>LinkedIn Profile</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  )}
-                  {speakerData.university && (
-                    <a
-                      href={speakerData.university}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-400 hover:underline"
-                    >
-                      <BookOpen className="w-4 h-4" />
-                      <span>XIMB Faculty Profile</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  )}
+                {/* About Speaker Button */}
+                <button
+                  onClick={() => setSpeakerModalOpen(true)}
+                  className="px-4 py-2 rounded-xl text-xs font-extrabold text-white bg-embs-blue hover:bg-ieee-dark shadow-sm flex items-center gap-1.5 transition transform hover:scale-105"
+                >
+                  <Info className="w-4 h-4" />
+                  <span>About Speaker</span>
+                </button>
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
+                <img 
+                  src={resolveImage(event.posterUrl || '/assets/speaker.jpeg')} 
+                  alt={event.speaker}
+                  onError={handleImgError}
+                  className="w-20 h-20 rounded-2xl object-cover border-2 border-embs-blue shadow-md flex-shrink-0"
+                />
+                <div className="space-y-1 text-center sm:text-left">
+                  <h4 className="text-xl font-extrabold text-slate-900">{event.speaker}</h4>
+                  <p className="text-xs font-semibold text-embs-blue">{speakerData.role}</p>
+                  <p className="text-xs text-slate-600 line-clamp-2 pt-1">{speakerData.bio}</p>
+                  
+                  {/* External Links */}
+                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 pt-3">
+                    {speakerData.linkedin && (
+                      <a
+                        href={speakerData.linkedin}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-embs-blue hover:underline"
+                      >
+                        <Linkedin className="w-4 h-4" />
+                        <span>LinkedIn Profile</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    )}
+                    {speakerData.university && (
+                      <a
+                        href={speakerData.university}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-embs-purple hover:underline"
+                      >
+                        <BookOpen className="w-4 h-4" />
+                        <span>XIMB Faculty Profile</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Separated Action Buttons (Event Gallery & About Speaker) */}
-        <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div>
-            <p className="text-sm font-bold text-white">
-              {isPastEvent ? "Session Completed on 13 Aug 2026" : "Ready to Participate?"}
-            </p>
-            <p className="text-xs text-slate-400">
-              {isPastEvent ? "Explore event session screenshots and speaker details." : "Secure your spot for this session today."}
-            </p>
+          {/* Separated Action Buttons (Event Gallery & About Speaker) */}
+          <div className="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-bold text-slate-900">
+                {isPastEvent ? "Session Completed on 13 Aug 2026" : "Ready to Participate?"}
+              </p>
+              <p className="text-xs text-slate-500">
+                {isPastEvent ? "Explore event session screenshots and speaker details." : "Secure your spot for this session today."}
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+              <button
+                onClick={() => setSpeakerModalOpen(true)}
+                className="flex-1 sm:flex-initial px-5 py-3 rounded-xl text-xs font-extrabold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 shadow-sm flex items-center justify-center gap-1.5 transition"
+              >
+                <Info className="w-4 h-4 text-embs-blue" />
+                <span>About Speaker</span>
+              </button>
+
+              <Link
+                to="/gallery"
+                className="flex-1 sm:flex-initial px-6 py-3 rounded-xl text-xs font-extrabold text-white bg-gradient-to-r from-embs-blue via-embs-purple to-warm-orange shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 transform hover:scale-105"
+              >
+                <ImageIcon className="w-4 h-4" />
+                <span>Event Gallery</span>
+              </Link>
+            </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-            <button
-              onClick={() => setSpeakerModalOpen(true)}
-              className="flex-1 sm:flex-initial px-5 py-3 rounded-xl text-xs font-extrabold text-slate-200 bg-slate-900 hover:bg-slate-800 border border-white/15 shadow-md flex items-center justify-center gap-1.5 transition"
-            >
-              <Info className="w-4 h-4 text-sky-400" />
-              <span>About Speaker</span>
-            </button>
-
-            <Link
-              to="/gallery"
-              className="flex-1 sm:flex-initial px-6 py-3 rounded-xl text-xs font-extrabold text-white bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange shadow-lg hover:shadow-xl transition flex items-center justify-center gap-2 transform hover:scale-105 border border-sky-400/30"
-            >
-              <ImageIcon className="w-4 h-4" />
-              <span>Event Gallery</span>
-            </Link>
-          </div>
         </div>
 
       </div>
-
     </div>
   );
 }

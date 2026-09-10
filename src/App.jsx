@@ -25,10 +25,15 @@ import ProtectedRoute from './components/admin/ProtectedRoute';
 
 export default function App() {
   const location = useLocation();
+  const isDarkWorld = location.pathname === '/' || location.pathname === '/gallery';
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#070B16] text-slate-100 selection:bg-ieee-blue selection:text-white relative">
-      {/* Living Microscopic Biological Simulation Canvas */}
+    <div className={`flex flex-col min-h-screen selection:bg-embs-blue selection:text-white relative transition-colors duration-300 ${
+      isDarkWorld 
+        ? 'bg-[#070B16] text-slate-100' 
+        : 'bg-[#F8FAFC] dark:bg-[#070B16] text-slate-900 dark:text-slate-100'
+    }`}>
+      {/* Living Microscopic Biological Simulation Canvas (Hero & Gallery & Ambient) */}
       <BiologicalBackground />
       
       {/* Interactive Micro-Fluid Cursor Overlay */}

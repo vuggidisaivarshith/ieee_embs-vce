@@ -29,22 +29,25 @@ export default function Resources() {
   );
 
   return (
-    <div className="pt-24 pb-20">
+    <div className="pt-24 pb-20 bg-slate-50 text-slate-800 min-h-screen">
       
       {/* Header */}
-      <section className="py-16 text-white text-center">
+      <section className="py-16 text-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-sky-500/5 via-purple-500/5 to-transparent pointer-events-none"></div>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4"
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 relative z-10"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 border border-sky-400/30 text-xs font-mono text-sky-400">
-            <BookOpen className="w-3.5 h-3.5 animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-sky-200 text-xs font-mono font-bold text-embs-blue shadow-sm">
+            <BookOpen className="w-3.5 h-3.5 animate-pulse text-embs-blue" />
             <span>Academic & Research Repository</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-extrabold">Student & Member Resources</h1>
-          <p className="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
+            Student & Member Resources
+          </h1>
+          <p className="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
             Quick links to IEEE Xplore, journals, student grants, career portals, and downloadable study materials.
           </p>
         </motion.div>
@@ -61,7 +64,7 @@ export default function Resources() {
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search resources by title or category..."
-            className="w-full pl-12 pr-4 py-3 rounded-2xl bg-slate-900/80 border border-white/15 text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 shadow-xl backdrop-blur-md"
+            className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white border border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-embs-blue shadow-sm"
           />
         </div>
 
@@ -74,22 +77,22 @@ export default function Resources() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.08 }}
-              className="specular-card rounded-3xl p-6 flex flex-col justify-between space-y-4 hover-card-lift group"
+              className="bright-card rounded-3xl p-6 flex flex-col justify-between space-y-4 shadow-bright hover:shadow-bright-hover group border border-slate-200/80 transition-all"
             >
               <div className="space-y-2">
-                <span className="text-xs font-mono font-bold text-sky-400 uppercase tracking-wider block">
+                <span className="text-xs font-mono font-bold text-embs-blue uppercase tracking-wider block">
                   {res.category || 'General Resource'}
                 </span>
-                <h3 className="text-lg font-bold text-white group-hover:text-sky-300 transition">{res.title}</h3>
-                <p className="text-slate-300 text-xs leading-relaxed">{res.description}</p>
+                <h3 className="text-lg font-bold text-slate-900 group-hover:text-embs-blue transition">{res.title}</h3>
+                <p className="text-slate-600 text-xs leading-relaxed">{res.description}</p>
               </div>
 
-              <div className="pt-3 border-t border-white/10">
+              <div className="pt-3 border-t border-slate-100">
                 <a
                   href={res.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-extrabold text-white bg-ieee-blue hover:bg-ieee-dark transition shadow-md border border-sky-400/30"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-extrabold text-white bg-embs-blue hover:bg-ieee-dark transition shadow-sm"
                 >
                   <span>Open Resource</span>
                   <ExternalLink className="w-3.5 h-3.5" />

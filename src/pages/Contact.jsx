@@ -112,7 +112,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="pt-24 pb-20">
+    <div className="pt-24 pb-20 bg-slate-50 text-slate-800 min-h-screen">
       
       {/* Toast Notification */}
       {toastMessage && (
@@ -120,19 +120,22 @@ export default function Contact() {
       )}
 
       {/* Header Banner */}
-      <section className="py-16 text-white text-center">
+      <section className="py-16 text-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-sky-500/5 via-purple-500/5 to-transparent pointer-events-none"></div>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4"
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 relative z-10"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 border border-sky-400/30 text-xs font-mono text-sky-400">
-            <Activity className="w-3.5 h-3.5 animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-sky-200 text-xs font-mono font-bold text-embs-blue shadow-sm">
+            <Activity className="w-3.5 h-3.5 animate-pulse text-embs-blue" />
             <span>Bio-Fluid Telemetry & Inquiries Portal</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-extrabold">Connect With IEEE EMBS</h1>
-          <p className="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
+            Connect With IEEE EMBS
+          </h1>
+          <p className="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
             Have inquiries regarding technical workshops, student research collaborations, or chapter membership? Reach out to our executive committee.
           </p>
         </motion.div>
@@ -147,68 +150,68 @@ export default function Contact() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="lg:col-span-7 specular-card rounded-3xl p-8 sm:p-10 space-y-6"
+            className="lg:col-span-7 bright-card rounded-3xl p-8 sm:p-10 space-y-6"
           >
             <div>
-              <h3 className="text-2xl font-extrabold text-white">Send Direct Message</h3>
-              <p className="text-slate-400 text-xs mt-1 font-mono">Dispatches to chapter faculty leadership and executive committee.</p>
+              <h3 className="text-2xl font-extrabold text-slate-900">Send Direct Message</h3>
+              <p className="text-slate-500 text-xs mt-1 font-mono">Dispatches to chapter faculty leadership and executive committee.</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-200 mb-1.5 font-mono">Your Name *</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5 font-mono">Your Name *</label>
                   <input 
                     type="text"
                     required
                     value={formData.name}
                     onChange={e => setFormData({ ...formData, name: e.target.value })}
                     placeholder="Enter full name"
-                    className="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-white/15 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                    className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-embs-blue"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-200 mb-1.5 font-mono">Email Address *</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5 font-mono">Email Address *</label>
                   <input 
                     type="email"
                     required
                     value={formData.email}
                     onChange={e => setFormData({ ...formData, email: e.target.value })}
                     placeholder="Enter email address"
-                    className="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-white/15 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                    className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-embs-blue"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-200 mb-1.5 font-mono">Subject</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1.5 font-mono">Subject</label>
                 <input 
                   type="text"
                   value={formData.subject}
                   onChange={e => setFormData({ ...formData, subject: e.target.value })}
                   placeholder="e.g. Event Inquiry / Research Paper"
-                  className="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-white/15 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                  className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-embs-blue"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-200 mb-1.5 font-mono">Message *</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1.5 font-mono">Message *</label>
                 <textarea 
                   rows={4}
                   required
                   value={formData.message}
                   onChange={e => setFormData({ ...formData, message: e.target.value })}
                   placeholder="Type your message here..."
-                  className="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-white/15 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                  className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-embs-blue"
                 ></textarea>
               </div>
 
               <motion.button
-                whileHover={{ scale: submitting ? 1 : 1.02 }}
-                whileTap={{ scale: submitting ? 1 : 0.98 }}
+                whileHover={{ scale: submitting ? 1 : 1.01 }}
+                whileTap={{ scale: submitting ? 1 : 0.99 }}
                 type="submit"
                 disabled={submitting}
-                className="w-full py-3.5 rounded-xl text-sm font-extrabold text-white bg-ieee-blue hover:bg-ieee-dark transition-all shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 border border-sky-400/30"
+                className="w-full py-3.5 rounded-xl text-sm font-extrabold text-white bg-embs-blue hover:bg-ieee-dark transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {submitting ? (
                   <>
@@ -232,38 +235,38 @@ export default function Contact() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="lg:col-span-5 space-y-6"
           >
-            <div className="specular-card rounded-3xl p-8 space-y-6">
-              <h3 className="text-xl font-bold text-white">Campus Information</h3>
+            <div className="bright-card rounded-3xl p-8 space-y-6">
+              <h3 className="text-xl font-bold text-slate-900">Campus Information</h3>
               
               <div className="space-y-4 text-sm">
                 <div className="flex items-start gap-3">
-                  <MapPin className="w-5 h-5 text-vardhaman-orange flex-shrink-0 mt-1" />
+                  <MapPin className="w-5 h-5 text-warm-orange flex-shrink-0 mt-1" />
                   <div>
-                    <span className="font-bold block text-white">Campus Location</span>
-                    <span className="text-slate-300 text-xs leading-relaxed">Vardhaman College of Engineering, Kacharam, Shamshabad, Hyderabad 501218</span>
+                    <span className="font-bold block text-slate-900">Campus Location</span>
+                    <span className="text-slate-600 text-xs leading-relaxed">Vardhaman College of Engineering, Kacharam, Shamshabad, Hyderabad 501218</span>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <Mail className="w-5 h-5 text-sky-400 flex-shrink-0" />
+                  <Mail className="w-5 h-5 text-embs-blue flex-shrink-0" />
                   <div>
-                    <span className="font-bold block text-white">Faculty Advisor Email</span>
-                    <a href="mailto:swethabharath27@vardhaman.org" className="text-sky-400 hover:underline text-xs">swethabharath27@vardhaman.org</a>
+                    <span className="font-bold block text-slate-900">Faculty Advisor Email</span>
+                    <a href="mailto:swethabharath27@vardhaman.org" className="text-embs-blue hover:underline text-xs font-semibold">swethabharath27@vardhaman.org</a>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <Phone className="w-5 h-5 text-purple-400 flex-shrink-0" />
+                  <Phone className="w-5 h-5 text-embs-purple flex-shrink-0" />
                   <div>
-                    <span className="font-bold block text-white">Student Helpline</span>
-                    <span className="text-slate-300 text-xs">+91 9059573313 (Secretary) / +91 7993136780 (Chair)</span>
+                    <span className="font-bold block text-slate-900">Student Helpline</span>
+                    <span className="text-slate-600 text-xs font-mono">+91 9059573313 (Secretary) / +91 7993136780 (Chair)</span>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Embedded Map */}
-            <div className="specular-card rounded-3xl overflow-hidden h-64 border border-white/15">
+            <div className="bright-card rounded-3xl overflow-hidden h-64 border border-slate-200 shadow-bright">
               <iframe
                 title="Vardhaman Campus Map"
                 src="https://maps.google.com/maps?q=Vardhaman%20College%20of%20Engineering%20Hyderabad&t=&z=14&ie=UTF8&iwloc=&output=embed"
