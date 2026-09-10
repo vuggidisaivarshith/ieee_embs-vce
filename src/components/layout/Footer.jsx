@@ -1,116 +1,143 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Instagram, Linkedin, ShieldCheck, Heart } from 'lucide-react';
-import { embsLogo, collegeLogo } from '../../assets/images';
+import { 
+  Heart, Mail, MapPin, Phone, ExternalLink, Globe, 
+  Linkedin, Instagram, Youtube, Sparkles, Activity, Shield 
+} from 'lucide-react';
+import { collegeLogo, embsLogo, vardhamanLogo } from '../../assets/images';
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   const handleImgError = (e) => {
     e.currentTarget.onerror = null;
     e.currentTarget.src = embsLogo;
   };
 
   return (
-    <footer className="bg-neutralDark text-slate-300 pt-16 pb-8 border-t border-slate-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-slate-800">
+    <footer className="relative bg-slate-950/90 border-t border-white/10 text-slate-400 text-sm overflow-hidden z-20 backdrop-blur-xl">
+      
+      {/* Subtle Bioluminescent Ambient Glow */}
+      <div className="absolute top-0 left-1/4 w-96 h-1 bg-gradient-to-r from-transparent via-sky-500/50 to-transparent"></div>
+      <div className="absolute top-0 right-1/4 w-96 h-1 bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           
-          {/* Col 1: Chapter Info */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
+          {/* Brand & Mission Statement */}
+          <div className="lg:col-span-2 space-y-4">
+            <div className="flex items-center gap-2 bg-slate-900/90 p-2 rounded-2xl border border-white/15 w-fit shadow-inner">
+              <img 
+                src={collegeLogo} 
+                alt="Vardhaman College of Engineering" 
+                onError={handleImgError}
+                className="h-8 w-auto object-contain flex-shrink-0" 
+              />
+              <div className="h-5 w-px bg-slate-700"></div>
               <img 
                 src={embsLogo} 
                 alt="IEEE EMBS" 
                 onError={handleImgError}
-                className="h-10 w-auto bg-white/10 p-1.5 rounded-lg object-contain" 
+                className="h-8 w-auto object-contain flex-shrink-0" 
               />
+              <div className="h-5 w-px bg-slate-700"></div>
               <img 
-                src={collegeLogo} 
-                alt="Vardhaman College" 
+                src={vardhamanLogo} 
+                alt="Vardhaman SB" 
                 onError={handleImgError}
-                className="h-10 w-auto bg-white/10 p-1.5 rounded-lg object-contain" 
+                className="h-8 w-auto object-contain flex-shrink-0" 
               />
             </div>
-            <h4 className="text-lg font-bold text-white">IEEE EMBS Chapter</h4>
-            <p className="text-sm text-slate-400 leading-relaxed">
-              Vardhaman College of Engineering Student Branch Chapter. Connecting engineering students with healthcare technologies and digital health innovations.
+            
+            <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-sm">
+              IEEE Engineering in Medicine and Biology Society (EMBS) Student Branch Chapter at Vardhaman College of Engineering, Hyderabad. Dedicated to advancing biomedical engineering, healthcare AI, and medical technology innovation.
             </p>
-            <div className="flex items-center gap-3 pt-2">
-              <a 
-                href="https://www.instagram.com/ieee_embs_vce" 
-                target="_blank" 
-                rel="noreferrer"
-                className="p-2.5 bg-slate-800 hover:bg-embs-purple text-slate-300 hover:text-white rounded-xl transition transform hover:-translate-y-0.5"
-                title="Instagram"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a 
-                href="https://www.linkedin.com/in/vuggidisaivarshith/" 
-                target="_blank" 
-                rel="noreferrer"
-                className="p-2.5 bg-slate-800 hover:bg-ieee-blue text-slate-300 hover:text-white rounded-xl transition transform hover:-translate-y-0.5"
-                title="LinkedIn"
-              >
-                <Linkedin className="w-5 h-5" />
-              </a>
+
+            {/* Live Bio-Telemetry Status Pill */}
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-emerald-500/30 text-[11px] font-mono text-emerald-400">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+              <span>Telemetry: Biological Motion Active</span>
             </div>
           </div>
 
-          {/* Col 2: Quick Links */}
-          <div>
-            <h4 className="text-base font-bold text-white mb-4 border-l-4 border-ieee-blue pl-3">Quick Links</h4>
-            <ul className="space-y-2.5 text-sm">
-              <li><Link to="/" className="hover:text-ieee-blue transition">Home</Link></li>
-              <li><Link to="/about" className="hover:text-ieee-blue transition">About Us & Mission</Link></li>
-              <li><Link to="/events" className="hover:text-ieee-blue transition">Events & Workshops</Link></li>
-              <li><Link to="/team" className="hover:text-ieee-blue transition">Office Bearers & Team</Link></li>
-              <li><Link to="/gallery" className="hover:text-ieee-blue transition">Photo Gallery</Link></li>
-              <li><Link to="/achievements" className="hover:text-ieee-blue transition">Chapter Achievements</Link></li>
+          {/* Quick Links */}
+          <div className="space-y-3">
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider font-mono">Navigation</h4>
+            <ul className="space-y-2 text-xs">
+              <li><Link to="/about" className="hover:text-sky-400 transition">About Chapter</Link></li>
+              <li><Link to="/events" className="hover:text-sky-400 transition">Events & Workshops</Link></li>
+              <li><Link to="/team" className="hover:text-sky-400 transition">Executive Committee</Link></li>
+              <li><Link to="/gallery" className="hover:text-sky-400 transition">Event Gallery</Link></li>
+              <li><Link to="/announcements" className="hover:text-sky-400 transition">Announcements</Link></li>
             </ul>
           </div>
 
-          {/* Col 3: Resources & Membership */}
-          <div>
-            <h4 className="text-base font-bold text-white mb-4 border-l-4 border-embs-purple pl-3">Resources</h4>
-            <ul className="space-y-2.5 text-sm">
-              <li><Link to="/resources" className="hover:text-embs-purple transition">IEEE Digital Library & Papers</Link></li>
-              <li><Link to="/membership" className="hover:text-embs-purple transition">How to Join IEEE EMBS</Link></li>
-              <li><Link to="/announcements" className="hover:text-embs-purple transition">Latest News & Feed</Link></li>
-              <li><a href="https://www.embs.org/" target="_blank" rel="noreferrer" className="hover:text-embs-purple transition">IEEE EMBS Parent Society</a></li>
-              <li><a href="https://vardhaman.org" target="_blank" rel="noreferrer" className="hover:text-embs-purple transition">Vardhaman College Portal</a></li>
+          {/* Resources & Society */}
+          <div className="space-y-3">
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider font-mono">Resources</h4>
+            <ul className="space-y-2 text-xs">
+              <li><Link to="/membership" className="hover:text-sky-400 transition">Join IEEE EMBS</Link></li>
+              <li><Link to="/resources" className="hover:text-sky-400 transition">Research & Papers</Link></li>
+              <li><Link to="/achievements" className="hover:text-sky-400 transition">Awards & Honors</Link></li>
+              <li>
+                <a 
+                  href="https://www.embs.org" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="inline-flex items-center gap-1 hover:text-sky-400 transition"
+                >
+                  <span>IEEE EMBS Global</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://vardhaman.org" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="inline-flex items-center gap-1 hover:text-sky-400 transition"
+                >
+                  <span>Vardhaman College</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </li>
             </ul>
           </div>
 
-          {/* Col 4: Contact Info */}
-          <div>
-            <h4 className="text-base font-bold text-white mb-4 border-l-4 border-vardhaman-orange pl-3">Contact Us</h4>
-            <ul className="space-y-3 text-sm">
-              <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-vardhaman-orange flex-shrink-0 mt-0.5" />
-                <span className="text-slate-400">Vardhaman College of Engineering, Kacharam, Shamshabad, Hyderabad, Telangana 501218</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Mail className="w-4 h-4 text-vardhaman-orange flex-shrink-0" />
-                <a href="mailto:swethabharath27@vardhaman.org" className="text-slate-400 hover:text-white transition">swethabharath27@vardhaman.org</a>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-vardhaman-orange flex-shrink-0" />
-                <span className="text-slate-400">+91 9059573313 / +91 7993136780</span>
-              </li>
-            </ul>
+          {/* Contact Details */}
+          <div className="space-y-3">
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider font-mono">Location & Inquiries</h4>
+            <div className="space-y-2.5 text-xs">
+              <div className="flex items-start gap-2 text-slate-300">
+                <MapPin className="w-4 h-4 text-vardhaman-orange flex-shrink-0 mt-0.5" />
+                <span>Kacharam, Shamshabad, Hyderabad, Telangana 501218</span>
+              </div>
+              <div className="flex items-center gap-2 text-slate-300">
+                <Mail className="w-4 h-4 text-sky-400 flex-shrink-0" />
+                <a href="mailto:embs@vardhaman.org" className="hover:text-white transition">embs@vardhaman.org</a>
+              </div>
+              <div className="pt-2">
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-white bg-slate-900 border border-white/15 hover:bg-ieee-blue transition"
+                >
+                  <span>Send Contact Form</span>
+                </Link>
+              </div>
+            </div>
           </div>
 
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-          <p>© {new Date().getFullYear()} IEEE EMBS Student Branch Chapter - Vardhaman College of Engineering.</p>
+        <div className="pt-8 mt-10 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+          <p className="text-slate-400 text-center sm:text-left">
+            © {currentYear} IEEE EMBS Vardhaman College of Engineering Student Branch Chapter. All rights reserved.
+          </p>
           <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1">Made with <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" /> for Healthcare Innovation</span>
-            <span className="text-slate-700">|</span>
-            <Link to="/admin/login" className="text-slate-400 hover:text-white flex items-center gap-1.5 transition font-semibold">
-              <ShieldCheck className="w-3.5 h-3.5 text-ieee-blue" />
-              <span>Admin Portal Login</span>
+            <Link to="/admin/login" className="flex items-center gap-1 text-slate-400 hover:text-sky-400 transition">
+              <Shield className="w-3.5 h-3.5" />
+              <span>Admin Portal</span>
             </Link>
           </div>
         </div>

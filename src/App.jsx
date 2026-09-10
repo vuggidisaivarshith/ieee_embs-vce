@@ -3,6 +3,9 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
+import BiologicalBackground from './components/biology/BiologicalBackground';
+import BiologicalCursor from './components/biology/BiologicalCursor';
+
 import Home from './pages/Home';
 import About from './pages/About';
 import Events from './pages/Events';
@@ -24,16 +27,24 @@ export default function App() {
   const location = useLocation();
 
   return (
-    <div className="flex flex-col min-h-screen bg-neutralLight dark:bg-slate-950 text-neutralDark dark:text-slate-100">
+    <div className="flex flex-col min-h-screen bg-[#070B16] text-slate-100 selection:bg-ieee-blue selection:text-white relative">
+      {/* Living Microscopic Biological Simulation Canvas */}
+      <BiologicalBackground />
+      
+      {/* Interactive Micro-Fluid Cursor Overlay */}
+      <BiologicalCursor />
+
+      {/* Global Precision Navigation */}
       <Navbar />
-      <main className="flex-grow">
+
+      <main className="flex-grow relative z-10">
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
-            initial={{ opacity: 0, y: 6 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
           >
             <Routes location={location}>
               {/* Public Routes */}
@@ -66,6 +77,7 @@ export default function App() {
           </motion.div>
         </AnimatePresence>
       </main>
+
       <Footer />
     </div>
   );

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
   Calendar, Clock, MapPin, User, ArrowLeft, ExternalLink, 
-  Download, CheckCircle, Share2, Info, Linkedin, BookOpen, Image as ImageIcon 
+  CheckCircle, Share2, Info, Linkedin, BookOpen, Image as ImageIcon, Activity 
 } from 'lucide-react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db, DEFAULT_SITE_DATA } from '../firebase/config';
@@ -49,7 +49,7 @@ export default function EventDetail() {
   if (loading) {
     return (
       <div className="min-h-screen pt-32 flex justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-ieee-blue"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-sky-400"></div>
       </div>
     );
   }
@@ -98,38 +98,38 @@ export default function EventDetail() {
       {/* Back Button */}
       <Link 
         to="/events"
-        className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-ieee-blue mb-6 transition"
+        className="inline-flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-sky-400 mb-6 transition"
       >
         <ArrowLeft className="w-4 h-4" />
         <span>Back to Events</span>
       </Link>
 
-      <div className="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-xl space-y-8 p-6 sm:p-10">
+      <div className="specular-card rounded-3xl overflow-hidden p-6 sm:p-10 space-y-8 shadow-2xl">
         
         {/* Event Header Banner */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
           <div className="md:col-span-7 space-y-4">
-            <span className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-ieee-blue/10 text-ieee-blue dark:bg-ieee-blue/20 dark:text-sky-400 uppercase tracking-wider">
+            <span className="px-3.5 py-1.5 rounded-full text-xs font-mono font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30 uppercase tracking-wider">
               {event.topic || 'IEEE EMBS Event'}
             </span>
-            <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white leading-tight">
+            <h1 className="text-2xl sm:text-4xl font-extrabold text-white leading-tight">
               {event.title}
             </h1>
             
             {/* Metadata Pills */}
-            <div className="flex flex-wrap gap-4 text-xs font-medium text-slate-600 dark:text-slate-300 pt-2">
-              <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-700/50 px-3 py-2 rounded-xl">
-                <Calendar className="w-4 h-4 text-ieee-blue" />
+            <div className="flex flex-wrap gap-3 text-xs font-medium text-slate-300 pt-2">
+              <div className="flex items-center gap-2 bg-slate-900/80 px-3 py-2 rounded-xl border border-white/10">
+                <Calendar className="w-4 h-4 text-sky-400" />
                 <span>{event.date}</span>
               </div>
               {event.time && (
-                <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-700/50 px-3 py-2 rounded-xl">
-                  <Clock className="w-4 h-4 text-embs-purple" />
+                <div className="flex items-center gap-2 bg-slate-900/80 px-3 py-2 rounded-xl border border-white/10">
+                  <Clock className="w-4 h-4 text-purple-400" />
                   <span>{event.time}</span>
                 </div>
               )}
               {event.venue && (
-                <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-700/50 px-3 py-2 rounded-xl">
+                <div className="flex items-center gap-2 bg-slate-900/80 px-3 py-2 rounded-xl border border-white/10">
                   <MapPin className="w-4 h-4 text-vardhaman-orange" />
                   <span>{event.venue}</span>
                 </div>
@@ -142,37 +142,40 @@ export default function EventDetail() {
               src={resolveImage(event.posterUrl || '/assets/speaker.jpeg')} 
               alt={event.title}
               onError={handleImgError}
-              className="w-full h-64 object-cover rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700" 
+              className="w-full h-64 object-cover rounded-2xl shadow-lg border border-white/15" 
             />
           </div>
         </div>
 
         {/* Cinematic Screenshots Banner Carousel */}
-        <div className="pt-4 border-t border-slate-100 dark:border-slate-700">
-          <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">Session Gallery Highlights</h3>
+        <div className="pt-4 border-t border-white/10">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-xl font-bold text-white">Live Session Highlights</h3>
+            <span className="text-xs font-mono text-sky-400">13 AUG 2026</span>
+          </div>
           <EventCarousel slides={eventSlides} title={event.title} />
         </div>
 
         {/* Description */}
-        <div className="border-t border-slate-100 dark:border-slate-700 pt-6 space-y-4">
-          <h3 className="text-xl font-bold text-slate-900 dark:text-white">About the Event</h3>
-          <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm sm:text-base whitespace-pre-line">
+        <div className="border-t border-white/10 pt-6 space-y-4">
+          <h3 className="text-xl font-bold text-white">About the Event</h3>
+          <p className="text-slate-300 leading-relaxed text-sm sm:text-base whitespace-pre-line">
             {event.description}
           </p>
         </div>
 
         {/* Featured Speaker Card with "About Speaker" Button & Links */}
         {event.speaker && (
-          <div className="bg-gradient-to-r from-slate-50 via-slate-100 to-slate-50 dark:from-slate-800 dark:via-slate-750 dark:to-slate-800 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-700 space-y-4 shadow-md">
+          <div className="bg-slate-900/90 rounded-3xl p-6 sm:p-8 border border-white/15 space-y-4 shadow-md">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-ieee-blue dark:text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
+              <span className="text-xs font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1.5 font-mono">
                 <User className="w-4 h-4" /> Keynote Speaker Profile
               </span>
               
               {/* About Speaker Button */}
               <button
                 onClick={() => setSpeakerModalOpen(true)}
-                className="px-4 py-2 rounded-xl text-xs font-extrabold text-white bg-ieee-blue hover:bg-ieee-dark shadow-md flex items-center gap-1.5 transition transform hover:scale-105"
+                className="px-4 py-2 rounded-xl text-xs font-extrabold text-white bg-ieee-blue hover:bg-ieee-dark shadow-md flex items-center gap-1.5 transition transform hover:scale-105 border border-sky-400/30"
               >
                 <Info className="w-4 h-4" />
                 <span>About Speaker</span>
@@ -184,21 +187,21 @@ export default function EventDetail() {
                 src={resolveImage(event.posterUrl || '/assets/speaker.jpeg')} 
                 alt={event.speaker}
                 onError={handleImgError}
-                className="w-20 h-20 rounded-2xl object-cover border-2 border-ieee-blue shadow-md flex-shrink-0"
+                className="w-20 h-20 rounded-2xl object-cover border-2 border-sky-400 shadow-md flex-shrink-0"
               />
               <div className="space-y-1 text-center sm:text-left">
-                <h4 className="text-xl font-extrabold text-slate-900 dark:text-white">{event.speaker}</h4>
-                <p className="text-xs font-semibold text-ieee-blue dark:text-sky-400">{speakerData.role}</p>
-                <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2 pt-1">{speakerData.bio}</p>
+                <h4 className="text-xl font-extrabold text-white">{event.speaker}</h4>
+                <p className="text-xs font-semibold text-sky-400">{speakerData.role}</p>
+                <p className="text-xs text-slate-300 line-clamp-2 pt-1">{speakerData.bio}</p>
                 
                 {/* External Links */}
-                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 pt-3">
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 pt-3">
                   {speakerData.linkedin && (
                     <a
                       href={speakerData.linkedin}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0A66C2] hover:underline"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-sky-400 hover:underline"
                     >
                       <Linkedin className="w-4 h-4" />
                       <span>LinkedIn Profile</span>
@@ -210,7 +213,7 @@ export default function EventDetail() {
                       href={speakerData.university}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-embs-purple hover:underline"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-400 hover:underline"
                     >
                       <BookOpen className="w-4 h-4" />
                       <span>XIMB Faculty Profile</span>
@@ -223,28 +226,13 @@ export default function EventDetail() {
           </div>
         )}
 
-        {/* Agenda */}
-        {event.agenda && event.agenda.length > 0 && (
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white">Event Schedule</h3>
-            <div className="space-y-2">
-              {event.agenda.map((item, idx) => (
-                <div key={idx} className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-700/30 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-200">
-                  <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Separated Action Buttons (Event Gallery & About Speaker) - No Register button for completed event */}
-        <div className="pt-6 border-t border-slate-100 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4">
+        {/* Separated Action Buttons (Event Gallery & About Speaker) */}
+        <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            <p className="text-sm font-bold text-slate-900 dark:text-white">
+            <p className="text-sm font-bold text-white">
               {isPastEvent ? "Session Completed on 13 Aug 2026" : "Ready to Participate?"}
             </p>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-400">
               {isPastEvent ? "Explore event session screenshots and speaker details." : "Secure your spot for this session today."}
             </p>
           </div>
@@ -252,15 +240,15 @@ export default function EventDetail() {
           <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
             <button
               onClick={() => setSpeakerModalOpen(true)}
-              className="flex-1 sm:flex-initial px-5 py-3 rounded-xl text-xs font-extrabold text-slate-800 dark:text-slate-100 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 border border-slate-300 dark:border-slate-600 shadow-md flex items-center justify-center gap-1.5 transition"
+              className="flex-1 sm:flex-initial px-5 py-3 rounded-xl text-xs font-extrabold text-slate-200 bg-slate-900 hover:bg-slate-800 border border-white/15 shadow-md flex items-center justify-center gap-1.5 transition"
             >
-              <Info className="w-4 h-4 text-ieee-blue" />
+              <Info className="w-4 h-4 text-sky-400" />
               <span>About Speaker</span>
             </button>
 
             <Link
               to="/gallery"
-              className="flex-1 sm:flex-initial px-6 py-3 rounded-xl text-xs font-extrabold text-white bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange shadow-lg hover:shadow-xl transition flex items-center justify-center gap-2 transform hover:scale-105"
+              className="flex-1 sm:flex-initial px-6 py-3 rounded-xl text-xs font-extrabold text-white bg-gradient-to-r from-ieee-blue via-embs-purple to-vardhaman-orange shadow-lg hover:shadow-xl transition flex items-center justify-center gap-2 transform hover:scale-105 border border-sky-400/30"
             >
               <ImageIcon className="w-4 h-4" />
               <span>Event Gallery</span>

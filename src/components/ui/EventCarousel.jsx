@@ -47,15 +47,15 @@ export default function EventCarousel({ slides, title = "Digital Health & Teleme
       {/* Header Bar */}
       <div className="flex items-center justify-between text-xs font-bold text-slate-300 relative z-10 px-1">
         <div className="flex items-center gap-2">
-          <span className="px-3 py-1 rounded-full text-[11px] font-extrabold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 uppercase tracking-wider flex items-center gap-1.5 shadow-sm">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Event Gallery Highlights
+          <span className="px-3 py-1 rounded-full text-[11px] font-extrabold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 uppercase tracking-wider flex items-center gap-1.5 shadow-sm font-mono">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Event Highlights
           </span>
         </div>
         
         <div className="flex items-center gap-2">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-slate-300 transition flex items-center gap-1 text-[11px]"
+            className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-slate-300 transition flex items-center gap-1 text-[11px] font-mono"
             title={isPlaying ? "Pause Auto-play" : "Play Slideshow"}
           >
             {isPlaying ? <Pause className="w-3 h-3 text-sky-400" /> : <Play className="w-3 h-3 text-emerald-400" />}
@@ -87,7 +87,7 @@ export default function EventCarousel({ slides, title = "Digital Health & Teleme
 
         {/* Top Floating Badge */}
         <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
-          <span className="px-3 py-1 rounded-xl bg-slate-950/80 backdrop-blur-md border border-white/15 text-[11px] font-bold text-sky-300 flex items-center gap-1.5 shadow-lg">
+          <span className="px-3 py-1 rounded-xl bg-slate-950/80 backdrop-blur-md border border-white/15 text-[11px] font-bold text-sky-300 flex items-center gap-1.5 shadow-lg font-mono">
             <Film className="w-3.5 h-3.5 text-vardhaman-orange" />
             <span>13 AUG 2026 • Live Session Capture</span>
           </span>
@@ -96,7 +96,7 @@ export default function EventCarousel({ slides, title = "Digital Health & Teleme
         {/* Glassmorphic Bottom Caption Bar */}
         <div className="absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent pt-12 pb-4 px-5 flex items-end justify-between gap-4">
           <div className="space-y-1">
-            <span className="text-[10px] font-extrabold text-sky-400 uppercase tracking-widest block">Dr. Ajit Kumar Keynote</span>
+            <span className="text-[10px] font-extrabold text-sky-400 uppercase tracking-widest block font-mono">Dr. Ajit Kumar Keynote</span>
             <p className="text-xs sm:text-sm font-bold text-white leading-snug line-clamp-1">{imageCaption}</p>
           </div>
 
@@ -156,7 +156,7 @@ export default function EventCarousel({ slides, title = "Digital Health & Teleme
               className="max-h-[82vh] w-auto max-w-full object-contain rounded-3xl border border-white/20 shadow-2xl" 
             />
             <div className="w-full text-center bg-slate-900/90 p-4 rounded-2xl border border-white/10 backdrop-blur-md">
-              <span className="text-xs font-bold text-sky-400 uppercase tracking-wider block">IEEE EMBS Event Screenshot • 13 Aug 2026</span>
+              <span className="text-xs font-bold text-sky-400 uppercase tracking-wider block font-mono">IEEE EMBS Event Highlight • 13 Aug 2026</span>
               <p className="text-white text-sm font-semibold mt-0.5">{imageCaption}</p>
             </div>
           </div>
