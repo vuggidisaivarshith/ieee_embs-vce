@@ -88,9 +88,19 @@ export class PlateletSimulation {
       ctx.rotate(p.rotation);
       ctx.globalAlpha = p.opacity;
 
+      // Soft platelet glow aura
+      const pGlow = ctx.createRadialGradient(0, 0, p.size * 0.5, 0, 0, p.size * 2.2);
+      pGlow.addColorStop(0, `hsla(${p.hue}, 90%, 60%, 0.4)`);
+      pGlow.addColorStop(1, `hsla(${p.hue}, 90%, 60%, 0.0)`);
+      ctx.fillStyle = pGlow;
+      ctx.beginPath();
+      ctx.arc(0, 0, p.size * 2.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Main discoid body
       ctx.fillStyle = `hsla(${p.hue}, 88%, 56%, 0.85)`;
       ctx.strokeStyle = `hsla(${p.hue + 8}, 100%, 75%, 0.9)`;
-      ctx.lineWidth = 0.8;
+      ctx.lineWidth = 1.0;
 
       ctx.beginPath();
       for (let s = 0; s < p.spikes; s++) {
@@ -105,6 +115,21 @@ export class PlateletSimulation {
       ctx.closePath();
       ctx.fill();
       ctx.stroke();
+
+      // Micro-pseudopodia filaments
+      for (let s = 0; s < p.spikes; s++) {
+        const angle = (s / p.spikes) * Math.PI * 2;
+        const len = p.size * (p.spikeLengths[s % p.spikeLengths.length] || 1);
+        const sx = Math.cos(angle) * len;
+        const sy = Math.sin(angle) * len;
+        const ex = Math.cos(angle) * (len + 3.5);
+        const ey = Math.sin(angle) * (len + 3.5);
+
+        ctx.beginPath();
+        ctx.moveTo(sx, sy);
+        ctx.lineTo(ex, ey);
+        ctx.stroke();
+      }
 
       ctx.restore();
     }

@@ -54,64 +54,64 @@ export class VesselEnvironment {
 
     // 1. Volumetric Intravascular Plasma Core Gradient
     const coreGrad = ctx.createLinearGradient(0, 0, 0, height);
-    coreGrad.addColorStop(0, 'rgba(4, 7, 17, 0.95)');       // Obsidian void at wall
-    coreGrad.addColorStop(0.18, 'rgba(15, 23, 42, 0.82)');
-    coreGrad.addColorStop(0.5, 'rgba(14, 28, 54, 0.65)');    // Vibrant plasma lumen center
-    coreGrad.addColorStop(0.82, 'rgba(15, 23, 42, 0.82)');
-    coreGrad.addColorStop(1, 'rgba(4, 7, 17, 0.95)');
+    coreGrad.addColorStop(0, 'rgba(3, 7, 18, 0.98)');        // Deep obsidian at vessel boundary
+    coreGrad.addColorStop(0.15, 'rgba(15, 23, 42, 0.88)');
+    coreGrad.addColorStop(0.5, 'rgba(14, 32, 64, 0.70)');     // Vibrant bio-lumen center
+    coreGrad.addColorStop(0.85, 'rgba(15, 23, 42, 0.88)');
+    coreGrad.addColorStop(1, 'rgba(3, 7, 18, 0.98)');
 
     ctx.fillStyle = coreGrad;
     ctx.fillRect(0, 0, width, height);
 
     // 2. Cardiac Systolic / Diastolic Pulse Wave on Vessel Boundaries
-    const pulseDilation = Math.sin(this.time * 2.2) * 8 + Math.sin(this.time * 4.4) * 3;
-    const wallHeightTop = 55 + pulseDilation;
-    const wallHeightBottom = height - (55 + pulseDilation);
+    const pulseDilation = Math.sin(this.time * 2.2) * 10 + Math.sin(this.time * 4.4) * 4;
+    const wallHeightTop = 60 + pulseDilation;
+    const wallHeightBottom = height - (60 + pulseDilation);
 
     // Top Endothelial Wall
     ctx.beginPath();
     ctx.moveTo(0, 0);
     ctx.lineTo(0, wallHeightTop);
-    for (let x = 0; x <= width; x += 30) {
-      const wave = Math.sin(x * 0.008 + this.time) * 12 + Math.cos(x * 0.015 - this.time * 0.8) * 6;
+    for (let x = 0; x <= width; x += 25) {
+      const wave = Math.sin(x * 0.007 + this.time) * 14 + Math.cos(x * 0.014 - this.time * 0.8) * 7;
       ctx.lineTo(x, wallHeightTop + wave);
     }
     ctx.lineTo(width, 0);
     ctx.closePath();
 
-    const topWallGrad = ctx.createLinearGradient(0, 0, 0, wallHeightTop + 20);
-    topWallGrad.addColorStop(0, 'rgba(190, 18, 60, 0.28)'); // Endothelial endothelial red-ruby
-    topWallGrad.addColorStop(0.7, 'rgba(225, 29, 72, 0.12)');
+    const topWallGrad = ctx.createLinearGradient(0, 0, 0, wallHeightTop + 30);
+    topWallGrad.addColorStop(0, 'rgba(190, 18, 60, 0.35)'); // Arterial endothelial red-ruby
+    topWallGrad.addColorStop(0.65, 'rgba(225, 29, 72, 0.15)');
     topWallGrad.addColorStop(1, 'rgba(225, 29, 72, 0.0)');
     ctx.fillStyle = topWallGrad;
     ctx.fill();
 
     // Top Wall Specular Lumen Line
-    ctx.strokeStyle = 'rgba(251, 113, 133, 0.25)';
-    ctx.lineWidth = 1.2;
+    ctx.strokeStyle = 'rgba(251, 113, 133, 0.35)';
+    ctx.lineWidth = 1.5;
     ctx.stroke();
 
     // Bottom Endothelial Wall
     ctx.beginPath();
     ctx.moveTo(0, height);
     ctx.lineTo(0, wallHeightBottom);
-    for (let x = 0; x <= width; x += 30) {
-      const wave = Math.sin(x * 0.008 - this.time * 1.1) * 12 + Math.cos(x * 0.015 + this.time * 0.7) * 6;
+    for (let x = 0; x <= width; x += 25) {
+      const wave = Math.sin(x * 0.007 - this.time * 1.1) * 14 + Math.cos(x * 0.014 + this.time * 0.7) * 7;
       ctx.lineTo(x, wallHeightBottom + wave);
     }
     ctx.lineTo(width, height);
     ctx.closePath();
 
-    const bottomWallGrad = ctx.createLinearGradient(0, height, 0, wallHeightBottom - 20);
-    bottomWallGrad.addColorStop(0, 'rgba(190, 18, 60, 0.28)');
-    bottomWallGrad.addColorStop(0.7, 'rgba(225, 29, 72, 0.12)');
+    const bottomWallGrad = ctx.createLinearGradient(0, height, 0, wallHeightBottom - 30);
+    bottomWallGrad.addColorStop(0, 'rgba(190, 18, 60, 0.35)');
+    bottomWallGrad.addColorStop(0.65, 'rgba(225, 29, 72, 0.15)');
     bottomWallGrad.addColorStop(1, 'rgba(225, 29, 72, 0.0)');
     ctx.fillStyle = bottomWallGrad;
     ctx.fill();
 
     // Bottom Wall Specular Lumen Line
-    ctx.strokeStyle = 'rgba(251, 113, 133, 0.25)';
-    ctx.lineWidth = 1.2;
+    ctx.strokeStyle = 'rgba(251, 113, 133, 0.35)';
+    ctx.lineWidth = 1.5;
     ctx.stroke();
 
     // 3. Drifting Plasma Micelles & Macromolecules

@@ -120,7 +120,7 @@ export class WBCSimulation {
 
       // 1. Amoeboid Plasma Membrane Path Construction
       ctx.beginPath();
-      const points = 64;
+      const points = 72;
       for (let j = 0; j <= points; j++) {
         const theta = (j / points) * Math.PI * 2;
         let r = cell.radius;
@@ -138,23 +138,32 @@ export class WBCSimulation {
       }
       ctx.closePath();
 
-      // Translucent Leukocyte Bilayer Gradient (Pearl / Sky / Soft Violet)
+      // Translucent Leukocyte Bilayer Gradient (Pearl / Bio-Cyan / Soft Violet)
       const memGrad = ctx.createRadialGradient(
-        -cell.radius * 0.25, -cell.radius * 0.25, cell.radius * 0.1,
-        0, 0, cell.radius * 1.15
+        -cell.radius * 0.2, -cell.radius * 0.2, cell.radius * 0.05,
+        0, 0, cell.radius * 1.2
       );
-      memGrad.addColorStop(0, 'rgba(255, 255, 255, 0.45)');
-      memGrad.addColorStop(0.35, 'rgba(224, 242, 254, 0.28)'); // Soft sky pearl
-      memGrad.addColorStop(0.8, 'rgba(186, 230, 253, 0.15)');
-      memGrad.addColorStop(1, 'rgba(125, 211, 252, 0.05)');
+      memGrad.addColorStop(0, 'rgba(255, 255, 255, 0.55)');
+      memGrad.addColorStop(0.3, 'rgba(224, 242, 254, 0.35)'); // Soft sky pearl
+      memGrad.addColorStop(0.75, 'rgba(186, 230, 253, 0.20)');
+      memGrad.addColorStop(1, 'rgba(147, 197, 253, 0.06)');
 
       ctx.fillStyle = memGrad;
       ctx.fill();
 
       // Outer Membrane Bioluminescent Rim Stroke
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.55)';
-      ctx.lineWidth = 1.6;
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.65)';
+      ctx.lineWidth = 1.8;
       ctx.stroke();
+
+      // Ambient outer lipid halo
+      const haloGrad = ctx.createRadialGradient(0, 0, cell.radius * 0.8, 0, 0, cell.radius * 1.45);
+      haloGrad.addColorStop(0, 'rgba(56, 189, 248, 0.15)');
+      haloGrad.addColorStop(1, 'rgba(56, 189, 248, 0.0)');
+      ctx.fillStyle = haloGrad;
+      ctx.beginPath();
+      ctx.arc(0, 0, cell.radius * 1.45, 0, Math.PI * 2);
+      ctx.fill();
 
       // 2. Multi-Lobed Chromatin Nucleus
       const nucleusRadius = cell.radius * 0.38;

@@ -182,18 +182,22 @@ export default function Home() {
             {/* Left Hero Column */}
             <motion.div variants={itemVariants} className="lg:col-span-7 space-y-6 text-center lg:text-left">
               
-              {/* Category Pill with Ambient Pulse */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-white/15 backdrop-blur-md text-xs font-semibold text-embs-cyan shadow-sm">
+              {/* Category Pill with Ambient Pulse & Optical Telemetry */}
+              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900/90 border border-sky-400/30 backdrop-blur-md text-xs font-semibold text-embs-cyan shadow-lg shadow-sky-500/10">
                 <Microscope className="w-4 h-4 text-warm-orange animate-pulse" />
-                <span>IEEE Engineering in Medicine and Biology Society</span>
+                <span className="font-mono uppercase tracking-wider text-[11px]">IEEE Engineering in Medicine & Biology Society</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-clinical-green animate-ping" />
               </div>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white">
-                Advancing Biomedical Engineering & <span className="text-embs-cyan">Living Health Innovation</span>
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.08] text-white">
+                Engineering <br className="hidden sm:block" />
+                <span className="bg-gradient-to-r from-sky-400 via-embs-cyan to-indigo-300 bg-clip-text text-transparent">
+                  Living Systems
+                </span> & Future Health
               </h1>
 
-              <p className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
-                Connecting engineering minds with clinical frontiers. Exploring healthcare AI, medical signal telemetry, and biomedical technology at Vardhaman College of Engineering.
+              <p className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl font-normal">
+                Connecting frontier engineering with clinical medicine. Exploring healthcare artificial intelligence, bio-signal telemetry, and computational physiology at Vardhaman College of Engineering.
               </p>
 
               {/* Action Buttons with Tactile Magnetic Pull */}
@@ -201,7 +205,7 @@ export default function Home() {
                 <MagneticButton
                   as={Link}
                   to="/events"
-                  className="px-6 py-3.5 rounded-xl font-bold text-sm text-white bg-embs-blue hover:bg-embs-blueAlt shadow-lg shadow-embs-blue/30 transition-all flex items-center gap-2 border border-sky-400/30"
+                  className="px-7 py-3.5 rounded-2xl font-extrabold text-sm text-white bg-gradient-to-r from-embs-blue to-embs-blueAlt hover:opacity-95 shadow-xl shadow-embs-blue/25 transition-all flex items-center gap-2.5 border border-sky-300/30"
                 >
                   <Calendar className="w-4 h-4" />
                   <span>Explore Events & Timeline</span>
@@ -209,7 +213,7 @@ export default function Home() {
 
                 <Link
                   to="/gallery"
-                  className="px-6 py-3.5 rounded-xl font-bold text-sm text-slate-200 bg-slate-900/80 hover:bg-slate-800 border border-white/15 backdrop-blur-md transition-all flex items-center gap-2 hover:border-embs-cyan/50"
+                  className="px-6 py-3.5 rounded-2xl font-bold text-sm text-slate-200 bg-slate-900/80 hover:bg-slate-800 border border-white/15 backdrop-blur-md transition-all flex items-center gap-2 hover:border-embs-cyan/50 hover:text-white"
                 >
                   <ImageIcon className="w-4 h-4 text-embs-cyan" />
                   <span>Event Photo Memories</span>
@@ -218,15 +222,15 @@ export default function Home() {
 
               {/* Fragile Protected Stats Bar */}
               <div className="pt-6 grid grid-cols-3 gap-4 border-t border-white/10 text-center lg:text-left">
-                <div className="p-3 bg-slate-900/60 rounded-2xl border border-white/10 backdrop-blur-sm">
+                <div className="p-3.5 bg-slate-900/70 rounded-2xl border border-white/10 backdrop-blur-sm shadow-inner">
                   <div className="text-2xl sm:text-3xl font-black text-embs-cyan">{siteSettings.membersCount}+</div>
                   <div className="text-[11px] text-slate-400 font-mono uppercase tracking-wider">Active Members</div>
                 </div>
-                <div className="p-3 bg-slate-900/60 rounded-2xl border border-white/10 backdrop-blur-sm">
+                <div className="p-3.5 bg-slate-900/70 rounded-2xl border border-white/10 backdrop-blur-sm shadow-inner">
                   <div className="text-2xl sm:text-3xl font-black text-bio-ruby">{siteSettings.eventsCount}+</div>
                   <div className="text-[11px] text-slate-400 font-mono uppercase tracking-wider">Events Hosted</div>
                 </div>
-                <div className="p-3 bg-slate-900/60 rounded-2xl border border-white/10 backdrop-blur-sm">
+                <div className="p-3.5 bg-slate-900/70 rounded-2xl border border-white/10 backdrop-blur-sm shadow-inner">
                   <div className="text-2xl sm:text-3xl font-black text-warm-accent">{siteSettings.yearsActive} Yrs</div>
                   <div className="text-[11px] text-slate-400 font-mono uppercase tracking-wider">Active Chapter</div>
                 </div>

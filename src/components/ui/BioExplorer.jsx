@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Microscope, HeartPulse, Activity, Shield, Sparkles, Dna, Info, ChevronRight, Eye, Focus, RefreshCw } from 'lucide-react';
+import TiltCard from './TiltCard';
 
 export default function BioExplorer() {
   const [selectedEntity, setSelectedEntity] = useState('rbc');
@@ -202,58 +203,62 @@ export default function BioExplorer() {
               </div>
             </div>
 
-            {/* 4 Precision Scientific Data Pillars with Staggered Transitions */}
+            {/* 4 Precision Scientific Data Pillars with Staggered Transitions & TiltCard */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <motion.div 
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.05 }}
-                className="p-5 rounded-2xl bg-slate-900/80 border border-white/10 space-y-1.5 hover:border-sky-400/40 transition-colors"
               >
-                <span className="text-[11px] font-mono uppercase tracking-wider text-sky-400 font-bold block flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
-                  1. Structural Morphology
-                </span>
-                <p className="text-slate-200 text-xs sm:text-sm leading-relaxed">{current.details.morphology}</p>
+                <TiltCard maxTilt={4} className="p-5 rounded-2xl bg-slate-900/80 border border-white/10 space-y-1.5 hover:border-sky-400/40 transition-colors h-full">
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-sky-400 font-bold block flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+                    1. Structural Morphology
+                  </span>
+                  <p className="text-slate-200 text-xs sm:text-sm leading-relaxed">{current.details.morphology}</p>
+                </TiltCard>
               </motion.div>
 
               <motion.div 
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.1 }}
-                className="p-5 rounded-2xl bg-slate-900/80 border border-white/10 space-y-1.5 hover:border-rose-400/40 transition-colors"
               >
-                <span className="text-[11px] font-mono uppercase tracking-wider text-rose-400 font-bold block flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
-                  2. Physiological Function
-                </span>
-                <p className="text-slate-200 text-xs sm:text-sm leading-relaxed">{current.details.function}</p>
+                <TiltCard maxTilt={4} className="p-5 rounded-2xl bg-slate-900/80 border border-white/10 space-y-1.5 hover:border-rose-400/40 transition-colors h-full">
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-rose-400 font-bold block flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
+                    2. Physiological Function
+                  </span>
+                  <p className="text-slate-200 text-xs sm:text-sm leading-relaxed">{current.details.function}</p>
+                </TiltCard>
               </motion.div>
 
               <motion.div 
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.15 }}
-                className="p-5 rounded-2xl bg-slate-900/80 border border-white/10 space-y-1.5 hover:border-amber-400/40 transition-colors"
               >
-                <span className="text-[11px] font-mono uppercase tracking-wider text-amber-400 font-bold block flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                  3. Micro-Fluid Dynamics
-                </span>
-                <p className="text-slate-200 text-xs sm:text-sm leading-relaxed">{current.details.physics}</p>
+                <TiltCard maxTilt={4} className="p-5 rounded-2xl bg-slate-900/80 border border-white/10 space-y-1.5 hover:border-amber-400/40 transition-colors h-full">
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-amber-400 font-bold block flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                    3. Micro-Fluid Dynamics
+                  </span>
+                  <p className="text-slate-200 text-xs sm:text-sm leading-relaxed">{current.details.physics}</p>
+                </TiltCard>
               </motion.div>
 
               <motion.div 
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.2 }}
-                className="p-5 rounded-2xl bg-slate-900/80 border border-white/10 space-y-1.5 hover:border-emerald-400/40 transition-colors"
               >
-                <span className="text-[11px] font-mono uppercase tracking-wider text-clinical-green font-bold block flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-clinical-green"></span>
-                  4. Biomedical Engineering & AI
-                </span>
-                <p className="text-slate-200 text-xs sm:text-sm leading-relaxed">{current.details.biomedicalApplication}</p>
+                <TiltCard maxTilt={4} className="p-5 rounded-2xl bg-slate-900/80 border border-white/10 space-y-1.5 hover:border-emerald-400/40 transition-colors h-full">
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-clinical-green font-bold block flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-clinical-green"></span>
+                    4. Biomedical Engineering & AI
+                  </span>
+                  <p className="text-slate-200 text-xs sm:text-sm leading-relaxed">{current.details.biomedicalApplication}</p>
+                </TiltCard>
               </motion.div>
             </div>
           </motion.div>

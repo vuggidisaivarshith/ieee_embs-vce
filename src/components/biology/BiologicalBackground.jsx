@@ -94,16 +94,26 @@ export default function BiologicalBackground() {
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     document.addEventListener('mouseleave', handleMouseLeave);
 
-    // Main 60 FPS Render Loop
+    // Main 60 FPS Render Loop with Scroll Velocity Coupling
     let scrollY = window.scrollY || 0;
+    let lastScrollY = scrollY;
+    let scrollVelocity = 0;
+
     const handleScroll = () => {
       scrollY = window.scrollY || 0;
+      scrollVelocity = (scrollY - lastScrollY);
+      lastScrollY = scrollY;
+      if (rbcSim.current) rbcSim.current.setScrollVelocity(scrollVelocity);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const path = location.pathname;
+
+      // Decay scroll velocity smoothly
+      scrollVelocity *= 0.92;
+      if (rbcSim.current) rbcSim.current.setScrollVelocity(scrollVelocity);
 
       // 1. Home Page: Full Living Bloodstream Intravascular Environment
       if (path === '/') {
