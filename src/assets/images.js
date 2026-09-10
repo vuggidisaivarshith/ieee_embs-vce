@@ -12,10 +12,6 @@ import eventSlide1 from './event-slide-1.png';
 import eventSlide2 from './event-slide-2.png';
 import eventSlide3 from './event-slide-3.png';
 
-export const eventSlide1 = speakerPhoto;
-export const eventSlide2 = speakerPhoto;
-export const eventSlide3 = speakerPhoto;
-
 export {
   collegeLogo,
   embsLogo,
