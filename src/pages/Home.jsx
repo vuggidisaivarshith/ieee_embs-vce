@@ -176,8 +176,8 @@ export default function Home() {
                 <span>IEEE Engineering in Medicine and Biology Society</span>
               </div>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
-                Where <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-400 via-rose-400 to-amber-300">Engineering</span> Meets Living Biology
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white">
+                Advancing Biomedical Engineering & <span className="text-sky-400">Living Health Innovation</span>
               </h1>
 
               <p className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">

@@ -5,7 +5,6 @@ import { WBCSimulation } from './WBCSimulation';
 import { PlateletSimulation } from './PlateletSimulation';
 import { VesselEnvironment } from './VesselEnvironment';
 import { CellMatrixSimulation } from './CellMatrixSimulation';
-import { BioSignalSimulation } from './BioSignalSimulation';
 
 export default function BiologicalBackground() {
   const canvasRef = useRef(null);
@@ -19,7 +18,6 @@ export default function BiologicalBackground() {
   const plateletSim = useRef(null);
   const vesselEnv = useRef(null);
   const cellMatrixSim = useRef(null);
-  const bioSignalSim = useRef(null);
 
   // Mouse state
   const mouseState = useRef({
@@ -60,19 +58,18 @@ export default function BiologicalBackground() {
     handleResize();
     window.addEventListener('resize', handleResize, { passive: true });
 
-    // Instantiate simulations based on device capacity
-    rbcSim.current = new RBCSimulation(canvas, { count: isMobile ? 14 : 26 });
+    // Instantiate modular simulations with device-adapted counts
+    rbcSim.current = new RBCSimulation(canvas, { count: isMobile ? 12 : 22, speedMultiplier: 0.85 });
     wbcSim.current = new WBCSimulation(canvas, { count: isMobile ? 1 : 2 });
-    plateletSim.current = new PlateletSimulation(canvas, { count: isMobile ? 16 : 30 });
+    plateletSim.current = new PlateletSimulation(canvas, { count: isMobile ? 14 : 24 });
     vesselEnv.current = new VesselEnvironment(canvas);
     cellMatrixSim.current = new CellMatrixSimulation(canvas);
-    bioSignalSim.current = new BioSignalSimulation(canvas);
 
     // Mouse velocity tracker
     const handleMouseMove = (e) => {
       const ms = mouseState.current;
-      ms.vx = (e.clientX - ms.prevX) * 0.5;
-      ms.vy = (e.clientY - ms.prevY) * 0.5;
+      ms.vx = (e.clientX - ms.prevX) * 0.4;
+      ms.vy = (e.clientY - ms.prevY) * 0.4;
       ms.x = e.clientX;
       ms.y = e.clientY;
       ms.prevX = e.clientX;
@@ -108,7 +105,7 @@ export default function BiologicalBackground() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const path = location.pathname;
 
-      // 1. Home Page: Full Bloodstream Intravascular Lumen
+      // 1. Home Page: Full Living Bloodstream Intravascular Environment
       if (path === '/') {
         if (vesselEnv.current) {
           vesselEnv.current.update(scrollY);
@@ -127,8 +124,8 @@ export default function BiologicalBackground() {
           wbcSim.current.draw();
         }
       } 
-      // 2. About & Team: Cellular Tissue Histology Matrix
-      else if (path === '/about' || path === '/team') {
+      // 2. About: Living Cellular Matrix Histology
+      else if (path === '/about') {
         if (cellMatrixSim.current) {
           cellMatrixSim.current.update();
           cellMatrixSim.current.draw();
@@ -138,19 +135,26 @@ export default function BiologicalBackground() {
           wbcSim.current.draw();
         }
       }
-      // 3. Events & Research: Clinical Bio-Signal Diagnostics & Waveforms
+      // 3. Events: Clean Fluid Streamline Focus
       else if (path.startsWith('/events')) {
-        if (bioSignalSim.current) {
-          bioSignalSim.current.update();
-          bioSignalSim.current.draw();
+        if (vesselEnv.current) {
+          vesselEnv.current.update(scrollY);
+          vesselEnv.current.draw();
         }
         if (rbcSim.current) {
           rbcSim.current.update(scrollY);
           rbcSim.current.draw();
         }
       }
-      // 4. Contact, Membership, Gallery, Resources: Minimal Plasma Fluid
-      else {
+      // 4. Team: Restrained Cellular Atmosphere (Human focus)
+      else if (path === '/team') {
+        if (cellMatrixSim.current) {
+          cellMatrixSim.current.update();
+          cellMatrixSim.current.draw();
+        }
+      }
+      // 5. Gallery: Darkfield Ambient (Zero photo obstruction)
+      else if (path === '/gallery') {
         if (vesselEnv.current) {
           vesselEnv.current.update(scrollY);
           vesselEnv.current.draw();
@@ -159,9 +163,16 @@ export default function BiologicalBackground() {
           plateletSim.current.update();
           plateletSim.current.draw();
         }
-        if (rbcSim.current) {
-          rbcSim.current.update(scrollY);
-          rbcSim.current.draw();
+      }
+      // 6. Contact, Membership, Resources: Minimal Serene Fluid
+      else {
+        if (vesselEnv.current) {
+          vesselEnv.current.update(scrollY);
+          vesselEnv.current.draw();
+        }
+        if (plateletSim.current) {
+          plateletSim.current.update();
+          plateletSim.current.draw();
         }
       }
 
@@ -192,7 +203,7 @@ export default function BiologicalBackground() {
     <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden" aria-hidden="true">
       <canvas
         ref={canvasRef}
-        className="w-full h-full block opacity-85 dark:opacity-95"
+        className="w-full h-full block opacity-80 dark:opacity-90"
       />
       {/* Subtle Vignette & Specular Bioluminescent Mesh */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-500/5 via-transparent to-slate-950/40 pointer-events-none"></div>
