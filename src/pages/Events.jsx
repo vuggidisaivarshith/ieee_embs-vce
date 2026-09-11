@@ -1,261 +1,170 @@
-﻿import React, { useState, useEffect, useRef } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Calendar, Clock, MapPin, Search, ChevronRight, User, Image as ImageIcon, Info, Activity, Zap, Radio } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { Calendar, MapPin, User, Info, Image as ImageIcon, Search } from "lucide-react";
+import { motion } from "framer-motion";
 import { collection, getDocs } from "firebase/firestore";
 import { db, DEFAULT_SITE_DATA } from "../firebase/config";
 import { resolveImage } from "../utils/resolveImage";
 import CountdownTimer from "../components/ui/CountdownTimer";
 import Skeleton from "../components/ui/Skeleton";
-import TiltCard from "../components/ui/TiltCard";
-
-/* Bio signal waveform SVG drawn inline */
-function BioSignalWaveform() {
-  const pts = [];
-  const W = 1200, H = 60;
-  const segments = 24;
-  for (let i = 0; i <= segments; i++) {
-    const x = (i / segments) * W;
-    const t = i / segments;
-    /* ECG-like: flat baseline with QRS spikes at every 6th segment */
-    let y = H / 2;
-    const phase = i % 6;
-    if (phase === 0) y = H / 2 - 22;
-    else if (phase === 1) y = H / 2 + 10;
-    else if (phase === 2) y = H / 2 - 40;
-    else if (phase === 3) y = H / 2 + 14;
-    else if (phase === 4) y = H / 2 - 8;
-    pts.push(`${x},${y}`);
-  }
-  return (
-    <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className="w-full h-12 opacity-20 pointer-events-none">
-      <polyline points={pts.join(" ")} fill="none" stroke="url(#ecgGrad)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <defs>
-        <linearGradient id="ecgGrad" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#00629B" />
-          <stop offset="50%" stopColor="#00A8C6" />
-          <stop offset="100%" stopColor="#772583" />
-        </linearGradient>
-      </defs>
-    </svg>
-  );
-}
-
-const stagger = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.10, delayChildren: 0.05 } }
-};
-const fadeUp = {
-  hidden: { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
-};
 
 export default function Events() {
-  const [events, setEvents] = useState(DEFAULT_SITE_DATA.events);
-  const [filter, setFilter] = useState("all");
-  const [search, setSearch] = useState("");
+  const [events, setEvents]   = useState(DEFAULT_SITE_DATA.events);
+  const [filter, setFilter]   = useState("all");
+  const [search, setSearch]   = useState("");
   const [loading, setLoading] = useState(true);
-  const heroRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
 
   useEffect(() => {
-    async function loadEvents() {
-      try {
-        const snap = await getDocs(collection(db, "events"));
-        if (!snap.empty) {
-          const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-          setEvents(list);
-        }
-      } catch (err) {
-        console.log("Using default events dataset:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadEvents();
+    getDocs(collection(db, "events"))
+      .then(snap => { if (!snap.empty) setEvents(snap.docs.map(d => ({ id: d.id, ...d.data() }))); })
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
-  const handleImgError = (e) => {
-    e.currentTarget.onerror = null;
-    e.currentTarget.src = resolveImage("/assets/embs-logo.png");
-  };
+  const handleImgError = e => { e.currentTarget.onerror = null; e.currentTarget.src = resolveImage("/assets/embs-logo.png"); };
 
-  const filteredEvents = events.filter(e => {
-    const matchesFilter = filter === "all" || e.status === filter;
-    const matchesSearch = e.title.toLowerCase().includes(search.toLowerCase()) ||
-      (e.topic && e.topic.toLowerCase().includes(search.toLowerCase()));
-    return matchesFilter && matchesSearch;
+  const filtered = events.filter(e => {
+    const matchFilter = filter === "all" || e.status === filter;
+    const matchSearch = e.title.toLowerCase().includes(search.toLowerCase()) || (e.topic || "").toLowerCase().includes(search.toLowerCase());
+    return matchFilter && matchSearch;
   });
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#070B16] text-slate-800 dark:text-slate-100">
+    <div style={{ backgroundColor: "#F8F7F2", minHeight: "100vh" }}>
 
-      {/* Cinematic Hero */}
-      <section ref={heroRef} className="relative overflow-hidden pt-32 pb-20">
-        <div className="absolute inset-0 bg-gradient-to-b from-sky-500/8 via-clinical-green/4 to-transparent pointer-events-none" />
-        {/* ECG decorative rings */}
-        <motion.div animate={{ rotate: 360 }} transition={{ duration: 70, ease: "linear", repeat: Infinity }} className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full border border-embs-blue/8 pointer-events-none" />
-        <motion.div animate={{ rotate: -360 }} transition={{ duration: 100, ease: "linear", repeat: Infinity }} className="absolute -top-20 -left-20 w-[400px] h-[400px] rounded-full border border-clinical-green/6 pointer-events-none" />
-
-        <motion.div style={{ y: heroY, opacity: heroOpacity }} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div variants={stagger} initial="hidden" animate="visible" className="space-y-6 max-w-4xl">
-            <motion.div variants={fadeUp} className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/80 dark:bg-slate-900/90 border border-emerald-300/40 dark:border-emerald-500/20 backdrop-blur-md text-xs font-mono font-bold text-clinical-green shadow-sm">
-              <Radio className="w-3.5 h-3.5 animate-pulse" />
-              <span>Bio-Signal Diagnostics · Waveform Telemetry · Event Timeline</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-clinical-green animate-ping" />
-            </motion.div>
-
-            <motion.h1 variants={fadeUp} className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.06]">
-              <span className="text-slate-900 dark:text-white">Events &</span>{" "}
-              <span className="bg-gradient-to-r from-embs-blue via-embs-cyan to-clinical-green bg-clip-text text-transparent">Technical Seminars</span>
-            </motion.h1>
-
-            <motion.p variants={fadeUp} className="text-slate-600 dark:text-slate-300 text-base sm:text-xl leading-relaxed max-w-2xl font-light">
-              Explore hands-on workshops, expert keynote talks, hackathons, and medical symposia hosted by{" "}
-              <span className="font-semibold text-slate-800 dark:text-white">IEEE EMBS Vardhaman</span>.
-            </motion.p>
-          </motion.div>
-        </motion.div>
-
-        {/* Biological signal waveform divider */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <BioSignalWaveform />
+      {/* Hero */}
+      <section className="pt-32 pb-16 bg-white border-b border-[#DDE4E1]">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-8 space-y-5">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-0.5 bg-[#087F8C]" />
+            <span className="text-[11px] font-bold font-mono uppercase tracking-widest text-[#087F8C]">Technical Programme · IEEE EMBS VCE</span>
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-bold text-[#172121] tracking-tight" style={{ fontFamily: "Sora, Outfit, sans-serif" }}>Events &amp; Workshops</h1>
+          <p className="text-[#647070] text-lg max-w-2xl leading-relaxed">
+            Hands-on technical workshops, expert keynote lectures, biomedical hackathons, and symposia hosted by IEEE EMBS Vardhaman College of Engineering.
+          </p>
         </div>
       </section>
 
-      {/* Main Listing Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-20">
-
-        {/* Controls Bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-10">
-          <div className="flex items-center gap-2 bg-white dark:bg-slate-900/80 p-1.5 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm w-full md:w-auto">
+      {/* Controls */}
+      <section className="max-w-[1280px] mx-auto px-4 sm:px-8 pt-8 pb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          {/* Filter tabs */}
+          <div className="flex items-center gap-0 border border-[#DDE4E1] rounded-lg overflow-hidden bg-white shadow-card">
             {["all", "upcoming", "past"].map(tab => (
-              <motion.button
+              <button
                 key={tab}
-                whileTap={{ scale: 0.95 }}
                 onClick={() => setFilter(tab)}
-                className={`flex-1 md:flex-none px-5 py-2.5 rounded-xl text-xs font-bold capitalize transition ${
-                  filter === tab
-                    ? "bg-embs-blue text-white shadow-md"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800"
-                }`}
+                className={`px-5 py-2.5 text-xs font-semibold capitalize transition-colors border-r border-[#DDE4E1] last:border-r-0 ${filter === tab ? "bg-[#087F8C] text-white" : "text-[#647070] hover:text-[#172121] hover:bg-[#F8F7F2]"}`}
               >
-                {tab === "all" ? "All Events" : tab === "upcoming" ? "Upcoming Events" : "Past Events"}
-              </motion.button>
+                {tab === "all" ? "All Events" : tab === "upcoming" ? "Upcoming" : "Past"}
+              </button>
             ))}
           </div>
 
-          <div className="relative w-full md:w-80">
-            <Search className="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400" />
+          {/* Search */}
+          <div className="relative w-full sm:w-72">
+            <Search className="absolute left-3 top-2.5 w-4 h-4 text-[#647070]" />
             <input
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
-              placeholder="Search events by title or topic..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-embs-blue shadow-sm"
+              placeholder="Search events..."
+              className="w-full pl-9 pr-4 py-2.5 text-sm bg-white border border-[#DDE4E1] rounded-lg text-[#172121] placeholder-[#647070] focus:outline-none focus:ring-2 focus:ring-[#087F8C]/30 focus:border-[#087F8C] shadow-card transition"
             />
           </div>
         </div>
+      </section>
 
-        {/* Events Grid */}
+      {/* Event Grid */}
+      <section className="max-w-[1280px] mx-auto px-4 sm:px-8 pb-20">
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1, 2, 3].map(n => (
-              <div key={n} className="bright-card dark:bg-slate-900/80 rounded-3xl p-6 space-y-4">
-                <Skeleton className="h-48 w-full rounded-2xl bg-slate-200 dark:bg-slate-700" />
-                <Skeleton className="h-6 w-3/4 bg-slate-200 dark:bg-slate-700" />
-                <Skeleton className="h-4 w-full bg-slate-200 dark:bg-slate-700" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1,2,3].map(n => (
+              <div key={n} className="bg-white border border-[#DDE4E1] rounded-xl p-5 space-y-3">
+                <Skeleton className="h-44 w-full rounded-lg bg-[#DDE4E1]" />
+                <Skeleton className="h-5 w-3/4 bg-[#DDE4E1]" />
+                <Skeleton className="h-4 w-full bg-[#DDE4E1]" />
               </div>
             ))}
           </div>
-        ) : filteredEvents.length === 0 ? (
-          <div className="text-center py-16 bright-card dark:bg-slate-900/80 rounded-3xl p-8">
-            <Calendar className="w-12 h-12 text-slate-400 mx-auto mb-3" />
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white">No Events Found</h3>
-            <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Try adjusting your filter or search criteria.</p>
+        ) : filtered.length === 0 ? (
+          <div className="text-center py-16 bg-white border border-[#DDE4E1] rounded-xl p-8">
+            <Calendar className="w-10 h-10 text-[#DDE4E1] mx-auto mb-3" />
+            <h3 className="text-base font-bold text-[#172121]">No Events Found</h3>
+            <p className="text-[#647070] text-sm mt-1">Adjust your filter or search term.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredEvents.map((event, idx) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filtered.map((event, idx) => (
               <motion.div
                 key={event.id}
-                initial={{ opacity: 0, y: 25 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.45, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.45, delay: idx * 0.07, ease: [0.16, 1, 0.3, 1] }}
+                className="group bg-white border border-[#DDE4E1] rounded-xl overflow-hidden hover:border-[#087F8C]/35 hover:shadow-card-hover transition-all flex flex-col"
               >
-                <TiltCard maxTilt={5} className="bright-card dark:bg-slate-900/80 rounded-3xl overflow-hidden shadow-bright hover:shadow-bright-hover flex flex-col group border border-slate-200/80 dark:border-white/10 transition-all h-full">
-                  {/* Poster Image with status ribbon */}
-                  <div className="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
-                    <img
-                      src={resolveImage(event.posterUrl || "/assets/embs-logo.png")}
-                      alt={event.title}
-                      onError={handleImgError}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    {/* Gradient overlay on hover */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <span className={`absolute top-4 right-4 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-md ${
-                      event.status === "upcoming"
-                        ? "bg-clinical-green text-white"
-                        : "bg-white/90 dark:bg-slate-900/90 text-slate-700 dark:text-white border border-slate-200 dark:border-white/10"
-                    }`}>
-                      {event.status === "past" ? "Completed" : event.status}
-                    </span>
-                    {/* Bio-signal indicator line at bottom of image */}
-                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-embs-blue/60 to-embs-cyan/60 opacity-0 group-hover:opacity-100 transition-opacity" />
+                {/* Poster */}
+                <div className="relative h-44 overflow-hidden bg-[#F8F7F2]">
+                  <img
+                    src={resolveImage(event.posterUrl || "/assets/embs-logo.png")}
+                    alt={event.title}
+                    onError={handleImgError}
+                    className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                  />
+                  {/* Status badge */}
+                  <span className={`absolute top-3 right-3 px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${event.status === "upcoming" ? "bg-[#E76F51] text-white" : "bg-white/90 text-[#647070] border border-[#DDE4E1]"}`}>
+                    {event.status === "past" ? "Completed" : event.status}
+                  </span>
+                  {/* Teal left accent on hover */}
+                  <div className="absolute inset-y-0 left-0 w-0.5 bg-[#087F8C] opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+
+                {/* Content */}
+                <div className="p-5 flex-1 flex flex-col gap-3">
+                  <div>
+                    <span className="text-[10px] font-bold font-mono uppercase tracking-wider text-[#087F8C]">{event.topic || "Biomedical Engineering"}</span>
+                    <h3 className="text-base font-bold text-[#172121] mt-1 leading-snug line-clamp-2 group-hover:text-[#087F8C] transition-colors">{event.title}</h3>
+                    <p className="text-[#647070] text-xs mt-1.5 line-clamp-3 leading-relaxed">{event.description}</p>
                   </div>
 
-                  {/* Content */}
-                  <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-embs-blue" />
-                        <span className="text-xs font-bold text-embs-blue uppercase tracking-wider font-mono">{event.topic || "Biomedical Engineering"}</span>
-                      </div>
-                      <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-embs-blue dark:group-hover:text-sky-400 transition-colors line-clamp-2">{event.title}</h3>
-                      <p className="text-slate-600 dark:text-slate-400 text-xs line-clamp-3 leading-relaxed">{event.description}</p>
+                  {event.status === "upcoming" && event.date && (
+                    <div className="py-2">
+                      <CountdownTimer targetDate={event.date} eventTitle={event.title} />
                     </div>
+                  )}
 
-                    {event.status === "upcoming" && event.date && (
-                      <div className="pt-2">
-                        <CountdownTimer targetDate={event.date} eventTitle={event.title} />
+                  {/* Meta */}
+                  <div className="space-y-1.5 text-xs text-[#647070] pt-2 border-t border-[#DDE4E1]">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-3.5 h-3.5 text-[#087F8C] flex-shrink-0" />
+                      <span>{event.date}{event.time && ` · ${event.time}`}</span>
+                    </div>
+                    {event.venue && (
+                      <div className="flex items-center gap-2">
+                        <MapPin className="w-3.5 h-3.5 text-[#E76F51] flex-shrink-0" />
+                        <span className="truncate">{event.venue}</span>
                       </div>
                     )}
-
-                    <div className="space-y-2 text-xs text-slate-600 dark:text-slate-400 pt-3 border-t border-slate-100 dark:border-slate-800">
+                    {event.speaker && (
                       <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4 text-embs-blue" />
-                        <span className="font-medium">{event.date} {event.time && `• ${event.time}`}</span>
+                        <User className="w-3.5 h-3.5 text-[#647070] flex-shrink-0" />
+                        <span className="truncate font-semibold text-[#172121]">{event.speaker}</span>
                       </div>
-                      {event.venue && (
-                        <div className="flex items-center gap-2">
-                          <MapPin className="w-4 h-4 text-warm-orange" />
-                          <span className="truncate">{event.venue}</span>
-                        </div>
-                      )}
-                      {event.speaker && (
-                        <div className="flex items-center gap-2">
-                          <User className="w-4 h-4 text-embs-purple" />
-                          <span className="truncate font-semibold text-slate-700 dark:text-slate-300">{event.speaker}</span>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="pt-2 flex items-center gap-2">
-                      <Link to={`/events/${event.id}`} className="flex-1 py-2.5 px-3 rounded-xl text-xs font-extrabold text-center text-white bg-embs-blue hover:bg-ieee-dark shadow-sm flex items-center justify-center gap-1.5 transition-all">
-                        <Info className="w-3.5 h-3.5" />
-                        <span>Details</span>
-                      </Link>
-                      <Link to="/gallery" className="flex-1 py-2.5 px-3 rounded-xl text-xs font-extrabold text-center text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-embs-purple hover:text-white border border-slate-200 dark:border-white/10 shadow-sm flex items-center justify-center gap-1.5 transition-all">
-                        <ImageIcon className="w-3.5 h-3.5 text-embs-purple" />
-                        <span>Event Gallery</span>
-                      </Link>
-                    </div>
+                    )}
                   </div>
-                </TiltCard>
+
+                  {/* Actions */}
+                  <div className="flex gap-2 pt-1">
+                    <Link to={`/events/${event.id}`} className="flex-1 py-2 px-3 rounded-lg text-xs font-bold text-center text-white bg-[#087F8C] hover:bg-[#075E61] transition-colors flex items-center justify-center gap-1.5">
+                      <Info className="w-3.5 h-3.5" /> Details
+                    </Link>
+                    <Link to="/gallery" className="flex-1 py-2 px-3 rounded-lg text-xs font-semibold text-center text-[#647070] bg-[#F8F7F2] hover:bg-[#EEF6F7] hover:text-[#087F8C] border border-[#DDE4E1] transition-colors flex items-center justify-center gap-1.5">
+                      <ImageIcon className="w-3.5 h-3.5" /> Gallery
+                    </Link>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>

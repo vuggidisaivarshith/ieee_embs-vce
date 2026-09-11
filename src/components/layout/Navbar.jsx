@@ -1,296 +1,199 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Sun, Moon, Menu, X, HeartPulse, ChevronRight, Shield, Activity, Sparkles } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useTheme } from '../../context/ThemeContext';
-import { collegeLogo, embsLogo, vardhamanLogo } from '../../assets/images';
+﻿import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, X, Shield, ArrowRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { collegeLogo, embsLogo, vardhamanLogo } from "../../assets/images";
+
+const navLinks = [
+  { name: "Home",          path: "/" },
+  { name: "About",         path: "/about" },
+  { name: "Events",        path: "/events" },
+  { name: "Team",          path: "/team" },
+  { name: "Gallery",       path: "/gallery" },
+  { name: "Announcements", path: "/announcements" },
+  { name: "Achievements",  path: "/achievements" },
+  { name: "Resources",     path: "/resources" },
+  { name: "Membership",    path: "/membership" },
+  { name: "Contact",       path: "/contact" },
+];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { theme, toggleTheme } = useTheme();
+  const [scrolled, setScrolled]       = useState(false);
+  const [mobileOpen, setMobileOpen]   = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 16);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [mobileMenuOpen]);
-
-  useEffect(() => {
-    setMobileMenuOpen(false);
+    setMobileOpen(false);
   }, [location.pathname]);
 
-  const navLinks = [
-    { name: 'Home', path: '/', accent: '#00629B', dotColor: 'bg-embs-blue' },
-    { name: 'About', path: '/about', accent: '#772583', dotColor: 'bg-embs-purple' },
-    { name: 'Events', path: '/events', accent: '#F4B942', dotColor: 'bg-warm-accent' },
-    { name: 'Team', path: '/team', accent: '#007DAE', dotColor: 'bg-embs-blueAlt' },
-    { name: 'Gallery', path: '/gallery', accent: '#00A8C6', dotColor: 'bg-embs-cyan' },
-    { name: 'Announcements', path: '/announcements', accent: '#2E9B68', dotColor: 'bg-clinical-green' },
-    { name: 'Achievements', path: '/achievements', accent: '#F4B942', dotColor: 'bg-warm-accent' },
-    { name: 'Resources', path: '/resources', accent: '#00A8C6', dotColor: 'bg-embs-cyan' },
-    { name: 'Membership', path: '/membership', accent: '#2E9B68', dotColor: 'bg-clinical-green' },
-    { name: 'Contact', path: '/contact', accent: '#0D9488', dotColor: 'bg-embs-teal' },
-  ];
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
 
-  const isActive = (path) => {
-    if (path === '/' && location.pathname === '/') return true;
-    if (path !== '/' && location.pathname.startsWith(path)) return true;
-    return false;
-  };
+  const isActive = (path) =>
+    path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
 
-  const isDarkWorld = location.pathname === '/' || location.pathname === '/gallery';
-
-  const handleImgError = (e) => {
-    e.currentTarget.onerror = null;
-    e.currentTarget.src = embsLogo;
-  };
+  const handleImgError = (e) => { e.currentTarget.style.display = "none"; };
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled 
-          ? isDarkWorld 
-            ? 'bg-slate-950/90 backdrop-blur-xl shadow-2xl py-2.5 border-b border-white/10'
-            : 'bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl shadow-md py-2.5 border-b border-slate-200 dark:border-white/10'
-          : isDarkWorld
-            ? 'bg-slate-950/60 backdrop-blur-lg py-3.5 border-b border-white/5'
-            : 'bg-white/70 dark:bg-slate-950/70 backdrop-blur-md py-3.5 border-b border-slate-200/60 dark:border-white/5'
-      }`}>
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 flex items-center justify-between gap-3">
-          
-          {/* Brand Logos */}
-          <Link to="/" className="flex items-center gap-2.5 flex-shrink-0 group">
-            <div className={`flex items-center gap-1.5 p-1.5 rounded-xl border shadow-inner transition-colors ${
-              isDarkWorld 
-                ? 'bg-slate-900/90 border-white/15' 
-                : 'bg-white border-slate-200 shadow-sm'
-            }`}>
-              <img 
-                src={collegeLogo} 
-                alt="Vardhaman College" 
-                onError={handleImgError}
-                className="h-6 sm:h-7.5 w-auto object-contain flex-shrink-0" 
-              />
-              <div className="h-4 w-px bg-slate-300 dark:bg-slate-700"></div>
-              <img 
-                src={embsLogo} 
-                alt="IEEE EMBS" 
-                onError={handleImgError}
-                className="h-6 sm:h-7.5 w-auto object-contain flex-shrink-0" 
-              />
-              <div className="h-4 w-px bg-slate-300 dark:bg-slate-700"></div>
-              <img 
-                src={vardhamanLogo} 
-                alt="Vardhaman SB" 
-                onError={handleImgError}
-                className="h-6 sm:h-7.5 w-auto object-contain flex-shrink-0" 
-              />
-            </div>
-            <div className="hidden 2xl:block text-left">
-              <span className="text-[11px] font-black uppercase tracking-wider text-embs-blue block leading-tight">IEEE EMBS</span>
-              <span className={`text-[10px] font-bold block leading-tight ${isDarkWorld ? 'text-slate-300' : 'text-slate-600'}`}>Vardhaman Chapter</span>
+      <header
+        className={[
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+          scrolled
+            ? "bg-white/97 backdrop-blur-sm border-b border-[#DDE4E1] shadow-sm"
+            : "bg-[#F8F7F2]/90 backdrop-blur-sm border-b border-transparent"
+        ].join(" ")}
+      >
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-8 h-16 flex items-center justify-between gap-4">
+
+          {/* Brand logos */}
+          <Link to="/" className="flex items-center gap-2 flex-shrink-0 group" aria-label="IEEE EMBS Vardhaman — Home">
+            <img src={collegeLogo} alt="Vardhaman College" onError={handleImgError} className="h-7 w-auto object-contain" />
+            <div className="h-5 w-px bg-[#DDE4E1] mx-0.5" />
+            <img src={embsLogo}    alt="IEEE EMBS"         onError={handleImgError} className="h-7 w-auto object-contain" />
+            <div className="h-5 w-px bg-[#DDE4E1] mx-0.5" />
+            <img src={vardhamanLogo} alt="Vardhaman SB"   onError={handleImgError} className="h-7 w-auto object-contain" />
+            <div className="hidden xl:flex flex-col ml-1.5">
+              <span className="text-[10px] font-black uppercase tracking-wider text-[#087F8C] leading-tight">IEEE EMBS</span>
+              <span className="text-[10px] font-semibold text-[#647070] leading-tight">Vardhaman Chapter</span>
             </div>
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <nav className={`hidden lg:flex items-center gap-0.5 p-1.5 rounded-2xl border backdrop-blur-md ${
-            isDarkWorld
-              ? 'bg-slate-900/60 border-white/10'
-              : 'bg-slate-50/80 border-slate-200/80 shadow-sm'
-          }`}>
+          {/* Desktop nav */}
+          <nav className="hidden lg:flex items-center gap-0 relative" aria-label="Main navigation">
             {navLinks.map((link) => {
               const active = isActive(link.path);
               return (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`relative px-2.5 xl:px-3 py-1.5 rounded-xl text-[11px] xl:text-xs font-semibold transition-colors duration-200 flex items-center gap-1.5 whitespace-nowrap group ${
-                    active
-                      ? isDarkWorld
-                        ? 'text-white font-bold'
-                        : 'text-slate-900 font-bold'
-                      : isDarkWorld
-                        ? 'text-slate-300 hover:text-white'
-                        : 'text-slate-600 hover:text-slate-900'
-                  }`}
+                  className={[
+                    "relative px-3 py-1.5 text-[12.5px] font-medium transition-colors duration-150 whitespace-nowrap",
+                    active ? "text-[#172121] font-semibold" : "text-[#647070] hover:text-[#172121]"
+                  ].join(" ")}
                 >
-                  {/* Active pill background — shared spring morph */}
+                  {link.name}
+                  {/* Active teal underline — spring-morphs between links */}
                   {active && (
                     <motion.span
-                      layoutId="navActivePill"
-                      className={`absolute inset-0 rounded-xl ${isDarkWorld ? 'bg-white/12' : 'bg-white shadow-sm border border-slate-200/80'}`}
-                      transition={{ type: "spring", stiffness: 400, damping: 38 }}
+                      layoutId="navUnderline"
+                      className="absolute bottom-0 left-3 right-3 h-[2px] rounded-full bg-[#087F8C]"
+                      transition={{ type: "spring", stiffness: 380, damping: 34 }}
                     />
                   )}
-
-                  {/* Hover bloom (non-active) */}
+                  {/* Hover underline (non-active) */}
                   {!active && (
-                    <span className={`absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-150 ${isDarkWorld ? 'bg-white/5' : 'bg-slate-100/70'}`} />
-                  )}
-
-                  {/* Color dot indicator */}
-                  <span className={`relative z-10 w-1.5 h-1.5 rounded-full transition-all duration-200 ${link.dotColor} ${
-                    active ? 'opacity-100 scale-125' : 'opacity-35 group-hover:opacity-70'
-                  }`} />
-
-                  <span className="relative z-10">{link.name}</span>
-
-                  {/* Active accent underline */}
-                  {active && (
-                    <motion.div
-                      layoutId="activeTabUnderline"
-                      className="absolute bottom-0 left-2 right-2 h-0.5 rounded-full"
-                      style={{ backgroundColor: link.accent }}
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    />
+                    <span className="absolute bottom-0 left-3 right-3 h-[1px] rounded-full bg-[#087F8C] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-200" />
                   )}
                 </Link>
               );
             })}
           </nav>
 
-          {/* Right Action Utilities */}
-          <div className="flex items-center gap-1.5 sm:gap-2.5 flex-shrink-0">
-            
-            {/* Theme Toggle */}
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={toggleTheme}
-              className={`p-2 rounded-xl border transition-colors ${
-                isDarkWorld 
-                  ? 'bg-slate-900/80 text-slate-300 hover:text-white border-white/10 hover:bg-slate-800' 
-                  : 'bg-white text-slate-600 hover:text-slate-900 border-slate-200 shadow-sm'
-              }`}
-              title="Toggle Theme"
+          {/* Right utilities */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {/* Admin */}
+            <Link
+              to="/admin/login"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-[#647070] hover:text-[#172121] border border-[#DDE4E1] hover:border-[#B8C5C0] rounded-lg transition-all"
+              title="Admin Portal"
             >
-              {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-sky-500" />}
-            </motion.button>
+              <Shield className="w-3.5 h-3.5" />
+              <span className="hidden xl:inline">Admin</span>
+            </Link>
 
-            {/* Admin Login Button */}
-            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-              <Link
-                to="/admin/login"
-                className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm border ${
-                  isDarkWorld 
-                    ? 'bg-slate-900/80 text-slate-200 border-white/15 hover:bg-embs-blue hover:text-white' 
-                    : 'bg-white text-slate-700 border-slate-200 hover:bg-embs-blue hover:text-white'
-                }`}
-                title="Admin Portal Login"
-              >
-                <Shield className="w-3.5 h-3.5 text-embs-cyan" />
-                <span className="hidden xl:inline">Admin</span>
-              </Link>
-            </motion.div>
-
-            {/* Join IEEE CTA */}
-            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-              <Link
-                to="/membership"
-                className="hidden sm:flex items-center gap-1.5 px-4 py-1.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-embs-blue via-embs-purple to-warm-orange hover:shadow-md transition-all shadow-sm border border-white/20"
-              >
-                <Activity className="w-3.5 h-3.5 text-emerald-300 animate-pulse" />
-                <span>Join EMBS</span>
-              </Link>
-            </motion.div>
-
-            {/* Mobile Menu Toggle Button (<1024px) */}
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`lg:hidden p-2 rounded-xl border transition ${
-                isDarkWorld 
-                  ? 'bg-slate-900 text-slate-200 border-white/15' 
-                  : 'bg-white text-slate-700 border-slate-200 shadow-sm'
-              }`}
-              aria-label="Toggle navigation menu"
+            {/* Join EMBS CTA */}
+            <Link
+              to="/membership"
+              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-bold text-white bg-[#087F8C] hover:bg-[#075E61] rounded-lg transition-colors"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5 text-rose-500" /> : <Menu className="w-5 h-5" />}
-            </motion.button>
+              Join EMBS
+            </Link>
+
+            {/* Mobile toggle */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="lg:hidden p-2 rounded-lg border border-[#DDE4E1] hover:border-[#B8C5C0] text-[#647070] hover:text-[#172121] transition-colors"
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
 
         </div>
+      </header>
 
-        {/* Mobile Overlay Menu */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                onClick={() => setMobileMenuOpen(false)}
-                className="fixed inset-0 bg-slate-950/70 backdrop-blur-md z-40 lg:hidden"
-              />
-
-              <motion.div 
-                initial={{ opacity: 0, y: -12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-                className="lg:hidden fixed inset-x-0 top-[58px] bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-white/15 p-5 shadow-2xl z-50 max-h-[calc(100vh-65px)] overflow-y-auto"
-              >
-                <div className="flex flex-col gap-1.5">
-                  {navLinks.map((link) => (
+      {/* Mobile overlay menu */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.18 }}
+              onClick={() => setMobileOpen(false)}
+              className="fixed inset-0 bg-[#172121]/40 z-40 lg:hidden"
+            />
+            {/* Panel */}
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="fixed inset-x-0 top-16 z-50 bg-white border-b border-[#DDE4E1] shadow-card lg:hidden max-h-[calc(100vh-64px)] overflow-y-auto"
+            >
+              <nav className="px-4 py-4 space-y-0.5" aria-label="Mobile navigation">
+                {navLinks.map((link) => {
+                  const active = isActive(link.path);
+                  return (
                     <Link
                       key={link.path}
                       to={link.path}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition ${
-                        isActive(link.path)
-                          ? 'bg-embs-blue text-white font-bold shadow-md'
-                          : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900'
-                      }`}
+                      onClick={() => setMobileOpen(false)}
+                      className={[
+                        "flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium transition-colors",
+                        active
+                          ? "bg-[#087F8C]/8 text-[#087F8C] font-semibold"
+                          : "text-[#647070] hover:text-[#172121] hover:bg-[#F8F7F2]"
+                      ].join(" ")}
                     >
-                      <div className="flex items-center gap-2">
-                        <span className={`w-2 h-2 rounded-full ${link.dotColor}`}></span>
-                        <span>{link.name}</span>
-                      </div>
-                      <ChevronRight className={`w-4 h-4 ${isActive(link.path) ? 'text-white' : 'text-slate-400'}`} />
+                      <span>{link.name}</span>
+                      <ArrowRight className={`w-3.5 h-3.5 transition-transform ${active ? "translate-x-0.5 text-[#087F8C]" : "opacity-30"}`} />
                     </Link>
-                  ))}
-                  
-                  <div className="pt-4 mt-3 border-t border-slate-200 dark:border-slate-800 space-y-2.5">
-                    <Link
-                      to="/admin/login"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold text-slate-800 dark:text-white bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/15"
-                    >
-                      <Shield className="w-4 h-4 text-embs-cyan" />
-                      <span>Admin Portal Login</span>
-                    </Link>
+                  );
+                })}
+              </nav>
 
-                    <Link
-                      to="/membership"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-embs-blue to-embs-purple shadow-md"
-                    >
-                      <HeartPulse className="w-4 h-4" />
-                      <span>Join IEEE EMBS Chapter</span>
-                    </Link>
-                  </div>
-                </div>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
-      </header>
+              <div className="px-4 pb-5 pt-3 border-t border-[#DDE4E1] flex flex-col gap-2">
+                <Link
+                  to="/admin/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-semibold text-[#647070] border border-[#DDE4E1] hover:border-[#087F8C] transition-colors"
+                >
+                  <Shield className="w-4 h-4" /> Admin Portal
+                </Link>
+                <Link
+                  to="/membership"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold text-white bg-[#087F8C] hover:bg-[#075E61] transition-colors"
+                >
+                  Join IEEE EMBS
+                </Link>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 }

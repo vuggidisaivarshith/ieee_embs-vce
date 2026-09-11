@@ -1,431 +1,474 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { 
-  Calendar, Users, Award, Clock, ArrowRight, Activity, 
-  Sparkles, CheckCircle2, Megaphone, ChevronRight, Shield, HeartPulse, Info,
-  Cpu, Dna, Microscope, Radio, Image as ImageIcon, Compass, Target
-} from 'lucide-react';
-import { motion } from 'framer-motion';
-import { collection, getDocs, doc, getDoc, query, orderBy, limit } from 'firebase/firestore';
-import { db, DEFAULT_SITE_DATA } from '../firebase/config';
-import { resolveImage } from '../utils/resolveImage';
-import EventCarousel from '../components/ui/EventCarousel';
-import SpeakerModal from '../components/ui/SpeakerModal';
-import BioExplorer from '../components/ui/BioExplorer';
-import TiltCard from '../components/ui/TiltCard';
-import MagneticButton from '../components/ui/MagneticButton';
-import { eventSlide1, eventSlide2, eventSlide3 } from '../assets/images';
+﻿import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight, Calendar, Users, Award, ChevronRight, CheckCircle2, Megaphone } from "lucide-react";
+import { motion } from "framer-motion";
+import { collection, getDocs, doc, getDoc, query, orderBy, limit } from "firebase/firestore";
+import { db, DEFAULT_SITE_DATA } from "../firebase/config";
+import { resolveImage } from "../utils/resolveImage";
+import EventCarousel from "../components/ui/EventCarousel";
+import SpeakerModal from "../components/ui/SpeakerModal";
+import { eventSlide1, eventSlide2, eventSlide3 } from "../assets/images";
+
+/* ── Subtle SVG scientific waveform (hero decoration) ── */
+function HeroWaveform() {
+  return (
+    <svg
+      viewBox="0 0 560 180"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-full h-auto opacity-70"
+      aria-hidden="true"
+    >
+      {/* Grid lines */}
+      {[0,30,60,90,120,150,180].map(y => (
+        <line key={y} x1="0" y1={y} x2="560" y2={y} stroke="#DDE4E1" strokeWidth="0.5" />
+      ))}
+      {[0,80,160,240,320,400,480,560].map(x => (
+        <line key={x} x1={x} y1="0" x2={x} y2="180" stroke="#DDE4E1" strokeWidth="0.5" />
+      ))}
+
+      {/* ECG-style waveform — primary teal */}
+      <motion.path
+        d="M0 90 L60 90 L75 90 L80 40 L85 130 L90 90 L140 90 L155 90 L160 30 L165 145 L170 90 L240 90 L255 90 L260 50 L265 135 L270 90 L360 90 L375 90 L380 45 L385 138 L390 90 L460 90 L475 90 L480 35 L485 142 L490 90 L560 90"
+        stroke="#087F8C"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{ pathLength: 1, opacity: 1 }}
+        transition={{ duration: 2.4, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      />
+
+      {/* Secondary faint trace */}
+      <motion.path
+        d="M0 110 Q70 95 140 115 Q210 128 280 108 Q350 90 420 115 Q490 130 560 108"
+        stroke="#E76F51"
+        strokeWidth="1"
+        strokeLinecap="round"
+        opacity="0.45"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{ pathLength: 1, opacity: 0.45 }}
+        transition={{ duration: 2.0, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
+      />
+
+      {/* Measurement tick marks */}
+      {[80, 160, 260, 380, 480].map((x, i) => (
+        <motion.line
+          key={i}
+          x1={x} y1="85" x2={x} y2="95"
+          stroke="#087F8C"
+          strokeWidth="1"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.6 }}
+          transition={{ delay: 1.8 + i * 0.1 }}
+        />
+      ))}
+    </svg>
+  );
+}
+
+/* ── Section heading with teal rule ── */
+function SectionHeading({ label, title, subtitle, align = "left" }) {
+  return (
+    <div className={`space-y-3 ${align === "center" ? "text-center" : ""}`}>
+      <div className={`flex items-center gap-3 ${align === "center" ? "justify-center" : ""}`}>
+        <div className="w-8 h-0.5 bg-[#087F8C] rounded-full" />
+        <span className="text-[11px] font-bold font-mono uppercase tracking-widest text-[#087F8C]">{label}</span>
+      </div>
+      <h2 className="text-3xl sm:text-4xl font-bold text-[#172121] tracking-tight leading-tight">{title}</h2>
+      {subtitle && <p className="text-[#647070] text-base leading-relaxed max-w-2xl">{subtitle}</p>}
+    </div>
+  );
+}
+
+/* ── Animation variants ── */
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+};
+const stagger = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.14, delayChildren: 0.1 } }
+};
 
 export default function Home() {
-  const [siteSettings, setSiteSettings] = useState(DEFAULT_SITE_DATA.siteSettings);
-  const [featuredEvent, setFeaturedEvent] = useState(DEFAULT_SITE_DATA.events[0]);
+  const [siteSettings, setSiteSettings]         = useState(DEFAULT_SITE_DATA.siteSettings);
+  const [featuredEvent, setFeaturedEvent]       = useState(DEFAULT_SITE_DATA.events[0]);
   const [latestAnnouncement, setLatestAnnouncement] = useState(DEFAULT_SITE_DATA.announcements[0]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading]                   = useState(true);
   const [speakerModalOpen, setSpeakerModalOpen] = useState(false);
 
   useEffect(() => {
-    async function loadHomeData() {
+    async function load() {
       try {
-        const settingsSnap = await getDoc(doc(db, 'siteSettings', 'singletonDoc'));
-        if (settingsSnap.exists()) {
-          setSiteSettings(prev => ({ ...prev, ...settingsSnap.data() }));
-        }
+        const settingsSnap = await getDoc(doc(db, "siteSettings", "singletonDoc"));
+        if (settingsSnap.exists()) setSiteSettings(prev => ({ ...prev, ...settingsSnap.data() }));
 
-        const eventsSnap = await getDocs(collection(db, 'events'));
+        const eventsSnap = await getDocs(collection(db, "events"));
         if (!eventsSnap.empty) {
-          const eventsList = eventsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-          const feat = eventsList.find(e => e.featured) || eventsList[0];
-          setFeaturedEvent(feat);
+          const list = eventsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+          setFeaturedEvent(list.find(e => e.featured) || list[0]);
         }
 
-        const annSnap = await getDocs(query(collection(db, 'announcements'), orderBy('date', 'desc'), limit(1)));
-        if (!annSnap.empty) {
-          setLatestAnnouncement({ id: annSnap.docs[0].id, ...annSnap.docs[0].data() });
-        }
-      } catch (err) {
-        console.log("Using default fallback data for Home page:", err);
-      } finally {
-        setLoading(false);
-      }
+        const annSnap = await getDocs(query(collection(db, "announcements"), orderBy("date", "desc"), limit(1)));
+        if (!annSnap.empty) setLatestAnnouncement({ id: annSnap.docs[0].id, ...annSnap.docs[0].data() });
+      } catch { /* fallback to defaults */ } finally { setLoading(false); }
     }
-    loadHomeData();
+    load();
   }, []);
 
   const handleImgError = (e) => {
     e.currentTarget.onerror = null;
-    e.currentTarget.src = resolveImage('/assets/embs-logo.png');
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { staggerChildren: 0.18, delayChildren: 0.1 }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 24 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+    e.currentTarget.src = resolveImage("/assets/embs-logo.png");
   };
 
   const speakerData = {
     name: featuredEvent?.speaker || "Dr. Ajit Kumar",
     role: featuredEvent?.speakerRole || "Associate Professor of Information Systems, XIMB (XIM University)",
-    photoUrl: resolveImage(featuredEvent?.posterUrl || '/assets/speaker.jpeg'),
-    bio: featuredEvent?.speakerBio || `Associate Professor of Information Systems at Xavier Institute of Management (XIMB), XIM University, Bhubaneswar. Obtained Ph.D. in Medical Informatics from Taipei Medical University, Taiwan, and completed a Postdoctoral Fellowship at National Central University, Taiwan. Over 18 years across Health IT, Telemedicine, Electronic Medical Records (EMR) standards (SNOMED), and AI adoption frameworks in healthcare.`,
-    education: featuredEvent?.speakerEducation || [
-      "Ph.D. in Medical Informatics — Taipei Medical University, Taiwan",
-      "Postdoctoral Fellowship in HCI — Taiwan",
-      "MCA (Master of Computer Applications) — India",
-      "B.Sc. in Computer Science — India"
-    ],
-    focusAreas: featuredEvent?.speakerFocusAreas || [
-      "Digital Health & Telemedicine Architectures",
-      "Electronic Medical Records (EMR) & SNOMED Adoption",
-      "Frameworks for Adopting Artificial Intelligence in Healthcare",
-      "Academic Integrity & Health Informatics Policy"
-    ],
-    linkedin: featuredEvent?.speakerLinkedin || "https://www.linkedin.com/in/drajitkumar-ai-dt/?originalSubdomain=in",
+    photoUrl: resolveImage(featuredEvent?.posterUrl || "/assets/speaker.jpeg"),
+    bio: featuredEvent?.speakerBio || "Associate Professor of Information Systems at Xavier Institute of Management (XIMB), XIM University. Ph.D. in Medical Informatics from Taipei Medical University, Taiwan. Over 18 years across Health IT, Telemedicine, Electronic Medical Records (EMR), and AI adoption frameworks in healthcare.",
+    education: featuredEvent?.speakerEducation || ["Ph.D. in Medical Informatics — Taipei Medical University, Taiwan", "Postdoctoral Fellowship in HCI — Taiwan", "MCA — India", "B.Sc. in Computer Science — India"],
+    focusAreas: featuredEvent?.speakerFocusAreas || ["Digital Health & Telemedicine Architectures", "Electronic Medical Records (EMR) & SNOMED Adoption", "AI Adoption Frameworks in Healthcare", "Academic Integrity & Health Informatics Policy"],
+    linkedin: featuredEvent?.speakerLinkedin || "https://www.linkedin.com/in/drajitkumar-ai-dt/",
     university: featuredEvent?.speakerUniversity || "https://ximb.edu.in/faculty-research/faculty-profile/prof-ajit-kumar/"
   };
 
   const eventSlides = [
     { url: eventSlide1, caption: "Dr. Ajit Kumar presenting Digital Health & Telemedicine Architectures" },
     { url: eventSlide2, caption: "Interactive session on Healthcare AI & Remote Patient Monitoring" },
-    { url: eventSlide3, caption: "IEEE EMBS Vardhaman student felicitation & interactive Q&A" }
+    { url: eventSlide3, caption: "IEEE EMBS Vardhaman student felicitation & Q&A" }
   ];
 
-  const innovationPillars = [
-    {
-      icon: HeartPulse,
-      title: "Bio-Signal Processing",
-      desc: "Real-time ECG, EEG, and EMG diagnostic telemetry, algorithmic signal filtering, and wearable sensors.",
-      accent: "text-embs-blue",
-      borderHover: "hover:border-embs-blue",
-      badge: "Signal Telemetry"
-    },
-    {
-      icon: Cpu,
-      title: "Healthcare Artificial Intelligence",
-      desc: "Deep neural networks for medical imaging segmentation, predictive diagnostics, and clinical decision systems.",
-      accent: "text-embs-cyan",
-      borderHover: "hover:border-embs-cyan",
-      badge: "Clinical AI"
-    },
-    {
-      icon: Dna,
-      title: "Bioinformatics & Genomic Computing",
-      desc: "Computational genomics, molecular modeling, biomaterial engineering, and sequence alignment algorithms.",
-      accent: "text-embs-purple",
-      borderHover: "hover:border-embs-purple",
-      badge: "Genomics"
-    },
-    {
-      icon: Radio,
-      title: "Telemedicine & IoT Healthcare",
-      desc: "Cloud-connected remote patient monitoring, SNOMED clinical standards, and digital healthcare delivery.",
-      accent: "text-clinical-green",
-      borderHover: "hover:border-clinical-green",
-      badge: "Connected Health"
-    }
+  const pillars = [
+    { num: "01", title: "Bio-Signal Processing", desc: "Real-time ECG, EEG, and EMG diagnostic telemetry, algorithmic signal filtering, and wearable biomedical sensors.", tag: "Signal Analysis" },
+    { num: "02", title: "Healthcare Artificial Intelligence", desc: "Deep neural networks for medical imaging segmentation, predictive diagnostics, and clinical decision support systems.", tag: "Clinical AI" },
+    { num: "03", title: "Bioinformatics & Genomics", desc: "Computational genomics, molecular modeling, biomaterial engineering, and biological sequence alignment algorithms.", tag: "Genomics" },
+    { num: "04", title: "Telemedicine & IoT Healthcare", desc: "Cloud-connected remote patient monitoring, SNOMED clinical standards, and digital healthcare delivery infrastructure.", tag: "Connected Health" }
   ];
 
   return (
-    <div className="pt-20">
+    <div style={{ backgroundColor: "#F8F7F2" }}>
 
-      {/* Speaker Bio Modal */}
-      <SpeakerModal 
-        isOpen={speakerModalOpen}
-        onClose={() => setSpeakerModalOpen(false)}
-        speakerData={speakerData}
-      />
-      
-      {/* Announcement Banner Ticker */}
+      {/* Speaker modal */}
+      <SpeakerModal isOpen={speakerModalOpen} onClose={() => setSpeakerModalOpen(false)} speakerData={speakerData} />
+
+      {/* ── Announcement banner ── */}
       {latestAnnouncement && (
-        <motion.div 
-          initial={{ opacity: 0, y: -10 }}
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-slate-950/90 backdrop-blur-md border-b border-white/10 text-slate-200 py-2.5 px-4 text-xs sm:text-sm font-medium shadow-sm relative z-20"
+          transition={{ duration: 0.4 }}
+          className="border-b border-[#DDE4E1] bg-white/80 text-[#172121] py-2 px-4 text-xs"
         >
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <div className="flex items-center gap-2 overflow-hidden">
-              <span className="bg-embs-cyan/20 text-embs-cyan border border-embs-cyan/30 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5 flex-shrink-0">
-                <Megaphone className="w-3.5 h-3.5" /> Announcement
+          <div className="max-w-[1280px] mx-auto flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2.5 overflow-hidden">
+              <span className="flex-shrink-0 text-[10px] font-bold font-mono uppercase tracking-widest text-[#087F8C] border border-[#087F8C]/25 px-2 py-0.5 rounded">
+                Announcement
               </span>
-              <p className="truncate font-semibold">{latestAnnouncement.title}</p>
+              <p className="truncate text-[#647070] font-medium">{latestAnnouncement.title}</p>
             </div>
-            <Link to="/announcements" className="hidden sm:flex items-center gap-1 font-bold text-embs-cyan hover:underline transition whitespace-nowrap ml-4">
-              View Bulletin <ChevronRight className="w-4 h-4" />
+            <Link to="/announcements" className="flex-shrink-0 flex items-center gap-1 text-[#087F8C] font-semibold hover:underline text-xs whitespace-nowrap">
+              View <ChevronRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </motion.div>
       )}
 
-      {/* =======================================================
-          HERO WORLD (Dark, Cinematic Living Bloodstream)
-         ======================================================= */}
-      <section className="relative overflow-hidden text-white py-20 lg:py-28 bg-[#040711]">
-        
-        {/* Atmospheric Bioluminescent Glow Cones */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-embs-blue/15 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-embs-purple/15 rounded-full blur-3xl pointer-events-none"></div>
+      {/* ── HERO ── */}
+      <section className="relative pt-28 pb-20 overflow-hidden" style={{ backgroundColor: "#F8F7F2" }}>
+        {/* Subtle warm gradient top */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#F8F7F2] via-[#F5F3EE] to-[#EEF6F7] pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
-          >
-            
-            {/* Left Hero Column */}
-            <motion.div variants={itemVariants} className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              
-              {/* Category Pill with Ambient Pulse & Optical Telemetry */}
-              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900/90 border border-sky-400/30 backdrop-blur-md text-xs font-semibold text-embs-cyan shadow-lg shadow-sky-500/10">
-                <Microscope className="w-4 h-4 text-warm-orange animate-pulse" />
-                <span className="font-mono uppercase tracking-wider text-[11px]">IEEE Engineering in Medicine & Biology Society</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-clinical-green animate-ping" />
-              </div>
+        {/* Thin teal top border accent */}
+        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#087F8C] to-transparent opacity-40" />
 
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.08] text-white">
-                Engineering <br className="hidden sm:block" />
-                <span className="bg-gradient-to-r from-sky-400 via-embs-cyan to-indigo-300 bg-clip-text text-transparent">
-                  Living Systems
-                </span> & Future Health
-              </h1>
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-8 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
-              <p className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl font-normal">
-                Connecting frontier engineering with clinical medicine. Exploring healthcare artificial intelligence, bio-signal telemetry, and computational physiology at Vardhaman College of Engineering.
-              </p>
+            {/* Left: Editorial headline */}
+            <motion.div
+              variants={stagger}
+              initial="hidden"
+              animate="visible"
+              className="space-y-8"
+            >
+              {/* Chapter label */}
+              <motion.div variants={fadeUp} className="flex items-center gap-3">
+                <div className="w-8 h-0.5 bg-[#087F8C]" />
+                <span className="text-[11px] font-bold font-mono uppercase tracking-widest text-[#087F8C]">
+                  IEEE · Engineering in Medicine & Biology Society
+                </span>
+              </motion.div>
 
-              {/* Action Buttons with Tactile Magnetic Pull */}
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
-                <MagneticButton
-                  as={Link}
-                  to="/events"
-                  className="px-7 py-3.5 rounded-2xl font-extrabold text-sm text-white bg-gradient-to-r from-embs-blue to-embs-blueAlt hover:opacity-95 shadow-xl shadow-embs-blue/25 transition-all flex items-center gap-2.5 border border-sky-300/30"
-                >
-                  <Calendar className="w-4 h-4" />
-                  <span>Explore Events & Timeline</span>
-                </MagneticButton>
+              {/* Main headline */}
+              <motion.h1
+                variants={fadeUp}
+                className="text-5xl sm:text-6xl lg:text-7xl font-bold text-[#172121] tracking-tight leading-[1.05]"
+                style={{ fontFamily: "Sora, Outfit, sans-serif" }}
+              >
+                Engineering<br />
+                <span style={{ color: "#087F8C" }}>Medicine</span> &{" "}
+                <span style={{ color: "#E76F51" }}>Biology</span><br />
+                at Vardhaman
+              </motion.h1>
 
+              {/* Body */}
+              <motion.p variants={fadeUp} className="text-[#647070] text-lg leading-relaxed max-w-lg">
+                A student chapter connecting frontier biomedical engineering with real clinical practice. Workshops, research, keynotes, and community — at Vardhaman College of Engineering, Hyderabad.
+              </motion.p>
+
+              {/* CTAs */}
+              <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-4">
                 <Link
-                  to="/gallery"
-                  className="px-6 py-3.5 rounded-2xl font-bold text-sm text-slate-200 bg-slate-900/80 hover:bg-slate-800 border border-white/15 backdrop-blur-md transition-all flex items-center gap-2 hover:border-embs-cyan/50 hover:text-white"
+                  to="/events"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-sm text-white transition-all"
+                  style={{ backgroundColor: "#087F8C" }}
+                  onMouseEnter={e => e.currentTarget.style.backgroundColor = "#075E61"}
+                  onMouseLeave={e => e.currentTarget.style.backgroundColor = "#087F8C"}
                 >
-                  <ImageIcon className="w-4 h-4 text-embs-cyan" />
-                  <span>Event Photo Memories</span>
+                  Explore Events
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Link>
-              </div>
+                <Link
+                  to="/about"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-sm border transition-all"
+                  style={{ color: "#172121", borderColor: "#DDE4E1", backgroundColor: "transparent" }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = "#087F8C"; e.currentTarget.style.color = "#087F8C"; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = "#DDE4E1"; e.currentTarget.style.color = "#172121"; }}
+                >
+                  About EMBS VCE
+                </Link>
+              </motion.div>
 
-              {/* Fragile Protected Stats Bar */}
-              <div className="pt-6 grid grid-cols-3 gap-4 border-t border-white/10 text-center lg:text-left">
-                <div className="p-3.5 bg-slate-900/70 rounded-2xl border border-white/10 backdrop-blur-sm shadow-inner">
-                  <div className="text-2xl sm:text-3xl font-black text-embs-cyan">{siteSettings.membersCount}+</div>
-                  <div className="text-[11px] text-slate-400 font-mono uppercase tracking-wider">Active Members</div>
-                </div>
-                <div className="p-3.5 bg-slate-900/70 rounded-2xl border border-white/10 backdrop-blur-sm shadow-inner">
-                  <div className="text-2xl sm:text-3xl font-black text-bio-ruby">{siteSettings.eventsCount}+</div>
-                  <div className="text-[11px] text-slate-400 font-mono uppercase tracking-wider">Events Hosted</div>
-                </div>
-                <div className="p-3.5 bg-slate-900/70 rounded-2xl border border-white/10 backdrop-blur-sm shadow-inner">
-                  <div className="text-2xl sm:text-3xl font-black text-warm-accent">{siteSettings.yearsActive} Yrs</div>
-                  <div className="text-[11px] text-slate-400 font-mono uppercase tracking-wider">Active Chapter</div>
-                </div>
-              </div>
-
+              {/* Stats — horizontal editorial band */}
+              <motion.div variants={fadeUp} className="pt-4 border-t border-[#DDE4E1] grid grid-cols-3 gap-6">
+                {[
+                  { val: siteSettings.membersCount + "+", label: "Active Members" },
+                  { val: siteSettings.eventsCount + "+",  label: "Events Hosted" },
+                  { val: siteSettings.yearsActive + " Yrs", label: "Active Chapter" }
+                ].map((s, i) => (
+                  <div key={i}>
+                    <div className="text-2xl sm:text-3xl font-bold text-[#172121]">{s.val}</div>
+                    <div className="text-[11px] font-mono uppercase tracking-wide text-[#647070] mt-0.5">{s.label}</div>
+                  </div>
+                ))}
+              </motion.div>
             </motion.div>
 
-            {/* Right Hero Column: Cinematic Session Showcase with Spatial Tilt */}
-            <motion.div variants={itemVariants} className="lg:col-span-5">
-              <TiltCard maxTilt={5} className="specular-card rounded-3xl p-6 space-y-4">
-                
-                <div className="flex items-center justify-between">
-                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-clinical-green/20 text-clinical-green border border-clinical-green/30 uppercase tracking-wider flex items-center gap-1.5 font-mono">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-clinical-green" /> Completed Keynote
-                  </span>
-                  <span className="text-xs font-mono text-slate-400 flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5 text-embs-cyan" /> 13 AUG 2026
+            {/* Right: Keynote showcase card */}
+            <motion.div
+              initial={{ opacity: 0, x: 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="space-y-5"
+            >
+              {/* Waveform visualization */}
+              <div className="bg-white rounded-xl border border-[#DDE4E1] p-4 shadow-card overflow-hidden">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-[10px] font-bold font-mono uppercase tracking-widest text-[#087F8C]">Bio-Signal Monitor</span>
+                  <span className="flex items-center gap-1.5 text-[10px] font-mono text-[#647070]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#2E9B68] animate-pulse" /> LIVE
                   </span>
                 </div>
+                <HeroWaveform />
+              </div>
 
-                {/* Cinematic 3-Screenshot Carousel */}
-                <EventCarousel slides={eventSlides} title="Expert Talk by Dr. Ajit Kumar (13 Aug 2026)" />
+              {/* Keynote event card */}
+              <div className="bg-white rounded-xl border border-[#DDE4E1] p-5 shadow-card space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold font-mono uppercase tracking-widest px-2.5 py-1 rounded bg-[#087F8C]/8 text-[#087F8C] border border-[#087F8C]/15">Completed Keynote</span>
+                  <span className="text-[11px] font-mono text-[#647070]">13 Aug 2026</span>
+                </div>
+
+                <EventCarousel slides={eventSlides} title="Expert Talk by Dr. Ajit Kumar" />
 
                 <div>
-                  <span className="text-[11px] font-bold text-embs-cyan uppercase tracking-widest font-mono">Digital Health Keynote</span>
-                  <h3 className="text-lg font-bold text-white mt-1">Digital Health & Telemedicine Innovations</h3>
-                  <p className="text-slate-300 text-xs mt-1.5 line-clamp-2 leading-relaxed">
-                    Comprehensive expert talk by Dr. Ajit Kumar (XIMB) on remote healthcare architectures, SNOMED clinical terminology, and AI adoption in modern medicine.
+                  <p className="text-[11px] font-bold font-mono uppercase tracking-widest text-[#087F8C]">Digital Health Keynote</p>
+                  <h3 className="text-base font-bold text-[#172121] mt-1">Digital Health & Telemedicine Innovations</h3>
+                  <p className="text-[#647070] text-xs mt-1.5 leading-relaxed line-clamp-2">
+                    Expert talk by Dr. Ajit Kumar (XIMB) on remote healthcare architectures, SNOMED clinical terminology, and AI adoption in modern medicine.
                   </p>
                 </div>
 
-                {/* Separated Action Buttons */}
-                <div className="pt-3 flex items-center justify-between gap-3 border-t border-white/10">
+                <div className="pt-3 flex items-center gap-2.5 border-t border-[#DDE4E1]">
                   <button
                     onClick={() => setSpeakerModalOpen(true)}
-                    className="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold text-sky-300 bg-white/10 hover:bg-white/20 border border-white/15 transition flex items-center justify-center gap-1.5"
+                    className="flex-1 py-2.5 px-3 rounded-lg text-xs font-semibold text-[#647070] bg-[#F8F7F2] hover:bg-[#EEF6F7] hover:text-[#087F8C] border border-[#DDE4E1] transition-colors"
                   >
-                    <Info className="w-3.5 h-3.5" />
-                    <span>About Speaker</span>
+                    About Speaker
                   </button>
-
                   <Link
                     to="/gallery"
-                    className="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-embs-blue to-embs-purple hover:shadow-lg transition flex items-center justify-center gap-1.5 border border-sky-400/30"
+                    className="flex-1 py-2.5 px-3 rounded-lg text-xs font-bold text-center text-white bg-[#087F8C] hover:bg-[#075E61] transition-colors"
                   >
-                    <ImageIcon className="w-3.5 h-3.5" />
-                    <span>Event Gallery</span>
+                    View Gallery
                   </Link>
                 </div>
-
-              </TiltCard>
+              </div>
             </motion.div>
 
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* =======================================================
-          BRIGHT INFORMATION SECTIONS (High Contrast Light Mode)
-         ======================================================= */}
-      <div className="bg-white dark:bg-slate-950 transition-colors duration-300">
-        
-        {/* Innovation Pillars Section */}
-        <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
-            <span className="px-3.5 py-1 rounded-full bg-embs-blue/10 text-embs-blue border border-embs-blue/20 text-xs font-mono font-bold uppercase tracking-widest inline-flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5" /> Biomedical Engineering Domains
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">
-              Pillars of Health & Technology Innovation
-            </h2>
-            <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
-              Explore the multidisciplinary fields advancing medical diagnosis, clinical treatment, and human healthcare at Vardhaman.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {innovationPillars.map((pillar, idx) => {
-              const IconComp = pillar.icon;
-              return (
-                <TiltCard
-                  key={idx}
-                  maxTilt={4}
-                  className={`bright-card p-6 rounded-2xl flex flex-col justify-between space-y-4 group ${pillar.borderHover}`}
-                >
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className={`w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-900 flex items-center justify-center border border-slate-200 dark:border-white/10 ${pillar.accent} shadow-sm group-hover:scale-110 transition-transform`}>
-                        <IconComp className="w-6 h-6" />
-                      </div>
-                      <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider">{pillar.badge}</span>
-                    </div>
-
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-embs-blue transition-colors">
-                      {pillar.title}
-                    </h3>
-                    <p className="text-slate-600 dark:text-slate-300 text-xs leading-relaxed">
-                      {pillar.desc}
-                    </p>
-                  </div>
-
-                  <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-embs-blue dark:text-sky-400">
-                    <span>Explore Domain</span>
-                    <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </TiltCard>
-              );
-            })}
-          </div>
-
-          {/* Interactive Specimen & Telemetry Explorer */}
-          <div className="mt-20">
-            <BioExplorer />
-          </div>
-
-        </section>
-
-        {/* Chapter Welcome & Coordinator Quote */}
-        <section className="py-20 bg-slate-50/80 dark:bg-slate-900/60 border-t border-b border-slate-200/80 dark:border-white/10 transition-colors">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div 
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
-            >
-              
-              <div className="lg:col-span-6 space-y-6">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-embs-purple/10 text-embs-purple border border-embs-purple/20 text-xs font-bold font-mono">
-                  <Activity className="w-3.5 h-3.5 animate-pulse" />
-                  <span>Student Branch Chapter Overview</span>
-                </div>
-
-                <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white leading-tight">
-                  Empowering Students to Engineer the Future of Medicine
-                </h2>
-
-                <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm sm:text-base">
-                  {siteSettings.welcomeText}
-                </p>
-
-                <div className="space-y-3">
-                  {[
-                    "Hands-on Workshops in Medical Signal Processing & AI",
-                    "Expert Keynote Lectures by Healthcare Industry Pioneers",
-                    "National Symposia & Healthcare Hackathon Competitions",
-                    "Direct Access to IEEE Xplore Digital Library & Research Grants"
-                  ].map((item, idx) => (
-                    <div key={idx} className="flex items-start gap-3">
-                      <CheckCircle2 className="w-5 h-5 text-clinical-green flex-shrink-0 mt-0.5" />
-                      <span className="text-slate-700 dark:text-slate-200 text-sm font-semibold">{item}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="pt-2">
-                  <Link 
-                    to="/about"
-                    className="inline-flex items-center gap-2 font-bold text-sm text-embs-blue dark:text-sky-400 hover:underline"
-                  >
-                    <span>Learn more about our chapter history & leadership</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              </div>
-
-              {/* Coordinator Specimen Card */}
-              <div className="lg:col-span-6">
-                <div className="bright-card rounded-3xl p-8 space-y-6">
-                  <div className="flex items-center gap-4">
-                    <img 
-                      src={resolveImage(siteSettings.facultyPhoto || '/assets/faculty.jpeg')} 
-                      alt={siteSettings.facultyName} 
-                      onError={handleImgError}
-                      className="w-16 h-16 rounded-2xl object-cover border-2 border-embs-blue shadow-md"
-                    />
-                    <div>
-                      <h4 className="text-lg font-bold text-slate-900 dark:text-white">{siteSettings.facultyName}</h4>
-                      <p className="text-xs font-semibold text-embs-blue dark:text-sky-400">{siteSettings.facultyRole}</p>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">{siteSettings.facultyDept}</p>
-                    </div>
-                  </div>
-
-                  <blockquote className="text-slate-600 dark:text-slate-300 text-sm italic leading-relaxed border-l-4 border-embs-blue/60 pl-4">
-                    "{siteSettings.facultyQuote}"
-                  </blockquote>
-                </div>
-              </div>
-
-            </motion.div>
-          </div>
-        </section>
-
+      {/* ── Section divider ── */}
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
+        <div className="h-px bg-[#DDE4E1]" />
       </div>
+
+      {/* ── Innovation Pillars ── */}
+      <section className="py-20 bg-white">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+
+            {/* Left sticky label */}
+            <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-5">
+              <SectionHeading
+                label="Research Domains"
+                title="Pillars of Health & Technology Innovation"
+                subtitle="The multidisciplinary fields advancing medical diagnosis, clinical treatment, and human healthcare at Vardhaman."
+              />
+              <Link
+                to="/resources"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[#087F8C] hover:underline"
+              >
+                Explore Research Resources <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            {/* Right: Pillar list */}
+            <div className="lg:col-span-8 space-y-px">
+              {pillars.map((p, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: 16 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.5, delay: i * 0.09, ease: [0.16, 1, 0.3, 1] }}
+                  className="group flex items-start gap-6 p-6 border border-[#DDE4E1] rounded-xl hover:border-[#087F8C]/30 hover:shadow-card transition-all cursor-default bg-white"
+                  style={{ marginBottom: "12px" }}
+                >
+                  <div className="flex-shrink-0 text-[11px] font-black font-mono text-[#DDE4E1] group-hover:text-[#087F8C] transition-colors pt-0.5">{p.num}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-4 mb-1.5">
+                      <h3 className="text-base font-bold text-[#172121] group-hover:text-[#087F8C] transition-colors">{p.title}</h3>
+                      <span className="flex-shrink-0 text-[10px] font-mono font-bold text-[#087F8C] bg-[#087F8C]/6 border border-[#087F8C]/12 px-2.5 py-0.5 rounded uppercase tracking-wide">{p.tag}</span>
+                    </div>
+                    <p className="text-[#647070] text-sm leading-relaxed">{p.desc}</p>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-[#DDE4E1] group-hover:text-[#087F8C] group-hover:translate-x-0.5 transition-all flex-shrink-0 mt-0.5" />
+                </motion.div>
+              ))}
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── Section divider ── */}
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
+        <div className="h-px bg-[#DDE4E1]" />
+      </div>
+
+      {/* ── Chapter welcome & Faculty quote ── */}
+      <section className="py-20" style={{ backgroundColor: "#F8F7F2" }}>
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+
+            <div className="lg:col-span-7 space-y-6">
+              <SectionHeading
+                label="Chapter Overview"
+                title="Empowering Students to Engineer the Future of Medicine"
+              />
+              <p className="text-[#647070] leading-relaxed">
+                {siteSettings.welcomeText}
+              </p>
+              <div className="space-y-3 pt-2">
+                {[
+                  "Hands-on Workshops in Medical Signal Processing & AI",
+                  "Expert Keynote Lectures by Healthcare Industry Pioneers",
+                  "National Symposia & Healthcare Hackathon Competitions",
+                  "Direct Access to IEEE Xplore Digital Library & Research Grants"
+                ].map((item, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: i * 0.07 }}
+                    className="flex items-start gap-3"
+                  >
+                    <CheckCircle2 className="w-4.5 h-4.5 text-[#087F8C] flex-shrink-0 mt-0.5" />
+                    <span className="text-[#172121] text-sm font-medium">{item}</span>
+                  </motion.div>
+                ))}
+              </div>
+              <Link to="/about" className="inline-flex items-center gap-2 text-sm font-semibold text-[#087F8C] hover:underline">
+                Learn more about our chapter <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            {/* Faculty card */}
+            <div className="lg:col-span-5">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                className="bg-white rounded-xl border border-[#DDE4E1] shadow-card p-7 space-y-5"
+              >
+                <div className="flex items-center gap-4">
+                  <img
+                    src={resolveImage(siteSettings.facultyPhoto || "/assets/faculty.jpeg")}
+                    alt={siteSettings.facultyName}
+                    onError={handleImgError}
+                    className="w-14 h-14 rounded-lg object-cover border border-[#DDE4E1] flex-shrink-0"
+                  />
+                  <div>
+                    <h4 className="text-base font-bold text-[#172121]">{siteSettings.facultyName}</h4>
+                    <p className="text-xs font-semibold text-[#087F8C]">{siteSettings.facultyRole}</p>
+                    <p className="text-xs text-[#647070]">{siteSettings.facultyDept}</p>
+                  </div>
+                </div>
+
+                {/* Thin rule */}
+                <div className="h-px bg-[#DDE4E1]" />
+
+                <blockquote className="text-[#647070] text-sm leading-relaxed italic border-l-2 border-[#E76F51] pl-4">
+                  "{siteSettings.facultyQuote}"
+                </blockquote>
+              </motion.div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA Banner ── */}
+      <section className="bg-[#172121] py-14">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-8">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white">Ready to join IEEE EMBS?</h2>
+              <p className="text-[#8A9E9A] text-sm mt-2 max-w-md">Connect with the global biomedical engineering community and unlock research resources, IEEE Xplore access, and leadership opportunities.</p>
+            </div>
+            <div className="flex items-center gap-3 flex-shrink-0">
+              <Link
+                to="/membership"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-sm text-[#172121] bg-[#E9C46A] hover:bg-[#D4B050] transition-colors"
+              >
+                Join EMBS <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-sm text-white border border-white/20 hover:border-white/40 transition-colors"
+              >
+                Contact Us
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
 
     </div>
   );
