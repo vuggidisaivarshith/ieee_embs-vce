@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Calendar, Users, Award, ChevronRight, CheckCircle2, Megaphone } from "lucide-react";
 import { motion } from "framer-motion";
@@ -252,6 +252,34 @@ export default function Home() {
                     <div className="text-[11px] font-mono uppercase tracking-wide text-[#647070] mt-0.5">{s.label}</div>
                   </div>
                 ))}
+              </motion.div>
+
+              {/* OptiForge Hackathon Teaser */}
+              <motion.div
+                variants={fadeUp}
+                className="relative rounded-xl overflow-hidden border border-[#087F8C]/30 shadow-teal-subtle"
+                style={{ background: "linear-gradient(135deg, #060C14 0%, #0B1220 100%)" }}
+              >
+                <div className="absolute inset-0 pointer-events-none"
+                  style={{ backgroundImage: "radial-gradient(circle at 80% 50%, rgba(8,127,140,0.25) 0%, transparent 55%), radial-gradient(circle at 20% 50%, rgba(107,70,250,0.18) 0%, transparent 55%)" }}
+                />
+                <div className="relative z-10 px-5 py-4 flex items-center justify-between gap-4">
+                  <div>
+                    <span className="text-[10px] font-black font-mono uppercase tracking-widest text-[#087F8C]">Hackathon · 25 Sep 2026</span>
+                    <p className="text-white font-bold text-base mt-0.5">
+                      OPTI<span style={{ color: "#087F8C" }}>FORGE</span>{" "}
+                      <span className="text-white/40 font-normal text-sm">2026</span>
+                    </p>
+                    <p className="text-white/45 text-xs mt-0.5">Student Algorithm Design Challenge · IEEE EMBS × CIS</p>
+                  </div>
+                  <Link
+                    to="/optiforge"
+                    className="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-xs font-bold text-[#060C14] whitespace-nowrap transition-all hover:brightness-110"
+                    style={{ background: "linear-gradient(135deg, #087F8C 0%, #6B46FA 100%)" }}
+                  >
+                    Register <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
               </motion.div>
             </motion.div>
 

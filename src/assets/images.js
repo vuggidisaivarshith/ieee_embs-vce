@@ -11,6 +11,7 @@ import webmasterPhoto from './webmaster.jpeg';
 import eventSlide1 from './event-slide-1.png';
 import eventSlide2 from './event-slide-2.png';
 import eventSlide3 from './event-slide-3.png';
+import optiforgeFlyer from './optiforge-flyer.png';
 
 export {
   collegeLogo,
@@ -25,5 +26,6 @@ export {
   webmasterPhoto,
   eventSlide1,
   eventSlide2,
-  eventSlide3
+  eventSlide3,
+  optiforgeFlyer
 };

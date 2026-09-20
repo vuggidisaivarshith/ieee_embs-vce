@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "./components/layout/Navbar";
@@ -15,6 +15,7 @@ import Achievements from "./pages/Achievements";
 import Resources from "./pages/Resources";
 import Membership from "./pages/Membership";
 import Contact from "./pages/Contact";
+import OptiForge from "./pages/OptiForge";
 import NotFound from "./pages/NotFound";
 
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -50,6 +51,7 @@ export default function App() {
               <Route path="/resources"     element={<Resources />} />
               <Route path="/membership"    element={<Membership />} />
               <Route path="/contact"       element={<Contact />} />
+              <Route path="/optiforge"     element={<OptiForge />} />
 
               {/* Admin Routes */}
               <Route path="/admin/login" element={<AdminLogin />} />

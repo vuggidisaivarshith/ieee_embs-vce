@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Shield, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -110,6 +110,17 @@ export default function Navbar() {
               <span className="hidden xl:inline">Admin</span>
             </Link>
 
+            {/* OptiForge Hackathon CTA */}
+            <Link
+              to="/optiforge"
+              className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-black rounded-lg text-white whitespace-nowrap transition-all hover:brightness-110"
+              style={{ background: "linear-gradient(135deg, #087F8C 0%, #6B46FA 100%)" }}
+              title="OptiForge 2026 Hackathon"
+            >
+              <span>⚡ OptiForge</span>
+              <span className="hidden xl:inline text-white/70">2026</span>
+            </Link>
+
             {/* Join EMBS CTA */}
             <Link
               to="/membership"
@@ -181,6 +192,14 @@ export default function Navbar() {
                   className="flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-semibold text-[#647070] border border-[#DDE4E1] hover:border-[#087F8C] transition-colors"
                 >
                   <Shield className="w-4 h-4" /> Admin Portal
+                </Link>
+                <Link
+                  to="/optiforge"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-black text-white transition-all hover:brightness-110"
+                  style={{ background: "linear-gradient(135deg, #087F8C 0%, #6B46FA 100%)" }}
+                >
+                  ⚡ OptiForge 2026 — Register Now
                 </Link>
                 <Link
                   to="/membership"
