@@ -37,10 +37,10 @@ export default function About() {
   ];
 
   return (
-    <div style={{ backgroundColor: "#F8F7F2", minHeight: "100vh" }}>
+    <div style={{ backgroundColor: "#F2F8FA", minHeight: "100vh" }}>
 
       {/* Hero */}
-      <section className="pt-32 pb-20 bg-white border-b border-[#DDE4E1]">
+      <section className="pt-32 pb-20 relative overflow-hidden" style={{ background: "rgba(255,255,255,0.65)", backdropFilter: "blur(24px) saturate(180%)", WebkitBackdropFilter: "blur(24px) saturate(180%)", borderBottom: "1px solid rgba(255,255,255,0.6)", boxShadow: "0 4px 20px -2px rgba(0,0,0,0.03)" }}>
         <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
           <motion.div variants={stagger} initial="hidden" animate="visible" className="max-w-3xl space-y-6">
             <motion.div variants={fadeUp} className="flex items-center gap-3">
@@ -97,7 +97,7 @@ export default function About() {
       </section>
 
       {/* Thin rule */}
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-8"><div className="h-px bg-[#DDE4E1]" /></div>
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-8"><div className="h-px bg-black/6" /></div>
 
       {/* Timeline */}
       <section className="py-20 bg-white">
@@ -135,10 +135,10 @@ export default function About() {
       </section>
 
       {/* Faculty */}
-      <section className="py-20" style={{ backgroundColor: "#F8F7F2" }}>
+      <section className="py-20" style={{ backgroundColor: "#F2F8FA" }}>
         <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="bg-white border border-[#DDE4E1] rounded-xl p-8 sm:p-12 shadow-card"
+            className="glass-card rounded-xl p-8 sm:p-12 shadow-card"
           >
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
               <div className="lg:col-span-7 space-y-5">
@@ -173,3 +173,5 @@ export default function About() {
     </div>
   );
 }
+
+

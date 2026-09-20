@@ -16,8 +16,8 @@ export default function Announcements() {
   const regular = announcements.filter(a => !a.isPinned);
 
   return (
-    <div style={{ backgroundColor: "#F8F7F2", minHeight: "100vh" }}>
-      <section className="pt-32 pb-16 bg-white border-b border-[#DDE4E1]">
+    <div style={{ backgroundColor: "#F2F8FA", minHeight: "100vh" }}>
+      <section className="pt-32 pb-16 relative overflow-hidden" style={{ background: "rgba(255,255,255,0.65)", backdropFilter: "blur(24px) saturate(180%)", WebkitBackdropFilter: "blur(24px) saturate(180%)", borderBottom: "1px solid rgba(255,255,255,0.6)", boxShadow: "0 4px 20px -2px rgba(0,0,0,0.03)" }}>
         <div className="max-w-[1280px] mx-auto px-4 sm:px-8 space-y-5">
           <div className="flex items-center gap-3">
             <div className="w-8 h-0.5 bg-[#087F8C]" />
@@ -48,7 +48,7 @@ export default function Announcements() {
         ))}
 
         {/* Thin rule between pinned and regular */}
-        {pinned.length > 0 && regular.length > 0 && <div className="h-px bg-[#DDE4E1]" />}
+        {pinned.length > 0 && regular.length > 0 && <div className="h-px bg-black/6" />}
 
         {/* Regular */}
         {regular.map((item, idx) => (
@@ -70,3 +70,5 @@ export default function Announcements() {
     </div>
   );
 }
+
+

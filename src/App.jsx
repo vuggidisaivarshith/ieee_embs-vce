@@ -26,7 +26,7 @@ export default function App() {
   const location = useLocation();
 
   return (
-    <div className="flex flex-col min-h-screen selection:bg-vce-teal selection:text-white" style={{ backgroundColor: "#F8F7F2" }}>
+    <div className="flex flex-col min-h-screen selection:bg-[#008C95] selection:text-white" style={{ backgroundColor: "#F2F8FA" }}>
       <Navbar />
 
       <main className="flex-grow relative z-10">

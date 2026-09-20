@@ -59,11 +59,11 @@ export default function Contact() {
   const field = "w-full px-4 py-3 text-sm bg-[#F8F7F2] border border-[#DDE4E1] rounded-lg text-[#172121] placeholder-[#647070] focus:outline-none focus:ring-2 focus:ring-[#087F8C]/30 focus:border-[#087F8C] transition-colors";
 
   return (
-    <div style={{ backgroundColor: "#F8F7F2", minHeight: "100vh" }}>
+    <div style={{ backgroundColor: "#F2F8FA", minHeight: "100vh" }}>
       {toastMessage && <Toast message={toastMessage} type={toastType} onClose={() => setToastMessage(null)} />}
 
       {/* Hero */}
-      <section className="pt-32 pb-16 bg-white border-b border-[#DDE4E1]">
+      <section className="pt-32 pb-16 relative overflow-hidden" style={{ background: "rgba(255,255,255,0.65)", backdropFilter: "blur(24px) saturate(180%)", WebkitBackdropFilter: "blur(24px) saturate(180%)", borderBottom: "1px solid rgba(255,255,255,0.6)", boxShadow: "0 4px 20px -2px rgba(0,0,0,0.03)" }}>
         <div className="max-w-[1280px] mx-auto px-4 sm:px-8 space-y-5">
           <div className="flex items-center gap-3">
             <div className="w-8 h-0.5 bg-[#087F8C]" />
@@ -131,7 +131,7 @@ export default function Contact() {
             transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-5 space-y-5"
           >
-            <div className="bg-white border border-[#DDE4E1] rounded-xl p-7 shadow-card space-y-6">
+            <div className="glass-card rounded-xl p-7 shadow-card space-y-6">
               <h3 className="text-lg font-bold text-[#172121]">Campus Information</h3>
               <div className="space-y-4 text-sm">
                 <div className="flex items-start gap-3">
@@ -141,7 +141,7 @@ export default function Contact() {
                     <span className="text-[#647070] text-xs leading-relaxed">Vardhaman College of Engineering, Kacharam, Shamshabad, Hyderabad 501218</span>
                   </div>
                 </div>
-                <div className="h-px bg-[#DDE4E1]" />
+                <div className="h-px bg-black/6" />
                 <div className="flex items-center gap-3">
                   <Mail className="w-4 h-4 text-[#087F8C] flex-shrink-0" />
                   <div>
@@ -149,7 +149,7 @@ export default function Contact() {
                     <a href="mailto:swethabharath27@vardhaman.org" className="text-[#087F8C] hover:underline text-xs font-medium">swethabharath27@vardhaman.org</a>
                   </div>
                 </div>
-                <div className="h-px bg-[#DDE4E1]" />
+                <div className="h-px bg-black/6" />
                 <div className="flex items-center gap-3">
                   <Phone className="w-4 h-4 text-[#647070] flex-shrink-0" />
                   <div>
@@ -176,3 +176,5 @@ export default function Contact() {
     </div>
   );
 }
+
+

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Calendar, Users, Award, ChevronRight, CheckCircle2, Megaphone } from "lucide-react";
+import { ArrowRight, Calendar, Users, Award, ChevronRight, CheckCircle2, Megaphone, Zap, ExternalLink } from "lucide-react";
 import { motion } from "framer-motion";
 import { collection, getDocs, doc, getDoc, query, orderBy, limit } from "firebase/firestore";
 import { db, DEFAULT_SITE_DATA } from "../firebase/config";
@@ -147,40 +147,100 @@ export default function Home() {
   ];
 
   return (
-    <div style={{ backgroundColor: "#F8F7F2" }}>
+    <div style={{ backgroundColor: "transparent" }}>
 
       {/* Speaker modal */}
       <SpeakerModal isOpen={speakerModalOpen} onClose={() => setSpeakerModalOpen(false)} speakerData={speakerData} />
 
-      {/* ── Announcement banner ── */}
+      {/* ── OptiForge Full-Width Announcement Banner (immediately above the fold, offset for fixed navbar) ── */}
+      <motion.div
+        initial={{ opacity: 0, y: -12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="relative overflow-hidden pt-16"
+        style={{ background: "linear-gradient(135deg, #071A2B 0%, #0D2844 45%, #071A2B 100%)" }}
+      >
+        {/* Ambient glows */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute -left-20 top-1/2 -translate-y-1/2 w-[320px] h-[160px] rounded-full animate-glow-pulse"
+            style={{ background:"radial-gradient(ellipse, rgba(0,140,149,0.38) 0%, transparent 70%)", filter:"blur(35px)" }} />
+          <div className="absolute right-1/4 top-1/2 -translate-y-1/2 w-[280px] h-[140px] rounded-full animate-glow-pulse"
+            style={{ background:"radial-gradient(ellipse, rgba(0,102,204,0.30) 0%, transparent 70%)", filter:"blur(35px)", animationDelay:"1s" }} />
+          <div className="absolute inset-0 animate-shimmer"
+            style={{ backgroundImage:"linear-gradient(105deg, transparent 35%, rgba(0,184,217,0.06) 50%, transparent 65%)" }} />
+          <div className="absolute inset-0 opacity-5"
+            style={{ backgroundImage:"linear-gradient(rgba(0,184,217,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,217,0.6) 1px, transparent 1px)", backgroundSize:"40px 40px" }} />
+        </div>
+
+        <div className="relative z-10 max-w-[1280px] mx-auto px-4 sm:px-8 py-4 sm:py-5">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-8">
+            {/* Left: Event Identity */}
+            <div className="flex items-center gap-4 flex-1 min-w-0">
+              <div className="flex-shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center"
+                style={{ background:"rgba(0,140,149,0.22)", border:"1px solid rgba(0,184,217,0.45)", boxShadow:"0 0 20px rgba(0,184,217,0.35)" }}>
+                <Zap className="w-5 h-5 animate-pulse" style={{ color:"#00B8D9" }} />
+              </div>
+              <div className="min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-[10px] font-black font-mono uppercase tracking-widest px-2.5 py-0.5 rounded-full"
+                    style={{ background:"rgba(0,184,217,0.18)", border:"1px solid rgba(0,184,217,0.40)", color:"#00B8D9" }}>
+                    ★ Major Hackathon · 25 Sep 2026
+                  </span>
+                  <span className="hidden sm:inline-block text-[11px] font-mono text-white/40">9:00 AM – 4:00 PM · VCE Campus</span>
+                </div>
+                <p className="font-black text-lg sm:text-2xl tracking-tight mt-1" style={{ fontFamily:"Sora,Outfit,sans-serif" }}>
+                  <span style={{ color:"#FFFFFF" }}>OPTI</span>
+                  <span style={{ color:"#008C95" }}>FORGE</span>
+                  <span className="font-bold text-sm ml-2" style={{ color:"rgba(255,255,255,0.4)" }}>2026</span>
+                  <span className="ml-2 font-normal text-sm hidden md:inline" style={{ color:"rgba(255,255,255,0.65)" }}>
+                    — Student Algorithm Design Challenge
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            {/* Right: CTAs */}
+            <div className="flex items-center gap-3 flex-shrink-0">
+              <Link to="/optiforge"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black text-white transition-all hover:brightness-110 hover:scale-105 active:scale-95 whitespace-nowrap shadow-lg"
+                style={{ background:"linear-gradient(135deg, #008C95 0%, #0066CC 100%)", boxShadow:"0 4px 20px rgba(0,140,149,0.5), inset 0 1px 0 rgba(255,255,255,0.3)" }}>
+                <span>Explore & Register</span> <ArrowRight className="w-4 h-4" />
+              </Link>
+              <a href="https://optiforge-2026.vercel.app/register" target="_blank" rel="noreferrer"
+                className="hidden sm:inline-flex items-center gap-1.5 px-4 py-3 rounded-xl text-xs font-semibold text-white/90 hover:text-white transition-all hover:scale-105 border"
+                style={{ background:"rgba(255,255,255,0.08)", borderColor:"rgba(255,255,255,0.2)", backdropFilter:"blur(12px)" }}>
+                <ExternalLink className="w-3.5 h-3.5 text-[#00B8D9]" /> Direct Portal
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className="absolute bottom-0 left-0 right-0 h-[2px]"
+          style={{ background:"linear-gradient(90deg, transparent, rgba(0,184,217,0.7), rgba(0,140,149,0.8), rgba(0,102,204,0.6), transparent)" }} />
+      </motion.div>
+
+      {/* Chapter notices ticker */}
       {latestAnnouncement && (
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="border-b border-[#DDE4E1] bg-white/80 text-[#172121] py-2 px-4 text-xs"
-        >
+        <div className="border-b py-2 px-4 text-xs" style={{ background:"rgba(255,255,255,0.70)", backdropFilter:"blur(16px)", borderColor:"rgba(221,228,225,0.6)" }}>
           <div className="max-w-[1280px] mx-auto flex items-center justify-between gap-4">
             <div className="flex items-center gap-2.5 overflow-hidden">
-              <span className="flex-shrink-0 text-[10px] font-bold font-mono uppercase tracking-widest text-[#087F8C] border border-[#087F8C]/25 px-2 py-0.5 rounded">
-                Announcement
-              </span>
-              <p className="truncate text-[#647070] font-medium">{latestAnnouncement.title}</p>
+              <span className="flex-shrink-0 text-[10px] font-bold font-mono uppercase tracking-widest text-[#008C95] border border-[#008C95]/30 px-2 py-0.5 rounded-full bg-[#008C95]/10">Notice</span>
+              <p className="truncate text-[#17202A] font-medium">{latestAnnouncement.title}</p>
             </div>
-            <Link to="/announcements" className="flex-shrink-0 flex items-center gap-1 text-[#087F8C] font-semibold hover:underline text-xs whitespace-nowrap">
+            <Link to="/announcements" className="flex-shrink-0 flex items-center gap-1 text-[#008C95] font-semibold hover:underline text-xs whitespace-nowrap">
               View <ChevronRight className="w-3.5 h-3.5" />
             </Link>
           </div>
-        </motion.div>
+        </div>
       )}
 
       {/* ── HERO ── */}
-      <section className="relative pt-28 pb-20 overflow-hidden" style={{ backgroundColor: "#F8F7F2" }}>
-        {/* Subtle warm gradient top */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#F8F7F2] via-[#F5F3EE] to-[#EEF6F7] pointer-events-none" />
+      <section className="relative pt-8 sm:pt-12 pb-20 overflow-hidden" style={{ backgroundColor: "transparent" }}>
+        {/* Subtle Apple mesh gradient top */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#F2F8FA]/60 via-white/40 to-transparent pointer-events-none" />
 
         {/* Thin teal top border accent */}
-        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#087F8C] to-transparent opacity-40" />
+        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#008C95] to-transparent opacity-30" />
 
         <div className="max-w-[1280px] mx-auto px-4 sm:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -254,28 +314,39 @@ export default function Home() {
                 ))}
               </motion.div>
 
-              {/* OptiForge Hackathon Teaser */}
+              {/* OptiForge Hackathon Glass Teaser */}
               <motion.div
                 variants={fadeUp}
-                className="relative rounded-xl overflow-hidden border border-[#087F8C]/30 shadow-teal-subtle"
-                style={{ background: "linear-gradient(135deg, #060C14 0%, #0B1220 100%)" }}
+                className="relative rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.01]"
+                style={{
+                  background: "linear-gradient(135deg, rgba(7,26,43,0.96) 0%, rgba(13,40,68,0.94) 100%)",
+                  backdropFilter: "blur(20px)",
+                  border: "1px solid rgba(0,184,217,0.35)",
+                  boxShadow: "0 10px 30px -5px rgba(7,26,43,0.3), 0 0 20px -5px rgba(0,140,149,0.3), inset 0 1px 0 rgba(255,255,255,0.15)"
+                }}
               >
-                <div className="absolute inset-0 pointer-events-none"
-                  style={{ backgroundImage: "radial-gradient(circle at 80% 50%, rgba(8,127,140,0.25) 0%, transparent 55%), radial-gradient(circle at 20% 50%, rgba(107,70,250,0.18) 0%, transparent 55%)" }}
-                />
+                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                  <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full"
+                    style={{ background: "radial-gradient(circle, rgba(0,184,217,0.25) 0%, transparent 70%)", filter: "blur(20px)" }} />
+                  <div className="absolute -left-10 -bottom-10 w-40 h-40 rounded-full"
+                    style={{ background: "radial-gradient(circle, rgba(0,102,204,0.2) 0%, transparent 70%)", filter: "blur(20px)" }} />
+                </div>
                 <div className="relative z-10 px-5 py-4 flex items-center justify-between gap-4">
                   <div>
-                    <span className="text-[10px] font-black font-mono uppercase tracking-widest text-[#087F8C]">Hackathon · 25 Sep 2026</span>
-                    <p className="text-white font-bold text-base mt-0.5">
-                      OPTI<span style={{ color: "#087F8C" }}>FORGE</span>{" "}
-                      <span className="text-white/40 font-normal text-sm">2026</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#00B8D9] animate-pulse" />
+                      <span className="text-[10px] font-black font-mono uppercase tracking-widest text-[#00B8D9]">Flagship Hackathon · 25 Sep 2026</span>
+                    </div>
+                    <p className="text-white font-black text-lg mt-0.5 tracking-tight" style={{ fontFamily: "Sora, Outfit, sans-serif" }}>
+                      OPTI<span style={{ color: "#008C95" }}>FORGE</span>{" "}
+                      <span className="text-white/40 font-semibold text-sm">2026</span>
                     </p>
-                    <p className="text-white/45 text-xs mt-0.5">Student Algorithm Design Challenge · IEEE EMBS × CIS</p>
+                    <p className="text-white/60 text-xs mt-0.5">Student Algorithm Design Challenge · IEEE EMBS × CIS</p>
                   </div>
                   <Link
                     to="/optiforge"
-                    className="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-xs font-bold text-[#060C14] whitespace-nowrap transition-all hover:brightness-110"
-                    style={{ background: "linear-gradient(135deg, #087F8C 0%, #6B46FA 100%)" }}
+                    className="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-black text-white whitespace-nowrap transition-all hover:brightness-110 hover:scale-105 active:scale-95 shadow-md"
+                    style={{ background: "linear-gradient(135deg, #008C95 0%, #0066CC 100%)", boxShadow: "0 2px 14px rgba(0,140,149,0.4), inset 0 1px 0 rgba(255,255,255,0.3)" }}
                   >
                     Register <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
@@ -291,7 +362,7 @@ export default function Home() {
               className="space-y-5"
             >
               {/* Waveform visualization */}
-              <div className="bg-white rounded-xl border border-[#DDE4E1] p-4 shadow-card overflow-hidden">
+              <div className="glass-card rounded-xl p-4 overflow-hidden">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-[10px] font-bold font-mono uppercase tracking-widest text-[#087F8C]">Bio-Signal Monitor</span>
                   <span className="flex items-center gap-1.5 text-[10px] font-mono text-[#647070]">
@@ -302,7 +373,7 @@ export default function Home() {
               </div>
 
               {/* Keynote event card */}
-              <div className="bg-white rounded-xl border border-[#DDE4E1] p-5 shadow-card space-y-4">
+              <div className="glass-card rounded-xl p-5 space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-bold font-mono uppercase tracking-widest px-2.5 py-1 rounded bg-[#087F8C]/8 text-[#087F8C] border border-[#087F8C]/15">Completed Keynote</span>
                   <span className="text-[11px] font-mono text-[#647070]">13 Aug 2026</span>
@@ -345,7 +416,7 @@ export default function Home() {
       </div>
 
       {/* ── Innovation Pillars ── */}
-      <section className="py-20 bg-white">
+      <section className="py-20" style={{ background:"transparent" }}>
         <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
 
@@ -356,16 +427,13 @@ export default function Home() {
                 title="Pillars of Health & Technology Innovation"
                 subtitle="The multidisciplinary fields advancing medical diagnosis, clinical treatment, and human healthcare at Vardhaman."
               />
-              <Link
-                to="/resources"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-[#087F8C] hover:underline"
-              >
+              <Link to="/resources" className="inline-flex items-center gap-2 text-sm font-semibold text-[#087F8C] hover:underline">
                 Explore Research Resources <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
 
             {/* Right: Pillar list */}
-            <div className="lg:col-span-8 space-y-px">
+            <div className="lg:col-span-8 space-y-3">
               {pillars.map((p, i) => (
                 <motion.div
                   key={i}
@@ -373,8 +441,7 @@ export default function Home() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.5, delay: i * 0.09, ease: [0.16, 1, 0.3, 1] }}
-                  className="group flex items-start gap-6 p-6 border border-[#DDE4E1] rounded-xl hover:border-[#087F8C]/30 hover:shadow-card transition-all cursor-default bg-white"
-                  style={{ marginBottom: "12px" }}
+                  className="glass-card group flex items-start gap-6 p-6 rounded-xl cursor-default"
                 >
                   <div className="flex-shrink-0 text-[11px] font-black font-mono text-[#DDE4E1] group-hover:text-[#087F8C] transition-colors pt-0.5">{p.num}</div>
                   <div className="flex-1 min-w-0">
@@ -399,18 +466,13 @@ export default function Home() {
       </div>
 
       {/* ── Chapter welcome & Faculty quote ── */}
-      <section className="py-20" style={{ backgroundColor: "#F8F7F2" }}>
+      <section className="py-20" style={{ background:"transparent" }}>
         <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
 
             <div className="lg:col-span-7 space-y-6">
-              <SectionHeading
-                label="Chapter Overview"
-                title="Empowering Students to Engineer the Future of Medicine"
-              />
-              <p className="text-[#647070] leading-relaxed">
-                {siteSettings.welcomeText}
-              </p>
+              <SectionHeading label="Chapter Overview" title="Empowering Students to Engineer the Future of Medicine" />
+              <p className="text-[#647070] leading-relaxed">{siteSettings.welcomeText}</p>
               <div className="space-y-3 pt-2">
                 {[
                   "Hands-on Workshops in Medical Signal Processing & AI",
@@ -418,14 +480,8 @@ export default function Home() {
                   "National Symposia & Healthcare Hackathon Competitions",
                   "Direct Access to IEEE Xplore Digital Library & Research Grants"
                 ].map((item, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: i * 0.07 }}
-                    className="flex items-start gap-3"
-                  >
+                  <motion.div key={i} initial={{ opacity: 0, x: -10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: i * 0.07 }} className="flex items-start gap-3">
                     <CheckCircle2 className="w-4.5 h-4.5 text-[#087F8C] flex-shrink-0 mt-0.5" />
                     <span className="text-[#172121] text-sm font-medium">{item}</span>
                   </motion.div>
@@ -438,30 +494,19 @@ export default function Home() {
 
             {/* Faculty card */}
             <div className="lg:col-span-5">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
                 transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                className="bg-white rounded-xl border border-[#DDE4E1] shadow-card p-7 space-y-5"
-              >
+                className="glass-card-strong rounded-xl p-7 space-y-5">
                 <div className="flex items-center gap-4">
-                  <img
-                    src={resolveImage(siteSettings.facultyPhoto || "/assets/faculty.jpeg")}
-                    alt={siteSettings.facultyName}
-                    onError={handleImgError}
-                    className="w-14 h-14 rounded-lg object-cover border border-[#DDE4E1] flex-shrink-0"
-                  />
+                  <img src={resolveImage(siteSettings.facultyPhoto || "/assets/faculty.jpeg")} alt={siteSettings.facultyName}
+                    onError={handleImgError} className="w-14 h-14 rounded-lg object-cover border border-white/40 flex-shrink-0" />
                   <div>
                     <h4 className="text-base font-bold text-[#172121]">{siteSettings.facultyName}</h4>
                     <p className="text-xs font-semibold text-[#087F8C]">{siteSettings.facultyRole}</p>
                     <p className="text-xs text-[#647070]">{siteSettings.facultyDept}</p>
                   </div>
                 </div>
-
-                {/* Thin rule */}
-                <div className="h-px bg-[#DDE4E1]" />
-
+                <div className="h-px bg-black/6" />
                 <blockquote className="text-[#647070] text-sm leading-relaxed italic border-l-2 border-[#E76F51] pl-4">
                   "{siteSettings.facultyQuote}"
                 </blockquote>

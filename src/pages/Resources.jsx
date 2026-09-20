@@ -3,7 +3,6 @@ import { BookOpen, ExternalLink, Download, Search, FileText, Activity, Network, 
 import { motion } from 'framer-motion';
 import { collection, getDocs } from 'firebase/firestore';
 import { db, DEFAULT_SITE_DATA } from '../firebase/config';
-import TiltCard from '../components/ui/TiltCard';
 
 export default function Resources() {
   const [resources, setResources] = useState(DEFAULT_SITE_DATA.resources);
@@ -36,26 +35,25 @@ export default function Resources() {
   });
 
   return (
-    <div className="pt-24 pb-20 bg-slate-50 text-slate-800 min-h-screen">
+    <div style={{ backgroundColor: "#F2F8FA", minHeight: "100vh" }}>
       
       {/* Header */}
-      <section className="py-16 text-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-sky-500/5 via-purple-500/5 to-transparent pointer-events-none"></div>
+      <section className="pt-32 pb-16 relative overflow-hidden" style={{ background: "rgba(255,255,255,0.65)", backdropFilter: "blur(24px) saturate(180%)", WebkitBackdropFilter: "blur(24px) saturate(180%)", borderBottom: "1px solid rgba(255,255,255,0.6)", boxShadow: "0 4px 20px -2px rgba(0,0,0,0.03)" }}>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 relative z-10"
+          className="max-w-[1280px] mx-auto px-4 sm:px-8 space-y-4 relative z-10"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-sky-200 text-xs font-mono font-bold text-embs-blue shadow-sm">
-            <Network className="w-3.5 h-3.5 animate-pulse text-embs-blue" />
-            <span>Interactive Biomedical Knowledge Network</span>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-0.5 bg-[#087F8C]" />
+            <span className="text-[11px] font-bold font-mono uppercase tracking-widest text-[#087F8C]">Interactive Biomedical Knowledge Network</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
-            Student & Member Resources
+          <h1 className="text-4xl sm:text-5xl font-bold text-[#172121] tracking-tight" style={{ fontFamily: "Sora, Outfit, sans-serif" }}>
+            Student &amp; Member Resources
           </h1>
-          <p className="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-            Quick links to IEEE Xplore, journals, student grants, career portals, and downloadable study materials.
+          <p className="text-[#647070] text-lg max-w-2xl leading-relaxed">
+            Curated repositories, research papers, IEEE Xplore digital portals, student grants, and biomedical engineering guides.
           </p>
         </motion.div>
       </section>
@@ -74,8 +72,8 @@ export default function Resources() {
                 onClick={() => setSelectedCategory(cat)}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition font-mono ${
                   selectedCategory === cat
-                    ? 'bg-embs-blue text-white shadow-sm'
-                    : 'bg-white text-slate-600 border border-slate-200 hover:text-slate-900 hover:bg-slate-100'
+                    ? 'bg-[#087F8C] text-white shadow-md'
+                    : 'glass-card text-[#647070] hover:text-[#172121]'
                 }`}
               >
                 {cat === 'all' ? 'All Clusters' : cat}
@@ -85,54 +83,54 @@ export default function Resources() {
 
           {/* Search */}
           <div className="w-full md:w-80 relative">
-            <Search className="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400" />
+            <Search className="w-4 h-4 absolute left-3.5 top-3.5 text-[#647070]" />
             <input 
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Filter nodes..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-embs-blue shadow-sm"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl glass-card text-[#172121] placeholder-[#647070] text-sm focus:outline-none focus:ring-2 focus:ring-[#087F8C]"
             />
           </div>
 
         </div>
 
-        {/* Resource Cards with Spatial Tilt */}
+        {/* Resource Cards with Apple Glass */}
         {filteredResources.length === 0 ? (
-          <div className="text-center py-16 bright-card rounded-3xl p-8">
-            <BookOpen className="w-12 h-12 text-slate-400 mx-auto mb-3" />
-            <h3 className="text-lg font-bold text-slate-900">No Resources Found</h3>
-            <p className="text-slate-500 text-sm mt-1">Try searching another term or resetting the cluster filter.</p>
+          <div className="text-center py-16 glass-card rounded-3xl p-8">
+            <BookOpen className="w-12 h-12 text-[#647070] mx-auto mb-3" />
+            <h3 className="text-lg font-bold text-[#172121]">No Resources Found</h3>
+            <p className="text-[#647070] text-sm mt-1">Try searching another term or resetting the cluster filter.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {filteredResources.map((res, idx) => (
-              <TiltCard 
+              <div 
                 key={res.id || idx}
-                maxTilt={4}
-                className="bright-card rounded-3xl p-6 flex flex-col justify-between space-y-4 shadow-bright hover:shadow-bright-hover group border border-slate-200/80 transition-all"
+                className="glass-card rounded-3xl p-6 flex flex-col justify-between space-y-4 group transition-all"
               >
                 <div className="space-y-2">
-                  <span className="text-xs font-mono font-bold text-embs-blue uppercase tracking-wider block">
+                  <span className="text-xs font-mono font-bold text-[#087F8C] uppercase tracking-wider block">
                     {res.category || 'General Resource'}
                   </span>
-                  <h3 className="text-lg font-bold text-slate-900 group-hover:text-embs-blue transition">{res.title}</h3>
-                  <p className="text-slate-600 text-xs leading-relaxed">{res.description}</p>
+                  <h3 className="text-lg font-bold text-[#172121] group-hover:text-[#087F8C] transition">{res.title}</h3>
+                  <p className="text-[#647070] text-xs leading-relaxed">{res.description}</p>
                 </div>
 
-                <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                <div className="pt-3 border-t border-black/5 flex items-center justify-between">
                   <a
                     href={res.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-extrabold text-white bg-embs-blue hover:bg-ieee-dark transition shadow-sm"
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white transition-all hover:scale-105 shadow-sm"
+                    style={{ background: "linear-gradient(160deg, #0A8F9C 0%, #087F8C 100%)" }}
                   >
                     <span>Open Resource</span>
                     <ExternalLink className="w-3.5 h-3.5" />
                   </a>
-                  <span className="text-[10px] font-mono text-slate-400">IEEE Xplore Verified</span>
+                  <span className="text-[10px] font-mono text-[#647070]">IEEE Xplore Verified</span>
                 </div>
-              </TiltCard>
+              </div>
             ))}
           </div>
         )}

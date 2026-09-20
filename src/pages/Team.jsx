@@ -34,10 +34,10 @@ export default function Team() {
   const students = safe.filter(m => !faculty.includes(m));
 
   return (
-    <div style={{ backgroundColor: "#F8F7F2", minHeight: "100vh" }}>
+    <div style={{ backgroundColor: "#F2F8FA", minHeight: "100vh" }}>
 
       {/* Hero */}
-      <section className="pt-32 pb-16 bg-white border-b border-[#DDE4E1]">
+      <section className="pt-32 pb-16 relative overflow-hidden" style={{ background: "rgba(255,255,255,0.65)", backdropFilter: "blur(24px) saturate(180%)", WebkitBackdropFilter: "blur(24px) saturate(180%)", borderBottom: "1px solid rgba(255,255,255,0.6)", boxShadow: "0 4px 20px -2px rgba(0,0,0,0.03)" }}>
         <div className="max-w-[1280px] mx-auto px-4 sm:px-8 space-y-5">
           <div className="flex items-center gap-3">
             <div className="w-8 h-0.5 bg-[#087F8C]" />
@@ -59,7 +59,7 @@ export default function Team() {
           </div>
           <div className="flex justify-center">
             {faculty.map((m, i) => (
-              <div key={m.id || i} className="bg-white border border-[#DDE4E1] rounded-xl p-7 flex flex-col sm:flex-row items-center gap-6 max-w-lg w-full shadow-card">
+              <div key={m.id || i} className="glass-card rounded-xl p-7 flex flex-col sm:flex-row items-center gap-6 max-w-lg w-full shadow-card">
                 <img src={resolveImage(m.photoUrl || "/assets/faculty.jpeg")} alt={m.name} onError={handleImgError}
                   className="w-24 h-32 rounded-lg object-cover object-top border border-[#DDE4E1] flex-shrink-0" />
                 <div className="space-y-1.5 text-center sm:text-left">
@@ -131,3 +131,5 @@ export default function Team() {
     </div>
   );
 }
+
+

@@ -30,10 +30,10 @@ export default function Events() {
   });
 
   return (
-    <div style={{ backgroundColor: "#F8F7F2", minHeight: "100vh" }}>
+    <div style={{ backgroundColor: "#F2F8FA", minHeight: "100vh" }}>
 
       {/* Hero */}
-      <section className="pt-32 pb-16 bg-white border-b border-[#DDE4E1]">
+      <section className="pt-32 pb-16 relative overflow-hidden" style={{ background: "rgba(255,255,255,0.65)", backdropFilter: "blur(24px) saturate(180%)", WebkitBackdropFilter: "blur(24px) saturate(180%)", borderBottom: "1px solid rgba(255,255,255,0.6)", boxShadow: "0 4px 20px -2px rgba(0,0,0,0.03)" }}>
         <div className="max-w-[1280px] mx-auto px-4 sm:px-8 space-y-5">
           <div className="flex items-center gap-3">
             <div className="w-8 h-0.5 bg-[#087F8C]" />
@@ -81,7 +81,7 @@ export default function Events() {
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1,2,3].map(n => (
-              <div key={n} className="bg-white border border-[#DDE4E1] rounded-xl p-5 space-y-3">
+              <div key={n} className="glass-card rounded-xl p-5 space-y-3">
                 <Skeleton className="h-44 w-full rounded-lg bg-[#DDE4E1]" />
                 <Skeleton className="h-5 w-3/4 bg-[#DDE4E1]" />
                 <Skeleton className="h-4 w-full bg-[#DDE4E1]" />
@@ -173,3 +173,5 @@ export default function Events() {
     </div>
   );
 }
+
+
