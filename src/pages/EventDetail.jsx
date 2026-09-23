@@ -152,7 +152,7 @@ export default function EventDetail() {
           <div className="pt-4 border-t border-slate-100">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-xl font-bold text-slate-900">Live Session Highlights</h3>
-              <span className="text-xs font-mono font-bold text-embs-blue">13 AUG 2026</span>
+              <span className="text-xs font-mono font-bold text-embs-blue uppercase">{event.date || "Event Date"}</span>
             </div>
             <EventCarousel slides={eventSlides} title={event.title} />
           </div>
@@ -164,6 +164,21 @@ export default function EventDetail() {
               {event.description}
             </p>
           </div>
+
+          {/* Agenda */}
+          {event.agenda && event.agenda.length > 0 && (
+            <div className="border-t border-slate-100 pt-6 space-y-4">
+              <h3 className="text-xl font-bold text-slate-900">Event Schedule & Agenda</h3>
+              <div className="grid grid-cols-1 gap-2.5">
+                {event.agenda.map((item, idx) => (
+                  <div key={idx} className="flex items-start gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200/80">
+                    <Clock className="w-4 h-4 text-embs-blue mt-0.5 flex-shrink-0" />
+                    <span className="text-sm font-medium text-slate-700">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Featured Speaker Card with "About Speaker" Button & Links */}
           {event.speaker && (
@@ -231,7 +246,7 @@ export default function EventDetail() {
           <div className="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
               <p className="text-sm font-bold text-slate-900">
-                {isPastEvent ? "Session Completed on 13 Aug 2026" : "Ready to Participate?"}
+                {isPastEvent ? `Session Completed · ${event.date}` : "Ready to Participate?"}
               </p>
               <p className="text-xs text-slate-500">
                 {isPastEvent ? "Explore event session screenshots and speaker details." : "Secure your spot for this session today."}
@@ -246,6 +261,28 @@ export default function EventDetail() {
                 <Info className="w-4 h-4 text-embs-blue" />
                 <span>About Speaker</span>
               </button>
+
+              {event.registrationLink && (
+                <a
+                  href={event.registrationLink}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex-1 sm:flex-initial px-5 py-3 rounded-xl text-xs font-extrabold text-white bg-blue-600 hover:bg-blue-700 shadow-sm flex items-center justify-center gap-1.5 transition transform hover:scale-105"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  <span>Register Now</span>
+                </a>
+              )}
+
+              {event.id === "optiforge-2026" && (
+                <Link
+                  to="/optiforge"
+                  className="flex-1 sm:flex-initial px-5 py-3 rounded-xl text-xs font-extrabold text-white bg-teal-600 hover:bg-teal-700 shadow-sm flex items-center justify-center gap-1.5 transition transform hover:scale-105"
+                >
+                  <Activity className="w-4 h-4" />
+                  <span>OptiForge Portal</span>
+                </Link>
+              )}
 
               <Link
                 to="/gallery"

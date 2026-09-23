@@ -1,5 +1,5 @@
-﻿import React, { useState, useEffect } from "react";
-import { ExternalLink, Calendar, Clock, MapPin, Trophy, ArrowRight, CheckCircle2, Zap, Shield, Cpu, FileCode } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { ExternalLink, Calendar, Clock, MapPin, Trophy, ArrowRight, CheckCircle2, Zap, Shield, Cpu, Layers } from "lucide-react";
 import { motion } from "framer-motion";
 import { optiforgeFlyer } from "../assets/images";
 
@@ -41,27 +41,28 @@ const fadeUp = { hidden:{opacity:0,y:22}, visible:{opacity:1,y:0,transition:{dur
 const stagger = { hidden:{}, visible:{transition:{staggerChildren:.08}} };
 
 const stages = [
-  { num:"01", time:"09:00–09:30", title:"Problem Selection & Strategy",   desc:"Teams review all 6 real-world challenges, submit track preferences, and analyze domain formulations.",             tag:"Strategy" },
-  { num:"02", time:"09:30–10:00", title:"Starter Code & Test Harness",    desc:"Download official Python starter scripts, offline evaluation harness, and synthetic test datasets.",              tag:"Distribution" },
-  { num:"03", time:"10:00–11:15", title:"Attempt 1 — Baseline",           desc:"Implement core heuristic algorithm for the base scenario. Immediate sandboxed auto-score on leaderboard.",        tag:"Scored #1" },
-  { num:"04", time:"11:30–12:45", title:"Hidden Shift #1 & Attempt 2",    desc:"Surprise parameter perturbation injected. Adapt code and submit mandatory reflection note.",                     tag:"Scored #2" },
-  { num:"05", time:"13:15–14:15", title:"Hidden Shift #2 & Attempt 3",    desc:"Stress edge case injected. Final algorithm refinement for maximum convergence, efficiency, and stability.",        tag:"Scored #3" },
-  { num:"06", time:"14:15",       title:"Leaderboard Freeze",              desc:"Public rankings freeze. Teams lock their final submissions before confidential judging rounds begin.",              tag:"Lock" },
-  { num:"07", time:"14:30–15:00", title:"The Live Patch Round",            desc:"15–20 minute surprise constraint — ZERO AI ALLOWED. Tests real-time problem-solving agility and mental model.",  tag:"Zero AI", highlight:true },
-  { num:"08", time:"15:00–16:00", title:"Judges' Viva Q&A & Results",      desc:"1-on-1 viva defense before domain faculty judges. Defend representations, operators, and shift handling.",         tag:"Expert Jury" },
+  { num:"01", time:"09:00–10:00", title:"Problem Selection & Kickoff",          desc:"Review all 10 innovation themes, strategize representations, and download official starter kits & evaluation harnesses.",      tag:"Kickoff" },
+  { num:"02", time:"10:00–12:30", title:"1st Development & AI Evaluation",      desc:"Core heuristic algorithm engineering, initial implementation, baseline benchmarking, and automated AI evaluation scoring.",      tag:"AI Evaluation", highlight:true },
+  { num:"03", time:"12:30–13:15", title:"Lunch Break & Strategy Refresh",       desc:"Networking and lunch break. Teams regroup, analyze leaderboard metrics, and adjust strategy for afternoon rounds.",             tag:"Break" },
+  { num:"04", time:"13:15–15:00", title:"2nd Development & Optimization",       desc:"Surprise scenario shifts injected. Adapt models, execute live patch refactoring, and optimize convergence for final freeze.",    tag:"Deep Hack" },
+  { num:"05", time:"15:00–16:00", title:"Final Panel Evaluation & Results",     desc:"Live defense and presentation before the domain expert faculty jury, followed by felicitation and awards ceremony.",          tag:"Panel Jury", highlight:true },
 ];
 
 const tracks = [
-  { num:"P1", title:"Hospital Resource Allocation",      tag:"Genetic Algorithm",       desc:"Optimize ICU bed distribution across triage categories and regional demand surges using GA chromosome encoding.",           accent:C.teal },
-  { num:"P2", title:"Drug Supply Chain Routing",         tag:"Ant Colony Optimization", desc:"Minimize delivery latency for cold-chain pharmaceuticals across multi-warehouse networks under disruption.",               accent:C.cyan },
-  { num:"P3", title:"Medical Image Segmentation Tuning", tag:"Particle Swarm (PSO)",    desc:"Tune U-Net hyperparameters (learning rate, batch size, dropout) for maximum IoU on synthetic MRI slices.",                accent:C.blue },
-  { num:"P4", title:"Biomedical Signal Anomaly Filter",  tag:"Fuzzy Logic",             desc:"Design a fuzzy inference system to classify and filter ECG / EEG anomalies under noisy sensor conditions.",               accent:C.teal },
-  { num:"P5", title:"Multi-Robot Search & Rescue",       tag:"Swarm Intelligence",      desc:"Coordinate autonomous drones and ground rovers to locate survivors in a dynamically collapsing disaster zone.",            accent:C.cyan, flagship:true },
-  { num:"P6", title:"Clinical Trial Scheduling",         tag:"Hybrid Evolutionary",     desc:"Allocate patient cohorts, investigator slots, and lab resources across a multi-site trial timeline.",                      accent:C.blue },
+  { num:"01", title:"Biomedical Artificial Intelligence",          tag:"Machine Learning & AI",   desc:"Develop predictive algorithms, deep learning models, and automated diagnostic tools for complex disease classification and personalized clinical care.",         accent:C.teal },
+  { num:"02", title:"EdTech",                                      tag:"Intelligent Learning",    desc:"Design intelligent tutoring systems, adaptive learning algorithms, and gamified pedagogical platforms for healthcare and engineering education.",                  accent:C.cyan },
+  { num:"03", title:"Digital Health & Telemedicine",               tag:"Remote Care & Health IT", desc:"Create secure remote consultation architectures, FHIR/SNOMED compliant EMR pipelines, and distributed patient monitoring systems.",                   accent:C.blue },
+  { num:"04", title:"Neurotechnology & Rehabilitation",            tag:"Neural Engineering",      desc:"Engineer Brain-Computer Interfaces (BCI), neural decoding algorithms, assistive robotics, and neuroprosthetic rehabilitation feedback loops.",                     accent:C.teal },
+  { num:"05", title:"Medical Imaging & Diagnostics AI in Healthcare", tag:"AI Diagnostics",       desc:"Build multi-modal diagnostic engines synthesizing clinical notes, pathology, and imaging for early detection and oncology stratification.",                       accent:C.cyan },
+  { num:"06", title:"Medical Imaging & Computer Vision",           tag:"Computer Vision",         desc:"Design high-accuracy segmentation, registration, and enhancement algorithms for MRI, CT, ultrasound, and histopathological scans.",                               accent:C.blue },
+  { num:"07", title:"Biomedical Signals & Intelligent Systems",     tag:"Signal Processing",       desc:"Implement real-time denoising, feature extraction, and fuzzy/heuristic anomaly detection for ECG, EEG, EMG, and PPG physiological waveforms.",                    accent:C.teal },
+  { num:"08", title:"Smart Healthcare & Medical IoT",              tag:"IoMT & Embedded AI",      desc:"Develop low-latency, edge-computed wearable sensor networks, vitals streaming telemetric protocols, and battery-optimized IoMT nodes.",                          accent:C.cyan },
+  { num:"09", title:"Healthcare Robotics & Automation",            tag:"Robotics & Automation",   desc:"Formulate motion planning, kinematics optimization, and autonomous guidance algorithms for surgical robotic arms and hospital rovers.",                            accent:C.blue },
+  { num:"10", title:"Open Innovation on (CIS and EMBS only)",       tag:"CIS & EMBS Flagship",     desc:"Exclusive interdisciplinary track for novel breakthroughs combining Computational Intelligence (evolutionary computing, neural nets, fuzzy logic) and Bioengineering.", accent:C.teal, flagship:true },
 ];
 
 const whatYouGet = [
-  "Modular Python starter scripts (.py) and notebooks (.ipynb) for all 6 tracks",
+  "Modular Python starter scripts (.py) and notebooks (.ipynb) across all 10 challenge themes",
   "Pre-built synthetic data generators and scenario loaders",
   "Offline verification harness with identical scoring metrics",
   "Isolated sandbox execution environment with standard scientific libraries",
@@ -74,19 +75,19 @@ const whatYouBring = [
   "Hyperparameter tuning: population size, crossover rates, inertia damping, evaporation",
   "Dynamic resilience: adapting code when hidden scenario shifts alter constraints",
   "Interpretability & defense: explaining choices and convergence curves during viva",
-  "Teamwork & agility: rapid live patch implementation under tight 20-minute countdown",
+  "Teamwork & agility: rapid live patch implementation under tight countdown",
 ];
 const faqs = [
   { q:"Who can participate?", a:"Any registered student from any institution in India. A team of 2–4 members is required. No prior competition experience needed." },
   { q:"What is the registration fee?", a:"₹50 per team member, payable at the venue on the day of the event." },
   { q:"What programming language is allowed?", a:"Python only. Libraries: NumPy, SciPy, Matplotlib, scikit-learn, NetworkX. No custom C extensions." },
-  { q:"Is internet access allowed?", a:"No internet access during coding rounds. Stage 7 (Live Patch) is strictly offline and zero-AI." },
-  { q:"How is scoring done?", a:"Multi-metric auto-scoring: solution quality (fitness score), runtime efficiency, AST structure analysis, and cross-attempt consistency. Judges' viva adds up to 20% of total." },
-  { q:"Will AI tools be allowed?", a:"AI tools are PROHIBITED during Stage 7. Reflection Notes and viva defense require genuine understanding regardless." },
+  { q:"Is internet access allowed?", a:"No internet access during coding rounds. Live patch challenges are strictly offline and zero-AI." },
+  { q:"How is scoring done?", a:"Multi-metric scoring: automated solution quality (fitness score), runtime efficiency, AST structure analysis, and AI evaluation feedback. Final panel evaluation adds up to 30% of total score." },
+  { q:"Will AI tools be allowed?", a:"AI evaluation is performed on 1st Development submissions. Live patch and final panel defense require genuine algorithmic defense and understanding." },
 ];
 
 export default function OptiForge() {
-  const cd = useCountdown("2026-09-25T09:00:00+05:30");
+  const cd = useCountdown("2026-09-30T09:00:00+05:30");
 
   return (
     <div style={{ backgroundColor: C.navy, minHeight:"100vh", color:"rgba(255,255,255,0.85)" }}>
@@ -125,17 +126,17 @@ export default function OptiForge() {
           </motion.h1>
 
           <motion.p variants={fadeUp} className="font-mono text-sm uppercase tracking-widest font-semibold" style={{ color:C.cyan }}>
-            Student Algorithm Design Challenge · Computational Intelligence
+            Hackathon & Algorithm Design Challenge · Computational Intelligence
           </motion.p>
 
           <motion.p variants={fadeUp} className="max-w-2xl mx-auto text-sm sm:text-base leading-relaxed" style={{ color:"rgba(255,255,255,0.60)" }}>
-            Engineer high-performance evolutionary heuristics, swarm intelligence, and fuzzy inference systems. Compete across 6 real-world challenges with live multi-attempt scoring, scenario shifts, a live surprise patch round, and expert judge defense.
+            Engineer high-performance evolutionary heuristics, machine learning models, and intelligent systems. Compete across 10 innovation themes with live development rounds, AI evaluation, scenario shifts, and expert panel defense.
           </motion.p>
 
           {/* Metadata chips */}
           <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-center gap-3 text-xs font-mono">
             {[
-              { icon:<Calendar className="w-3.5 h-3.5" style={{color:C.teal}} />, text:"25 September 2026" },
+              { icon:<Calendar className="w-3.5 h-3.5" style={{color:C.teal}} />, text:"30 September 2026" },
               { icon:<Clock    className="w-3.5 h-3.5" style={{color:C.blue}} />, text:"9:00 AM – 4:00 PM IST" },
               { icon:<MapPin   className="w-3.5 h-3.5" style={{color:"#E76F51"}} />, text:"Vardhaman College of Engineering" },
             ].map(({icon,text},i) => (
@@ -185,20 +186,20 @@ export default function OptiForge() {
         </motion.div>
       </section>
 
-      {/* ── 8-Stage Lifecycle ── */}
+      {/* ── Hackathon Schedule & Lifecycle ── */}
       <section className="py-24 max-w-[1280px] mx-auto px-4 sm:px-8 space-y-10">
         <div className="text-center space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-mono font-semibold"
             style={{ background:"rgba(0,140,149,0.12)", border:`1px solid rgba(0,140,149,0.25)`, color:C.cyan }}>
-            Complete Tournament Architecture
+            Tournament Schedule & Architecture
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white" style={{ fontFamily:"Sora,Outfit,sans-serif" }}>The 8-Stage Lifecycle</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-white" style={{ fontFamily:"Sora,Outfit,sans-serif" }}>Hackathon Schedule & Lifecycle</h2>
           <p className="text-sm max-w-2xl mx-auto" style={{ color:"rgba(255,255,255,0.50)" }}>
-            Structured progression testing formulation, dynamic scenario adaptation, real-time agility, and academic defense.
+            Structured progression across development rounds, automated AI evaluation, scenario shift handling, and final panel evaluation.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {stages.map((s,i) => (
             <motion.div key={i} initial={{opacity:0,y:18}} whileInView={{opacity:1,y:0}} viewport={{once:true}}
               transition={{duration:.45,delay:i*.06,ease:[0.16,1,.3,1]}}
@@ -224,14 +225,17 @@ export default function OptiForge() {
         </div>
       </section>
 
-      {/* ── 6 Problem Tracks ── */}
+      {/* ── 10 Innovation Themes / Challenge Tracks ── */}
       <section className="py-16 max-w-[1280px] mx-auto px-4 sm:px-8 space-y-10" style={{ borderTop:"1px solid rgba(255,255,255,0.07)" }}>
         <div className="text-center space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-mono font-semibold"
             style={{ background:"rgba(0,102,204,0.12)", border:`1px solid rgba(0,102,204,0.25)`, color:C.cyan }}>
-            <FileCode className="w-3.5 h-3.5" /> 6 Problem Domains
+            <Layers className="w-3.5 h-3.5" /> 10 Innovation Themes
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white" style={{ fontFamily:"Sora,Outfit,sans-serif" }}>Challenge Tracks</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-white" style={{ fontFamily:"Sora,Outfit,sans-serif" }}>Hackathon Themes & Challenge Tracks</h2>
+          <p className="text-sm max-w-2xl mx-auto" style={{ color:"rgba(255,255,255,0.50)" }}>
+            Explore our 10 problem domains engineered for computational intelligence, algorithm design, and interdisciplinary healthcare innovation.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -325,10 +329,10 @@ export default function OptiForge() {
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
-                { title:"Hidden Scenario Shifts",      color:C.teal,  desc:"Static prompt solutions break on Attempts 2 & 3 when dynamic perturbations (resource drops, surges) are injected into held-out test data." },
-                { title:"Mandatory Reflection Notes",  color:C.teal,  desc:"Every submission after Attempt 1 requires a 'what changed and why' note detailing parameter adaptation and algorithmic defense." },
-                { title:"Stage 7 Live Patch (Zero AI)","color":"#E76F51", desc:"A 15–20 minute live surprise constraint with ZERO AI. Tests live code modification, mental model clarity, and edge-case handling." },
-                { title:"Stage 8 Expert Viva Defense", color:C.blue,  desc:"Faculty judges question teams on fitness functions, defuzzification math, chromosome representations, and convergence graphs." },
+                { title:"Hidden Scenario Shifts",      color:C.teal,  desc:"Static prompt solutions break during 2nd Development when dynamic perturbations (resource drops, surges) are injected into test data." },
+                { title:"AI Evaluation & Reflection",  color:C.teal,  desc:"1st Development solutions undergo multi-metric automated AI scoring. Teams submit reflection notes on parameter adaptation." },
+                { title:"Live Patch Agility",          color:"#E76F51", desc:"A surprise constraint during 2nd Development tests real-time code refactoring, mental model clarity, and edge-case handling." },
+                { title:"Final Panel Defense (3–4 PM)",color:C.blue,  desc:"Expert faculty judges rigorously question teams on algorithmic representations, mathematical formulations, and convergence." },
               ].map((d,i) => (
                 <div key={i} className="p-4 rounded-2xl space-y-1.5" style={{ background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.09)" }}>
                   <div className="flex items-center gap-2 text-xs font-semibold" style={{ color:d.color }}>
@@ -365,7 +369,7 @@ export default function OptiForge() {
       <section className="py-20 max-w-[1280px] mx-auto px-4 sm:px-8 text-center space-y-7" style={{ borderTop:"1px solid rgba(255,255,255,0.07)" }}>
         <h2 className="text-3xl sm:text-5xl font-black text-white" style={{ fontFamily:"Sora,Outfit,sans-serif" }}>Ready to Compete?</h2>
         <p className="max-w-xl mx-auto text-sm leading-relaxed" style={{ color:"rgba(255,255,255,0.55)" }}>
-          Register your team of 2–4 members. ₹50 per member, payable at the venue on 25 September 2026.
+          Register your team of 2–4 members. ₹50 per member, payable at the venue on 30 September 2026.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4">
           <a href="https://optiforge-2026.vercel.app/register" target="_blank" rel="noreferrer"

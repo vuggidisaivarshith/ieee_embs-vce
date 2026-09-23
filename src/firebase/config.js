@@ -15,7 +15,8 @@ import {
   webmasterPhoto,
   eventSlide1,
   eventSlide2,
-  eventSlide3
+  eventSlide3,
+  optiforgeFlyer
 } from '../assets/images';
 
 const firebaseConfig = {
@@ -151,6 +152,43 @@ export const DEFAULT_SITE_DATA = {
 
   events: [
     {
+      id: "optiforge-2026",
+      title: "OptiForge 2026 — Hackathon & Algorithm Design Challenge",
+      topic: "Hackathon & Algorithm Design",
+      description: "Flagship Hackathon & Algorithm Design Challenge organized by IEEE EMBS × IEEE CIS at Vardhaman College of Engineering. Featuring 10 innovation themes spanning Biomedical AI, EdTech, Digital Health, Neurotechnology, Medical Imaging, Signal Processing, Smart Healthcare IoT, Robotics, and Open Innovation.",
+      date: "2026-09-30",
+      time: "9:00 AM – 4:00 PM IST",
+      venue: "Auditorium & Computing Labs, Vardhaman College of Engineering",
+      speaker: "IEEE EMBS × IEEE CIS Technical Committee & Jury",
+      speakerRole: "Domain Faculty Judges & Technical Evaluators",
+      speakerPhotoUrl: optiforgeFlyer,
+      speakerBio: "OptiForge 2026 brings together expert faculty judges from IEEE EMBS and IEEE CIS to evaluate live heuristic algorithms, multi-attempt convergence, and real-time live patching.",
+      speakerEducation: [
+        "Computational Intelligence Society (CIS) Technical Committee",
+        "Engineering in Medicine & Biology Society (EMBS) Academic Board"
+      ],
+      speakerFocusAreas: [
+        "Biomedical Artificial Intelligence & Heuristics",
+        "Real-Time Algorithm Optimization & Dynamic Shift Handling",
+        "Autonomous Medical IoT & Robotics",
+        "Open Innovation on CIS and EMBS Only"
+      ],
+      speakerLinkedin: "https://optiforge-2026.vercel.app/",
+      speakerUniversity: "https://optiforge-2026.vercel.app/",
+      posterUrl: optiforgeFlyer,
+      screenshots: [eventSlide1, eventSlide2, eventSlide3],
+      registrationLink: "https://optiforge-2026.vercel.app/register",
+      status: "upcoming",
+      featured: true,
+      agenda: [
+        "09:00 AM - 10:00 AM: Problem Selection, Strategy & Starter Code Distribution",
+        "10:00 AM - 12:30 PM: 1st Development & Automated AI Evaluation",
+        "12:30 PM - 01:15 PM: Lunch Break & Strategy Discussion",
+        "01:15 PM - 03:00 PM: 2nd Development & Live Patch Optimization",
+        "03:00 PM - 04:00 PM: Final Panel Evaluation & Results Announcement"
+      ]
+    },
+    {
       id: "digital-health-talk",
       title: "Expert Talk: Digital Health & Telemedicine",
       topic: "Biomedical Engineering & AI",
@@ -215,11 +253,19 @@ export const DEFAULT_SITE_DATA = {
 
   announcements: [
     {
+      id: "ann-optiforge",
+      title: "OptiForge 2026: Flagship Hackathon Scheduled for 30th September 2026",
+      body: "Registrations are open for OptiForge 2026 — Hackathon & Algorithm Design Challenge on 30th September 2026 (9:00 AM – 4:00 PM IST). Featuring 10 innovation themes spanning Biomedical AI, EdTech, Telemedicine, Neurotechnology, Medical Imaging, Signals, Medical IoT, Robotics, and Open Innovation.",
+      date: "2026-09-23",
+      isPinned: true,
+      imageUrl: optiforgeFlyer
+    },
+    {
       id: "ann-1",
       title: "Expert Talk on Digital Health & Telemedicine Completed Successfully",
       body: "IEEE EMBS Vardhaman extends sincere gratitude to Dr. Ajit Kumar (XIMB) for an inspiring expert session on August 13, 2026.",
       date: "2026-08-14",
-      isPinned: true,
+      isPinned: false,
       imageUrl: eventSlide1
     },
     {

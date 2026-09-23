@@ -6,8 +6,8 @@ export default function CountdownTimer({ targetDate, eventTitle }) {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
   function calculateTimeLeft() {
-    // Parse targetDate string (e.g. "2026-08-13" or "2026-08-13T18:00:00")
-    const target = new Date(targetDate.includes('T') ? targetDate : `${targetDate}T18:00:00`).getTime();
+    // Parse targetDate string (e.g. "2026-09-30" or "2026-09-30T09:00:00")
+    const target = new Date(targetDate.includes('T') ? targetDate : `${targetDate}T09:00:00`).getTime();
     const now = new Date().getTime();
     const difference = target - now;
 

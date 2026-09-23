@@ -1,6 +1,6 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Calendar, MapPin, User, Info, Image as ImageIcon, Search } from "lucide-react";
+import { Calendar, MapPin, User, Info, Image as ImageIcon, Search, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import { collection, getDocs } from "firebase/firestore";
 import { db, DEFAULT_SITE_DATA } from "../firebase/config";
@@ -16,7 +16,15 @@ export default function Events() {
 
   useEffect(() => {
     getDocs(collection(db, "events"))
-      .then(snap => { if (!snap.empty) setEvents(snap.docs.map(d => ({ id: d.id, ...d.data() }))); })
+      .then(snap => {
+        if (!snap.empty) {
+          const remote = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+          const missingDefaults = DEFAULT_SITE_DATA.events.filter(
+            def => !remote.some(r => r.id === def.id)
+          );
+          setEvents([...missingDefaults, ...remote]);
+        }
+      })
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
@@ -157,12 +165,26 @@ export default function Events() {
 
                   {/* Actions */}
                   <div className="flex gap-2 pt-1">
-                    <Link to={`/events/${event.id}`} className="flex-1 py-2 px-3 rounded-lg text-xs font-bold text-center text-white bg-[#087F8C] hover:bg-[#075E61] transition-colors flex items-center justify-center gap-1.5">
+                    <Link
+                      to={event.id === "optiforge-2026" ? "/optiforge" : `/events/${event.id}`}
+                      className="flex-1 py-2 px-3 rounded-lg text-xs font-bold text-center text-white bg-[#087F8C] hover:bg-[#075E61] transition-colors flex items-center justify-center gap-1.5"
+                    >
                       <Info className="w-3.5 h-3.5" /> Details
                     </Link>
-                    <Link to="/gallery" className="flex-1 py-2 px-3 rounded-lg text-xs font-semibold text-center text-[#647070] bg-[#F8F7F2] hover:bg-[#EEF6F7] hover:text-[#087F8C] border border-[#DDE4E1] transition-colors flex items-center justify-center gap-1.5">
-                      <ImageIcon className="w-3.5 h-3.5" /> Gallery
-                    </Link>
+                    {event.registrationLink ? (
+                      <a
+                        href={event.registrationLink}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex-1 py-2 px-3 rounded-lg text-xs font-bold text-center text-white bg-[#0066CC] hover:bg-[#004FA3] transition-colors flex items-center justify-center gap-1.5"
+                      >
+                        <Zap className="w-3.5 h-3.5" /> Register
+                      </a>
+                    ) : (
+                      <Link to="/gallery" className="flex-1 py-2 px-3 rounded-lg text-xs font-semibold text-center text-[#647070] bg-[#F8F7F2] hover:bg-[#EEF6F7] hover:text-[#087F8C] border border-[#DDE4E1] transition-colors flex items-center justify-center gap-1.5">
+                        <ImageIcon className="w-3.5 h-3.5" /> Gallery
+                      </Link>
+                    )}
                   </div>
                 </div>
               </motion.div>

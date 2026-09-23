@@ -184,7 +184,7 @@ export default function Home() {
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-[10px] font-black font-mono uppercase tracking-widest px-2.5 py-0.5 rounded-full"
                     style={{ background:"rgba(0,184,217,0.18)", border:"1px solid rgba(0,184,217,0.40)", color:"#00B8D9" }}>
-                    ★ Major Hackathon · 25 Sep 2026
+                    ★ Major Hackathon · 30 Sep 2026
                   </span>
                   <span className="hidden sm:inline-block text-[11px] font-mono text-white/40">9:00 AM – 4:00 PM · VCE Campus</span>
                 </div>
@@ -193,7 +193,7 @@ export default function Home() {
                   <span style={{ color:"#008C95" }}>FORGE</span>
                   <span className="font-bold text-sm ml-2" style={{ color:"rgba(255,255,255,0.4)" }}>2026</span>
                   <span className="ml-2 font-normal text-sm hidden md:inline" style={{ color:"rgba(255,255,255,0.65)" }}>
-                    — Student Algorithm Design Challenge
+                    — Hackathon & Algorithm Design Challenge
                   </span>
                 </p>
               </div>
@@ -335,13 +335,13 @@ export default function Home() {
                   <div>
                     <div className="flex items-center gap-1.5">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#00B8D9] animate-pulse" />
-                      <span className="text-[10px] font-black font-mono uppercase tracking-widest text-[#00B8D9]">Flagship Hackathon · 25 Sep 2026</span>
+                      <span className="text-[10px] font-black font-mono uppercase tracking-widest text-[#00B8D9]">Flagship Hackathon · 30 Sep 2026</span>
                     </div>
                     <p className="text-white font-black text-lg mt-0.5 tracking-tight" style={{ fontFamily: "Sora, Outfit, sans-serif" }}>
                       OPTI<span style={{ color: "#008C95" }}>FORGE</span>{" "}
                       <span className="text-white/40 font-semibold text-sm">2026</span>
                     </p>
-                    <p className="text-white/60 text-xs mt-0.5">Student Algorithm Design Challenge · IEEE EMBS × CIS</p>
+                    <p className="text-white/60 text-xs mt-0.5">Hackathon & Algorithm Design Challenge · IEEE EMBS × CIS</p>
                   </div>
                   <Link
                     to="/optiforge"
