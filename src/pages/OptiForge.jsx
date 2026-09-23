@@ -30,9 +30,9 @@ function useCountdown(target) {
 function Tile({value,label,accent}) {
   return (
     <div className="flex flex-col items-center rounded-2xl px-5 py-4 min-w-[76px]"
-      style={{ background:"rgba(255,255,255,0.06)", backdropFilter:"blur(16px)", border:"1px solid rgba(255,255,255,0.12)", boxShadow:"inset 0 1px 0 rgba(255,255,255,0.1)" }}>
+      style={{ background:"#FFFFFF", border:"1px solid #E2E8F0", boxShadow:"0 1px 2px 0 rgba(0, 0, 0, 0.05)" }}>
       <span className="text-3xl font-black font-mono tabular-nums" style={{ color: accent || C.cyan }}>{String(value).padStart(2,"0")}</span>
-      <span className="text-[10px] font-mono uppercase tracking-widest mt-1" style={{ color:"rgba(255,255,255,0.45)" }}>{label}</span>
+      <span className="text-[10px] font-mono uppercase tracking-widest mt-1" style={{ color:"#64748B" }}>{label}</span>
     </div>
   );
 }
@@ -49,15 +49,20 @@ const stages = [
 ];
 
 const tracks = [
-  { num:"01", title:"Biomedical Artificial Intelligence",          tag:"Machine Learning & AI",   desc:"Develop predictive algorithms, deep learning models, and automated diagnostic tools for complex disease classification and personalized clinical care.",         accent:C.teal },
-  { num:"02", title:"EdTech",                                      tag:"Intelligent Learning",    desc:"Design intelligent tutoring systems, adaptive learning algorithms, and gamified pedagogical platforms for healthcare and engineering education.",                  accent:C.cyan },
-  { num:"03", title:"Digital Health & Telemedicine",               tag:"Remote Care & Health IT", desc:"Create secure remote consultation architectures, FHIR/SNOMED compliant EMR pipelines, and distributed patient monitoring systems.",                   accent:C.blue },
-  { num:"04", title:"Neurotechnology & Rehabilitation",            tag:"Neural Engineering",      desc:"Engineer Brain-Computer Interfaces (BCI), neural decoding algorithms, assistive robotics, and neuroprosthetic rehabilitation feedback loops.",                     accent:C.teal },
-  { num:"05", title:"Medical Imaging & Computer Vision",           tag:"Computer Vision",         desc:"Design high-accuracy segmentation, registration, and enhancement algorithms for MRI, CT, ultrasound, and histopathological scans.",                               accent:C.blue },
-  { num:"06", title:"Biomedical Signals & Intelligent Systems",     tag:"Signal Processing",       desc:"Implement real-time denoising, feature extraction, and fuzzy/heuristic anomaly detection for ECG, EEG, EMG, and PPG physiological waveforms.",                    accent:C.teal },
-  { num:"07", title:"Smart Healthcare & Medical IoT",              tag:"IoMT & Embedded AI",      desc:"Develop low-latency, edge-computed wearable sensor networks, vitals streaming telemetric protocols, and battery-optimized IoMT nodes.",                          accent:C.cyan },
-  { num:"08", title:"Healthcare Robotics & Automation",            tag:"Robotics & Automation",   desc:"Formulate motion planning, kinematics optimization, and autonomous guidance algorithms for surgical robotic arms and hospital rovers.",                            accent:C.blue },
-  { num:"09", title:"Open Innovation on (CIS and EMBS only)",       tag:"CIS & EMBS Flagship",     desc:"Exclusive interdisciplinary track for novel breakthroughs combining Computational Intelligence (evolutionary computing, neural nets, fuzzy logic) and Bioengineering.", accent:C.teal, flagship:true },
+  // 🟣 IEEE EMBS Domains
+  { num:"01", title:"Biomedical Artificial Intelligence", tag:"EMBS Domain", desc:"Develop AI and machine-learning solutions for healthcare, including disease prediction, clinical decision support, and personalized medicine.", accent: C.teal },
+  { num:"02", title:"Biomedical Signals & Intelligent Systems", tag:"EMBS Domain", desc:"Apply intelligent algorithms to ECG, EEG, EMG, and PPG for signal processing, anomaly detection, and physiological monitoring.", accent: C.teal },
+  { num:"03", title:"Medical Imaging & Computer Vision", tag:"EMBS Domain", desc:"Develop intelligent systems for MRI, CT, ultrasound, and histopathological image analysis, segmentation, and automated interpretation.", accent: C.teal },
+  { num:"04", title:"Healthcare Robotics & Intelligent Automation", tag:"EMBS Domain", desc:"Develop intelligent robotic and automated systems for rehabilitation, surgical assistance, hospital logistics, and patient care.", accent: C.teal },
+
+  // 🔵 IEEE CIS Domains
+  { num:"05", title:"Machine Learning & Artificial Intelligence", tag:"CIS Domain", desc:"Explore machine learning, deep learning, generative AI, and intelligent algorithms for solving complex real-world problems.", accent: C.blue },
+  { num:"06", title:"Computational Intelligence & Optimization", tag:"CIS Domain", desc:"Apply evolutionary computation, fuzzy logic, genetic algorithms, swarm intelligence, and optimization techniques to complex problems.", accent: C.blue },
+  { num:"07", title:"Intelligent Systems & Autonomous Computing", tag:"CIS Domain", desc:"Develop autonomous, adaptive, and multi-agent systems capable of intelligent decision-making, learning, and real-time operation.", accent: C.blue },
+  { num:"08", title:"Computer Vision & Pattern Recognition", tag:"CIS Domain", desc:"Develop intelligent methods for image understanding, object detection, classification, segmentation, and pattern recognition.", accent: C.blue },
+
+  // 🟣🔵 Flagship
+  { num:"09", title:"Open Innovation: CIS × EMBS", tag:"Flagship Domain", desc:"An interdisciplinary track for novel solutions combining computational intelligence with biomedical engineering and healthcare challenges. Encourages innovative applications of AI, optimization, intelligent systems, vision, signals, and robotics to real-world biomedical problems.", accent: C.cyan, flagship:true },
 ];
 
 const whatYouGet = [
@@ -78,7 +83,7 @@ const whatYouBring = [
 ];
 const faqs = [
   { q:"Who can participate?", a:"Any registered student from any institution in India. A team of 2–4 members is required. No prior competition experience needed." },
-  { q:"What is the registration fee?", a:"₹50 per team member, payable at the venue on the day of the event." },
+  { q:"What is the registration fee?", a:"₹100 per team member, payable at the venue on the day of the event." },
   { q:"What programming language is allowed?", a:"Python only. Libraries: NumPy, SciPy, Matplotlib, scikit-learn, NetworkX. No custom C extensions." },
   { q:"Is internet access allowed?", a:"No internet access during coding rounds. Live patch challenges are strictly offline and zero-AI." },
   { q:"How is scoring done?", a:"Multi-metric scoring: automated solution quality (fitness score), runtime efficiency, AST structure analysis, and AI evaluation feedback. Final panel evaluation adds up to 30% of total score." },
@@ -89,13 +94,13 @@ export default function OptiForge() {
   const cd = useCountdown("2026-09-30T09:00:00+05:30");
 
   return (
-    <div style={{ backgroundColor: C.navy, minHeight:"100vh", color:"rgba(255,255,255,0.85)" }}>
+    <div style={{ backgroundColor: "#F8FAFC", minHeight:"100vh", color:"#334155" }}>
 
       {/* ── Ambient background glows ── */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden>
-        <div className="absolute top-0 left-1/4 w-[700px] h-[500px] rounded-full opacity-25" style={{ background:`radial-gradient(ellipse, ${C.teal} 0%, transparent 70%)`, filter:"blur(80px)" }} />
-        <div className="absolute top-1/3 right-0 w-[500px] h-[500px] rounded-full opacity-20" style={{ background:`radial-gradient(ellipse, ${C.blue} 0%, transparent 70%)`, filter:"blur(80px)" }} />
-        <div className="absolute bottom-0 left-1/2 w-[600px] h-[400px] rounded-full opacity-15" style={{ background:`radial-gradient(ellipse, ${C.cyan} 0%, transparent 70%)`, filter:"blur(100px)" }} />
+        <div className="absolute top-0 left-1/4 w-[700px] h-[500px] rounded-full opacity-10" style={{ background:`radial-gradient(ellipse, ${C.teal} 0%, transparent 70%)`, filter:"blur(80px)" }} />
+        <div className="absolute top-1/3 right-0 w-[500px] h-[500px] rounded-full opacity-10" style={{ background:`radial-gradient(ellipse, ${C.blue} 0%, transparent 70%)`, filter:"blur(80px)" }} />
+        <div className="absolute bottom-0 left-1/2 w-[600px] h-[400px] rounded-full opacity-10" style={{ background:`radial-gradient(ellipse, ${C.cyan} 0%, transparent 70%)`, filter:"blur(100px)" }} />
       </div>
 
       {/* ── HERO ── */}
@@ -113,7 +118,7 @@ export default function OptiForge() {
           {/* Title */}
           <motion.h1 variants={fadeUp} className="text-7xl sm:text-8xl lg:text-9xl font-black tracking-tight leading-none uppercase"
             style={{ fontFamily:"Sora,Outfit,sans-serif" }}>
-            <span style={{ color:"#fff" }}>OPTI</span>
+            <span style={{ color:"#0F172A" }}>OPTI</span>
             <span style={{ color:C.teal }}>FORGE</span>
             <br />
             <span className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-widest"
@@ -128,7 +133,7 @@ export default function OptiForge() {
             Hackathon & Algorithm Design Challenge · Computational Intelligence
           </motion.p>
 
-          <motion.p variants={fadeUp} className="max-w-2xl mx-auto text-sm sm:text-base leading-relaxed" style={{ color:"rgba(255,255,255,0.60)" }}>
+          <motion.p variants={fadeUp} className="max-w-2xl mx-auto text-sm sm:text-base leading-relaxed" style={{ color:"#64748B" }}>
             Engineer high-performance evolutionary heuristics, machine learning models, and intelligent systems. Compete across 9 innovation themes with live development rounds, AI evaluation, scenario shifts, and expert panel defense.
           </motion.p>
 
@@ -140,7 +145,7 @@ export default function OptiForge() {
               { icon:<MapPin   className="w-3.5 h-3.5" style={{color:"#E76F51"}} />, text:"Vardhaman College of Engineering" },
             ].map(({icon,text},i) => (
               <div key={i} className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium"
-                style={{ background:"rgba(255,255,255,0.06)", border:"1px solid rgba(255,255,255,0.12)", backdropFilter:"blur(12px)", color:"rgba(255,255,255,0.85)" }}>
+                style={{ background:"#FFFFFF", border:"1px solid #E2E8F0", backdropFilter:"blur(12px)", color:"#334155" }}>
                 {icon} {text}
               </div>
             ))}
@@ -148,7 +153,7 @@ export default function OptiForge() {
 
           {/* Countdown */}
           <motion.div variants={fadeUp} className="max-w-sm mx-auto space-y-3">
-            <p className="text-[11px] font-mono uppercase tracking-widest" style={{ color:"rgba(255,255,255,0.35)" }}>Countdown to Challenge Launch</p>
+            <p className="text-[11px] font-mono uppercase tracking-widest" style={{ color:"#94A3B8" }}>Countdown to Challenge Launch</p>
             <div className="flex items-center justify-center gap-3">
               <Tile value={cd.days}  label="Days"  accent={C.teal} />
               <Tile value={cd.hours} label="Hours" accent={C.teal} />
@@ -162,16 +167,16 @@ export default function OptiForge() {
             <a href="https://optiforge-2026.vercel.app/register" target="_blank" rel="noreferrer"
               className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-black text-sm text-white transition-all hover:brightness-110 hover:scale-105 active:scale-97"
               style={{ background:`linear-gradient(135deg, ${C.teal} 0%, ${C.blue} 100%)`, boxShadow:`0 4px 24px rgba(0,140,149,0.40), 0 8px 40px rgba(0,102,204,0.20), inset 0 1px 0 rgba(255,255,255,0.25)` }}>
-              Register Team (₹50/member) <ArrowRight className="w-4 h-4" />
+              Register Team (₹100/member) <ArrowRight className="w-4 h-4" />
             </a>
             <a href="https://optiforge-2026.vercel.app/leaderboard" target="_blank" rel="noreferrer"
               className="inline-flex items-center gap-2 px-6 py-4 rounded-2xl text-sm font-semibold text-white transition-all hover:scale-105"
-              style={{ background:"rgba(255,255,255,0.07)", border:"1px solid rgba(255,255,255,0.15)", backdropFilter:"blur(12px)" }}>
+              style={{ background:"#FFFFFF", border:"1px solid #CBD5E1", color:"#334155", backdropFilter:"blur(12px)" }}>
               <Trophy className="w-4 h-4" style={{ color:C.cyan }} /> Live Leaderboard
             </a>
             <a href="https://optiforge-2026.vercel.app/" target="_blank" rel="noreferrer"
               className="inline-flex items-center gap-2 px-6 py-4 rounded-2xl text-sm font-semibold text-white transition-all hover:scale-105"
-              style={{ background:"rgba(255,255,255,0.07)", border:"1px solid rgba(255,255,255,0.15)", backdropFilter:"blur(12px)" }}>
+              style={{ background:"#FFFFFF", border:"1px solid #CBD5E1", color:"#334155", backdropFilter:"blur(12px)" }}>
               <ExternalLink className="w-4 h-4" style={{ color:C.teal }} /> Full Portal
             </a>
           </motion.div>
@@ -192,8 +197,8 @@ export default function OptiForge() {
             style={{ background:"rgba(0,140,149,0.12)", border:`1px solid rgba(0,140,149,0.25)`, color:C.cyan }}>
             Tournament Schedule & Architecture
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white" style={{ fontFamily:"Sora,Outfit,sans-serif" }}>Hackathon Schedule & Lifecycle</h2>
-          <p className="text-sm max-w-2xl mx-auto" style={{ color:"rgba(255,255,255,0.50)" }}>
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900" style={{ fontFamily:"Sora,Outfit,sans-serif" }}>Hackathon Schedule & Lifecycle</h2>
+          <p className="text-sm max-w-2xl mx-auto" style={{ color:"#64748B" }}>
             Structured progression across development rounds, automated AI evaluation, scenario shift handling, and final panel evaluation.
           </p>
         </div>
@@ -204,35 +209,35 @@ export default function OptiForge() {
               transition={{duration:.45,delay:i*.06,ease:[0.16,1,.3,1]}}
               className="rounded-2xl p-5 space-y-3 transition-all"
               style={ s.highlight
-                ? { background:"rgba(231,111,81,0.10)", border:"2px solid rgba(231,111,81,0.40)", backdropFilter:"blur(16px)" }
-                : { background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.09)", backdropFilter:"blur(16px)", boxShadow:"inset 0 1px 0 rgba(255,255,255,0.06)" }
+                ? { background:"#FFF1F2", border:"2px solid #FDA4AF", backdropFilter:"blur(16px)" }
+                : { background:"#FFFFFF", border:"1px solid #E2E8F0", boxShadow:"0 1px 3px 0 rgba(0, 0, 0, 0.1)" }
               }>
               <div className="flex items-center justify-between">
                 <span className="font-mono text-xs font-bold" style={{ color:C.teal }}>Stage {s.num}</span>
                 <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-semibold ${s.highlight ? "text-[#E76F51]" : ""}`}
-                  style={ s.highlight ? { background:"rgba(231,111,81,0.20)", border:"1px solid rgba(231,111,81,0.40)" } : { background:"rgba(255,255,255,0.06)", color:"rgba(255,255,255,0.45)", border:"1px solid rgba(255,255,255,0.08)" }}>
+                  style={ s.highlight ? { background:"rgba(231,111,81,0.20)", border:"1px solid rgba(231,111,81,0.40)" } : { background:"rgba(255,255,255,0.06)", color:"#64748B", border:"1px solid #E2E8F0" }}>
                   {s.tag}
                 </span>
               </div>
-              <div className="flex items-center gap-1.5 text-[10px] font-mono" style={{ color:"rgba(255,255,255,0.40)" }}>
+              <div className="flex items-center gap-1.5 text-[10px] font-mono" style={{ color:"#64748B" }}>
                 <Clock className="w-3 h-3" style={{ color:C.blue }} /> {s.time}
               </div>
               <h3 className="font-semibold text-white text-sm">{s.title}</h3>
-              <p className="text-xs leading-relaxed" style={{ color:"rgba(255,255,255,0.50)" }}>{s.desc}</p>
+              <p className="text-xs leading-relaxed" style={{ color:"#64748B" }}>{s.desc}</p>
             </motion.div>
           ))}
         </div>
       </section>
 
       {/* ── 9 Innovation Themes / Challenge Tracks ── */}
-      <section className="py-16 max-w-[1280px] mx-auto px-4 sm:px-8 space-y-10" style={{ borderTop:"1px solid rgba(255,255,255,0.07)" }}>
+      <section className="py-16 max-w-[1280px] mx-auto px-4 sm:px-8 space-y-10" style={{ borderTop:"1px solid #E2E8F0" }}>
         <div className="text-center space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-mono font-semibold"
             style={{ background:"rgba(0,102,204,0.12)", border:`1px solid rgba(0,102,204,0.25)`, color:C.cyan }}>
             <Layers className="w-3.5 h-3.5" /> 9 Innovation Themes
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white" style={{ fontFamily:"Sora,Outfit,sans-serif" }}>Hackathon Themes & Challenge Tracks</h2>
-          <p className="text-sm max-w-2xl mx-auto" style={{ color:"rgba(255,255,255,0.50)" }}>
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900" style={{ fontFamily:"Sora,Outfit,sans-serif" }}>Hackathon Themes & Challenge Tracks</h2>
+          <p className="text-sm max-w-2xl mx-auto" style={{ color:"#64748B" }}>
             Explore our 9 problem domains engineered for computational intelligence, algorithm design, and interdisciplinary healthcare innovation.
           </p>
         </div>
@@ -244,39 +249,39 @@ export default function OptiForge() {
               className="group rounded-2xl p-6 space-y-3 transition-all"
               style={ t.flagship
                 ? { background:`rgba(0,140,149,0.10)`, border:`1px solid rgba(0,140,149,0.35)`, backdropFilter:"blur(16px)" }
-                : { background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.09)", backdropFilter:"blur(16px)", boxShadow:"inset 0 1px 0 rgba(255,255,255,0.06)" }
+                : { background:"#FFFFFF", border:"1px solid #E2E8F0", boxShadow:"0 1px 3px 0 rgba(0, 0, 0, 0.1)" }
               }>
               <div className="flex items-center justify-between">
-                <span className="text-2xl font-black font-mono" style={{ color:"rgba(255,255,255,0.12)" }}>{t.num}</span>
+                <span className="text-2xl font-black font-mono" style={{ color:"#E2E8F0" }}>{t.num}</span>
                 <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded border" style={{ color:t.accent, background:`${t.accent}18`, borderColor:`${t.accent}35` }}>{t.tag}</span>
               </div>
               {t.flagship && <p className="text-[10px] font-mono font-bold uppercase tracking-wider" style={{ color:"#E76F51" }}>★ Flagship Problem</p>}
               <h3 className="font-bold text-white text-base leading-snug">{t.title}</h3>
-              <p className="text-xs leading-relaxed" style={{ color:"rgba(255,255,255,0.50)" }}>{t.desc}</p>
+              <p className="text-xs leading-relaxed" style={{ color:"#64748B" }}>{t.desc}</p>
             </motion.div>
           ))}
         </div>
       </section>
 
       {/* ── Provide / Bring ── */}
-      <section className="py-16 max-w-[1280px] mx-auto px-4 sm:px-8" style={{ borderTop:"1px solid rgba(255,255,255,0.07)" }}>
+      <section className="py-16 max-w-[1280px] mx-auto px-4 sm:px-8" style={{ borderTop:"1px solid #E2E8F0" }}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* You get */}
           <motion.div initial={{opacity:0,x:-16}} whileInView={{opacity:1,x:0}} viewport={{once:true}}
             className="rounded-2xl p-7 space-y-5"
             style={{ background:"rgba(0,140,149,0.08)", border:`1px solid rgba(0,140,149,0.25)`, backdropFilter:"blur(20px)", boxShadow:"inset 0 1px 0 rgba(255,255,255,0.06)" }}>
-            <div className="flex items-center gap-3 pb-4" style={{ borderBottom:"1px solid rgba(255,255,255,0.08)" }}>
+            <div className="flex items-center gap-3 pb-4" style={{ borderBottom:"1px solid #E2E8F0" }}>
               <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background:`rgba(0,140,149,0.15)`, border:`1px solid rgba(0,140,149,0.30)`, color:C.teal }}>
                 <FileCode className="w-5 h-5" />
               </div>
               <div>
                 <h3 className="font-bold text-white text-base">What OptiForge Provides</h3>
-                <p className="text-xs" style={{ color:"rgba(255,255,255,0.40)" }}>Pre-packaged starter kits & verification harness</p>
+                <p className="text-xs" style={{ color:"#64748B" }}>Pre-packaged starter kits & verification harness</p>
               </div>
             </div>
             <ul className="space-y-2.5">
               {whatYouGet.map((item,i) => (
-                <li key={i} className="flex items-start gap-2.5 text-xs" style={{ color:"rgba(255,255,255,0.60)" }}>
+                <li key={i} className="flex items-start gap-2.5 text-xs" style={{ color:"#64748B" }}>
                   <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color:C.teal }} />
                   <span className="leading-relaxed">{item}</span>
                 </li>
@@ -288,18 +293,18 @@ export default function OptiForge() {
           <motion.div initial={{opacity:0,x:16}} whileInView={{opacity:1,x:0}} viewport={{once:true}}
             className="rounded-2xl p-7 space-y-5"
             style={{ background:"rgba(0,102,204,0.08)", border:`1px solid rgba(0,102,204,0.25)`, backdropFilter:"blur(20px)", boxShadow:"inset 0 1px 0 rgba(255,255,255,0.06)" }}>
-            <div className="flex items-center gap-3 pb-4" style={{ borderBottom:"1px solid rgba(255,255,255,0.08)" }}>
+            <div className="flex items-center gap-3 pb-4" style={{ borderBottom:"1px solid #E2E8F0" }}>
               <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background:`rgba(0,102,204,0.15)`, border:`1px solid rgba(0,102,204,0.30)`, color:C.blue }}>
                 <Cpu className="w-5 h-5" />
               </div>
               <div>
                 <h3 className="font-bold text-white text-base">What You Must Bring</h3>
-                <p className="text-xs" style={{ color:"rgba(255,255,255,0.40)" }}>Algorithmic reasoning & problem-solving ability</p>
+                <p className="text-xs" style={{ color:"#64748B" }}>Algorithmic reasoning & problem-solving ability</p>
               </div>
             </div>
             <ul className="space-y-2.5">
               {whatYouBring.map((item,i) => (
-                <li key={i} className="flex items-start gap-2.5 text-xs" style={{ color:"rgba(255,255,255,0.60)" }}>
+                <li key={i} className="flex items-start gap-2.5 text-xs" style={{ color:"#64748B" }}>
                   <Zap className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color:C.blue }} />
                   <span className="leading-relaxed">{item}</span>
                 </li>
@@ -310,7 +315,7 @@ export default function OptiForge() {
       </section>
 
       {/* ── Integrity ── */}
-      <section className="py-16 max-w-[1280px] mx-auto px-4 sm:px-8" style={{ borderTop:"1px solid rgba(255,255,255,0.07)" }}>
+      <section className="py-16 max-w-[1280px] mx-auto px-4 sm:px-8" style={{ borderTop:"1px solid #E2E8F0" }}>
         <motion.div initial={{opacity:0,y:18}} whileInView={{opacity:1,y:0}} viewport={{once:true}}
           className="rounded-3xl p-8 sm:p-12 relative overflow-hidden"
           style={{ background:`linear-gradient(135deg, rgba(0,102,204,0.12) 0%, rgba(0,140,149,0.08) 100%)`, border:`1px solid rgba(0,102,204,0.25)`, backdropFilter:"blur(24px)" }}>
@@ -320,10 +325,10 @@ export default function OptiForge() {
               style={{ background:"rgba(0,102,204,0.15)", border:`1px solid rgba(0,102,204,0.35)`, color:C.cyan }}>
               <Shield className="w-4 h-4" /> OptiForge Integrity Architecture
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-white" style={{ fontFamily:"Sora,Outfit,sans-serif" }}>
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900" style={{ fontFamily:"Sora,Outfit,sans-serif" }}>
               Why OptiForge Cannot Simply Be "Prompted" Into a Win
             </h2>
-            <p className="text-sm leading-relaxed" style={{ color:"rgba(255,255,255,0.55)" }}>
+            <p className="text-sm leading-relaxed" style={{ color:"#475569" }}>
               Most engineering competitions collapse when participants paste problem prompts into LLMs. OptiForge is explicitly engineered with multiple defensive layers to evaluate genuine computational intelligence intuition and engineering skill.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -337,7 +342,7 @@ export default function OptiForge() {
                   <div className="flex items-center gap-2 text-xs font-semibold" style={{ color:d.color }}>
                     <CheckCircle2 className="w-3.5 h-3.5" /> {d.title}
                   </div>
-                  <p className="text-xs leading-relaxed" style={{ color:"rgba(255,255,255,0.50)" }}>{d.desc}</p>
+                  <p className="text-xs leading-relaxed" style={{ color:"#64748B" }}>{d.desc}</p>
                 </div>
               ))}
             </div>
@@ -346,10 +351,10 @@ export default function OptiForge() {
       </section>
 
       {/* ── FAQ ── */}
-      <section className="py-16 max-w-3xl mx-auto px-4 sm:px-8 space-y-6" style={{ borderTop:"1px solid rgba(255,255,255,0.07)" }}>
+      <section className="py-16 max-w-3xl mx-auto px-4 sm:px-8 space-y-6" style={{ borderTop:"1px solid #E2E8F0" }}>
         <div className="text-center space-y-2">
-          <h2 className="text-2xl font-bold text-white" style={{ fontFamily:"Sora,Outfit,sans-serif" }}>Rules & FAQ</h2>
-          <p className="text-sm" style={{ color:"rgba(255,255,255,0.45)" }}>Everything you need to know before registering.</p>
+          <h2 className="text-2xl font-bold text-slate-900" style={{ fontFamily:"Sora,Outfit,sans-serif" }}>Rules & FAQ</h2>
+          <p className="text-sm" style={{ color:"#64748B" }}>Everything you need to know before registering.</p>
         </div>
         <div className="space-y-3">
           {faqs.map((f,i) => (
@@ -358,27 +363,27 @@ export default function OptiForge() {
               className="rounded-2xl p-5 space-y-2 transition-all"
               style={{ background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.09)", backdropFilter:"blur(16px)" }}>
               <h4 className="font-semibold text-white text-sm">{f.q}</h4>
-              <p className="text-xs leading-relaxed" style={{ color:"rgba(255,255,255,0.52)" }}>{f.a}</p>
+              <p className="text-xs leading-relaxed" style={{ color:"#64748B" }}>{f.a}</p>
             </motion.div>
           ))}
         </div>
       </section>
 
       {/* ── Final CTA ── */}
-      <section className="py-20 max-w-[1280px] mx-auto px-4 sm:px-8 text-center space-y-7" style={{ borderTop:"1px solid rgba(255,255,255,0.07)" }}>
-        <h2 className="text-3xl sm:text-5xl font-black text-white" style={{ fontFamily:"Sora,Outfit,sans-serif" }}>Ready to Compete?</h2>
-        <p className="max-w-xl mx-auto text-sm leading-relaxed" style={{ color:"rgba(255,255,255,0.55)" }}>
-          Register your team of 2–4 members. ₹50 per member, payable at the venue on 30 September 2026.
+      <section className="py-20 max-w-[1280px] mx-auto px-4 sm:px-8 text-center space-y-7" style={{ borderTop:"1px solid #E2E8F0" }}>
+        <h2 className="text-3xl sm:text-5xl font-black text-slate-900" style={{ fontFamily:"Sora,Outfit,sans-serif" }}>Ready to Compete?</h2>
+        <p className="max-w-xl mx-auto text-sm leading-relaxed" style={{ color:"#475569" }}>
+          Register your team of 2–4 members. ₹100 per member, payable at the venue on 30 September 2026.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4">
           <a href="https://optiforge-2026.vercel.app/register" target="_blank" rel="noreferrer"
             className="inline-flex items-center gap-2.5 px-10 py-4 rounded-2xl font-black text-base text-white transition-all hover:brightness-110 hover:scale-105 active:scale-97"
             style={{ background:`linear-gradient(135deg,${C.teal} 0%,${C.blue} 100%)`, boxShadow:`0 4px 28px rgba(0,140,149,0.45), 0 10px 48px rgba(0,102,204,0.25), inset 0 1px 0 rgba(255,255,255,0.25)` }}>
-            Register Team (₹50/member) <ArrowRight className="w-5 h-5" />
+            Register Team (₹100/member) <ArrowRight className="w-5 h-5" />
           </a>
           <a href="https://optiforge-2026.vercel.app/" target="_blank" rel="noreferrer"
             className="inline-flex items-center gap-2 px-7 py-4 rounded-2xl text-sm font-semibold text-white transition-all hover:scale-105"
-            style={{ background:"rgba(255,255,255,0.07)", border:"1px solid rgba(255,255,255,0.15)", backdropFilter:"blur(12px)" }}>
+            style={{ background:"#FFFFFF", border:"1px solid #CBD5E1", color:"#334155", backdropFilter:"blur(12px)" }}>
             <ExternalLink className="w-4 h-4" /> Visit OptiForge Portal
           </a>
         </div>
