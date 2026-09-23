@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ExternalLink, Calendar, Clock, MapPin, Trophy, ArrowRight, CheckCircle2, Zap, Shield, Cpu, Layers, Activity, BrainCircuit, HeartPulse, Stethoscope, Microchip, Bot } from "lucide-react";
+import { ExternalLink, Calendar, Clock, MapPin, Trophy, ArrowRight, CheckCircle2, Zap, Shield, Cpu, Layers, Activity, BrainCircuit, HeartPulse, Stethoscope, Bot } from "lucide-react";
 import { motion } from "framer-motion";
 import { optiforgeFlyer } from "../assets/images";
 
@@ -71,7 +71,7 @@ const tracks = [
   // 🔵 IEEE CIS Domains
   { num:"05", title:"Machine Learning & Artificial Intelligence", tag:"CIS Domain", desc:"Explore machine learning, deep learning, generative AI, and intelligent algorithms for solving complex real-world problems.", accent: C.ieeeBlue, bg: C.softBlue, icon: <Cpu className="w-6 h-6" /> },
   { num:"06", title:"Computational Intelligence & Optimization", tag:"CIS Domain", desc:"Apply evolutionary computation, fuzzy logic, genetic algorithms, swarm intelligence, and optimization techniques to complex problems.", accent: C.ieeeBlue, bg: C.softBlue, icon: <Layers className="w-6 h-6" /> },
-  { num:"07", title:"Intelligent Systems & Autonomous Computing", tag:"CIS Domain", desc:"Develop autonomous, adaptive, and multi-agent systems capable of intelligent decision-making, learning, and real-time operation.", accent: C.ieeeBlue, bg: C.softBlue, icon: <Microchip className="w-6 h-6" /> },
+  { num:"07", title:"Intelligent Systems & Autonomous Computing", tag:"CIS Domain", desc:"Develop autonomous, adaptive, and multi-agent systems capable of intelligent decision-making, learning, and real-time operation.", accent: C.ieeeBlue, bg: C.softBlue, icon: <Zap className="w-6 h-6" /> },
   { num:"08", title:"Computer Vision & Pattern Recognition", tag:"CIS Domain", desc:"Develop intelligent methods for image understanding, object detection, classification, segmentation, and pattern recognition.", accent: C.ieeeBlue, bg: C.softBlue, icon: <HeartPulse className="w-6 h-6" /> },
 
   // 🟣🔵 Flagship
