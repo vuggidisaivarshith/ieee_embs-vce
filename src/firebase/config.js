@@ -155,7 +155,7 @@ export const DEFAULT_SITE_DATA = {
       id: "optiforge-2026",
       title: "OptiForge 2026 — Hackathon & Algorithm Design Challenge",
       topic: "Hackathon & Algorithm Design",
-      description: "Flagship Hackathon & Algorithm Design Challenge organized by IEEE EMBS × IEEE CIS at Vardhaman College of Engineering. Featuring 10 innovation themes spanning Biomedical AI, EdTech, Digital Health, Neurotechnology, Medical Imaging, Signal Processing, Smart Healthcare IoT, Robotics, and Open Innovation.",
+      description: "Flagship Hackathon & Algorithm Design Challenge organized by IEEE EMBS × IEEE CIS at Vardhaman College of Engineering. Featuring 9 innovation themes spanning Biomedical AI, EdTech, Digital Health, Neurotechnology, Medical Imaging, Signal Processing, Smart Healthcare IoT, Robotics, and Open Innovation.",
       date: "2026-09-30",
       time: "9:00 AM – 4:00 PM IST",
       venue: "Auditorium & Computing Labs, Vardhaman College of Engineering",
@@ -255,7 +255,7 @@ export const DEFAULT_SITE_DATA = {
     {
       id: "ann-optiforge",
       title: "OptiForge 2026: Flagship Hackathon Scheduled for 30th September 2026",
-      body: "Registrations are open for OptiForge 2026 — Hackathon & Algorithm Design Challenge on 30th September 2026 (9:00 AM – 4:00 PM IST). Featuring 10 innovation themes spanning Biomedical AI, EdTech, Telemedicine, Neurotechnology, Medical Imaging, Signals, Medical IoT, Robotics, and Open Innovation.",
+      body: "Registrations are open for OptiForge 2026 — Hackathon & Algorithm Design Challenge on 30th September 2026 (9:00 AM – 4:00 PM IST). Featuring 9 innovation themes spanning Biomedical AI, EdTech, Telemedicine, Neurotechnology, Medical Imaging, Signals, Medical IoT, Robotics, and Open Innovation.",
       date: "2026-09-23",
       isPinned: true,
       imageUrl: optiforgeFlyer

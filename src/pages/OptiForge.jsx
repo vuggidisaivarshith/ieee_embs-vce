@@ -41,7 +41,7 @@ const fadeUp = { hidden:{opacity:0,y:22}, visible:{opacity:1,y:0,transition:{dur
 const stagger = { hidden:{}, visible:{transition:{staggerChildren:.08}} };
 
 const stages = [
-  { num:"01", time:"09:00–10:00", title:"Problem Selection & Kickoff",          desc:"Review all 10 innovation themes, strategize representations, and download official starter kits & evaluation harnesses.",      tag:"Kickoff" },
+  { num:"01", time:"09:00–10:00", title:"Problem Selection & Kickoff",          desc:"Review all 9 innovation themes, strategize representations, and download official starter kits & evaluation harnesses.",       tag:"Kickoff" },
   { num:"02", time:"10:00–12:30", title:"1st Development & AI Evaluation",      desc:"Core heuristic algorithm engineering, initial implementation, baseline benchmarking, and automated AI evaluation scoring.",      tag:"AI Evaluation", highlight:true },
   { num:"03", time:"12:30–13:15", title:"Lunch Break & Strategy Refresh",       desc:"Networking and lunch break. Teams regroup, analyze leaderboard metrics, and adjust strategy for afternoon rounds.",             tag:"Break" },
   { num:"04", time:"13:15–15:00", title:"2nd Development & Optimization",       desc:"Surprise scenario shifts injected. Adapt models, execute live patch refactoring, and optimize convergence for final freeze.",    tag:"Deep Hack" },
@@ -53,16 +53,15 @@ const tracks = [
   { num:"02", title:"EdTech",                                      tag:"Intelligent Learning",    desc:"Design intelligent tutoring systems, adaptive learning algorithms, and gamified pedagogical platforms for healthcare and engineering education.",                  accent:C.cyan },
   { num:"03", title:"Digital Health & Telemedicine",               tag:"Remote Care & Health IT", desc:"Create secure remote consultation architectures, FHIR/SNOMED compliant EMR pipelines, and distributed patient monitoring systems.",                   accent:C.blue },
   { num:"04", title:"Neurotechnology & Rehabilitation",            tag:"Neural Engineering",      desc:"Engineer Brain-Computer Interfaces (BCI), neural decoding algorithms, assistive robotics, and neuroprosthetic rehabilitation feedback loops.",                     accent:C.teal },
-  { num:"05", title:"Medical Imaging & Diagnostics AI in Healthcare", tag:"AI Diagnostics",       desc:"Build multi-modal diagnostic engines synthesizing clinical notes, pathology, and imaging for early detection and oncology stratification.",                       accent:C.cyan },
-  { num:"06", title:"Medical Imaging & Computer Vision",           tag:"Computer Vision",         desc:"Design high-accuracy segmentation, registration, and enhancement algorithms for MRI, CT, ultrasound, and histopathological scans.",                               accent:C.blue },
-  { num:"07", title:"Biomedical Signals & Intelligent Systems",     tag:"Signal Processing",       desc:"Implement real-time denoising, feature extraction, and fuzzy/heuristic anomaly detection for ECG, EEG, EMG, and PPG physiological waveforms.",                    accent:C.teal },
-  { num:"08", title:"Smart Healthcare & Medical IoT",              tag:"IoMT & Embedded AI",      desc:"Develop low-latency, edge-computed wearable sensor networks, vitals streaming telemetric protocols, and battery-optimized IoMT nodes.",                          accent:C.cyan },
-  { num:"09", title:"Healthcare Robotics & Automation",            tag:"Robotics & Automation",   desc:"Formulate motion planning, kinematics optimization, and autonomous guidance algorithms for surgical robotic arms and hospital rovers.",                            accent:C.blue },
-  { num:"10", title:"Open Innovation on (CIS and EMBS only)",       tag:"CIS & EMBS Flagship",     desc:"Exclusive interdisciplinary track for novel breakthroughs combining Computational Intelligence (evolutionary computing, neural nets, fuzzy logic) and Bioengineering.", accent:C.teal, flagship:true },
+  { num:"05", title:"Medical Imaging & Computer Vision",           tag:"Computer Vision",         desc:"Design high-accuracy segmentation, registration, and enhancement algorithms for MRI, CT, ultrasound, and histopathological scans.",                               accent:C.blue },
+  { num:"06", title:"Biomedical Signals & Intelligent Systems",     tag:"Signal Processing",       desc:"Implement real-time denoising, feature extraction, and fuzzy/heuristic anomaly detection for ECG, EEG, EMG, and PPG physiological waveforms.",                    accent:C.teal },
+  { num:"07", title:"Smart Healthcare & Medical IoT",              tag:"IoMT & Embedded AI",      desc:"Develop low-latency, edge-computed wearable sensor networks, vitals streaming telemetric protocols, and battery-optimized IoMT nodes.",                          accent:C.cyan },
+  { num:"08", title:"Healthcare Robotics & Automation",            tag:"Robotics & Automation",   desc:"Formulate motion planning, kinematics optimization, and autonomous guidance algorithms for surgical robotic arms and hospital rovers.",                            accent:C.blue },
+  { num:"09", title:"Open Innovation on (CIS and EMBS only)",       tag:"CIS & EMBS Flagship",     desc:"Exclusive interdisciplinary track for novel breakthroughs combining Computational Intelligence (evolutionary computing, neural nets, fuzzy logic) and Bioengineering.", accent:C.teal, flagship:true },
 ];
 
 const whatYouGet = [
-  "Modular Python starter scripts (.py) and notebooks (.ipynb) across all 10 challenge themes",
+  "Modular Python starter scripts (.py) and notebooks (.ipynb) across all 9 challenge themes",
   "Pre-built synthetic data generators and scenario loaders",
   "Offline verification harness with identical scoring metrics",
   "Isolated sandbox execution environment with standard scientific libraries",
@@ -130,7 +129,7 @@ export default function OptiForge() {
           </motion.p>
 
           <motion.p variants={fadeUp} className="max-w-2xl mx-auto text-sm sm:text-base leading-relaxed" style={{ color:"rgba(255,255,255,0.60)" }}>
-            Engineer high-performance evolutionary heuristics, machine learning models, and intelligent systems. Compete across 10 innovation themes with live development rounds, AI evaluation, scenario shifts, and expert panel defense.
+            Engineer high-performance evolutionary heuristics, machine learning models, and intelligent systems. Compete across 9 innovation themes with live development rounds, AI evaluation, scenario shifts, and expert panel defense.
           </motion.p>
 
           {/* Metadata chips */}
@@ -225,16 +224,16 @@ export default function OptiForge() {
         </div>
       </section>
 
-      {/* ── 10 Innovation Themes / Challenge Tracks ── */}
+      {/* ── 9 Innovation Themes / Challenge Tracks ── */}
       <section className="py-16 max-w-[1280px] mx-auto px-4 sm:px-8 space-y-10" style={{ borderTop:"1px solid rgba(255,255,255,0.07)" }}>
         <div className="text-center space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-mono font-semibold"
             style={{ background:"rgba(0,102,204,0.12)", border:`1px solid rgba(0,102,204,0.25)`, color:C.cyan }}>
-            <Layers className="w-3.5 h-3.5" /> 10 Innovation Themes
+            <Layers className="w-3.5 h-3.5" /> 9 Innovation Themes
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold text-white" style={{ fontFamily:"Sora,Outfit,sans-serif" }}>Hackathon Themes & Challenge Tracks</h2>
           <p className="text-sm max-w-2xl mx-auto" style={{ color:"rgba(255,255,255,0.50)" }}>
-            Explore our 10 problem domains engineered for computational intelligence, algorithm design, and interdisciplinary healthcare innovation.
+            Explore our 9 problem domains engineered for computational intelligence, algorithm design, and interdisciplinary healthcare innovation.
           </p>
         </div>
 
