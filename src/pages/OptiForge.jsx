@@ -54,11 +54,10 @@ const fadeUp = { hidden:{opacity:0,y:22}, visible:{opacity:1,y:0,transition:{dur
 const stagger = { hidden:{}, visible:{transition:{staggerChildren:.08}} };
 
 const stages = [
-  { num:"01", time:"09:00–10:00", title:"Problem Selection & Kickoff",          desc:"Review all 9 innovation themes, strategize representations, and download official starter kits & evaluation harnesses.",       tag:"Kickoff" },
-  { num:"02", time:"10:00–12:30", title:"1st Development & AI Evaluation",      desc:"Core heuristic algorithm engineering, initial implementation, baseline benchmarking, and automated AI evaluation scoring.",      tag:"AI Evaluation", highlight:true },
-  { num:"03", time:"12:30–13:15", title:"Lunch Break & Strategy Refresh",       desc:"Networking and lunch break. Teams regroup, analyze leaderboard metrics, and adjust strategy for afternoon rounds.",             tag:"Break" },
-  { num:"04", time:"13:15–15:00", title:"2nd Development & Optimization",       desc:"Surprise scenario shifts injected. Adapt models, execute live patch refactoring, and optimize convergence for final freeze.",    tag:"Deep Hack" },
-  { num:"05", time:"15:00–16:00", title:"Final Panel Evaluation & Results",     desc:"Live defense and presentation before the domain expert faculty jury, followed by felicitation and awards ceremony.",          tag:"Panel Jury", highlight:true },
+  { num:"01", time:"09:00–12:30", title:"1st Round",      desc:"AI evaluation",      tag:"Round 1", highlight:true },
+  { num:"02", time:"12:30–13:15", title:"Lunch Break",       desc:"Networking and lunch break. Teams regroup, analyze leaderboard metrics, and adjust strategy for afternoon rounds.",             tag:"Break" },
+  { num:"03", time:"13:15–15:00", title:"2nd Round",       desc:"AI evaluation",    tag:"Round 2", highlight:true },
+  { num:"04", time:"15:00–16:00", title:"Final Panel Evaluation & Results",     desc:"Live defense and presentation before the domain expert faculty jury, followed by felicitation and awards ceremony.",          tag:"Panel Jury" },
 ];
 
 const tracks = [
@@ -66,16 +65,13 @@ const tracks = [
   { num:"01", title:"Biomedical Artificial Intelligence", tag:"EMBS Domain", desc:"Develop AI and machine-learning solutions for healthcare, including disease prediction, clinical decision support, and personalized medicine.", accent: C.aiPurple, bg: "#F4F1FF", icon: <BrainCircuit className="w-6 h-6" /> },
   { num:"02", title:"Biomedical Signals & Intelligent Systems", tag:"EMBS Domain", desc:"Apply intelligent algorithms to ECG, EEG, EMG, and PPG for signal processing, anomaly detection, and physiological monitoring.", accent: C.medRed, bg: "#FFF2F4", icon: <Activity className="w-6 h-6" /> },
   { num:"03", title:"Medical Imaging & Computer Vision", tag:"EMBS Domain", desc:"Develop intelligent systems for MRI, CT, ultrasound, and histopathological image analysis, segmentation, and automated interpretation.", accent: C.cyan, bg: "#EFFBFD", icon: <HeartPulse className="w-6 h-6" /> },
-  { num:"04", title:"Healthcare Robotics & Intelligent Automation", tag:"EMBS Domain", desc:"Develop intelligent robotic and automated systems for rehabilitation, surgical assistance, hospital logistics, and patient care.", accent: C.warning, bg: "#FFF8EA", icon: <Bot className="w-6 h-6" /> },
 
   // 🔵 IEEE CIS Domains
-  { num:"05", title:"Machine Learning & Artificial Intelligence", tag:"CIS Domain", desc:"Explore machine learning, deep learning, generative AI, and intelligent algorithms for solving complex real-world problems.", accent: C.ieeeBlue, bg: C.softBlue, icon: <Cpu className="w-6 h-6" /> },
-  { num:"06", title:"Computational Intelligence & Optimization", tag:"CIS Domain", desc:"Apply evolutionary computation, fuzzy logic, genetic algorithms, swarm intelligence, and optimization techniques to complex problems.", accent: C.ieeeBlue, bg: C.softBlue, icon: <Layers className="w-6 h-6" /> },
-  { num:"07", title:"Intelligent Systems & Autonomous Computing", tag:"CIS Domain", desc:"Develop autonomous, adaptive, and multi-agent systems capable of intelligent decision-making, learning, and real-time operation.", accent: C.ieeeBlue, bg: C.softBlue, icon: <Zap className="w-6 h-6" /> },
-  { num:"08", title:"Computer Vision & Pattern Recognition", tag:"CIS Domain", desc:"Develop intelligent methods for image understanding, object detection, classification, segmentation, and pattern recognition.", accent: C.ieeeBlue, bg: C.softBlue, icon: <HeartPulse className="w-6 h-6" /> },
+  { num:"04", title:"Machine Learning & Artificial Intelligence", tag:"CIS Domain", desc:"Explore machine learning, deep learning, generative AI, and intelligent algorithms for solving complex real-world problems.", accent: C.ieeeBlue, bg: C.softBlue, icon: <Cpu className="w-6 h-6" /> },
+  { num:"05", title:"Intelligent Systems & Autonomous Computing", tag:"CIS Domain", desc:"Develop autonomous, adaptive, and multi-agent systems capable of intelligent decision-making, learning, and real-time operation.", accent: C.ieeeBlue, bg: C.softBlue, icon: <Zap className="w-6 h-6" /> },
 
   // 🟣🔵 Flagship
-  { num:"09", title:"Open Innovation: CIS × EMBS", tag:"Flagship Domain", desc:"An interdisciplinary track for novel solutions combining computational intelligence with biomedical engineering and healthcare challenges. Encourages innovative applications of AI, optimization, intelligent systems, vision, signals, and robotics to real-world biomedical problems.", accent: C.cyan, bg: "#EFFBFD", icon: <Stethoscope className="w-6 h-6" />, flagship:true },
+  { num:"06", title:"Open Innovation: CIS × EMBS", tag:"Flagship Domain", desc:"An interdisciplinary track for novel solutions combining computational intelligence with biomedical engineering and healthcare challenges. Encourages innovative applications of AI, optimization, intelligent systems, vision, signals, and robotics to real-world biomedical problems.", accent: C.cyan, bg: "#EFFBFD", icon: <Stethoscope className="w-6 h-6" />, flagship:true },
 ];
 
 export default function OptiForge() {
@@ -130,7 +126,7 @@ export default function OptiForge() {
               Computational Intelligence Challenge
             </motion.p>
             <motion.p variants={fadeUp} className="max-w-2xl mx-auto text-sm sm:text-base leading-relaxed" style={{ color: C.slate }}>
-              Engineer high-performance evolutionary heuristics, machine learning models, and intelligent systems. Compete across 9 innovation themes with live development rounds, AI evaluation, scenario shifts, and expert panel defense.
+              Engineer high-performance evolutionary heuristics, machine learning models, and intelligent systems. Compete across 6 innovation themes with live development rounds, AI evaluation, scenario shifts, and expert panel defense.
             </motion.p>
 
             {/* Metadata chips */}
@@ -188,16 +184,16 @@ export default function OptiForge() {
           </motion.div>
         </section>
 
-        {/* ── 9 Innovation Themes / Challenge Tracks ── */}
+        {/* ── 6 Innovation Themes / Challenge Tracks ── */}
         <section className="py-24 max-w-[1280px] mx-auto px-4 sm:px-8 space-y-12">
           <div className="text-center space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider"
               style={{ ...glassLevel1, color: C.cyan }}>
-              <Layers className="w-3.5 h-3.5" /> 9 Innovation Themes
+              <Layers className="w-3.5 h-3.5" /> 6 Innovation Themes
             </div>
             <h2 className="text-3xl sm:text-5xl font-black" style={{ fontFamily: "Sora, sans-serif", color: C.navy }}>Problem Domains</h2>
             <p className="text-sm sm:text-base max-w-2xl mx-auto" style={{ color: C.slate }}>
-              Explore our 9 problem domains engineered for computational intelligence, algorithm design, and interdisciplinary healthcare innovation.
+              Explore our 6 problem domains engineered for computational intelligence, algorithm design, and interdisciplinary healthcare innovation.
             </p>
           </div>
 
@@ -324,10 +320,7 @@ export default function OptiForge() {
             {[
               { q:"Who can participate?", a:"Any registered student from any institution in India. A team of 2–4 members is required. No prior competition experience needed." },
               { q:"What is the registration fee?", a:"₹100 per team member, payable at the venue on the day of the event." },
-              { q:"What programming language is allowed?", a:"Python only. Libraries: NumPy, SciPy, Matplotlib, scikit-learn, NetworkX. No custom C extensions." },
-              { q:"Is internet access allowed?", a:"No internet access during coding rounds. Live patch challenges are strictly offline and zero-AI." },
               { q:"How is scoring done?", a:"Multi-metric scoring: automated solution quality (fitness score), runtime efficiency, AST structure analysis, and AI evaluation feedback." },
-              { q:"Will AI tools be allowed?", a:"AI evaluation is performed on 1st Development submissions. Live patch and final panel defense require genuine algorithmic defense." },
             ].map((f,i) => (
               <motion.div key={i} initial={{opacity:0,y:12}} whileInView={{opacity:1,y:0}} viewport={{once:true}}
                 transition={{duration:.4,delay:i*.05}}
