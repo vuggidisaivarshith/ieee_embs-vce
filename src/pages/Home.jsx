@@ -12,7 +12,7 @@ import MagneticButton from "../components/ui/MagneticButton";
 import TiltCard from "../components/ui/TiltCard";
 import InteractiveBioSignal from "../components/ui/InteractiveBioSignal";
 
-import { eventSlide1, eventSlide2, eventSlide3 } from "../assets/images";
+import { eventSlide1, eventSlide2, eventSlide3, optiforgeFlyer } from "../assets/images";
 
 /* ── Subtle SVG scientific waveform (hero decoration) ── */
 function HeroWaveform() {
@@ -326,42 +326,49 @@ export default function Home() {
                 ))}
               </motion.div>
 
-              {/* OptiForge Hackathon Glass Teaser */}
+              {/* OptiForge Hackathon Glass Teaser with Banner Preview */}
               <motion.div
                 variants={fadeUp}
-                className="relative rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.01]"
+                className="relative rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.015] group cursor-pointer"
                 style={{
-                  background: "linear-gradient(135deg, rgba(7,26,43,0.96) 0%, rgba(13,40,68,0.94) 100%)",
-                  backdropFilter: "blur(20px)",
-                  border: "1px solid rgba(0,184,217,0.35)",
-                  boxShadow: "0 10px 30px -5px rgba(7,26,43,0.3), 0 0 20px -5px rgba(0,140,149,0.3), inset 0 1px 0 rgba(255,255,255,0.15)"
+                  background: "linear-gradient(135deg, rgba(7,26,43,0.97) 0%, rgba(13,40,68,0.95) 100%)",
+                  backdropFilter: "blur(24px)",
+                  border: "1.5px solid rgba(0,184,217,0.45)",
+                  boxShadow: "0 14px 40px -5px rgba(7,26,43,0.4), 0 0 30px -5px rgba(0,140,149,0.35), inset 0 1px 0 rgba(255,255,255,0.2)"
                 }}
               >
+                {/* Flyer preview background image */}
+                <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-500 overflow-hidden">
+                  <img src={optiforgeFlyer} alt="OptiForge Flyer Preview" className="w-full h-full object-cover filter blur-[2px] group-hover:scale-105 transition-transform duration-700" />
+                </div>
                 <div className="absolute inset-0 pointer-events-none overflow-hidden">
                   <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full"
-                    style={{ background: "radial-gradient(circle, rgba(0,184,217,0.25) 0%, transparent 70%)", filter: "blur(20px)" }} />
+                    style={{ background: "radial-gradient(circle, rgba(0,184,217,0.3) 0%, transparent 70%)", filter: "blur(20px)" }} />
                   <div className="absolute -left-10 -bottom-10 w-40 h-40 rounded-full"
-                    style={{ background: "radial-gradient(circle, rgba(0,102,204,0.2) 0%, transparent 70%)", filter: "blur(20px)" }} />
+                    style={{ background: "radial-gradient(circle, rgba(0,102,204,0.25) 0%, transparent 70%)", filter: "blur(20px)" }} />
                 </div>
-                <div className="relative z-10 px-5 py-4 flex items-center justify-between gap-4">
+                <div className="relative z-10 px-6 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#00B8D9] animate-pulse" />
+                    <div className="flex items-center gap-2">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00B8D9] opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00B8D9]" />
+                      </span>
                       <span className="text-[10px] font-black font-mono uppercase tracking-widest text-[#00B8D9]">Flagship Hackathon · 30 Sep 2026</span>
                     </div>
-                    <p className="text-white font-black text-lg mt-0.5 tracking-tight" style={{ fontFamily: "Sora, Outfit, sans-serif" }}>
+                    <p className="text-white font-black text-xl mt-1 tracking-tight" style={{ fontFamily: "Sora, Outfit, sans-serif" }}>
                       OPTI<span style={{ color: "#008C95" }}>FORGE</span>{" "}
-                      <span className="text-white/40 font-semibold text-sm">2026</span>
+                      <span className="text-white/40 font-semibold text-base">2026</span>
                     </p>
-                    <p className="text-white/60 text-xs mt-0.5">Hackathon & Algorithm Design Challenge · IEEE EMBS × CIS</p>
+                    <p className="text-white/70 text-xs mt-1">Hackathon & Algorithm Design Challenge · IEEE EMBS × CIS</p>
                   </div>
                   <MagneticButton
                     to="/optiforge"
                     strength={0.3}
-                    className="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-black text-white whitespace-nowrap transition-all shadow-md"
-                    style={{ background: "linear-gradient(135deg, #008C95 0%, #0066CC 100%)", boxShadow: "0 2px 14px rgba(0,140,149,0.4), inset 0 1px 0 rgba(255,255,255,0.3)" }}
+                    className="flex-shrink-0 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-xs font-black text-white whitespace-nowrap transition-all shadow-md"
+                    style={{ background: "linear-gradient(135deg, #008C95 0%, #0066CC 100%)", boxShadow: "0 4px 18px rgba(0,140,149,0.5), inset 0 1px 0 rgba(255,255,255,0.4)" }}
                   >
-                    Register <ArrowRight className="w-3.5 h-3.5" />
+                    View Major Banner & Register <ArrowRight className="w-4 h-4" />
                   </MagneticButton>
                 </div>
               </motion.div>

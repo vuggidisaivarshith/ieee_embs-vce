@@ -193,93 +193,103 @@ export default function OptiForge() {
             </motion.div>
           </motion.div>
 
-          {/* ── FULL-WIDTH FLYER BANNER — breaks out of max-w-[1280px] ── */}
+          {/* ── MASSIVE DOUBLE-SIZE HERO FLYER BANNER ── */}
           <motion.div
-            initial={{ opacity: 0, y: 60, scale: 0.94 }}
+            initial={{ opacity: 0, y: 50, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.9, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            className="relative mt-20"
+            transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="relative mt-16 w-full max-w-6xl mx-auto"
           >
-            {/* Ambient glow halo — pulsing dual rings */}
-            <div className="absolute -inset-8 rounded-[48px] pointer-events-none animate-pulse"
-              style={{
-                background: "radial-gradient(ellipse at 30% 50%, rgba(0,102,204,0.28) 0%, rgba(0,140,149,0.20) 40%, transparent 68%)",
-                filter: "blur(24px)"
-              }} />
-            <div className="absolute -inset-12 rounded-[52px] pointer-events-none"
-              style={{
-                background: "radial-gradient(ellipse at 70% 50%, rgba(119,37,131,0.18) 0%, transparent 60%)",
-                filter: "blur(36px)",
-                animation: "pulse 3.5s ease-in-out infinite 1.2s"
-              }} />
-
-            {/* LIVE blinking badge */}
-            <div className="absolute -top-5 left-1/2 z-30 -translate-x-1/2 flex items-center gap-2.5 px-6 py-2.5 rounded-full shadow-2xl"
-              style={{
-                background: "linear-gradient(135deg, #00629B 0%, #772583 100%)",
-                boxShadow: "0 6px 30px rgba(0,98,155,0.55), 0 0 50px rgba(119,37,131,0.35), inset 0 1px 0 rgba(255,255,255,0.25)"
-              }}>
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-300 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-300" />
-              </span>
-              <span className="text-white font-black text-xs sm:text-sm uppercase tracking-[0.15em]"
-                style={{ fontFamily: "Sora, sans-serif" }}>
-                🔥 Registrations LIVE · 30 Sep 2026
-              </span>
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-300 opacity-75" style={{ animationDelay: "0.4s" }} />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-300" />
-              </span>
-            </div>
-
-            {/* Full-bleed banner wrapper — no padding constraint, break out of section */}
-            <div
-              className="relative overflow-hidden group cursor-pointer"
-              style={{
-                /* stretch ~20% beyond max-w on each side using negative margins */
-                margin: "0 -5vw",
-                borderRadius: "28px",
-                background: "rgba(255,255,255,0.78)",
-                backdropFilter: "blur(28px) saturate(190%)",
-                WebkitBackdropFilter: "blur(28px) saturate(190%)",
-                border: "1px solid rgba(255,255,255,0.9)",
-                boxShadow: "0 32px 80px -12px rgba(16,42,67,0.20), 0 0 0 1px rgba(0,102,204,0.10), inset 0 2px 0 rgba(255,255,255,0.95)"
-              }}
-            >
-              {/* Continuous shimmer sweep */}
-              <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden" style={{ borderRadius: "28px" }}>
-                <div className="absolute inset-y-0 w-1/3 -skew-x-12"
-                  style={{
-                    background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.60) 50%, transparent)",
-                    animation: "shimmerSweep 2.6s cubic-bezier(0.4,0,0.6,1) infinite"
-                  }} />
+            {/* Blinking Live Hackathon Status Bar */}
+            <div className="flex items-center justify-between gap-4 mb-4 px-4 sm:px-6 py-2.5 rounded-2xl"
+              style={{ background: "linear-gradient(135deg, rgba(0,98,155,0.95) 0%, rgba(119,37,131,0.95) 100%)", boxShadow: "0 8px 32px rgba(0,98,155,0.35)" }}>
+              <div className="flex items-center gap-2.5">
+                <span className="relative flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-400" />
+                </span>
+                <span className="text-white font-black text-xs sm:text-sm uppercase tracking-widest" style={{ fontFamily: "Sora, sans-serif" }}>
+                  🔥 REGISTRATIONS OPEN · HACKATHON EVENT 30 SEP 2026
+                </span>
               </div>
-
-              {/* Corner glow accents */}
-              <div className="absolute top-0 left-0 w-48 h-48 pointer-events-none"
-                style={{ background: "radial-gradient(circle at 0% 0%, rgba(0,102,204,0.20), transparent 70%)", filter: "blur(16px)" }} />
-              <div className="absolute bottom-0 right-0 w-48 h-48 pointer-events-none"
-                style={{ background: "radial-gradient(circle at 100% 100%, rgba(119,37,131,0.20), transparent 70%)", filter: "blur(16px)" }} />
-
-              {/* Flyer image — natural full width, scale on hover */}
-              <img
-                src={optiforgeFlyer}
-                alt="OptiForge 2026 Event Flyer"
-                className="w-full h-auto block transition-transform duration-700 ease-out group-hover:scale-[1.02]"
-                style={{ padding: "10px", borderRadius: "24px", display: "block" }}
-              />
+              <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-amber-200">
+                <span className="animate-pulse">● LIVE</span>
+                <span>| ₹100 / Member</span>
+              </div>
             </div>
 
-            {/* Scroll-down cue */}
-            <div className="mt-10 flex flex-col items-center gap-2 select-none">
-              <span className="text-[11px] font-bold uppercase tracking-[0.2em]"
+            {/* Continuous Scrolling Marquee Ticker */}
+            <div className="overflow-hidden whitespace-nowrap rounded-xl py-2 mb-6" style={{ background: "rgba(0,98,155,0.08)", border: "1px solid rgba(0,98,155,0.2)" }}>
+              <div className="inline-block animate-[scrollTicker_20s_linear_infinite] text-xs font-mono font-bold tracking-widest text-[#00629B]">
+                ⚡ OPTIFORGE 2026 · COMPUTATIONAL INTELLIGENCE CHALLENGE · IEEE EMBS × IEEE CIS · REGISTRATIONS OPEN NOW (₹100/MEMBER) · 30 SEPTEMBER 2026 · VARDHAMAN COLLEGE OF ENGINEERING ⚡ &nbsp;&nbsp;&nbsp;&nbsp; ⚡ OPTIFORGE 2026 · COMPUTATIONAL INTELLIGENCE CHALLENGE · IEEE EMBS × IEEE CIS · REGISTRATIONS OPEN NOW (₹100/MEMBER) · 30 SEPTEMBER 2026 · VARDHAMAN COLLEGE OF ENGINEERING ⚡
+              </div>
+            </div>
+
+            {/* Ambient Multi-layer Glow Halo */}
+            <div className="absolute -inset-6 rounded-[44px] pointer-events-none animate-pulse"
+              style={{
+                background: "radial-gradient(ellipse at 30% 40%, rgba(0,184,217,0.35) 0%, rgba(0,98,155,0.25) 45%, transparent 70%)",
+                filter: "blur(28px)"
+              }} />
+            <div className="absolute -inset-10 rounded-[50px] pointer-events-none"
+              style={{
+                background: "radial-gradient(ellipse at 70% 60%, rgba(119,37,131,0.25) 0%, transparent 65%)",
+                filter: "blur(40px)",
+                animation: "pulse 3s ease-in-out infinite 1.5s"
+              }} />
+
+            {/* Banner Glass Frame — DOUBLE SIZE & ENHANCED INTERACTIVITY */}
+            <TiltCard maxTilt={4} className="rounded-3xl">
+              <div
+                className="relative rounded-3xl overflow-hidden group cursor-pointer"
+                style={{
+                  padding: "12px",
+                  background: "rgba(255,255,255,0.85)",
+                  backdropFilter: "blur(32px) saturate(200%)",
+                  WebkitBackdropFilter: "blur(32px) saturate(200%)",
+                  border: "2px solid rgba(255,255,255,0.95)",
+                  boxShadow: "0 30px 90px -15px rgba(7,26,43,0.25), 0 0 0 1px rgba(0,184,217,0.25), inset 0 2px 0 rgba(255,255,255,1)"
+                }}
+              >
+                {/* Continuous Shimmer Light Sweep */}
+                <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden rounded-3xl">
+                  <div className="absolute inset-y-0 w-1/3 -skew-x-12"
+                    style={{
+                      background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.65) 50%, transparent)",
+                      animation: "shimmerSweep 2.4s cubic-bezier(0.4,0,0.6,1) infinite"
+                    }} />
+                </div>
+
+                {/* Corner Glow Accents */}
+                <div className="absolute top-0 left-0 w-60 h-60 pointer-events-none"
+                  style={{ background: "radial-gradient(circle at 0% 0%, rgba(0,184,217,0.30), transparent 70%)", filter: "blur(20px)" }} />
+                <div className="absolute bottom-0 right-0 w-60 h-60 pointer-events-none"
+                  style={{ background: "radial-gradient(circle at 100% 100%, rgba(119,37,131,0.30), transparent 70%)", filter: "blur(20px)" }} />
+
+                {/* Doubled Flyer Image */}
+                <img
+                  src={optiforgeFlyer}
+                  alt="OptiForge 2026 Event Flyer"
+                  className="w-full h-auto block rounded-2xl transition-all duration-700 ease-out group-hover:scale-[1.015]"
+                  style={{
+                    minHeight: "420px",
+                    maxHeight: "850px",
+                    objectFit: "contain",
+                    background: "#071A2B"
+                  }}
+                />
+              </div>
+            </TiltCard>
+
+            {/* Scroll Down Attention Indicator */}
+            <div className="mt-8 flex flex-col items-center gap-2 select-none">
+              <span className="text-xs font-bold uppercase tracking-[0.2em]"
                 style={{ color: C.slate, fontFamily: "JetBrains Mono, monospace" }}>
-                Scroll to Explore Domains
+                Scroll Down to View Problem Domains ↓
               </span>
               <div className="flex flex-col items-center gap-1.5">
                 {[0, 0.18, 0.36].map((delay, i) => (
-                  <div key={i} className="w-1.5 h-1.5 rounded-full"
+                  <div key={i} className="w-2 h-2 rounded-full"
                     style={{
                       background: i === 0 ? C.ieeeBlue : i === 1 ? C.cyan : C.embsPurple,
                       animation: "bounceDown 1.3s ease-in-out infinite",
@@ -295,12 +305,16 @@ export default function OptiForge() {
         {/* Keyframes */}
         <style>{`
           @keyframes shimmerSweep {
-            0%   { left: -38%; }
-            100% { left: 108%; }
+            0%   { left: -40%; }
+            100% { left: 110%; }
           }
           @keyframes bounceDown {
             0%, 100% { transform: translateY(0); opacity: 0.35; }
             50%       { transform: translateY(7px); opacity: 1; }
+          }
+          @keyframes scrollTicker {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
           }
         `}</style>
 

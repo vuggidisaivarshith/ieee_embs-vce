@@ -86,44 +86,45 @@ export default function InteractiveCursor() {
 
   return (
     <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden" aria-hidden="true">
-      {/* Outer fluid aura — GREEN ring at rest, LIGHT-RED on hover (visible on any background) */}
+      {/* Outer fluid trailing aura ring ("long moving circle") — green/light-red with high-contrast ring for light & dark backgrounds */}
       <div
         ref={auraRef}
-        className="fixed top-0 left-0 -ml-5 -mt-5 rounded-full pointer-events-none will-change-transform transition-[width,height,background-color,border-color,opacity] duration-200"
+        className="fixed top-0 left-0 -ml-6 -mt-6 rounded-full pointer-events-none will-change-transform transition-[width,height,background-color,border-color,opacity,box-shadow] duration-200"
         style={{
-          width: isHovering ? (hoverLabel ? "60px" : "48px") : "30px",
-          height: isHovering ? (hoverLabel ? "60px" : "48px") : "30px",
+          width: isHovering ? (hoverLabel ? "64px" : "52px") : "36px",
+          height: isHovering ? (hoverLabel ? "64px" : "52px") : "36px",
           backgroundColor: isHovering
-            ? "rgba(239, 68, 68, 0.12)"
-            : "rgba(34, 197, 94, 0.10)",
+            ? "rgba(239, 68, 68, 0.15)"         /* light red fill on hover */
+            : "rgba(34, 197, 94, 0.12)",         /* vibrant green fill at rest */
           border: isHovering
-            ? "1.8px solid rgba(239, 68, 68, 0.80)"
-            : "1.5px solid rgba(34, 197, 94, 0.70)",
+            ? "2px solid rgba(239, 68, 68, 0.85)"     /* light red ring on hover */
+            : "2px solid rgba(34, 197, 94, 0.75)",    /* green ring at rest */
           boxShadow: isHovering
-            ? "0 0 20px rgba(239, 68, 68, 0.40), inset 0 0 8px rgba(239, 68, 68, 0.15)"
-            : "0 0 14px rgba(34, 197, 94, 0.35)",
-          backdropFilter: isHovering ? "blur(2px)" : "none",
+            ? "0 0 24px rgba(239, 68, 68, 0.50), inset 0 0 10px rgba(239, 68, 68, 0.20)"
+            : "0 0 16px rgba(34, 197, 94, 0.40), inset 0 0 8px rgba(34, 197, 94, 0.15)",
+          backdropFilter: isHovering ? "blur(3px)" : "blur(1px)",
           transform: "translate3d(-100px, -100px, 0)"
         }}
       >
         {hoverLabel && (
           <span className="absolute inset-0 flex items-center justify-center text-[9px] font-mono font-bold uppercase tracking-wider animate-fade-in"
-            style={{ color: isHovering ? "#ef4444" : "#22c55e" }}>
+            style={{ color: isHovering ? "#ef4444" : "#16a34a" }}>
             {hoverLabel}
           </span>
         )}
       </div>
 
-      {/* Center dot — original TEAL colors restored */}
+      {/* Center dot & inner glow halo — RESTORED PREVIOUS ORIGINAL TEAL/CYAN COLOURS (#00B8D9 / #008C95) */}
       <div
         ref={dotRef}
-        className="fixed top-0 left-0 -ml-1 -mt-1 w-2 h-2 rounded-full pointer-events-none will-change-transform transition-[transform,background-color,opacity] duration-75"
+        className="fixed top-0 left-0 -ml-1.5 -mt-1.5 w-3 h-3 rounded-full pointer-events-none will-change-transform transition-[transform,background-color,opacity,box-shadow] duration-75"
         style={{
           backgroundColor: isHovering ? "#00B8D9" : "#008C95",
-          transform: `translate3d(-100px, -100px, 0) scale(${isPressed ? 0.6 : isHovering ? 1.4 : 1})`,
+          transform: `translate3d(-100px, -100px, 0) scale(${isPressed ? 0.6 : isHovering ? 1.5 : 1})`,
           boxShadow: isHovering
-            ? "0 0 8px rgba(0, 184, 217, 0.90)"
-            : "0 0 6px rgba(0, 140, 149, 0.60)"
+            ? "0 0 14px #00B8D9, 0 0 24px rgba(0, 184, 217, 0.80), 0 0 2px #ffffff"
+            : "0 0 10px #087F8C, 0 0 16px rgba(8, 127, 140, 0.70), 0 0 2px #ffffff",
+          border: "1px solid rgba(255, 255, 255, 0.9)"
         }}
       />
     </div>
