@@ -158,80 +158,118 @@ export default function Home() {
       {/* Speaker modal */}
       <SpeakerModal isOpen={speakerModalOpen} onClose={() => setSpeakerModalOpen(false)} speakerData={speakerData} />
 
-      {/* ── OptiForge Full-Width Announcement Banner (immediately above the fold, offset for fixed navbar) ── */}
+      {/* ── OptiForge Full-Width Announcement Banner — DOUBLE SIZED WITH SCROLLING TICKER & ILLUMINATING GOLD BUTTON ── */}
       <motion.div
-        initial={{ opacity: 0, y: -12 }}
+        initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="relative overflow-hidden pt-16"
-        style={{ background: "linear-gradient(135deg, #071A2B 0%, #0D2844 45%, #071A2B 100%)" }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="relative overflow-hidden pt-16 group"
+        style={{ background: "linear-gradient(135deg, #040E18 0%, #071A2B 50%, #0D2844 100%)" }}
       >
-        {/* Ambient glows */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute -left-20 top-1/2 -translate-y-1/2 w-[320px] h-[160px] rounded-full animate-glow-pulse"
-            style={{ background:"radial-gradient(ellipse, rgba(0,140,149,0.38) 0%, transparent 70%)", filter:"blur(35px)" }} />
-          <div className="absolute right-1/4 top-1/2 -translate-y-1/2 w-[280px] h-[140px] rounded-full animate-glow-pulse"
-            style={{ background:"radial-gradient(ellipse, rgba(0,102,204,0.30) 0%, transparent 70%)", filter:"blur(35px)", animationDelay:"1s" }} />
-          <div className="absolute inset-0 animate-shimmer"
-            style={{ backgroundImage:"linear-gradient(105deg, transparent 35%, rgba(0,184,217,0.06) 50%, transparent 65%)" }} />
-          <div className="absolute inset-0 opacity-5"
-            style={{ backgroundImage:"linear-gradient(rgba(0,184,217,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,217,0.6) 1px, transparent 1px)", backgroundSize:"40px 40px" }} />
+        {/* Continuous Scrolling Marquee Ticker Bar */}
+        <div className="overflow-hidden whitespace-nowrap py-2 border-b"
+          style={{ background: "rgba(0,184,217,0.10)", borderColor: "rgba(0,184,217,0.25)" }}>
+          <div className="inline-block animate-[bannerTicker_22s_linear_infinite] text-xs font-mono font-bold tracking-widest text-[#00B8D9]">
+            ⚡ OPTIFORGE 2026 · HACKATHON & ALGORITHM DESIGN CHALLENGE · IEEE EMBS × IEEE CIS · REGISTRATIONS OPEN NOW (₹100/MEMBER) · VENUE: VARDHAMAN COLLEGE OF ENGINEERING · 30 SEPTEMBER 2026 ⚡ &nbsp;&nbsp;&nbsp;&nbsp; ⚡ OPTIFORGE 2026 · HACKATHON & ALGORITHM DESIGN CHALLENGE · IEEE EMBS × IEEE CIS · REGISTRATIONS OPEN NOW (₹100/MEMBER) · VENUE: VARDHAMAN COLLEGE OF ENGINEERING · 30 SEPTEMBER 2026 ⚡
+          </div>
         </div>
 
-        <div className="relative z-10 max-w-[1280px] mx-auto px-4 sm:px-8 py-4 sm:py-5">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-8">
+        {/* Ambient multi-color glows */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute -left-20 top-1/2 -translate-y-1/2 w-[400px] h-[220px] rounded-full animate-glow-pulse"
+            style={{ background: "radial-gradient(ellipse, rgba(244,185,66,0.25) 0%, rgba(0,140,149,0.30) 50%, transparent 70%)", filter: "blur(40px)" }} />
+          <div className="absolute right-1/4 top-1/2 -translate-y-1/2 w-[380px] h-[200px] rounded-full animate-glow-pulse"
+            style={{ background: "radial-gradient(ellipse, rgba(0,102,204,0.35) 0%, transparent 70%)", filter: "blur(40px)", animationDelay: "1s" }} />
+          <div className="absolute inset-0 animate-shimmer"
+            style={{ backgroundImage: "linear-gradient(105deg, transparent 30%, rgba(255,215,0,0.08) 50%, transparent 70%)" }} />
+          <div className="absolute inset-0 opacity-10"
+            style={{ backgroundImage: "linear-gradient(rgba(0,184,217,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,217,0.6) 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
+        </div>
+
+        {/* Banner Content Container — DOUBLED HEIGHT & PADDING */}
+        <div className="relative z-10 max-w-[1340px] mx-auto px-4 sm:px-8 py-8 sm:py-12">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-10">
             {/* Left: Event Identity */}
-            <div className="flex items-center gap-4 flex-1 min-w-0">
-              <div className="flex-shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center"
-                style={{ background:"rgba(0,140,149,0.22)", border:"1px solid rgba(0,184,217,0.45)", boxShadow:"0 0 20px rgba(0,184,217,0.35)" }}>
-                <Zap className="w-5 h-5 animate-pulse" style={{ color:"#00B8D9" }} />
+            <div className="flex items-center gap-5 flex-1 min-w-0">
+              <div className="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 duration-500"
+                style={{
+                  background: "linear-gradient(135deg, rgba(244,185,66,0.25) 0%, rgba(0,184,217,0.30) 100%)",
+                  border: "1.5px solid rgba(255,215,0,0.50)",
+                  boxShadow: "0 0 30px rgba(255,215,0,0.35), inset 0 1px 0 rgba(255,255,255,0.4)"
+                }}>
+                <Zap className="w-7 h-7 sm:w-8 sm:h-8 animate-pulse" style={{ color: "#FFD700" }} />
               </div>
               <div className="min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-[10px] font-black font-mono uppercase tracking-widest px-2.5 py-0.5 rounded-full"
-                    style={{ background:"rgba(0,184,217,0.18)", border:"1px solid rgba(0,184,217,0.40)", color:"#00B8D9" }}>
+                <div className="flex items-center gap-2.5 flex-wrap">
+                  {/* Blinking Badge */}
+                  <span className="inline-flex items-center gap-1.5 text-xs font-black font-mono uppercase tracking-widest px-3 py-1 rounded-full shadow-md"
+                    style={{ background: "linear-gradient(135deg, rgba(0,184,217,0.25) 0%, rgba(0,98,155,0.35) 100%)", border: "1px solid rgba(0,184,217,0.50)", color: "#00B8D9" }}>
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-400" />
+                    </span>
                     ★ Major Hackathon · 30 Sep 2026
                   </span>
-                  <span className="hidden sm:inline-block text-[11px] font-mono text-white/40">9:00 AM – 4:00 PM · VCE Campus</span>
+                  <span className="hidden sm:inline-block text-xs font-mono text-amber-200/70 bg-white/5 px-3 py-1 rounded-full border border-white/10">
+                    9:00 AM – 4:00 PM · VCE Campus · ₹100/Member
+                  </span>
                 </div>
-                <p className="font-black text-lg sm:text-2xl tracking-tight mt-1" style={{ fontFamily:"Sora,Outfit,sans-serif" }}>
-                  <span style={{ color:"#FFFFFF" }}>OPTI</span>
-                  <span style={{ color:"#008C95" }}>FORGE</span>
-                  <span className="font-bold text-sm ml-2" style={{ color:"rgba(255,255,255,0.4)" }}>2026</span>
-                  <span className="ml-2 font-normal text-sm hidden md:inline" style={{ color:"rgba(255,255,255,0.65)" }}>
+                <h2 className="font-black text-2xl sm:text-4xl md:text-5xl tracking-tight mt-2" style={{ fontFamily: "Sora, Outfit, sans-serif" }}>
+                  <span style={{ color: "#FFFFFF" }}>OPTI</span>
+                  <span style={{ color: "#00B8D9" }}>FORGE</span>
+                  <span className="font-bold text-lg sm:text-2xl ml-3" style={{ color: "#FFD700" }}>2026</span>
+                  <span className="ml-3 font-normal text-sm sm:text-base hidden md:inline text-white/70">
                     — Hackathon & Algorithm Design Challenge
                   </span>
-                </p>
+                </h2>
               </div>
             </div>
 
-            {/* Right: CTAs */}
-            <div className="flex items-center gap-3 flex-shrink-0">
+            {/* Right: ILLUMINATING GOLD REGISTER BUTTON */}
+            <div className="flex items-center gap-4 flex-shrink-0">
               <MagneticButton
                 to="/optiforge"
-                strength={0.3}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black text-white transition-all whitespace-nowrap shadow-lg"
-                style={{ background:"linear-gradient(135deg, #008C95 0%, #0066CC 100%)", boxShadow:"0 4px 20px rgba(0,140,149,0.5), inset 0 1px 0 rgba(255,255,255,0.3)" }}
+                strength={0.35}
+                className="inline-flex items-center gap-2.5 px-8 py-4 sm:px-10 sm:py-5 rounded-2xl text-base sm:text-lg font-black transition-all whitespace-nowrap shadow-2xl group/btn overflow-hidden relative"
+                style={{
+                  background: "linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #F4B942 100%)",
+                  color: "#071A2B",
+                  boxShadow: "0 0 35px rgba(255,215,0,0.70), 0 6px 25px rgba(244,185,66,0.60), inset 0 1px 0 rgba(255,255,255,0.9)",
+                  border: "1.5px solid rgba(255,255,255,0.7)"
+                }}
               >
-                <span>Explore & Register</span> <ArrowRight className="w-4 h-4" />
+                {/* Gold beam shimmer sweep */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700" />
+                <span className="relative z-10 flex items-center gap-2 font-black tracking-wide" style={{ fontFamily: "Sora, sans-serif" }}>
+                  Explore & Register Now <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
+                </span>
               </MagneticButton>
               <MagneticButton
                 href="https://optiforge-2026.vercel.app/register"
                 target="_blank"
                 rel="noreferrer"
                 strength={0.25}
-                className="hidden sm:inline-flex items-center gap-1.5 px-4 py-3 rounded-xl text-xs font-semibold text-white/90 hover:text-white transition-all border"
-                style={{ background:"rgba(255,255,255,0.08)", borderColor:"rgba(255,255,255,0.2)", backdropFilter:"blur(12px)" }}
+                className="hidden sm:inline-flex items-center gap-2 px-5 py-4 sm:px-6 sm:py-5 rounded-2xl text-xs sm:text-sm font-bold text-white transition-all border"
+                style={{ background: "rgba(255,255,255,0.10)", borderColor: "rgba(255,255,255,0.25)", backdropFilter: "blur(16px)" }}
               >
-                <ExternalLink className="w-3.5 h-3.5 text-[#00B8D9]" /> Direct Portal
+                <ExternalLink className="w-4 h-4 text-[#FFD700]" /> Direct Portal
               </MagneticButton>
             </div>
           </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 h-[2px]"
-          style={{ background:"linear-gradient(90deg, transparent, rgba(0,184,217,0.7), rgba(0,140,149,0.8), rgba(0,102,204,0.6), transparent)" }} />
+        {/* Animated Gold Bottom Border Beam */}
+        <div className="absolute bottom-0 left-0 right-0 h-[3px]"
+          style={{ background: "linear-gradient(90deg, transparent, rgba(255,215,0,0.8), rgba(0,184,217,0.9), rgba(244,185,66,0.8), transparent)" }} />
       </motion.div>
+
+      {/* Keyframe animation for top banner ticker */}
+      <style>{`
+        @keyframes bannerTicker {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
 
       {/* Chapter notices ticker */}
       {latestAnnouncement && (
