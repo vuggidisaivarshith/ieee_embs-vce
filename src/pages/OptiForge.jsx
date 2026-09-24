@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { optiforgeFlyer } from "../assets/images";
 import MagneticButton from "../components/ui/MagneticButton";
 import TiltCard from "../components/ui/TiltCard";
-import SwarmSimulationArena from "../components/ui/SwarmSimulationArena";
+
 
 /* 🎨 Palette */
 const C = {
@@ -193,91 +193,98 @@ export default function OptiForge() {
             </motion.div>
           </motion.div>
 
-          {/* ── FULL-WIDTH FLYER BANNER ── */}
+          {/* ── FULL-WIDTH FLYER BANNER — breaks out of max-w-[1280px] ── */}
           <motion.div
-            initial={{ opacity: 0, y: 48, scale: 0.96 }}
+            initial={{ opacity: 0, y: 60, scale: 0.94 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-16 relative"
-            style={{ transform: `translate(${mouse.nX * 5}px, ${mouse.nY * 5}px)` }}
+            transition={{ duration: 0.9, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="relative mt-20"
           >
-            {/* Outer glow pulse ring */}
-            <div className="absolute -inset-3 rounded-[32px] pointer-events-none animate-pulse"
+            {/* Ambient glow halo — pulsing dual rings */}
+            <div className="absolute -inset-8 rounded-[48px] pointer-events-none animate-pulse"
               style={{
-                background: "radial-gradient(ellipse at center, rgba(0,102,204,0.22) 0%, rgba(0,140,149,0.18) 40%, transparent 70%)",
-                filter: "blur(18px)"
+                background: "radial-gradient(ellipse at 30% 50%, rgba(0,102,204,0.28) 0%, rgba(0,140,149,0.20) 40%, transparent 68%)",
+                filter: "blur(24px)"
+              }} />
+            <div className="absolute -inset-12 rounded-[52px] pointer-events-none"
+              style={{
+                background: "radial-gradient(ellipse at 70% 50%, rgba(119,37,131,0.18) 0%, transparent 60%)",
+                filter: "blur(36px)",
+                animation: "pulse 3.5s ease-in-out infinite 1.2s"
               }} />
 
-            {/* Second slower glow ring */}
-            <div className="absolute -inset-6 rounded-[36px] pointer-events-none"
-              style={{
-                background: "radial-gradient(ellipse at center, rgba(119,37,131,0.14) 0%, transparent 65%)",
-                filter: "blur(30px)",
-                animation: "pulse 3s ease-in-out infinite 1.5s"
-              }} />
-
-            {/* Live HACKATHON NOW badge — blinking */}
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 px-5 py-2 rounded-full shadow-xl"
+            {/* LIVE blinking badge */}
+            <div className="absolute -top-5 left-1/2 z-30 -translate-x-1/2 flex items-center gap-2.5 px-6 py-2.5 rounded-full shadow-2xl"
               style={{
                 background: "linear-gradient(135deg, #00629B 0%, #772583 100%)",
-                boxShadow: "0 4px 24px rgba(0,102,204,0.5), 0 0 40px rgba(119,37,131,0.3)"
+                boxShadow: "0 6px 30px rgba(0,98,155,0.55), 0 0 50px rgba(119,37,131,0.35), inset 0 1px 0 rgba(255,255,255,0.25)"
               }}>
-              <span className="w-2.5 h-2.5 rounded-full bg-[#E9C46A] animate-ping" />
-              <span className="w-2.5 h-2.5 rounded-full bg-[#E9C46A] absolute left-4" />
-              <span className="text-white font-black text-xs uppercase tracking-widest"
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-300 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-300" />
+              </span>
+              <span className="text-white font-black text-xs sm:text-sm uppercase tracking-[0.15em]"
                 style={{ fontFamily: "Sora, sans-serif" }}>
                 🔥 Registrations LIVE · 30 Sep 2026
               </span>
-              <span className="w-2.5 h-2.5 rounded-full bg-[#E9C46A] animate-ping" style={{ animationDelay: "0.3s" }} />
-              <span className="w-2.5 h-2.5 rounded-full bg-[#E9C46A] absolute right-4" />
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-300 opacity-75" style={{ animationDelay: "0.4s" }} />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-300" />
+              </span>
             </div>
 
-            {/* Banner card */}
-            <div className="rounded-3xl overflow-hidden relative group"
+            {/* Full-bleed banner wrapper — no padding constraint, break out of section */}
+            <div
+              className="relative overflow-hidden group cursor-pointer"
               style={{
-                padding: "10px",
-                background: "rgba(255,255,255,0.72)",
-                backdropFilter: "blur(24px)",
-                border: "1px solid rgba(255,255,255,0.85)",
-                boxShadow: "0 20px 60px rgba(16,42,67,0.15), 0 0 0 1px rgba(0,102,204,0.12), inset 0 1px 0 rgba(255,255,255,0.9)"
-              }}>
-
-              {/* Shimmer sweep — runs continuously */}
-              <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden rounded-3xl">
-                <div className="absolute inset-y-0 w-[40%] -skew-x-12"
+                /* stretch ~20% beyond max-w on each side using negative margins */
+                margin: "0 -5vw",
+                borderRadius: "28px",
+                background: "rgba(255,255,255,0.78)",
+                backdropFilter: "blur(28px) saturate(190%)",
+                WebkitBackdropFilter: "blur(28px) saturate(190%)",
+                border: "1px solid rgba(255,255,255,0.9)",
+                boxShadow: "0 32px 80px -12px rgba(16,42,67,0.20), 0 0 0 1px rgba(0,102,204,0.10), inset 0 2px 0 rgba(255,255,255,0.95)"
+              }}
+            >
+              {/* Continuous shimmer sweep */}
+              <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden" style={{ borderRadius: "28px" }}>
+                <div className="absolute inset-y-0 w-1/3 -skew-x-12"
                   style={{
-                    background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%)",
-                    animation: "shimmerSweep 2.8s ease-in-out infinite",
+                    background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.60) 50%, transparent)",
+                    animation: "shimmerSweep 2.6s cubic-bezier(0.4,0,0.6,1) infinite"
                   }} />
               </div>
 
-              {/* Corner accent glows */}
-              <div className="absolute top-3 left-3 w-20 h-20 rounded-full pointer-events-none"
-                style={{ background: "radial-gradient(circle, rgba(0,102,204,0.25) 0%, transparent 70%)", filter: "blur(10px)" }} />
-              <div className="absolute bottom-3 right-3 w-20 h-20 rounded-full pointer-events-none"
-                style={{ background: "radial-gradient(circle, rgba(119,37,131,0.25) 0%, transparent 70%)", filter: "blur(10px)" }} />
+              {/* Corner glow accents */}
+              <div className="absolute top-0 left-0 w-48 h-48 pointer-events-none"
+                style={{ background: "radial-gradient(circle at 0% 0%, rgba(0,102,204,0.20), transparent 70%)", filter: "blur(16px)" }} />
+              <div className="absolute bottom-0 right-0 w-48 h-48 pointer-events-none"
+                style={{ background: "radial-gradient(circle at 100% 100%, rgba(119,37,131,0.20), transparent 70%)", filter: "blur(16px)" }} />
 
-              {/* The flyer image — doubled size via max-w override */}
+              {/* Flyer image — natural full width, scale on hover */}
               <img
                 src={optiforgeFlyer}
                 alt="OptiForge 2026 Event Flyer"
-                className="w-full h-auto block rounded-2xl transition-transform duration-700 group-hover:scale-[1.015]"
-                style={{ minHeight: "320px", objectFit: "cover" }}
+                className="w-full h-auto block transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                style={{ padding: "10px", borderRadius: "24px", display: "block" }}
               />
             </div>
 
-            {/* Scroll-down attention indicator */}
-            <div className="mt-8 flex flex-col items-center gap-2 select-none">
-              <span className="text-[11px] font-bold uppercase tracking-widest" style={{ color: C.slate, fontFamily: "JetBrains Mono, monospace" }}>
-                Explore Domains ↓
+            {/* Scroll-down cue */}
+            <div className="mt-10 flex flex-col items-center gap-2 select-none">
+              <span className="text-[11px] font-bold uppercase tracking-[0.2em]"
+                style={{ color: C.slate, fontFamily: "JetBrains Mono, monospace" }}>
+                Scroll to Explore Domains
               </span>
-              <div className="flex flex-col items-center gap-1">
-                {[0, 0.15, 0.3].map((delay, i) => (
-                  <div key={i} className="w-1 h-1 rounded-full"
+              <div className="flex flex-col items-center gap-1.5">
+                {[0, 0.18, 0.36].map((delay, i) => (
+                  <div key={i} className="w-1.5 h-1.5 rounded-full"
                     style={{
                       background: i === 0 ? C.ieeeBlue : i === 1 ? C.cyan : C.embsPurple,
-                      animation: `bounceDown 1.2s ease-in-out infinite`,
-                      animationDelay: `${delay}s`
+                      animation: "bounceDown 1.3s ease-in-out infinite",
+                      animationDelay: `${delay}s`,
+                      opacity: 1 - i * 0.25
                     }} />
                 ))}
               </div>
@@ -285,15 +292,15 @@ export default function OptiForge() {
           </motion.div>
         </section>
 
-        {/* Keyframe definitions injected via style tag */}
+        {/* Keyframes */}
         <style>{`
           @keyframes shimmerSweep {
-            0%   { left: -45%; }
-            100% { left: 105%; }
+            0%   { left: -38%; }
+            100% { left: 108%; }
           }
           @keyframes bounceDown {
-            0%, 100% { transform: translateY(0); opacity: 0.4; }
-            50%       { transform: translateY(5px); opacity: 1; }
+            0%, 100% { transform: translateY(0); opacity: 0.35; }
+            50%       { transform: translateY(7px); opacity: 1; }
           }
         `}</style>
 
@@ -349,23 +356,7 @@ export default function OptiForge() {
           </div>
         </section>
 
-        {/* ── Track 05 & 06 Interactive Problem Simulation Arena ── */}
-        <section className="py-12 max-w-[1280px] mx-auto px-4 sm:px-8 space-y-8">
-          <div className="text-center space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider"
-              style={{ ...glassLevel1, color: C.cyan }}>
-              <Zap className="w-3.5 h-3.5" /> Interactive Problem Simulation
-            </div>
-            <h2 className="text-3xl sm:text-5xl font-black" style={{ fontFamily: "Sora, sans-serif", color: C.navy }}>
-              Autonomous Swarm Simulation Arena
-            </h2>
-            <p className="text-sm sm:text-base max-w-2xl mx-auto" style={{ color: C.slate }}>
-              Interactive testbed for Track 05 (Intelligent Systems & Autonomous Computing) & Track 06 (CIS × EMBS Flagship). Test multi-agent swarm heuristics, trigger structural debris shifts, and track autonomous bio-signal telemetry search in real-time.
-            </p>
-          </div>
 
-          <SwarmSimulationArena />
-        </section>
 
         {/* ── Hackathon Schedule & Lifecycle ── */}
         <section className="py-24 max-w-[1280px] mx-auto px-4 sm:px-8 space-y-12">

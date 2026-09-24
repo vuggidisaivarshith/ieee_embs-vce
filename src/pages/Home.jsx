@@ -11,7 +11,7 @@ import useMousePosition from "../utils/useMousePosition";
 import MagneticButton from "../components/ui/MagneticButton";
 import TiltCard from "../components/ui/TiltCard";
 import InteractiveBioSignal from "../components/ui/InteractiveBioSignal";
-import SwarmSimulationArena from "../components/ui/SwarmSimulationArena";
+
 import { eventSlide1, eventSlide2, eventSlide3 } from "../assets/images";
 
 /* ── Subtle SVG scientific waveform (hero decoration) ── */
@@ -470,29 +470,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Section divider ── */}
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
-        <div className="h-px bg-[#DDE4E1]" />
-      </div>
 
-      {/* ── Autonomous Swarm Robotics & Bio-Telemetry Arena ── */}
-      <section className="py-20" style={{ background:"transparent" }}>
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-8 space-y-8">
-          <div className="max-w-2xl">
-            <SectionHeading
-              label="Interactive Research Sandbox"
-              title="Autonomous Swarm Robotics & Bio-Telemetry Arena"
-              subtitle="Test real-time multi-agent disaster response algorithms, dynamic debris shift events, and distributed sensor telemetry directly in your browser."
-            />
-          </div>
-          <SwarmSimulationArena />
-        </div>
-      </section>
 
-      {/* ── Section divider ── */}
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
-        <div className="h-px bg-[#DDE4E1]" />
-      </div>
 
       {/* ── Chapter welcome & Faculty quote ── */}
       <section className="py-20" style={{ background:"transparent" }}>

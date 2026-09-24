@@ -225,3 +225,267 @@
 @media (prefers-reduced-motion:reduce) {
   *,::before,::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }
 }
+
+/* ════════════════════════════════
+   ENHANCED GLASS FLUIDITY SYSTEM
+   ════════════════════════════════ */
+
+/* Ultra-glass — maximum frosted effect */
+.glass-ultra {
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(36px) saturate(220%) brightness(1.04);
+  -webkit-backdrop-filter: blur(36px) saturate(220%) brightness(1.04);
+  border: 1px solid rgba(255,255,255,0.92);
+  box-shadow:
+    0 8px 48px -8px rgba(0,0,0,0.09),
+    0 2px 8px rgba(0,0,0,0.04),
+    inset 0 2px 0 rgba(255,255,255,1),
+    inset 0 -1px 0 rgba(0,0,0,0.02);
+}
+.glass-ultra:hover {
+  background: rgba(255,255,255,0.93);
+  box-shadow:
+    0 24px 64px -10px rgba(0,0,0,0.12),
+    0 4px 16px rgba(0,0,0,0.05),
+    inset 0 2px 0 rgba(255,255,255,1),
+    0 0 0 1.5px rgba(8,127,140,0.14);
+}
+
+/* Glass card with mouse-spotlight (requires --mouse-x, --mouse-y set by InteractiveCursor) */
+.glass-card {
+  position: relative;
+  isolation: isolate;
+}
+.glass-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    200px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(8,127,140,0.10) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.glass-card:hover::before { opacity: 1; }
+
+.glass-card-strong::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    240px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(8,127,140,0.12) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.glass-card-strong:hover::before { opacity: 1; }
+
+/* ════════════════════════════════
+   INTERACTIVE IMAGE EFFECTS
+   ════════════════════════════════ */
+
+/* Base interactive image container */
+.img-interactive {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+.img-interactive img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.55s cubic-bezier(0.16,1,0.3,1), filter 0.35s ease;
+  will-change: transform;
+}
+.img-interactive:hover {
+  transform: translateY(-4px) scale(1.005);
+  box-shadow: 0 24px 60px -12px rgba(0,0,0,0.22), 0 0 0 1px rgba(8,127,140,0.14);
+}
+.img-interactive:hover img {
+  transform: scale(1.06);
+  filter: brightness(1.04) saturate(1.08);
+}
+
+/* Shimmer overlay on images */
+.img-interactive::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.22) 50%, transparent 60%);
+  background-size: 200% 100%;
+  background-position: -200% 0;
+  transition: background-position 0.6s ease;
+  pointer-events: none;
+  border-radius: inherit;
+}
+.img-interactive:hover::after {
+  background-position: 200% 0;
+}
+
+/* Glass overlay on image hover */
+.img-glass-hover {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.img-glass-hover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transition: background 0.3s ease, backdrop-filter 0.3s ease;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: inherit;
+}
+.img-glass-hover:hover::before {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+.img-glass-hover img {
+  transition: transform 0.55s cubic-bezier(0.16,1,0.3,1), filter 0.3s ease;
+}
+.img-glass-hover:hover img {
+  transform: scale(1.04);
+  filter: brightness(1.05);
+}
+
+/* ════════════════════════════════
+   INTERACTIVE BUTTON ENHANCEMENTS
+   ════════════════════════════════ */
+
+/* Ripple base — add to any button */
+.btn-ripple {
+  position: relative;
+  overflow: hidden;
+}
+.btn-ripple::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--ripple-x, 50%) var(--ripple-y, 50%), rgba(255,255,255,0.30) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.btn-ripple:hover::after { opacity: 1; }
+.btn-ripple:active::after { opacity: 0.5; transition-duration: 0.05s; }
+.btn-ripple:active { transform: scale(0.97) !important; }
+
+/* Glass button — universal */
+.btn-glass {
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.70);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.90);
+  transition: all 0.22s cubic-bezier(0.16,1,0.3,1);
+}
+.btn-glass:hover {
+  background: rgba(255,255,255,0.88);
+  box-shadow: 0 8px 28px -4px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,1), 0 0 0 1px rgba(8,127,140,0.16);
+  transform: translateY(-2px);
+}
+.btn-glass:active { transform: translateY(0) scale(0.97); }
+
+/* Teal glow button */
+.btn-teal-glow {
+  position: relative;
+  background: linear-gradient(160deg, #0A8F9C 0%, #087F8C 100%);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 4px 16px -4px rgba(8,127,140,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
+  transition: all 0.22s cubic-bezier(0.16,1,0.3,1);
+  overflow: hidden;
+}
+.btn-teal-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.btn-teal-glow:hover {
+  box-shadow: 0 8px 28px -6px rgba(8,127,140,0.60), inset 0 1px 0 rgba(255,255,255,0.30);
+  transform: translateY(-2px);
+}
+.btn-teal-glow:hover::before { opacity: 1; }
+.btn-teal-glow:active { transform: translateY(0) scale(0.97); }
+
+/* ════════════════════════════════
+   FLUID SECTION & CARD UPGRADES
+   ════════════════════════════════ */
+
+/* Animated gradient border (use on important cards) */
+.border-animated {
+  position: relative;
+}
+.border-animated::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(8,127,140,0.5), rgba(0,102,204,0.3), rgba(119,37,131,0.3), rgba(8,127,140,0.5));
+  background-size: 200% 200%;
+  animation: gradientShift 4s ease infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+
+/* Fluid hover lift — general purpose */
+.hover-lift {
+  transition: transform 0.30s cubic-bezier(0.16,1,0.3,1), box-shadow 0.30s cubic-bezier(0.16,1,0.3,1);
+}
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 56px -10px rgba(0,0,0,0.14);
+}
+
+/* Soft glow on hover */
+.hover-glow-teal:hover {
+  box-shadow: 0 0 0 2px rgba(8,127,140,0.25), 0 12px 40px -8px rgba(8,127,140,0.20);
+}
+
+/* Smooth section transitions */
+section {
+  transition: opacity 0.3s ease;
+}
+
+/* Photo gallery image interactions */
+.gallery-img {
+  transition: transform 0.45s cubic-bezier(0.16,1,0.3,1), filter 0.30s ease, box-shadow 0.30s ease;
+  will-change: transform;
+  border-radius: 12px;
+}
+.gallery-img:hover {
+  transform: scale(1.04) translateY(-4px);
+  filter: brightness(1.06) saturate(1.12) contrast(1.02);
+  box-shadow: 0 20px 60px -12px rgba(0,0,0,0.28), 0 0 0 2px rgba(8,127,140,0.20);
+  z-index: 10;
+  position: relative;
+}
+
