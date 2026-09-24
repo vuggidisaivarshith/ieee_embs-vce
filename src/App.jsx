@@ -22,11 +22,31 @@ import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 
+import useMousePosition from "./utils/useMousePosition";
+import InteractiveCursor from "./components/ui/InteractiveCursor";
+import InteractiveMeshCanvas from "./components/ui/InteractiveMeshCanvas";
+
 export default function App() {
   const location = useLocation();
+  const mouse = useMousePosition();
 
   return (
-    <div className="flex flex-col min-h-screen selection:bg-[#008C95] selection:text-white" style={{ backgroundColor: "#F2F8FA" }}>
+    <div className="flex flex-col min-h-screen selection:bg-[#008C95] selection:text-white relative overflow-x-hidden" style={{ backgroundColor: "#F2F8FA" }}>
+      {/* Interactive Global Mouse Light */}
+      <div
+        className="fixed inset-0 pointer-events-none z-40 mix-blend-soft-light transition-opacity duration-300"
+        style={{
+          background: mouse.x ? `radial-gradient(800px circle at ${mouse.x}px ${mouse.y}px, rgba(255,255,255,0.75), transparent 45%)` : "none",
+          opacity: mouse.x ? 1 : 0
+        }}
+      />
+
+      {/* Interactive Neural/Particle Mesh Canvas */}
+      <InteractiveMeshCanvas />
+
+      {/* Fluid Interactive Cursor */}
+      <InteractiveCursor />
+
       <Navbar />
 
       <main className="flex-grow relative z-10">

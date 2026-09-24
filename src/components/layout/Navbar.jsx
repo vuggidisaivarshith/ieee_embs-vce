@@ -1,8 +1,9 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Shield, Zap } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { collegeLogo, embsLogo, vardhamanLogo } from "../../assets/images";
+import MagneticButton from "../ui/MagneticButton";
 
 const navLinks = [
   { name: "Home",          path: "/" },
@@ -93,26 +94,35 @@ export default function Navbar() {
           {/* Right CTAs */}
           <div className="flex items-center gap-2 flex-shrink-0">
             {/* Admin */}
-            <Link to="/admin/login"
+            <MagneticButton
+              to="/admin/login"
+              strength={0.2}
               className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-[#647070] hover:text-[#172121] rounded-lg border border-black/8 hover:border-black/16 transition-all"
-              style={{ background:"rgba(0,0,0,0.03)" }}>
+              style={{ background:"rgba(0,0,0,0.03)" }}
+            >
               <Shield className="w-3.5 h-3.5" />
               <span className="hidden xl:inline">Admin</span>
-            </Link>
+            </MagneticButton>
 
             {/* OptiForge gradient pill */}
-            <Link to="/optiforge"
-              className="hidden md:inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-black rounded-full text-white whitespace-nowrap transition-all hover:scale-105 hover:brightness-110 active:scale-95"
-              style={{ background:"linear-gradient(135deg, #008C95 0%, #0066CC 100%)", boxShadow:"0 2px 12px rgba(0,140,149,0.35), inset 0 1px 0 rgba(255,255,255,0.25)" }}>
-              <Zap className="w-3 h-3" /> OptiForge 2026
-            </Link>
+            <MagneticButton
+              to="/optiforge"
+              strength={0.3}
+              className="hidden md:inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-black rounded-full text-white whitespace-nowrap transition-all shadow-md"
+              style={{ background:"linear-gradient(135deg, #008C95 0%, #0066CC 100%)", boxShadow:"0 2px 14px rgba(0,140,149,0.4), inset 0 1px 0 rgba(255,255,255,0.3)" }}
+            >
+              <Zap className="w-3 h-3 text-[#00B8D9]" /> OptiForge 2026
+            </MagneticButton>
 
             {/* Join EMBS */}
-            <Link to="/membership"
-              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-bold text-white rounded-full transition-all hover:scale-105 hover:brightness-110 active:scale-95"
-              style={{ background:"linear-gradient(160deg,#0A8F9C 0%,#087F8C 100%)", boxShadow:"0 2px 10px rgba(8,127,140,0.30), inset 0 1px 0 rgba(255,255,255,0.25)" }}>
+            <MagneticButton
+              to="/membership"
+              strength={0.25}
+              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-bold text-white rounded-full transition-all"
+              style={{ background:"linear-gradient(160deg,#0A8F9C 0%,#087F8C 100%)", boxShadow:"0 2px 10px rgba(8,127,140,0.30), inset 0 1px 0 rgba(255,255,255,0.25)" }}
+            >
               Join EMBS
-            </Link>
+            </MagneticButton>
 
             {/* Mobile toggle */}
             <button onClick={() => setMobileOpen(!mobileOpen)}

@@ -1,0 +1,124 @@
+﻿import React, { useEffect, useState, useRef } from "react";
+
+export default function InteractiveCursor() {
+  const [enabled, setEnabled] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
+  const [isPressed, setIsPressed] = useState(false);
+  const [hoverLabel, setHoverLabel] = useState("");
+
+  const mousePos = useRef({ x: -100, y: -100 });
+  const auraPos = useRef({ x: -100, y: -100 });
+  const auraRef = useRef(null);
+  const dotRef = useRef(null);
+  const requestRef = useRef(null);
+
+  useEffect(() => {
+    const isPointer = window.matchMedia("(pointer: fine)").matches;
+    const isReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!isPointer || isReduced) return;
+
+    setEnabled(true);
+
+    const onMouseMove = (e) => {
+      mousePos.current = { x: e.clientX, y: e.clientY };
+
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+      }
+
+      // Check card spotlight & interactive elements
+      const target = e.target;
+      if (target) {
+        const card = target.closest?.(".glass-card, .glass-card-strong, .glass-dark, [data-card-spotlight]");
+        if (card) {
+          const rect = card.getBoundingClientRect();
+          card.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
+          card.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
+        }
+
+        const interactive = target.closest("a, button, input, textarea, select, [role='button'], .glass-card, .interactive");
+        if (interactive) {
+          setIsHovering(true);
+          const customLabel = interactive.getAttribute("data-cursor-label");
+          setHoverLabel(customLabel || "");
+        } else {
+          setIsHovering(false);
+          setHoverLabel("");
+        }
+      }
+    };
+
+    const onMouseDown = () => setIsPressed(true);
+    const onMouseUp = () => setIsPressed(false);
+    const onMouseLeave = () => {
+      mousePos.current = { x: -100, y: -100 };
+      setIsHovering(false);
+    };
+
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    window.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mouseup", onMouseUp);
+    document.addEventListener("mouseleave", onMouseLeave);
+
+    const render = () => {
+      auraPos.current.x += (mousePos.current.x - auraPos.current.x) * 0.18;
+      auraPos.current.y += (mousePos.current.y - auraPos.current.y) * 0.18;
+
+      if (auraRef.current) {
+        auraRef.current.style.transform = `translate3d(${auraPos.current.x}px, ${auraPos.current.y}px, 0)`;
+      }
+
+      requestRef.current = requestAnimationFrame(render);
+    };
+
+    requestRef.current = requestAnimationFrame(render);
+
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mouseup", onMouseUp);
+      document.removeEventListener("mouseleave", onMouseLeave);
+      if (requestRef.current) cancelAnimationFrame(requestRef.current);
+    };
+  }, []);
+
+  if (!enabled) return null;
+
+  return (
+    <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden" aria-hidden="true">
+      {/* Outer fluid aura */}
+      <div
+        ref={auraRef}
+        className="fixed top-0 left-0 -ml-5 -mt-5 rounded-full pointer-events-none will-change-transform transition-[width,height,background-color,border-color,opacity] duration-200"
+        style={{
+          width: isHovering ? (hoverLabel ? "56px" : "44px") : "28px",
+          height: isHovering ? (hoverLabel ? "56px" : "44px") : "28px",
+          backgroundColor: isHovering ? "rgba(0, 184, 217, 0.12)" : "rgba(0, 140, 149, 0.08)",
+          border: isHovering ? "1.5px solid rgba(0, 184, 217, 0.65)" : "1px solid rgba(0, 140, 149, 0.35)",
+          boxShadow: isHovering
+            ? "0 0 20px rgba(0, 184, 217, 0.4), inset 0 0 10px rgba(0, 184, 217, 0.2)"
+            : "0 0 10px rgba(0, 140, 149, 0.15)",
+          backdropFilter: isHovering ? "blur(2px)" : "none",
+          transform: "translate3d(-100px, -100px, 0)"
+        }}
+      >
+        {hoverLabel && (
+          <span className="absolute inset-0 flex items-center justify-center text-[9px] font-mono font-bold uppercase tracking-wider text-[#00B8D9] animate-fade-in">
+            {hoverLabel}
+          </span>
+        )}
+      </div>
+
+      {/* Center dot */}
+      <div
+        ref={dotRef}
+        className="fixed top-0 left-0 -ml-1 -mt-1 w-2 h-2 rounded-full pointer-events-none will-change-transform transition-[transform,background-color,opacity] duration-75"
+        style={{
+          backgroundColor: isHovering ? "#00B8D9" : "#008C95",
+          transform: `translate3d(-100px, -100px, 0) scale(${isPressed ? 0.6 : isHovering ? 1.4 : 1})`,
+          boxShadow: "0 0 8px rgba(0, 184, 217, 0.8)"
+        }}
+      />
+    </div>
+  );
+}

@@ -7,6 +7,11 @@ import { db, DEFAULT_SITE_DATA } from "../firebase/config";
 import { resolveImage } from "../utils/resolveImage";
 import EventCarousel from "../components/ui/EventCarousel";
 import SpeakerModal from "../components/ui/SpeakerModal";
+import useMousePosition from "../utils/useMousePosition";
+import MagneticButton from "../components/ui/MagneticButton";
+import TiltCard from "../components/ui/TiltCard";
+import InteractiveBioSignal from "../components/ui/InteractiveBioSignal";
+import SwarmSimulationArena from "../components/ui/SwarmSimulationArena";
 import { eventSlide1, eventSlide2, eventSlide3 } from "../assets/images";
 
 /* ── Subtle SVG scientific waveform (hero decoration) ── */
@@ -92,6 +97,7 @@ const stagger = {
 };
 
 export default function Home() {
+  const mouse = useMousePosition();
   const [siteSettings, setSiteSettings]         = useState(DEFAULT_SITE_DATA.siteSettings);
   const [featuredEvent, setFeaturedEvent]       = useState(DEFAULT_SITE_DATA.events[0]);
   const [latestAnnouncement, setLatestAnnouncement] = useState(DEFAULT_SITE_DATA.announcements[0]);
@@ -201,16 +207,24 @@ export default function Home() {
 
             {/* Right: CTAs */}
             <div className="flex items-center gap-3 flex-shrink-0">
-              <Link to="/optiforge"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black text-white transition-all hover:brightness-110 hover:scale-105 active:scale-95 whitespace-nowrap shadow-lg"
-                style={{ background:"linear-gradient(135deg, #008C95 0%, #0066CC 100%)", boxShadow:"0 4px 20px rgba(0,140,149,0.5), inset 0 1px 0 rgba(255,255,255,0.3)" }}>
+              <MagneticButton
+                to="/optiforge"
+                strength={0.3}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black text-white transition-all whitespace-nowrap shadow-lg"
+                style={{ background:"linear-gradient(135deg, #008C95 0%, #0066CC 100%)", boxShadow:"0 4px 20px rgba(0,140,149,0.5), inset 0 1px 0 rgba(255,255,255,0.3)" }}
+              >
                 <span>Explore & Register</span> <ArrowRight className="w-4 h-4" />
-              </Link>
-              <a href="https://optiforge-2026.vercel.app/register" target="_blank" rel="noreferrer"
-                className="hidden sm:inline-flex items-center gap-1.5 px-4 py-3 rounded-xl text-xs font-semibold text-white/90 hover:text-white transition-all hover:scale-105 border"
-                style={{ background:"rgba(255,255,255,0.08)", borderColor:"rgba(255,255,255,0.2)", backdropFilter:"blur(12px)" }}>
+              </MagneticButton>
+              <MagneticButton
+                href="https://optiforge-2026.vercel.app/register"
+                target="_blank"
+                rel="noreferrer"
+                strength={0.25}
+                className="hidden sm:inline-flex items-center gap-1.5 px-4 py-3 rounded-xl text-xs font-semibold text-white/90 hover:text-white transition-all border"
+                style={{ background:"rgba(255,255,255,0.08)", borderColor:"rgba(255,255,255,0.2)", backdropFilter:"blur(12px)" }}
+              >
                 <ExternalLink className="w-3.5 h-3.5 text-[#00B8D9]" /> Direct Portal
-              </a>
+              </MagneticButton>
             </div>
           </div>
         </div>
@@ -245,12 +259,13 @@ export default function Home() {
         <div className="max-w-[1280px] mx-auto px-4 sm:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
-            {/* Left: Editorial headline */}
+            {/* Left: Editorial headline with mouse parallax */}
             <motion.div
               variants={stagger}
               initial="hidden"
               animate="visible"
-              className="space-y-8"
+              className="space-y-8 transition-transform duration-500 ease-out"
+              style={{ transform: mouse.x ? `translate3d(${mouse.nX * 8}px, ${mouse.nY * 8}px, 0)` : undefined }}
             >
               {/* Chapter label */}
               <motion.div variants={fadeUp} className="flex items-center gap-3">
@@ -277,27 +292,24 @@ export default function Home() {
                 A student chapter connecting frontier biomedical engineering with real clinical practice. Workshops, research, keynotes, and community — at Vardhaman College of Engineering, Hyderabad.
               </motion.p>
 
-              {/* CTAs */}
+              {/* CTAs with Magnetic Pull */}
               <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-4">
-                <Link
+                <MagneticButton
                   to="/events"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-sm text-white transition-all"
-                  style={{ backgroundColor: "#087F8C" }}
-                  onMouseEnter={e => e.currentTarget.style.backgroundColor = "#075E61"}
-                  onMouseLeave={e => e.currentTarget.style.backgroundColor = "#087F8C"}
+                  strength={0.3}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm text-white transition-all shadow-md"
+                  style={{ background: "linear-gradient(160deg, #0A8F9C 0%, #087F8C 100%)", boxShadow: "0 4px 16px rgba(8,127,140,0.35)" }}
                 >
                   Explore Events
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-                <Link
+                </MagneticButton>
+                <MagneticButton
                   to="/about"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-sm border transition-all"
-                  style={{ color: "#172121", borderColor: "#DDE4E1", backgroundColor: "transparent" }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = "#087F8C"; e.currentTarget.style.color = "#087F8C"; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = "#DDE4E1"; e.currentTarget.style.color = "#172121"; }}
+                  strength={0.2}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all glass-card text-[#172121]"
                 >
                   About EMBS VCE
-                </Link>
+                </MagneticButton>
               </motion.div>
 
               {/* Stats — horizontal editorial band */}
@@ -343,43 +355,40 @@ export default function Home() {
                     </p>
                     <p className="text-white/60 text-xs mt-0.5">Hackathon & Algorithm Design Challenge · IEEE EMBS × CIS</p>
                   </div>
-                  <Link
+                  <MagneticButton
                     to="/optiforge"
-                    className="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-black text-white whitespace-nowrap transition-all hover:brightness-110 hover:scale-105 active:scale-95 shadow-md"
+                    strength={0.3}
+                    className="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-black text-white whitespace-nowrap transition-all shadow-md"
                     style={{ background: "linear-gradient(135deg, #008C95 0%, #0066CC 100%)", boxShadow: "0 2px 14px rgba(0,140,149,0.4), inset 0 1px 0 rgba(255,255,255,0.3)" }}
                   >
                     Register <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
+                  </MagneticButton>
                 </div>
               </motion.div>
             </motion.div>
 
-            {/* Right: Keynote showcase card */}
+            {/* Right: Keynote showcase card with mouse parallax */}
             <motion.div
               initial={{ opacity: 0, x: 24 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-5"
+              className="space-y-5 transition-transform duration-500 ease-out"
+              style={{ transform: mouse.x ? `translate3d(${mouse.nX * -8}px, ${mouse.nY * -8}px, 0)` : undefined }}
             >
-              {/* Waveform visualization */}
-              <div className="glass-card rounded-xl p-4 overflow-hidden">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-[10px] font-bold font-mono uppercase tracking-widest text-[#087F8C]">Bio-Signal Monitor</span>
-                  <span className="flex items-center gap-1.5 text-[10px] font-mono text-[#647070]">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#2E9B68] animate-pulse" /> LIVE
-                  </span>
-                </div>
-                <HeroWaveform />
+              {/* Live Interactive Bio-Signal Telemetry Monitor */}
+              <div className="glass-card rounded-2xl p-5 overflow-hidden transition-all duration-300">
+                <InteractiveBioSignal />
               </div>
 
-              {/* Keynote event card */}
-              <div className="glass-card rounded-xl p-5 space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold font-mono uppercase tracking-widest px-2.5 py-1 rounded bg-[#087F8C]/8 text-[#087F8C] border border-[#087F8C]/15">Completed Keynote</span>
-                  <span className="text-[11px] font-mono text-[#647070]">13 Aug 2026</span>
-                </div>
+              {/* Keynote event card with 3D Tilt */}
+              <TiltCard maxTilt={4} className="rounded-2xl">
+                <div className="glass-card rounded-2xl p-6 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-bold font-mono uppercase tracking-widest px-2.5 py-1 rounded bg-[#087F8C]/8 text-[#087F8C] border border-[#087F8C]/15">Completed Keynote</span>
+                    <span className="text-[11px] font-mono text-[#647070]">13 Aug 2026</span>
+                  </div>
 
-                <EventCarousel slides={eventSlides} title="Expert Talk by Dr. Ajit Kumar" />
+                  <EventCarousel slides={eventSlides} title="Expert Talk by Dr. Ajit Kumar" />
 
                 <div>
                   <p className="text-[11px] font-bold font-mono uppercase tracking-widest text-[#087F8C]">Digital Health Keynote</p>
@@ -404,7 +413,8 @@ export default function Home() {
                   </Link>
                 </div>
               </div>
-            </motion.div>
+            </TiltCard>
+          </motion.div>
 
           </div>
         </div>
@@ -457,6 +467,25 @@ export default function Home() {
             </div>
 
           </div>
+        </div>
+      </section>
+
+      {/* ── Section divider ── */}
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
+        <div className="h-px bg-[#DDE4E1]" />
+      </div>
+
+      {/* ── Autonomous Swarm Robotics & Bio-Telemetry Arena ── */}
+      <section className="py-20" style={{ background:"transparent" }}>
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-8 space-y-8">
+          <div className="max-w-2xl">
+            <SectionHeading
+              label="Interactive Research Sandbox"
+              title="Autonomous Swarm Robotics & Bio-Telemetry Arena"
+              subtitle="Test real-time multi-agent disaster response algorithms, dynamic debris shift events, and distributed sensor telemetry directly in your browser."
+            />
+          </div>
+          <SwarmSimulationArena />
         </div>
       </section>
 
@@ -526,18 +555,20 @@ export default function Home() {
               <p className="text-[#8A9E9A] text-sm mt-2 max-w-md">Connect with the global biomedical engineering community and unlock research resources, IEEE Xplore access, and leadership opportunities.</p>
             </div>
             <div className="flex items-center gap-3 flex-shrink-0">
-              <Link
+              <MagneticButton
                 to="/membership"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-sm text-[#172121] bg-[#E9C46A] hover:bg-[#D4B050] transition-colors"
+                strength={0.25}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-sm text-[#172121] bg-[#E9C46A] hover:bg-[#D4B050] transition-colors shadow-md"
               >
                 Join EMBS <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
+              </MagneticButton>
+              <MagneticButton
                 to="/contact"
+                strength={0.2}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-sm text-white border border-white/20 hover:border-white/40 transition-colors"
               >
                 Contact Us
-              </Link>
+              </MagneticButton>
             </div>
           </div>
         </div>

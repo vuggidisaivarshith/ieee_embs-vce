@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { ExternalLink, Calendar, Clock, MapPin, Trophy, ArrowRight, CheckCircle2, Zap, Shield, Cpu, Layers, Activity, BrainCircuit, HeartPulse, Stethoscope, Bot } from "lucide-react";
 import { motion } from "framer-motion";
 import { optiforgeFlyer } from "../assets/images";
+import MagneticButton from "../components/ui/MagneticButton";
+import TiltCard from "../components/ui/TiltCard";
+import SwarmSimulationArena from "../components/ui/SwarmSimulationArena";
 
 /* 🎨 Palette */
 const C = {
@@ -156,22 +159,37 @@ export default function OptiForge() {
 
             {/* CTAs */}
             <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-center gap-4 pt-6">
-              <a href="https://optiforge-2026.vercel.app/register" target="_blank" rel="noreferrer"
-                className="group relative inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-sm text-white overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-lg"
-                style={{ background: C.ieeeBlue }}>
+              <MagneticButton
+                href="https://optiforge-2026.vercel.app/register"
+                target="_blank"
+                rel="noreferrer"
+                strength={0.25}
+                className="group relative inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-sm text-white overflow-hidden transition-all shadow-lg"
+                style={{ background: C.ieeeBlue }}
+              >
                 <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
                 <span className="relative z-10 flex items-center gap-2">Register Now (₹100/member) <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></span>
-              </a>
-              <a href="https://optiforge-2026.vercel.app/leaderboard" target="_blank" rel="noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-4 rounded-2xl text-sm font-semibold transition-all hover:scale-105 hover:-translate-y-1 shadow-sm hover:shadow-md"
-                style={{ ...glassLevel1, color: C.ieeeBlue }}>
+              </MagneticButton>
+              <MagneticButton
+                href="https://optiforge-2026.vercel.app/leaderboard"
+                target="_blank"
+                rel="noreferrer"
+                strength={0.2}
+                className="inline-flex items-center gap-2 px-6 py-4 rounded-2xl text-sm font-semibold transition-all shadow-sm hover:shadow-md"
+                style={{ ...glassLevel1, color: C.ieeeBlue }}
+              >
                 <Trophy className="w-4 h-4" /> Live Leaderboard
-              </a>
-              <a href="https://optiforge-2026.vercel.app/" target="_blank" rel="noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-4 rounded-2xl text-sm font-semibold transition-all hover:scale-105 hover:-translate-y-1 shadow-sm hover:shadow-md"
-                style={{ ...glassLevel1, color: C.embsPurple }}>
+              </MagneticButton>
+              <MagneticButton
+                href="https://optiforge-2026.vercel.app/"
+                target="_blank"
+                rel="noreferrer"
+                strength={0.2}
+                className="inline-flex items-center gap-2 px-6 py-4 rounded-2xl text-sm font-semibold transition-all shadow-sm hover:shadow-md"
+                style={{ ...glassLevel1, color: C.embsPurple }}
+              >
                 <ExternalLink className="w-4 h-4" /> Full Portal
-              </a>
+              </MagneticButton>
             </motion.div>
           </motion.div>
 
@@ -200,37 +218,58 @@ export default function OptiForge() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {tracks.map((t,i) => (
               <motion.div key={i} initial={{opacity:0,y:20}} whileInView={{opacity:1,y:0}} viewport={{once:true, margin:"-50px"}}
-                transition={{duration:.5,delay:i*.07,ease:[0.16,1,.3,1]}}
-                className="group relative rounded-3xl p-8 space-y-4 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl overflow-hidden"
-                style={{ ...glassLevel2, background: C.white }}>
-                
-                {/* Background Wash */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `linear-gradient(135deg, ${t.bg}, transparent)` }} />
-                
-                {/* Highlight Border */}
-                <div className="absolute inset-x-0 bottom-0 h-1 transition-colors duration-300" style={{ background: t.accent }} />
+                transition={{duration:.5,delay:i*.07,ease:[0.16,1,.3,1]}}>
+                <TiltCard maxTilt={5} className="h-full rounded-3xl">
+                  <div className="group relative h-full rounded-3xl p-8 space-y-4 transition-all duration-300 hover:shadow-2xl overflow-hidden"
+                    style={{ ...glassLevel2, background: C.white }}>
+                    
+                    {/* Background Wash */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `linear-gradient(135deg, ${t.bg}, transparent)` }} />
+                    
+                    {/* Highlight Border */}
+                    <div className="absolute inset-x-0 bottom-0 h-1 transition-colors duration-300" style={{ background: t.accent }} />
 
-                <div className="relative z-10 flex items-start justify-between">
-                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3" style={{ background: t.bg, color: t.accent }}>
-                    {t.icon}
+                    <div className="relative z-10 flex items-start justify-between">
+                      <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3" style={{ background: t.bg, color: t.accent }}>
+                        {t.icon}
+                      </div>
+                      <span className="text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider transition-colors duration-300 group-hover:bg-white" 
+                        style={{ color: t.accent, background: `${t.accent}15`, border: `1px solid ${t.accent}30` }}>
+                        {t.tag}
+                      </span>
+                    </div>
+                    
+                    <div className="relative z-10 space-y-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl font-black opacity-20" style={{ fontFamily: "JetBrains Mono, monospace" }}>{t.num}</span>
+                        {t.flagship && <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: C.warning }}>★ Flagship</span>}
+                      </div>
+                      <h3 className="font-bold text-lg leading-snug transition-colors duration-300 group-hover:text-[#102A43]" style={{ color: C.navy }}>{t.title}</h3>
+                      <p className="text-sm leading-relaxed" style={{ color: C.slate }}>{t.desc}</p>
+                    </div>
                   </div>
-                  <span className="text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider transition-colors duration-300 group-hover:bg-white" 
-                    style={{ color: t.accent, background: `${t.accent}15`, border: `1px solid ${t.accent}30` }}>
-                    {t.tag}
-                  </span>
-                </div>
-                
-                <div className="relative z-10 space-y-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xl font-black opacity-20" style={{ fontFamily: "JetBrains Mono, monospace" }}>{t.num}</span>
-                    {t.flagship && <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: C.warning }}>★ Flagship</span>}
-                  </div>
-                  <h3 className="font-bold text-lg leading-snug transition-colors duration-300 group-hover:text-[#102A43]" style={{ color: C.navy }}>{t.title}</h3>
-                  <p className="text-sm leading-relaxed" style={{ color: C.slate }}>{t.desc}</p>
-                </div>
+                </TiltCard>
               </motion.div>
             ))}
           </div>
+        </section>
+
+        {/* ── Track 05 & 06 Interactive Problem Simulation Arena ── */}
+        <section className="py-12 max-w-[1280px] mx-auto px-4 sm:px-8 space-y-8">
+          <div className="text-center space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider"
+              style={{ ...glassLevel1, color: C.cyan }}>
+              <Zap className="w-3.5 h-3.5" /> Interactive Problem Simulation
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-black" style={{ fontFamily: "Sora, sans-serif", color: C.navy }}>
+              Autonomous Swarm Simulation Arena
+            </h2>
+            <p className="text-sm sm:text-base max-w-2xl mx-auto" style={{ color: C.slate }}>
+              Interactive testbed for Track 05 (Intelligent Systems & Autonomous Computing) & Track 06 (CIS × EMBS Flagship). Test multi-agent swarm heuristics, trigger structural debris shifts, and track autonomous bio-signal telemetry search in real-time.
+            </p>
+          </div>
+
+          <SwarmSimulationArena />
         </section>
 
         {/* ── Hackathon Schedule & Lifecycle ── */}
@@ -340,17 +379,27 @@ export default function OptiForge() {
             Register your team of 2–4 members. ₹100 per member, payable at the venue on 30 September 2026.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-5">
-            <a href="https://optiforge-2026.vercel.app/register" target="_blank" rel="noreferrer"
-              className="group inline-flex items-center gap-3 px-10 py-5 rounded-2xl font-bold text-base text-white transition-all hover:scale-105 active:scale-95 shadow-lg overflow-hidden relative"
-              style={{ background: C.ieeeBlue }}>
+            <MagneticButton
+              href="https://optiforge-2026.vercel.app/register"
+              target="_blank"
+              rel="noreferrer"
+              strength={0.25}
+              className="group inline-flex items-center gap-3 px-10 py-5 rounded-2xl font-bold text-base text-white transition-all shadow-lg overflow-hidden relative"
+              style={{ background: C.ieeeBlue }}
+            >
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
               <span className="relative z-10 flex items-center gap-2">Register Now (₹100/member) <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" /></span>
-            </a>
-            <a href="https://optiforge-2026.vercel.app/" target="_blank" rel="noreferrer"
-              className="group inline-flex items-center gap-2 px-8 py-5 rounded-2xl text-base font-bold transition-all hover:scale-105 shadow-sm hover:shadow-md"
-              style={{ background: C.white, border: `2px solid ${C.ieeeBlue}`, color: C.ieeeBlue }}>
+            </MagneticButton>
+            <MagneticButton
+              href="https://optiforge-2026.vercel.app/"
+              target="_blank"
+              rel="noreferrer"
+              strength={0.2}
+              className="group inline-flex items-center gap-2 px-8 py-5 rounded-2xl text-base font-bold transition-all shadow-sm hover:shadow-md"
+              style={{ background: C.white, border: `2px solid ${C.ieeeBlue}`, color: C.ieeeBlue }}
+            >
               <ExternalLink className="w-5 h-5 group-hover:rotate-12 transition-transform" /> Visit OptiForge Portal
-            </a>
+            </MagneticButton>
           </div>
         </section>
 
