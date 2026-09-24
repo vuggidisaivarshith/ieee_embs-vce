@@ -194,13 +194,108 @@ export default function OptiForge() {
           </motion.div>
 
           {/* ── FULL-WIDTH FLYER BANNER ── */}
-          <motion.div initial={{opacity:0,y:32}} animate={{opacity:1,y:0}} transition={{duration:.7,delay:.5,ease:[0.16,1,.3,1]}}
-            className="mt-20 rounded-3xl overflow-hidden relative group transition-transform duration-700 ease-out hover:shadow-2xl"
-            style={{ ...glassLevel2, padding: "8px", transform: `translate(${mouse.nX * 5}px, ${mouse.nY * 5}px)` }}>
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
-            <img src={optiforgeFlyer} alt="OptiForge 2026 Event Flyer" className="w-full h-auto block rounded-2xl" />
+          <motion.div
+            initial={{ opacity: 0, y: 48, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-16 relative"
+            style={{ transform: `translate(${mouse.nX * 5}px, ${mouse.nY * 5}px)` }}
+          >
+            {/* Outer glow pulse ring */}
+            <div className="absolute -inset-3 rounded-[32px] pointer-events-none animate-pulse"
+              style={{
+                background: "radial-gradient(ellipse at center, rgba(0,102,204,0.22) 0%, rgba(0,140,149,0.18) 40%, transparent 70%)",
+                filter: "blur(18px)"
+              }} />
+
+            {/* Second slower glow ring */}
+            <div className="absolute -inset-6 rounded-[36px] pointer-events-none"
+              style={{
+                background: "radial-gradient(ellipse at center, rgba(119,37,131,0.14) 0%, transparent 65%)",
+                filter: "blur(30px)",
+                animation: "pulse 3s ease-in-out infinite 1.5s"
+              }} />
+
+            {/* Live HACKATHON NOW badge — blinking */}
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 px-5 py-2 rounded-full shadow-xl"
+              style={{
+                background: "linear-gradient(135deg, #00629B 0%, #772583 100%)",
+                boxShadow: "0 4px 24px rgba(0,102,204,0.5), 0 0 40px rgba(119,37,131,0.3)"
+              }}>
+              <span className="w-2.5 h-2.5 rounded-full bg-[#E9C46A] animate-ping" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#E9C46A] absolute left-4" />
+              <span className="text-white font-black text-xs uppercase tracking-widest"
+                style={{ fontFamily: "Sora, sans-serif" }}>
+                🔥 Registrations LIVE · 30 Sep 2026
+              </span>
+              <span className="w-2.5 h-2.5 rounded-full bg-[#E9C46A] animate-ping" style={{ animationDelay: "0.3s" }} />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#E9C46A] absolute right-4" />
+            </div>
+
+            {/* Banner card */}
+            <div className="rounded-3xl overflow-hidden relative group"
+              style={{
+                padding: "10px",
+                background: "rgba(255,255,255,0.72)",
+                backdropFilter: "blur(24px)",
+                border: "1px solid rgba(255,255,255,0.85)",
+                boxShadow: "0 20px 60px rgba(16,42,67,0.15), 0 0 0 1px rgba(0,102,204,0.12), inset 0 1px 0 rgba(255,255,255,0.9)"
+              }}>
+
+              {/* Shimmer sweep — runs continuously */}
+              <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden rounded-3xl">
+                <div className="absolute inset-y-0 w-[40%] -skew-x-12"
+                  style={{
+                    background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%)",
+                    animation: "shimmerSweep 2.8s ease-in-out infinite",
+                  }} />
+              </div>
+
+              {/* Corner accent glows */}
+              <div className="absolute top-3 left-3 w-20 h-20 rounded-full pointer-events-none"
+                style={{ background: "radial-gradient(circle, rgba(0,102,204,0.25) 0%, transparent 70%)", filter: "blur(10px)" }} />
+              <div className="absolute bottom-3 right-3 w-20 h-20 rounded-full pointer-events-none"
+                style={{ background: "radial-gradient(circle, rgba(119,37,131,0.25) 0%, transparent 70%)", filter: "blur(10px)" }} />
+
+              {/* The flyer image — doubled size via max-w override */}
+              <img
+                src={optiforgeFlyer}
+                alt="OptiForge 2026 Event Flyer"
+                className="w-full h-auto block rounded-2xl transition-transform duration-700 group-hover:scale-[1.015]"
+                style={{ minHeight: "320px", objectFit: "cover" }}
+              />
+            </div>
+
+            {/* Scroll-down attention indicator */}
+            <div className="mt-8 flex flex-col items-center gap-2 select-none">
+              <span className="text-[11px] font-bold uppercase tracking-widest" style={{ color: C.slate, fontFamily: "JetBrains Mono, monospace" }}>
+                Explore Domains ↓
+              </span>
+              <div className="flex flex-col items-center gap-1">
+                {[0, 0.15, 0.3].map((delay, i) => (
+                  <div key={i} className="w-1 h-1 rounded-full"
+                    style={{
+                      background: i === 0 ? C.ieeeBlue : i === 1 ? C.cyan : C.embsPurple,
+                      animation: `bounceDown 1.2s ease-in-out infinite`,
+                      animationDelay: `${delay}s`
+                    }} />
+                ))}
+              </div>
+            </div>
           </motion.div>
         </section>
+
+        {/* Keyframe definitions injected via style tag */}
+        <style>{`
+          @keyframes shimmerSweep {
+            0%   { left: -45%; }
+            100% { left: 105%; }
+          }
+          @keyframes bounceDown {
+            0%, 100% { transform: translateY(0); opacity: 0.4; }
+            50%       { transform: translateY(5px); opacity: 1; }
+          }
+        `}</style>
 
         {/* ── 6 Innovation Themes / Challenge Tracks ── */}
         <section className="py-24 max-w-[1280px] mx-auto px-4 sm:px-8 space-y-12">
