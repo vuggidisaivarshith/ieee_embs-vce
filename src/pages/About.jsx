@@ -43,36 +43,53 @@ export default function About() {
       {/* Hero */}
       <section className="pt-32 pb-20 relative overflow-hidden" style={{ background: "rgba(255,255,255,0.65)", backdropFilter: "blur(24px) saturate(180%)", WebkitBackdropFilter: "blur(24px) saturate(180%)", borderBottom: "1px solid rgba(255,255,255,0.6)", boxShadow: "0 4px 20px -2px rgba(0,0,0,0.03)" }}>
         <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
-          <motion.div variants={stagger} initial="hidden" animate="visible" className="max-w-3xl space-y-6">
-            <motion.div variants={fadeUp} className="flex items-center gap-3">
-              <div className="w-8 h-0.5 bg-[#087F8C]" />
-              <span className="text-[11px] font-bold font-mono uppercase tracking-widest text-[#087F8C]">IEEE EMBS Vardhaman · Chapter Overview</span>
-            </motion.div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            {/* Left Column: Heading & Info */}
+            <motion.div variants={stagger} initial="hidden" animate="visible" className="lg:col-span-8 space-y-6">
+              <motion.div variants={fadeUp} className="flex items-center gap-3">
+                <div className="w-8 h-0.5 bg-[#087F8C]" />
+                <span className="text-[11px] font-bold font-mono uppercase tracking-widest text-[#087F8C]">IEEE EMBS Vardhaman · Chapter Overview</span>
+              </motion.div>
 
-            {/* EMBS Logo + Heading side by side */}
-            <motion.div variants={fadeUp} className="flex items-center gap-5">
-              <img
-                src={embsLogo}
-                alt="IEEE EMBS Logo"
-                className="w-16 h-16 sm:w-20 sm:h-20 object-contain flex-shrink-0 drop-shadow-sm"
-              />
-              <h1 className="text-5xl sm:text-6xl font-bold text-[#172121] tracking-tight leading-tight" style={{ fontFamily: "Sora, Outfit, sans-serif" }}>
+              <motion.h1 variants={fadeUp} className="text-5xl sm:text-6xl font-bold text-[#172121] tracking-tight leading-tight" style={{ fontFamily: "Sora, Outfit, sans-serif" }}>
                 About IEEE EMBS<br />Vardhaman
-              </h1>
+              </motion.h1>
+
+              <motion.p variants={fadeUp} className="text-[#647070] text-lg leading-relaxed max-w-2xl">
+                Engineering in Medicine and Biology Society — Empowering the next generation of biomedical innovators, researchers, and clinical engineers at Vardhaman College of Engineering, Hyderabad.
+              </motion.p>
+              <motion.div variants={fadeUp} className="flex flex-wrap gap-8 pt-2">
+                {[{ v: "50+", l: "Active Members" }, { v: "6+", l: "Events Hosted" }, { v: "3+", l: "Years Active" }].map((s, i) => (
+                  <div key={i}>
+                    <div className="text-3xl font-bold text-[#172121]">{s.v}</div>
+                    <div className="text-[11px] font-mono uppercase tracking-wide text-[#647070] mt-0.5">{s.l}</div>
+                  </div>
+                ))}
+              </motion.div>
             </motion.div>
 
-            <motion.p variants={fadeUp} className="text-[#647070] text-lg leading-relaxed">
-              Engineering in Medicine and Biology Society — Empowering the next generation of biomedical innovators, researchers, and clinical engineers at Vardhaman College of Engineering, Hyderabad.
-            </motion.p>
-            <motion.div variants={fadeUp} className="flex flex-wrap gap-8 pt-2">
-              {[{ v: "50+", l: "Active Members" }, { v: "6+", l: "Events Hosted" }, { v: "3+", l: "Years Active" }].map((s, i) => (
-                <div key={i}>
-                  <div className="text-3xl font-bold text-[#172121]">{s.v}</div>
-                  <div className="text-[11px] font-mono uppercase tracking-wide text-[#647070] mt-0.5">{s.l}</div>
+            {/* Right Column: EMBS Logo in Right White Space */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, x: 20 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:col-span-4 flex justify-center lg:justify-end"
+            >
+              <div className="glass-card p-8 rounded-3xl border border-[#DDE4E1] flex flex-col items-center justify-center text-center space-y-4 shadow-card hover:shadow-card-hover transition-all duration-300 max-w-sm w-full bg-white/80">
+                <img
+                  src={embsLogo}
+                  alt="IEEE EMBS Logo"
+                  className="w-36 h-36 sm:w-44 sm:h-44 object-contain drop-shadow-md hover:scale-105 transition-transform duration-300"
+                />
+                <div className="space-y-1">
+                  <h3 className="text-sm font-bold text-[#172121]">IEEE EMBS Student Branch</h3>
+                  <p className="text-xs text-[#087F8C] font-mono font-medium">Vardhaman College of Engineering</p>
                 </div>
-              ))}
+              </div>
             </motion.div>
-          </motion.div>
+
+          </div>
         </div>
       </section>
 

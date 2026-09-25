@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { ExternalLink, Calendar, Clock, MapPin, Trophy, ArrowRight, CheckCircle2, Zap, Shield, Cpu, Layers, Activity, BrainCircuit, HeartPulse, Stethoscope, Bot } from "lucide-react";
 import { motion } from "framer-motion";
 import { optiforgeFlyer } from "../assets/images";
