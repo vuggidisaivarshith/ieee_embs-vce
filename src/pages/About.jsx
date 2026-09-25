@@ -1,9 +1,10 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { CheckCircle2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { doc, getDoc } from "firebase/firestore";
 import { db, DEFAULT_SITE_DATA } from "../firebase/config";
 import { resolveImage } from "../utils/resolveImage";
+import { embsLogo } from "../assets/images";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -47,9 +48,19 @@ export default function About() {
               <div className="w-8 h-0.5 bg-[#087F8C]" />
               <span className="text-[11px] font-bold font-mono uppercase tracking-widest text-[#087F8C]">IEEE EMBS Vardhaman · Chapter Overview</span>
             </motion.div>
-            <motion.h1 variants={fadeUp} className="text-5xl sm:text-6xl font-bold text-[#172121] tracking-tight leading-tight" style={{ fontFamily: "Sora, Outfit, sans-serif" }}>
-              About IEEE EMBS<br />Vardhaman
-            </motion.h1>
+
+            {/* EMBS Logo + Heading side by side */}
+            <motion.div variants={fadeUp} className="flex items-center gap-5">
+              <img
+                src={embsLogo}
+                alt="IEEE EMBS Logo"
+                className="w-16 h-16 sm:w-20 sm:h-20 object-contain flex-shrink-0 drop-shadow-sm"
+              />
+              <h1 className="text-5xl sm:text-6xl font-bold text-[#172121] tracking-tight leading-tight" style={{ fontFamily: "Sora, Outfit, sans-serif" }}>
+                About IEEE EMBS<br />Vardhaman
+              </h1>
+            </motion.div>
+
             <motion.p variants={fadeUp} className="text-[#647070] text-lg leading-relaxed">
               Engineering in Medicine and Biology Society — Empowering the next generation of biomedical innovators, researchers, and clinical engineers at Vardhaman College of Engineering, Hyderabad.
             </motion.p>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "./components/layout/Navbar";
@@ -22,23 +22,58 @@ import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 
-import useMousePosition from "./utils/useMousePosition";
 import InteractiveCursor from "./components/ui/InteractiveCursor";
 import InteractiveMeshCanvas from "./components/ui/InteractiveMeshCanvas";
 
 export default function App() {
   const location = useLocation();
-  const mouse = useMousePosition();
+
+  // Global mouse-light: use a ref + RAF so it NEVER causes React re-renders
+  const mouseLightRef = useRef(null);
+  useEffect(() => {
+    const isPointer = window.matchMedia("(pointer: fine)").matches;
+    const isReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!isPointer || isReduced) return;
+
+    let rafId;
+    let mx = -1000, my = -1000;
+    let scheduled = false;
+
+    const onMove = (e) => {
+      mx = e.clientX;
+      my = e.clientY;
+      if (!scheduled) {
+        scheduled = true;
+        rafId = requestAnimationFrame(() => {
+          if (mouseLightRef.current) {
+            mouseLightRef.current.style.background =
+              `radial-gradient(700px circle at ${mx}px ${my}px, rgba(255,255,255,0.55), transparent 45%)`;
+            mouseLightRef.current.style.opacity = "1";
+          }
+          scheduled = false;
+        });
+      }
+    };
+    const onLeave = () => {
+      if (mouseLightRef.current) mouseLightRef.current.style.opacity = "0";
+    };
+
+    window.addEventListener("mousemove", onMove, { passive: true });
+    document.addEventListener("mouseleave", onLeave);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseleave", onLeave);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen selection:bg-[#008C95] selection:text-white relative overflow-x-hidden" style={{ backgroundColor: "#F2F8FA" }}>
-      {/* Interactive Global Mouse Light */}
+      {/* Global Mouse Light — ref-driven, zero React re-renders */}
       <div
-        className="fixed inset-0 pointer-events-none z-40 mix-blend-soft-light transition-opacity duration-300"
-        style={{
-          background: mouse.x ? `radial-gradient(800px circle at ${mouse.x}px ${mouse.y}px, rgba(255,255,255,0.75), transparent 45%)` : "none",
-          opacity: mouse.x ? 1 : 0
-        }}
+        ref={mouseLightRef}
+        className="fixed inset-0 pointer-events-none z-40 mix-blend-soft-light"
+        style={{ opacity: 0, willChange: "opacity, background", transition: "opacity 0.3s ease" }}
       />
 
       {/* Interactive Neural/Particle Mesh Canvas */}
@@ -53,10 +88,10 @@ export default function App() {
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
-            initial={{ opacity: 0, scale: 0.988, filter: "blur(4px)" }}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-            exit={{ opacity: 0, scale: 1.008, filter: "blur(3px)" }}
-            transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.22, ease: "easeInOut" }}
           >
             <Routes location={location}>
               {/* Public Routes */}

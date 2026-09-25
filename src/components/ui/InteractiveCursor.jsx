@@ -86,7 +86,7 @@ export default function InteractiveCursor() {
 
   return (
     <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden" aria-hidden="true">
-      {/* Outer fluid trailing aura ring ("long moving circle") — green/light-red with high-contrast ring for light & dark backgrounds */}
+      {/* Outer fluid trailing aura ring — original teal (#008C95) at rest, cyan (#00B8D9) on hover */}
       <div
         ref={auraRef}
         className="fixed top-0 left-0 -ml-6 -mt-6 rounded-full pointer-events-none will-change-transform transition-[width,height,background-color,border-color,opacity,box-shadow] duration-200"
@@ -94,21 +94,21 @@ export default function InteractiveCursor() {
           width: isHovering ? (hoverLabel ? "64px" : "52px") : "36px",
           height: isHovering ? (hoverLabel ? "64px" : "52px") : "36px",
           backgroundColor: isHovering
-            ? "rgba(239, 68, 68, 0.15)"         /* light red fill on hover */
-            : "rgba(34, 197, 94, 0.12)",         /* vibrant green fill at rest */
+            ? "rgba(0, 184, 217, 0.12)"          /* cyan fill on hover */
+            : "rgba(0, 140, 149, 0.08)",          /* teal fill at rest */
           border: isHovering
-            ? "2px solid rgba(239, 68, 68, 0.85)"     /* light red ring on hover */
-            : "2px solid rgba(34, 197, 94, 0.75)",    /* green ring at rest */
+            ? "1.5px solid rgba(0, 184, 217, 0.65)"   /* cyan ring on hover */
+            : "1px solid rgba(0, 140, 149, 0.35)",    /* teal ring at rest */
           boxShadow: isHovering
-            ? "0 0 24px rgba(239, 68, 68, 0.50), inset 0 0 10px rgba(239, 68, 68, 0.20)"
-            : "0 0 16px rgba(34, 197, 94, 0.40), inset 0 0 8px rgba(34, 197, 94, 0.15)",
-          backdropFilter: isHovering ? "blur(3px)" : "blur(1px)",
+            ? "0 0 20px rgba(0, 184, 217, 0.40), inset 0 0 8px rgba(0, 184, 217, 0.12)"
+            : "0 0 10px rgba(0, 140, 149, 0.15), inset 0 0 4px rgba(0, 140, 149, 0.06)",
+          backdropFilter: "blur(1px)",
           transform: "translate3d(-100px, -100px, 0)"
         }}
       >
         {hoverLabel && (
           <span className="absolute inset-0 flex items-center justify-center text-[9px] font-mono font-bold uppercase tracking-wider animate-fade-in"
-            style={{ color: isHovering ? "#ef4444" : "#16a34a" }}>
+            style={{ color: "#00B8D9" }}>
             {hoverLabel}
           </span>
         )}

@@ -7,7 +7,6 @@ import { db, DEFAULT_SITE_DATA } from "../firebase/config";
 import { resolveImage } from "../utils/resolveImage";
 import EventCarousel from "../components/ui/EventCarousel";
 import SpeakerModal from "../components/ui/SpeakerModal";
-import useMousePosition from "../utils/useMousePosition";
 import MagneticButton from "../components/ui/MagneticButton";
 import TiltCard from "../components/ui/TiltCard";
 import InteractiveBioSignal from "../components/ui/InteractiveBioSignal";
@@ -97,7 +96,6 @@ const stagger = {
 };
 
 export default function Home() {
-  const mouse = useMousePosition();
   const [siteSettings, setSiteSettings]         = useState(DEFAULT_SITE_DATA.siteSettings);
   const [featuredEvent, setFeaturedEvent]       = useState(DEFAULT_SITE_DATA.events[0]);
   const [latestAnnouncement, setLatestAnnouncement] = useState(DEFAULT_SITE_DATA.announcements[0]);
@@ -174,16 +172,14 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Ambient multi-color glows */}
+        {/* Ambient multi-color glows — static, no continuous paint */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute -left-20 top-1/2 -translate-y-1/2 w-[400px] h-[220px] rounded-full animate-glow-pulse"
-            style={{ background: "radial-gradient(ellipse, rgba(244,185,66,0.25) 0%, rgba(0,140,149,0.30) 50%, transparent 70%)", filter: "blur(40px)" }} />
-          <div className="absolute right-1/4 top-1/2 -translate-y-1/2 w-[380px] h-[200px] rounded-full animate-glow-pulse"
-            style={{ background: "radial-gradient(ellipse, rgba(0,102,204,0.35) 0%, transparent 70%)", filter: "blur(40px)", animationDelay: "1s" }} />
-          <div className="absolute inset-0 animate-shimmer"
-            style={{ backgroundImage: "linear-gradient(105deg, transparent 30%, rgba(255,215,0,0.08) 50%, transparent 70%)" }} />
-          <div className="absolute inset-0 opacity-10"
-            style={{ backgroundImage: "linear-gradient(rgba(0,184,217,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,217,0.6) 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
+          <div className="absolute -left-20 top-1/2 -translate-y-1/2 w-[400px] h-[220px] rounded-full"
+            style={{ background: "radial-gradient(ellipse, rgba(244,185,66,0.10) 0%, rgba(0,140,149,0.18) 50%, transparent 70%)", filter: "blur(40px)" }} />
+          <div className="absolute right-1/4 top-1/2 -translate-y-1/2 w-[380px] h-[200px] rounded-full"
+            style={{ background: "radial-gradient(ellipse, rgba(0,102,204,0.20) 0%, transparent 70%)", filter: "blur(40px)" }} />
+          <div className="absolute inset-0 opacity-7"
+            style={{ backgroundImage: "linear-gradient(rgba(0,184,217,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,217,0.5) 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
         </div>
 
         {/* Banner Content Container — DOUBLED HEIGHT & PADDING */}
@@ -225,21 +221,21 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right: ILLUMINATING GOLD REGISTER BUTTON */}
+            {/* Right: Gold Register Button — refined glow */}
             <div className="flex items-center gap-4 flex-shrink-0">
               <MagneticButton
                 to="/optiforge"
-                strength={0.35}
-                className="inline-flex items-center gap-2.5 px-8 py-4 sm:px-10 sm:py-5 rounded-2xl text-base sm:text-lg font-black transition-all whitespace-nowrap shadow-2xl group/btn overflow-hidden relative"
+                strength={0.3}
+                className="inline-flex items-center gap-2.5 px-8 py-4 sm:px-10 sm:py-5 rounded-2xl text-base sm:text-lg font-black transition-all whitespace-nowrap shadow-lg group/btn overflow-hidden relative"
                 style={{
-                  background: "linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #F4B942 100%)",
+                  background: "linear-gradient(135deg, #F4B942 0%, #E8A020 60%, #D4901A 100%)",
                   color: "#071A2B",
-                  boxShadow: "0 0 35px rgba(255,215,0,0.70), 0 6px 25px rgba(244,185,66,0.60), inset 0 1px 0 rgba(255,255,255,0.9)",
-                  border: "1.5px solid rgba(255,255,255,0.7)"
+                  boxShadow: "0 0 18px rgba(244,185,66,0.35), 0 4px 16px rgba(212,144,26,0.30), inset 0 1px 0 rgba(255,255,255,0.7)",
+                  border: "1.5px solid rgba(255,255,255,0.55)"
                 }}
               >
-                {/* Gold beam shimmer sweep */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700" />
+                {/* On-hover shimmer sweep only */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700" />
                 <span className="relative z-10 flex items-center gap-2 font-black tracking-wide" style={{ fontFamily: "Sora, sans-serif" }}>
                   Explore & Register Now <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
                 </span>
@@ -297,13 +293,12 @@ export default function Home() {
         <div className="max-w-[1280px] mx-auto px-4 sm:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
-            {/* Left: Editorial headline with mouse parallax */}
+            {/* Left: Editorial headline */}
             <motion.div
               variants={stagger}
               initial="hidden"
               animate="visible"
-              className="space-y-8 transition-transform duration-500 ease-out"
-              style={{ transform: mouse.x ? `translate3d(${mouse.nX * 8}px, ${mouse.nY * 8}px, 0)` : undefined }}
+              className="space-y-8"
             >
               {/* Chapter label */}
               <motion.div variants={fadeUp} className="flex items-center gap-3">
@@ -417,8 +412,7 @@ export default function Home() {
               initial={{ opacity: 0, x: 24 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-5 transition-transform duration-500 ease-out"
-              style={{ transform: mouse.x ? `translate3d(${mouse.nX * -8}px, ${mouse.nY * -8}px, 0)` : undefined }}
+              className="space-y-5"
             >
               {/* Live Interactive Bio-Signal Telemetry Monitor */}
               <div className="glass-card rounded-2xl p-5 overflow-hidden transition-all duration-300">
